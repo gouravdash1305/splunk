@@ -1,0 +1,114 @@
+<form hideEdit="True" theme="dark" version="1.1">
+  <tags>mobile,tv</tags>
+  <label>KV Store Collections Status</label>
+  <description>If you’re running into issues with the Connected Experiences apps, Splunk Support might ask you to use this dashboard to check the KV Store status.</description>
+  <search id="kvstore">
+    <query>| rest "services/ssg/kvstore_client"
+method=$method$
+app=$app$
+collection=$collection$
+owner=$owner$
+sort=$sort$
+limit=$limit$
+delete_field_name=$delete_field_name$
+delete_field_value=$delete_field_value$
+post_data=$post_data$
+</query>
+    <earliest>-15m</earliest>
+    <latest>now</latest>
+  </search>
+  <fieldset submitButton="true" autoRun="false">
+    <input type="dropdown" token="method">
+      <label>Method</label>
+      <choice value="get">Get</choice>
+      <choice value="delete">Delete</choice>
+      <choice value="post">Insert</choice>
+      <initialValue>get</initialValue>
+      <change>
+        <condition value="get">
+          <set token="showGet"></set>
+          <unset token="showDelete"></unset>
+          <unset token="showPost"></unset>
+        </condition>
+        <condition value="delete">
+          <set token="showDelete"></set>
+          <unset token="showGet"></unset>
+          <unset token="showPost"></unset>
+        </condition>
+        <condition value="post">
+          <set token="showPost"></set>
+          <unset token="showGet"></unset>
+          <unset token="showDelete"></unset>
+        </condition>
+      </change>
+    </input>
+    <input type="dropdown" token="app">
+      <label>App</label>
+      <fieldForLabel>label</fieldForLabel>
+      <fieldForValue>title</fieldForValue>
+      <search>
+        <query>| rest /services/apps/local | search disabled=0 | table label title</query>
+        <earliest>-15m</earliest>
+        <latest>now</latest>
+      </search>
+      <initialValue>splunk_secure_gateway</initialValue>
+    </input>
+    <input type="dropdown" token="collection">
+      <label>Collection</label>
+      <fieldForLabel>title</fieldForLabel>
+      <fieldForValue>title</fieldForValue>
+      <search>
+        <query>| rest /servicesNS/nobody/$app$/storage/collections/config |   table title eai:acl.app | rename eai:acl.app as acl | where acl != "system"</query>
+        <earliest>-15m</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+    <input type="dropdown" token="owner">
+      <label>Owner</label>
+      <fieldForLabel>username</fieldForLabel>
+      <fieldForValue>username</fieldForValue>
+      <search>
+        <query>| stats count
+| fields - count
+| eval username="nobody"
+| append [|rest /services/authentication/current-context/context | table username]</query>
+      </search>
+      <initialValue>admin</initialValue>
+    </input>
+    <input type="text" token="limit" depends="$showGet$">
+      <label>Max Number of Results</label>
+      <default>10</default>
+      <initialValue>10</initialValue>
+    </input>
+    <input type="text" token="sort" depends="$showGet$">
+      <label>Sort By</label>
+      <initialValue>_key</initialValue>
+    </input>
+    <input type="text" token="delete_field_name" depends="$showDelete$">
+      <label>Field Name</label>
+      <initialValue>field_name</initialValue>
+    </input>
+    <input type="text" token="delete_field_value" depends="$showDelete$">
+      <label>Field Value</label>
+        <initialValue>field_value</initialValue>
+    </input>
+    <input type="text" token="post_data" depends="$showPost$">
+      <label>Payload</label>
+      <initialValue>"{}"</initialValue>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <title>KV Store Response</title>
+      <table>
+        <search base="kvstore">
+          <query> | table result</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>
