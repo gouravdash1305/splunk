@@ -9,30 +9,42 @@
     'jquery',
  	'underscore',
  	'module',
- 	'@splunk/swc-mc',
+ 	'views/Base',
+ 	'helpers/grid/RowIterator',
+ 	'views/shared/FlashMessages',
+ 	'views/shared/delegates/ColumnSort',
  	'splunk_monitoring_console/views/settings/dmc_alerts_setup/enterprise/GridRow',
- 	'contrib/text!./Grid.html'
+ 	'contrib/text!./Grid.html',
+ 	'uri/route',
+ 	'util/splunkd_utils',
+	'util/general_utils'
  ], function(
     $,
  	_,
  	module,
- 	SwcMC,
+ 	BaseView,
+ 	RowIterator,
+ 	FlashMessagesView,
+ 	ColumnSort,
  	GridRow,
- 	template
+ 	template,
+ 	route,
+ 	splunkDUtils,
+	util
  ){
- 	return SwcMC.BaseView.extend({
+ 	return BaseView.extend({
  		moduleId: module.id,
  		template: template,
 
  		initialize: function(options) {
-			SwcMC.BaseView.prototype.initialize.call(this, options);
- 			this.children.columnSort = new SwcMC.ColumnSortView({
+ 			BaseView.prototype.initialize.call(this, options);
+ 			this.children.columnSort = new ColumnSort({
  				el: this.el,
  				model: this.collection.alerts.fetchData,
  				autoUpdate: true
  			});
 
- 			this.children.flashMessages = new SwcMC.FlashMessagesView({
+ 			this.children.flashMessages = new FlashMessagesView({
  				className: 'message-single',
  				collection: {
  					dmc_alerts: this.collection.alerts
@@ -50,7 +62,7 @@
 	            var errMessage = _('No preconfigured alerts found.').t();
 	            this.children.flashMessages.flashMsgHelper.addGeneralMessage('no_alerts',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -59,10 +71,10 @@
 	    },
 
  		render: function() {
- 			var rowIterator = new SwcMC.GridRowIteratorHelper();
+ 			var rowIterator = new RowIterator();
  			var html = this.compiledTemplate({
- 				sortCellClass: SwcMC.ColumnSortView.SORTABLE_ROW,
- 				sortKeyAttribute: SwcMC.ColumnSortView.SORT_KEY_ATTR
+ 				sortCellClass: ColumnSort.SORTABLE_ROW,
+ 				sortKeyAttribute: ColumnSort.SORT_KEY_ATTR
  			});
 
  			var $html = $(html);
@@ -74,11 +86,11 @@
   				});
 
  				var toShow = true;
- 				if (this.model.serverInfo.isCloud() && alertConfig && !SwcMC.GeneralUtils.normalizeBoolean(alertConfig.entry.content.get('enabled_for_cloud')) ) {
+ 				if (this.model.serverInfo.isCloud() && alertConfig && !util.normalizeBoolean(alertConfig.entry.content.get('enabled_for_cloud')) ) {
 					toShow = false;
 				}
 
- 				if (this.model.serverInfo.isLite() && alertConfig && !SwcMC.GeneralUtils.normalizeBoolean(alertConfig.entry.content.get('enabled_for_light')) ) {
+ 				if (this.model.serverInfo.isLite() && alertConfig && !util.normalizeBoolean(alertConfig.entry.content.get('enabled_for_light')) ) {
 					toShow = false;
 				}
 

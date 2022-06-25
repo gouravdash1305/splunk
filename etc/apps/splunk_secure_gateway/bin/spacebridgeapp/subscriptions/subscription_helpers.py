@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Helper methods used by subscriptions
 """
@@ -9,11 +9,7 @@ import re
 import math
 import time
 
-from spacebridgeapp.logging import setup_logging
-
-from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
-LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + "_subscription_helpers.log",
-                       "subscription_helpers")
+from spacebridgeapp.util.time_utils import is_datetime_expired, get_expiration_timestamp_str
 
 NUMBER_INDEX = 1
 MULTIPLIER_INDEX = 2
@@ -83,7 +79,7 @@ def generate_search_hash(dashboard_id,
     return hashlib.sha256(search_string.encode('utf-8')).hexdigest()
 
 
-def refresh_to_seconds(refresh: str) -> str:
+def refresh_to_seconds(refresh):
     """
     Convert a dashboard refresh string to seconds
 
@@ -95,40 +91,32 @@ def refresh_to_seconds(refresh: str) -> str:
     :param refresh:
     :return:
     """
-    number_regex = '(\d+\.?\d*)'
-    number_match_regex = '(^\d+\.?\d*([dhsm]|sec)?$)'
-
-    if not re.match(number_match_regex, refresh.strip()):
+    if not refresh.strip():
         return ''
 
-    try:
-        refresh_split = re.split(number_regex, refresh.strip())
+    refresh_split = re.split('(\d+\.?\d*)', refresh.strip())
 
-        # Set Multiplier
-        multiplier_key = refresh_split[MULTIPLIER_INDEX]
-        if multiplier_key in REFRESH_MULTIPLIER:
-            multiplier = REFRESH_MULTIPLIER[multiplier_key]
-        else:
-            # If Multiplier not found set to seconds
-            multiplier = REFRESH_MULTIPLIER['s']
+    # Set Multiplier
+    multiplier_key = refresh_split[MULTIPLIER_INDEX]
+    if multiplier_key in REFRESH_MULTIPLIER:
+        multiplier = REFRESH_MULTIPLIER[multiplier_key]
+    else:
+        # If Multiplier not found set to seconds
+        multiplier = REFRESH_MULTIPLIER['s']
 
-        # Calculate the number of seconds
-        refresh_float = float(refresh_split[NUMBER_INDEX]) * multiplier
+    # Calculate the number of seconds
+    refresh_float = float(refresh_split[NUMBER_INDEX]) * multiplier
 
-        # Round to a single decimal place
-        refresh_round = round(refresh_float, 1)
-        refresh_decimal, refresh_int = math.modf(refresh_float)
+    # Round to a single decimal place
+    refresh_round = round(refresh_float, 1)
+    refresh_decimal, refresh_int = math.modf(refresh_float)
 
-        result = str(int(refresh_int))
+    result = str(int(refresh_int))
 
-        if refresh_decimal > 0:
-            result = str(refresh_round)
+    if refresh_decimal > 0:
+        result = str(refresh_round)
 
-        if float(result) == 0:
-            result = ''
+    if float(result) == 0:
+        result = ''
 
-        return result
-    except (IndexError, ValueError, AttributeError, TypeError):
-        # if anything goes wrong processing the refresh, we ignore the refresh, like web does
-        LOGGER.exception(f'An error occurred processing refresh_value={refresh}. This value was ignored.')
-        return ''
+    return result

@@ -189,7 +189,6 @@ class DeploymentMetricsPanel extends Component {
                         presetsTransform={this.presetsTransform}
                     >
                         <TimeRangeDropdown
-                            aria-label={_('Deployment Metrics')}
                             onChange={this.handleTimeRangeChange}
                             earliest={this.state.earliest}
                             latest={this.state.latest}

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 # Splunk specific dependencies
 import sys
 
@@ -12,7 +12,7 @@ import certifi
 import ssl
 from splunklib.searchcommands import dispatch, GeneratingCommand, Configuration, Option, validators
 from spacebridgeapp.util.config import secure_gateway_config as config
-from aiohttp import ClientSession, WSMsgType
+from autobahn.asyncio.websocket import WebSocketClientFactory, WebSocketClientProtocol
 
 # Command specific dependencies
 import uuid
@@ -24,30 +24,20 @@ class EchoState(object):
         self.ok = False
         self.message = ''
 
-async def connect(ws_url, proxy, headers, state):
-    """ Initiates websocket connection"""
-    session = ClientSession()
-    async with session.ws_connect(ws_url,
-                                  headers=headers,
-                                  proxy=proxy,
-                                  ssl_context=ssl.create_default_context(cafile=certifi.where()),
-                                  autoping=False) as ws:
 
-        await ws.send_bytes(state.payload)
-        while not ws.closed:
-            msg = await ws.receive()
-            if msg.type == WSMsgType.BINARY:
-                expected = state.payload
-                match = (msg.data == expected)
-                state.ok = match
-                if not match:
-                    state.message = 'Received unknown message'
+class CheckMobileWssProtocol(WebSocketClientProtocol):
+    def onConnect(self, request):
+        self.sendMessage(self.factory.state.payload, isBinary=True)
 
-                await ws.close()
+    def onMessage(self, payload, isBinary):
+        expected = self.factory.state.payload
+        match = (payload == expected)
+        self.factory.state.ok = match
+        if not match:
+            self.factory.state.message = 'Received unknown message'
 
+        asyncio.get_event_loop().stop()
 
-
-    await session.close()
 
 @Configuration(type='reporting')
 class SecureGatewayHttpsCheck(GeneratingCommand):
@@ -84,11 +74,19 @@ class SecureGatewayHttpsCheck(GeneratingCommand):
         else:
             proxy = None
 
+        factory = WebSocketClientFactory(ws_url, headers=headers)
+        factory.protocol = CheckMobileWssProtocol
+        factory.state = self.echo_state
+        factory.loop = loop
+
+        context = ssl.create_default_context(cafile=certifi.where())
+        coro = loop.create_connection(factory,config.get_spacebridge_server(), 443, ssl=context)
+
         self.timeout_id = loop.call_later(10, self.timeout)
-        proxy_url = 'http://{}:{}'.format(proxy["host"], proxy["port"]) if proxy else None
 
         try:
-            loop.run_until_complete(connect(ws_url, proxy_url, headers, self.echo_state))
+            loop.run_until_complete(coro)
+            loop.run_forever()
         except asyncio.TimeoutError:
             self.echo_state.message = 'Timeout'
         except Exception as e:

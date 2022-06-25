@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Hosts APIs for listing one or more JSON formatted DashboardDescriptions.
 """

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for representation of data objects for app_list data
 """
@@ -16,10 +16,9 @@ class App(SpacebridgeAppBase):
     """Pair of app name and display app name.
     """
 
-    def __init__(self, app_name="", display_app_name="", author=""):
+    def __init__(self, app_name="", display_app_name=""):
         self.app_name = app_name
         self.display_app_name = display_app_name
-        self.author = author
 
     def set_protobuf(self, proto):
         """Takes a proto of type App and populates

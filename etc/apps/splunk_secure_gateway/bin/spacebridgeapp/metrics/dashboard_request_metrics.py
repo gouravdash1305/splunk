@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Methods for sending latency metrics to telemetry
 """
@@ -22,9 +22,9 @@ async def send_dashboard_list_request_metrics_to_telemetry(message_type,
     :return:
     """
     payload = {
-        "messageType": message_type,
+        "message_type": message_type,
         "latency": latency,
-        "deviceId": request_context.device_id,
+        "device_id": request_context.device_id,
         "useragent": useragent
     }
 

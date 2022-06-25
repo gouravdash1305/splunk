@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for representation of data objects for event_handler
 """
@@ -10,11 +10,12 @@ import os
 from typing import List, Dict
 from dataclasses import dataclass, field
 
-os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
-
-from spacebridgeapp.dashboard.parse_search import to_message, get_float_field, get_string_field
+from spacebridgeapp.dashboard.parse_search import to_message
 from spacebridgeapp.data.dispatch_state import DispatchState
 from spacebridgeapp.exceptions.error_message_helper import format_error
+
+os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
+
 from splapp_protocol import event_handler_pb2, common_pb2
 from spacebridgeapp.data.base import SpacebridgeAppBase
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, VALUE, LABEL, MATCH
@@ -397,24 +398,8 @@ class SearchJobMetadata(SpacebridgeAppBase):
         self.set_protobuf(proto)
         return proto
 
-    @property
-    def sid(self):
-        search_job_sid = get_string_field('sid', self.properties)
-        return search_job_sid
 
-    @property
-    def dispatch_state(self):
-        search_job_dispatch_state = DispatchState.from_string(get_string_field('dispatchState',
-                                                                               self.properties)).value
-        return search_job_dispatch_state
-
-    @property
-    def done_progress(self):
-        search_job_done_progress = get_float_field('doneProgress', self.properties)
-        return search_job_done_progress
-
-
-def to_search_job_metadata(json_object) -> SearchJobMetadata:
+def to_search_job_metadata(json_object):
     """
     Parse a Search Job Entry json into and return a SearchJobMetadata
     :param json_object:

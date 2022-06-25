@@ -3,24 +3,24 @@ define(
         'jquery',
         'underscore',
         'module',
-        '@splunk/swc-mc'
+        'views/shared/PopTart'
     ],
     function(
         $,
         _,
         module,
-        SwcMC
+        PopTartView
     ) {
-        return SwcMC.PopTartView.extend({
+        return PopTartView.extend({
             moduleId: module.id,
             className: 'dropdown-menu dropdown-menu-narrow',
             initialize: function(options) {
                 options = _.defaults(options, { 
                     mode: 'menu'
                 });
-                SwcMC.PopTartView.prototype.initialize.call(this, options);
+                PopTartView.prototype.initialize.call(this, options);
             },
-            events: $.extend(SwcMC.PopTartView.prototype.events, {
+            events: $.extend(PopTartView.prototype.events, {
                 'click ul.first-group li': function(e) {
                     var $el = $(e.target).closest('li');
 
@@ -30,7 +30,7 @@ define(
                 }
             }),
             render: function() {
-                this.el.innerHTML = SwcMC.PopTartView.prototype.template_menu;
+                this.el.innerHTML = PopTartView.prototype.template_menu;
                 this.$el.append(this.compiledTemplate());
                 // Focus on the appropriate value
                 _.defer(function() {

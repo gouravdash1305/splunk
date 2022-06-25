@@ -4,35 +4,39 @@ define(
 		'underscore',
 		'backbone',
 		'module',
-		'@splunk/swc-mc',
+		'collections/shared/FlashMessages',
+		'views/shared/Modal',
+		'views/shared/controls/ControlGroup',
 	    'splunk_monitoring_console/views/table/controls/MultiInputControl',
 	    'splunk_monitoring_console/views/table/controls/ConfirmationDialog',
-	    'splunk_monitoring_console/views/table/controls/FailureDialog'
+	    'splunk_monitoring_console/views/table/controls/FailureDialog',
+	    'views/shared/FlashMessagesLegacy'
 	],
 	function(
 		$,
 		_,
 		Backbone,
 		module,
-		SwcMC,
+		FlashMessagesCollection,
+		Modal,
+		ControlGroup,
 		MultiInputControl,
 		ConfirmationDialog,
-		FailureDialog
+		FailureDialog,
+		FlashMessagesView
 	) {
-		return SwcMC.ModalView.extend({
+		return Modal.extend({
 			moduleId: module.id,
 			initialize: function() {
-				SwcMC.ModalView.prototype.initialize.apply(this, arguments);
+				Modal.prototype.initialize.apply(this, arguments);
 
 				this.model.working = new Backbone.Model({
 					'tags': this.model.peer.entry.content.get('tags').join(',')
 				});
 				this.collection = this.collection || {};
-				this.collection.flashMessages = new SwcMC.FlashMessagesCollection();
+				this.collection.flashMessages = new FlashMessagesCollection();
 
 				this.groupTagsInputControl = new MultiInputControl({
-					dataTestName: "dmc-editgroups-multiselect",
-					allowNewValues: true,
 					model: this.model.working,
 					collection: this.collection.peers,
 					modelAttribute: 'tags',
@@ -41,18 +45,18 @@ define(
 					placeholder: _('Choose groups').t()
 				});
 
-				this.children.groupTags = new SwcMC.ControlGroupView({
+				this.children.groupTags = new ControlGroup({
 					label: _("Group Tags").t(),
 					controlClass: 'controls-block',
-					controls: [this.groupTagsInputControl.options.component]
+					controls: [this.groupTagsInputControl]
 				});
 
-				this.children.flashMessage = new SwcMC.FlashMessagesLegacyView({
+				this.children.flashMessage = new FlashMessagesView({
 					collection: this.collection.flashMessages
 				});
 
 			},
-			events: $.extend({}, SwcMC.ModalView.prototype.events, {
+			events: $.extend({}, Modal.prototype.events, {
 	            'click .btn-primary': function(e) {
 	            	e.preventDefault();
 
@@ -106,14 +110,14 @@ define(
 	            }
 	        }),
 			render: function() {
-	            this.$el.html(SwcMC.ModalView.TEMPLATE);
-	            this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html(_("Edit Group Tags").t());
-	            this.$(SwcMC.ModalView.BODY_SELECTOR).prepend(this.children.flashMessage.render().el);
-	            this.$(SwcMC.ModalView.BODY_SELECTOR).append('<h4 class="instance-name">' + _.escape(this.model.peer.entry.content.get('peerName')) + '</h4>');
-	            this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
-	            this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).append(this.children.groupTags.render().el);
-	            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
-	            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_SAVE);
+	            this.$el.html(Modal.TEMPLATE);
+	            this.$(Modal.HEADER_TITLE_SELECTOR).html(_("Edit Group Tags").t());
+	            this.$(Modal.BODY_SELECTOR).prepend(this.children.flashMessage.render().el);
+	            this.$(Modal.BODY_SELECTOR).append('<h4 class="instance-name">' + _.escape(this.model.peer.entry.content.get('peerName')) + '</h4>');
+	            this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
+	            this.$(Modal.BODY_FORM_SELECTOR).append(this.children.groupTags.render().el);
+	            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
+	            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_SAVE);
 	            return this;
 	        }
 		});

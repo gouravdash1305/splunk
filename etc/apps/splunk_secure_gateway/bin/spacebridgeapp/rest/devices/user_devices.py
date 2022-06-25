@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for getting the devices in the kvstore belonging to a specific user
 """
@@ -19,8 +19,7 @@ from spacebridgeapp.util import py23
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util import constants
 from spacebridgeapp.rest.base_endpoint import BaseRestHandler
-from spacebridgeapp.rest.devices.util import augment_device_with_metadata
-from spacebridgeapp.rest.services.splunk_service import get_devices_for_user, get_devices_metadata
+from spacebridgeapp.rest.services.splunk_service import get_devices_for_user
 from spacebridgeapp.exceptions.key_not_found_exception import KeyNotFoundError
 
 LOGGER = setup_logging(constants.SPACEBRIDGE_APP_NAME + ".log", "rest_user_devices")
@@ -52,9 +51,6 @@ class DevicesForUser(BaseRestHandler, PersistentServerConnectionApplication):
 
         # Retrieves all devices from that user's devices kvstore collection
         user_devices = get_devices_for_user(user, authtoken)
-        devices_meta = get_devices_metadata(authtoken)
-        augment_device_with_metadata(user_devices, devices_meta)
-        
         return {
             'payload': user_devices,
             'status': 200,

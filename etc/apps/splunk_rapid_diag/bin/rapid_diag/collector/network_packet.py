@@ -59,9 +59,9 @@ class NetworkPacket(ToolsCollector):
     def get_tool_command(**args):
         if IS_LINUX:
             filters = ''
-            if 'ip_address' in args and (args["ip_address"]):
+            if 'ip_address' in args and (args["ip_address"] is not None):
                 filters = ' dst host ' + str(args["ip_address"])
-            if 'port' in args and (args["ip_address"]):
+            if 'port' in args and (args["ip_address"] is not None):
                 if filters:
                     filters += ' and'
                 filters += ' dst port ' + str(args["port"])
@@ -139,7 +139,7 @@ class NetworkPacket(ToolsCollector):
             if obj[field] is not None:
                 Serializable.check_value_in_range(obj[field], value_range[field], field)
 
-        if obj.get('ip_address'):
+        if obj.get('ip_address') is not None:
             NetworkPacket.check_ip_address(obj.get('ip_address'))
 
     @staticmethod

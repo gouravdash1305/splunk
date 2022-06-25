@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 """
 
 import sys
@@ -65,7 +65,7 @@ async def fetch_devices(request_context, async_kvstore_client, role=None):
         jsn = await response.json()
         if type(jsn) == list and len(jsn) > 0:
             most_recent_timestamp = jsn[0][constants.TIMESTAMP]
-            result = {row[constants.DEVICE_ID] for row in jsn if
+            result = {row[constants.REGISTERED_DEVICES_DEVICE_ID] for row in jsn if
                       row[constants.TIMESTAMP] == most_recent_timestamp}
             return result
 

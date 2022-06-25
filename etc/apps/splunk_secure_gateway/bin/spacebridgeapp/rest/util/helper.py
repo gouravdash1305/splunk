@@ -46,11 +46,3 @@ def extract_boolean(obj, key, source_name):
         raise Errors.SpacebridgeRestError(error_message, 400)
 
     raise Errors.SpacebridgeRestError(error_message, 400)
-
-
-def camel_case(str):
-    if str.isupper():
-        return str
-    joined = str.replace(" ", "")
-    return joined[0].lower() + joined[1:]
-

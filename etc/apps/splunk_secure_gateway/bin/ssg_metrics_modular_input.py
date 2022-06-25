@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular input for the Spacebridge app which brings up
 a web socket server to talk to Spacebridge
@@ -17,14 +17,14 @@ from spacebridgeapp.util import py23
 
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 
-from spacebridgeapp.util.base_modular_input import BaseModularInput
+from solnlib import modular_input
 from spacebridgeapp.util.splunk_utils.common import modular_input_should_run
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util import constants
 from spacebridgeapp.metrics.metrics_collector import SpacebridgeaAppMetricsCollector
 
 
-class MetricsModularInput(BaseModularInput):
+class MetricsModularInput(modular_input.ModularInput):
     """
 
     Modular input to periodically collect secure gateway metrics
@@ -54,9 +54,6 @@ class MetricsModularInput(BaseModularInput):
         """
         Main entry path for input
         """
-        if not super(MetricsModularInput, self).do_run(input_config):
-            return
-
         self.logger.info("Running secure gateway metrics modular input")
         if not modular_input_should_run(self.session_key, logger=self.logger):
             self.logger.debug("Modular input will not run on this node.")

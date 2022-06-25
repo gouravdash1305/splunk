@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Base class for AsyncClient
 """
@@ -72,34 +72,22 @@ class AsyncClient(object):
 
         return _instrument(self.client.get(**kwargs), 'GET', uri)
 
-    def async_delete_request(self, uri, auth_header, params=None, data=None, headers=None, timeout=DEFAULT_TIMEOUT,
-                             verify_ssl=None):
+    def async_delete_request(self, uri, auth_header, params=None, timeout=DEFAULT_TIMEOUT, verify_ssl=None):
         """
         :param uri:
         :param params:
-        :param data:
-        :param headers:
         :param auth_header: A value to supply for the Authorization header
         :param timeout: Optional timeout
         :return:
         """
-        if not headers:
-            headers = {HEADER_CONTENT_TYPE: APPLICATION_JSON, HEADER_AUTHORIZATION: repr(auth_header)}
 
-        # In python 3 Treq requires post data to be bytes not string so we need to explicitly encode it
-        # https://github.com/twisted/treq/issues/151
-        if sys.version_info >= (3,0) and isinstance(data, str):
-            data = data.encode('utf-8')
-
+        headers = {HEADER_CONTENT_TYPE: APPLICATION_JSON, HEADER_AUTHORIZATION: repr(auth_header)}
         LOGGER.debug('DELETE uri=%s, params=%s' % (uri, str(params)))
 
         kwargs = {'uri': uri, 'headers': headers, 'params': params, 'timeout': timeout}
 
         if verify_ssl:
             kwargs['verify_ssl'] = verify_ssl
-
-        if data:
-            kwargs['data'] = data
 
         return _instrument(self.client.delete(**kwargs), 'DELETE', uri)
 

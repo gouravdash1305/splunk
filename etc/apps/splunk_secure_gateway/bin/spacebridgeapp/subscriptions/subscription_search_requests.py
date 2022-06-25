@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module to process search subscriptions
 """
@@ -11,10 +11,10 @@ import sys
 from http import HTTPStatus
 from cloudgateway.private.sodium_client.errors import SodiumOperationError
 from spacebridgeapp.dashboard.dashboard_helpers import parse_dashboard_id
-from spacebridgeapp.dashboard.parse_search import get_string_field
+from spacebridgeapp.dashboard.parse_search import get_float_field, get_string_field
 from spacebridgeapp.subscriptions.process_trellis import process_trellis_format
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, SEARCHES_COLLECTION_NAME, EXEC_MODE_NORMAL, \
-    SUBSCRIPTIONS_COLLECTION_NAME, ITSI, ITSI_GLASS_TABLE
+    SUBSCRIPTIONS_COLLECTION_NAME
 from spacebridgeapp.util.time_utils import get_expiration_timestamp_str
 from spacebridgeapp.data.dispatch_state import DispatchState
 from spacebridgeapp.data.dashboard_data import DashboardVisualizationId
@@ -28,7 +28,6 @@ from spacebridgeapp.subscriptions.subscription_update_message import build_send_
 from cloudgateway.private.encryption.encryption_handler import encrypt_for_send, sign_detached
 from spacebridgeapp.util.guid_generator import get_guid
 from spacebridgeapp.util.loop_utils import deferred_loop
-from spacebridgeapp.util.string_utils import is_not_blank
 from spacebridgeapp.request.request_processor import SpacebridgeAuthHeader
 from spacebridgeapp.exceptions.key_not_found_exception import KeyNotFoundError
 from spacebridgeapp.exceptions.error_message_helper import format_splunk_error
@@ -85,8 +84,9 @@ async def start_job_and_update_search(auth_header, subscription_search, input_to
 
 
 def update_job_status(subscription_search, job_status):
-    subscription_search.done_progress = job_status.done_progress
-    subscription_search.dispatch_state = job_status.dispatch_state
+    subscription_search.done_progress = get_float_field('doneProgress', job_status.properties)
+    subscription_search.dispatch_state = DispatchState.from_string(get_string_field('dispatchState',
+                                                                                    job_status.properties)).value
 
 
 async def update_search_job_status_until_done(auth_header, owner=None, app_name=None, search=None, sid=None,
@@ -131,7 +131,7 @@ async def update_subscriptions(auth_header, subscriptions=None, async_kvstore_cl
     """
     Update search in kvstore collection [searches]
     :param auth_header:
-    :param subscriptions:
+    :param searches:
     :param async_kvstore_client:
     :return:
     """
@@ -167,7 +167,7 @@ async def update_searches(auth_header, searches=None, async_kvstore_client=None)
     return updated_ids
 
 
-def build_subscription_update(search, visualization_data, job_status=None):
+def build_subscription_update(search, visualization_data, job_status):
     """
     Build Subscription update based on search type
     :param search:
@@ -179,8 +179,9 @@ def build_subscription_update(search, visualization_data, job_status=None):
     search_type = SearchType.from_value(search.search_type)
     dashboard_visualization_id = DashboardVisualizationId(
         dashboard_id=search.dashboard_id, visualization_id=search.search_type_id)
-    search_job_done_progress = job_status.done_progress if job_status else search.done_progress
-    search_job_dispatch_state = job_status.dispatch_state if job_status else search.dispatch_state
+    search_job_done_progress = get_float_field('doneProgress', job_status.properties)
+    search_job_dispatch_state = DispatchState.from_string(get_string_field('dispatchState',
+                                                                           job_status.properties)).value
     if search.trellis_enabled:
         # build server payload
         trellis_visualization_data = process_trellis_format(search=search, visualization_data=visualization_data)
@@ -240,10 +241,6 @@ async def create_job_from_search(auth_header, subscription_search=None, app_name
     if not input_tokens:
         input_tokens = {}
 
-    # itsi_glass_table is a special case app name in a dashboard_id so we need to convert when creating subscriptions
-    if app_name == ITSI_GLASS_TABLE:
-        app_name = ITSI
-
     # If search.ref then used saved search
     if subscription_search.ref:
         LOGGER.debug("Creating search job from ref search=%s, input_tokens=%s", subscription_search, input_tokens)
@@ -267,52 +264,43 @@ async def create_job_from_search(auth_header, subscription_search=None, app_name
     return sid
 
 
-async def get_sid_from_ref(auth_header, search=None, input_tokens=None, owner=None, app_name=None, 
+async def get_sid_from_ref(auth_header, search=None, input_tokens=None, owner=None, app_name=None,
                            async_splunk_client=None):
     """
     This will create a search job based off a saved search 'ref' attribute
 
     :param auth_header:
     :param search:
-    :param input_tokens:
     :param owner:
     :param app_name:
     :param async_splunk_client:
     :return:
     """
-    # If app not defined in search we will default to the app_name from dashboard_id
-    app = search.app if search.app else app_name
     # First query saved/searches/{ref}, then see if is_scheduled, will raise exception if fails
     saved_search = await fetch_saved_search(auth_header=auth_header,
                                             owner=owner,
+                                            app_name=app_name,
                                             ref=search.ref,
-                                            app=app,
                                             async_splunk_client=async_splunk_client)
 
     if saved_search.is_scheduled:
         # If saved search is scheduled then use /history to get last generated sid, will raise exception if fails
         saved_search_history = await fetch_saved_search_history(auth_header=auth_header,
                                                                 owner=owner,
+                                                                app_name=app_name,
                                                                 ref=search.ref,
-                                                                app=app,
                                                                 async_splunk_client=async_splunk_client)
 
         # Return the sid from the saved search history name
         return saved_search_history.name
     else:
-        # If interval is not specified then by-pass the injection so that savedSearch dispatch will use the interval
-        # specified by original savedSearch
-        if is_not_blank(search.earliest_time) or is_not_blank(search.latest_time):
-            search.earliest_time, search.latest_time = inject_time_tokens(input_tokens=input_tokens,
-                                                                          input_earliest=search.earliest_time,
-                                                                          input_latest=search.latest_time)
         # If saved search is not scheduled then dispatch the job
         data = get_dispatch_job_request_params(earliest_time=search.earliest_time, latest_time=search.latest_time,
                                                input_tokens=input_tokens)
         sid = await dispatch_saved_search(auth_header=auth_header,
                                           owner=owner,
+                                          app_name=app_name,
                                           ref=search.ref,
-                                          app=app,
                                           data=urllib.urlencode(data),
                                           async_splunk_client=async_splunk_client)
         return sid
@@ -573,8 +561,8 @@ async def fetch_search(auth_header,
 
     # Return error in case of unsuccessful response
     error = await response.text()
-    error_message = f"Failed to fetch searches. status_code={response.code}, error={error}, " \
-                    f"search_key={search_key}, auth_header={auth_header}"
+    error_message = "Failed to fetch searches. status_code=%s, error=%s, search_key=%s, auth_header={}".format(
+        response.code, error, search_key, auth_header)
     raise SpacebridgeApiRequestError(error_message, status_code=response.code)
 
 
@@ -628,10 +616,10 @@ async def send_subscription_updates(auth_header,
         new_subscriber_update_ids[subscription.key()] = update_id
 
         if update_id == subscriber_update_ids.get(subscription.key()):
-            LOGGER.info("Skipping subscription update search_key=%s, subscription_id=%s, update_id=%s, type=%s, "
-                        "done_progress=%s, dispatch_state=%s", subscription.subscription_key, subscription.key(),
-                        update_id, type(subscription_update).__name__, subscription_update.done_progress,
-                        subscription_update.dispatch_state)
+            LOGGER.debug("Skipping subscription update search_key=%s, subscription_id=%s, update_id=%s, type=%s, "
+                         "done_progress=%s, dispatch_state=%s", subscription.subscription_key, subscription.key(),
+                         update_id, type(subscription_update).__name__, subscription_update.done_progress,
+                         subscription_update.dispatch_state)
             continue
 
         LOGGER.info("Sending subscription update, search_key=%s, subscription_id=%s, update_id=%s, type=%s, "

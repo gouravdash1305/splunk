@@ -1,21 +1,31 @@
 define([
+    'jquery',
     'underscore',
     'module',
+    'views/shared/controls/Control',
     'splunk_monitoring_console/views/settings/overview_preferences/components/ColorRangeControlRow',
-    '@splunk/swc-mc',
-    'splunk_monitoring_console/helpers/ThresholdConfigsClient'
+    'models/Base',
+    'collections/Base',
+    'views/shared/controls/colors/ColorRangeControlMaster',
+    'splunk_monitoring_console/helpers/ThresholdConfigsClient',
+    'util/color_utils'
 ], function(
+    $,
     _,
     module,
+    Control,
     ColorRangeControlRow,
-    SwcMC,
-    ThresholdConfigClientHelper
+    BaseModel,
+    BaseCollection,
+    ColorRangeControlMaster,
+    ThresholdConfigClientHelper,
+    colorUtil
 ) {
 
-    return SwcMC.ColorRangeControlMasterView.extend({
+    return ColorRangeControlMaster.extend({
         moduleId: module.id,
         initialize: function(options) {
-            SwcMC.ControlView.prototype.initialize.apply(this, arguments);
+            Control.prototype.initialize.apply(this, arguments);
             this.rangeValuesName = this.options.modelAttribute;
             this.rangeColorsName = this.options.rangeColorsName;
             this.displayMinMaxLabels = this.options.displayMinMaxLabels;
@@ -30,9 +40,9 @@ define([
 
             // In-mem collection to keep track of ranges and colours being edited before being written
             this.collection = {};
-            this.collection.rows = new SwcMC.BaseCollection();
+            this.collection.rows = new BaseCollection();
 
-            this.maxModel = new SwcMC.BaseModel({
+            this.maxModel = new BaseModel({
                 value: 'more',
                 color: this.DEFAULT_COLOR
             });
@@ -55,7 +65,7 @@ define([
                 e.preventDefault();
                 var newRowView,
                     i = this.collection.rows.length,
-                    model = new SwcMC.BaseModel({
+                    model = new BaseModel({
                         value: parseInt(this.collection.rows.last().get('value'), 10) + 10,
                         color: this.getNextColor()
                     });
@@ -100,7 +110,7 @@ define([
             this.collection.rows.each(function(model, i) {
                 if (model.get("color") !== "" ) {
                     var percent = (1 / numRanges) * i;
-                    var newColorAsInt = SwcMC.ColorUtils.interpolateColors(minColorAsInt, maxColorAsInt, percent);
+                    var newColorAsInt = colorUtil.interpolateColors(minColorAsInt, maxColorAsInt, percent);
                     model.set('color', "0x" + newColorAsInt.toString(16));
                 }
             }.bind(this));
@@ -128,7 +138,7 @@ define([
                 // if the value is numerical, floor it to be consistent with formatted
                 // values
                 var displayVal = this.rangesEditable ? Math.floor(value) : value;
-                model = new SwcMC.BaseModel({
+                model = new BaseModel({
                     value: displayVal,
                     color: color
                 });
@@ -139,13 +149,13 @@ define([
             // by being matched with a range value, create rows for those additional colors too.
             // Additionally, construct a dictionary for all colors that are currently being used
             _(this.colors).each(function(color, i) {
-                this.usedColorMap[SwcMC.ColorUtils.replaceSymbols(color, "#")] = true;
+                this.usedColorMap[colorUtil.replaceSymbols(color, "#")] = true;
                 if (i >= this.ranges.length - 1) {
                     if (this.displayMinMaxLabels && i === this.colors.length - 1) {
                         // last color - this will become the max row, so don't add it to the collection as its own row
                         this.maxColor = color;
                     } else {
-                        model = new SwcMC.BaseModel({
+                        model = new BaseModel({
                             value: '',
                             color: color
                         });
@@ -195,7 +205,7 @@ define([
                 // Remove view from children hash to prevent re-rendering in render()
                 delete this.children['rangeRow_' + model.cid];
                 if(!_.isUndefined(model.get('color'))) {
-                    delete this.usedColorMap[SwcMC.ColorUtils.replaceSymbols(model.get('color'), "#")];
+                    delete this.usedColorMap[colorUtil.replaceSymbols(model.get('color'), "#")];
                 }
                 this.collection.rows.remove(this.collection.rows.get({ cid: model.cid }));
                 // Redraw all row views because the fromModels have changed
@@ -223,7 +233,7 @@ define([
                 return this.DEFAULT_COLOR;
             } else {
                 this.usedColorMap[color] = true;
-                return SwcMC.ColorUtils.replaceSymbols(color, "0x");
+                return colorUtil.replaceSymbols(color, "0x");
             }
         },
 

@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This file contains an example outputs.conf.  Use this file to configure
 # forwarding in a distributed set up.
@@ -87,15 +87,16 @@ priority = <34>
 timestampformat = %b %e %H:%M:%S
 
 
-# Auto Load Balancing
-# This example balances output between two indexers listening on
-# port 4433: 192.0.2.100:4433 and 192.0.2.101:4433.
-# To achieve this you'd create a DNS entry for 'splunkLB' pointing
+# New in 4.0: Auto Load Balancing
+#
+# This example balances output between two indexers running on
+# 1.2.3.4:4433 and 1.2.4.5:4433.
+# To achieve this you'd create a DNS entry for splunkLB pointing
 # to the two IP addresses of your indexers:
 #
 #   $ORIGIN example.com.
-#   splunkLB A 192.0.2.100
-#   splunkLB A 192.0.2.101
+#   splunkLB A 1.2.3.4
+#   splunkLB A 1.2.3.5
 
 [tcpout]
 defaultGroup = lb
@@ -103,23 +104,20 @@ defaultGroup = lb
 [tcpout:lb]
 server = splunkLB.example.com:4433
 
-# Alternatively, you can use autoLB directly without DNS:
+# Alternatively, you can autoLB sans DNS:
 
 [tcpout]
 defaultGroup = lb
 
 [tcpout:lb]
-server = 192.0.2.100:4433, 192.0.2.101:4433
+server = 1.2.3.4:4433, 1.2.3.5:4433
 
 
 # Compression
 #
 # This example sends compressed events to the remote indexer.
-# If set to "true", you do not need to set the 'compressed' setting to 
-  "true" in the inputs.conf file on the receiver for compression
-  of data to occur.
-# This setting applies to non-SSL forwarding only. For SSL forwarding with
-  compression, Splunk software uses the 'useClientSSLCompression' setting.
+# NOTE: Compression can be enabled TCP or SSL outputs only.
+# The receiver input port should also have compression enabled.
 
 [tcpout]
 server = splunkServer.example.com:4433
@@ -178,16 +176,13 @@ server=10.1.1.250:6666
 #
 # Perform selective indexing and forwarding
 #
-# Using a heavy forwarder, you can index and store data locally, and
-# forward the data out to a receiving indexer. In the example, by 
-# setting the defaultGroup to a non-existent group named "noforward", 
-# the forwarder only forwards data that has been routed using explicit 
-# target groups defined in the inputs.conf
-
+# With a heavy forwarder only, you can index and store data locally, as well as
+# forward the data onwards to a receiving indexer. There are two ways to do
+# this:
 
 # 1. In outputs.conf:
 [tcpout]
-defaultGroup = noforward
+defaultGroup = indexers
 
 [indexAndForward]
 index=true
@@ -196,8 +191,8 @@ selectiveIndexing=true
 [tcpout:indexers]
 server = 10.1.1.197:9997, 10.1.1.200:9997
 
-# 2. In inputs.conf, add _INDEX_AND_FORWARD_ROUTING to the input 
- stanza for any data that you want to index locally, or 
+# 2. In inputs.conf, Add _INDEX_AND_FORWARD_ROUTING for any data that you want
+#    index locally, and
 _TCP_ROUTING=<target_group> for data to be forwarded.
 
 [monitor:///var/log/messages/]
@@ -206,17 +201,3 @@ _INDEX_AND_FORWARD_ROUTING=local
 [monitor:///var/log/httpd/]
 _TCP_ROUTING=indexers
 
-# Output to S3 for Ingest Actions
-
-# For example, sending to an AWS bucket "buttercup-bucket", with a prefix
-# in front of all paths "some-prefix", along with encryption using AWS
-# SSE-S3 to the us-west-2 region:
-
-[rfs:s3]
-path = s3://buttercup-bucket/some-prefix
-remote.s3.encryption = sse-s3
-remote.s3.endpoint = https://s3.us-west-2.amazonaws.com
-remote.s3.signature_version = v4
-remote.s3.supports_versioning = false
-remote.s3.access_key = <access key here>
-remote.s3.secret_key = <secret key here>

@@ -17,14 +17,7 @@ from .backend import json
 
 
 def decode(
-    string,
-    backend=None,
-    context=None,
-    keys=False,
-    reset=True,
-    safe=False,
-    classes=None,
-    v1_decode=False,
+    string, backend=None, context=None, keys=False, reset=True, safe=False, classes=None
 ):
     """Convert a JSON string into a Python object.
 
@@ -38,29 +31,13 @@ def decode(
     can be used to give jsonpickle access to local classes that are not
     available through the global module import scope.
 
-    The keyword argument 'safe' defaults to False.
-    If set to True, eval() is avoided, but backwards-compatible
-    (pre-0.7.0) deserialization of repr-serialized objects is disabled.
-
-    The keyword argument 'backend' defaults to None.
-    If set to an instance of jsonpickle.backend.JSONBackend, jsonpickle
-    will use that backend for deserialization.
-
-    The keyword argument 'v1_decode' defaults to False.
-    If set to True it enables you to decode objects serialized in jsonpickle v1.
-    Please do not attempt to re-encode the objects in the v1 format! Version 2's
-    format fixes issue #255, and allows dictionary identity to be preserve through
-    an encode/decode cycle.
-
     >>> decode('"my string"') == 'my string'
     True
     >>> decode('36')
     36
     """
     backend = backend or json
-    context = context or Unpickler(
-        keys=keys, backend=backend, safe=safe, v1_decode=v1_decode
-    )
+    context = context or Unpickler(keys=keys, backend=backend, safe=safe)
     data = backend.decode(string)
     return context.restore(data, reset=reset, classes=classes)
 
@@ -136,11 +113,10 @@ def _obj_setvalue(obj, idx, proxy):
 
 
 class Unpickler(object):
-    def __init__(self, backend=None, keys=False, safe=False, v1_decode=False):
+    def __init__(self, backend=None, keys=False, safe=False):
         self.backend = backend or json
         self.keys = keys
         self.safe = safe
-        self.v1_decode = v1_decode
 
         self.reset()
 
@@ -200,64 +176,42 @@ class Unpickler(object):
         self._proxies = []
 
     def _restore(self, obj):
-        # if obj isn't in these types, neither it nor nothing in it can have a tag
-        # don't change the tuple of types to a set, it won't work with isinstance
-        if not isinstance(obj, (str, list, dict, set, tuple)):
-
-            def restore(x):
-                return x
-
-        else:
-            restore = self._restore_tags(obj)
-        return restore(obj)
-
-    def _restore_tags(self, obj):
-        try:
-            if not tags.RESERVED <= set(obj) and not type(obj) in (list, dict):
-
-                def restore(x):
-                    return x
-
-                return restore
-        except TypeError:
-            pass
-        if type(obj) is dict:
-            if has_tag_dict(obj, tags.TUPLE):
-                restore = self._restore_tuple
-            elif has_tag_dict(obj, tags.SET):
-                restore = self._restore_set
-            elif has_tag_dict(obj, tags.B64):
-                restore = self._restore_base64
-            elif has_tag_dict(obj, tags.B85):
-                restore = self._restore_base85
-            elif has_tag_dict(obj, tags.ID):
-                restore = self._restore_id
-            elif has_tag_dict(obj, tags.ITERATOR):
-                restore = self._restore_iterator
-            elif has_tag_dict(obj, tags.OBJECT):
-                restore = self._restore_object
-            elif has_tag_dict(obj, tags.TYPE):
-                restore = self._restore_type
-            elif has_tag_dict(obj, tags.REDUCE):
-                restore = self._restore_reduce
-            elif has_tag_dict(obj, tags.FUNCTION):
-                restore = self._restore_function
-            elif has_tag_dict(obj, tags.BYTES):  # Backwards compatibility
-                restore = self._restore_quopri
-            elif has_tag_dict(obj, tags.REF):  # Backwards compatibility
-                restore = self._restore_ref
-            elif has_tag_dict(obj, tags.REPR):  # Backwards compatibility
-                restore = self._restore_repr
-            else:
-                restore = self._restore_dict
+        if has_tag(obj, tags.B64):
+            restore = self._restore_base64
+        elif has_tag(obj, tags.B85):
+            restore = self._restore_base85
+        elif has_tag(obj, tags.BYTES):  # Backwards compatibility
+            restore = self._restore_quopri
+        elif has_tag(obj, tags.ID):
+            restore = self._restore_id
+        elif has_tag(obj, tags.REF):  # Backwards compatibility
+            restore = self._restore_ref
+        elif has_tag(obj, tags.ITERATOR):
+            restore = self._restore_iterator
+        elif has_tag(obj, tags.TYPE):
+            restore = self._restore_type
+        elif has_tag(obj, tags.REPR):  # Backwards compatibility
+            restore = self._restore_repr
+        elif has_tag(obj, tags.REDUCE):
+            restore = self._restore_reduce
+        elif has_tag(obj, tags.OBJECT):
+            restore = self._restore_object
+        elif has_tag(obj, tags.FUNCTION):
+            restore = self._restore_function
         elif util.is_list(obj):
             restore = self._restore_list
+        elif has_tag(obj, tags.TUPLE):
+            restore = self._restore_tuple
+        elif has_tag(obj, tags.SET):
+            restore = self._restore_set
+        elif util.is_dictionary(obj):
+            restore = self._restore_dict
         else:
 
             def restore(x):
                 return x
 
-        return restore
+        return restore(obj)
 
     def _restore_base64(self, obj):
         return util.b64decode(obj[tags.B64].encode('utf-8'))
@@ -558,8 +512,6 @@ class Unpickler(object):
 
     def _restore_dict(self, obj):
         data = {}
-        if not self.v1_decode:
-            self._mkref(data)
 
         # If we are decoding dicts that can have non-string keys then we
         # need to do a two-phase decode where the non-string keys are
@@ -798,20 +750,3 @@ def has_tag(obj, tag):
 
     """
     return type(obj) is dict and tag in obj
-
-
-def has_tag_dict(obj, tag):
-    """Helper class that tests to see if the obj is a dictionary
-    and contains a particular key/tag.
-
-    >>> obj = {'test': 1}
-    >>> has_tag(obj, 'test')
-    True
-    >>> has_tag(obj, 'fail')
-    False
-
-    >>> has_tag(42, 'fail')
-    False
-
-    """
-    return tag in obj

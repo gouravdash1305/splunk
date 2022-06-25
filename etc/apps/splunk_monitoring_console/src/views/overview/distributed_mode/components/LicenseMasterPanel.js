@@ -2,6 +2,7 @@
  * Created by ykou on 1/22/15.
  */
 define([
+    'jquery',
     'underscore',
     'module',
     'splunk_monitoring_console/views/overview/distributed_mode/components/Panel',
@@ -10,6 +11,7 @@ define([
     'splunk_monitoring_console/views/overview/distributed_mode/components/ResourceUsageSection',
     'contrib/text!splunk_monitoring_console/svg/LicenseServer.svg'
 ], function(
+    $,
     _,
     module,
     PanelView,
@@ -27,8 +29,8 @@ define([
             PanelView.prototype.initialize.apply(this, arguments);
 
             this.dataToRender = _.extend(this.dataToRender || {}, {
-                ROLE: _('License Manager').t(),
-                ROLE_PLURAL: _('License Managers').t(),
+                ROLE: _('License Master').t(),
+                ROLE_PLURAL: _('License Masters').t(),
                 ICON: LicenseMasterIcon,
                 SEARCH_GROUP: 'dmc_group_license_master'
             });

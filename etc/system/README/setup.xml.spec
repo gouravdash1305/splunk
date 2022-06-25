@@ -1,11 +1,9 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 #
 
 <!--
-This file describes the setup XML config and provides some examples. 
-
-Note that setup XML is not supported in Splunk Cloud or on deployments with search head clustering.
+This file describes the setup XML config and provides some examples.
 
 setup.xml provides a Setup Screen that you provide to users to specify configurations
 for an app. The Setup Screen is available when the user first runs the app or from the
@@ -63,7 +61,7 @@ mode     - (bulk | iter) used if the entity attribute is a regular expression:
 
            NOTE: splunk interprets '*' as the regex '.*'
 
-eai_search - a search to filter entities returned by an endpoint. If not specified, the following
+eai_search - a search to filter entities returned by an endpoint. If not specified the following
              search is used: eai:acl.app="" OR eai:acl.app="<current-app>" This search matches
              only objects defined in the app which the setup page is being used for.
 

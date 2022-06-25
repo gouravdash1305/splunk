@@ -1,27 +1,29 @@
 define(
 	[
+		'jquery',
 		'underscore',
 		'backbone',
-		'@splunk/swc-mc',
+		'models/services/server/ServerInfo',
 		'splunk_monitoring_console/mixins/DistributedSearchGroup'
 	],
 	function(
+		$,
 		_,
 		Backbone,
-		SwcMC,
+		ServerInfoModel,
 		DistributedSearchGroupMixin
 	) {
 
 		var STANDALONE_ROLES = ['indexer', 'search_head', 'license_master'];
 		var LOCALHOST_IDENTIFIER = 'localhost:localhost';
 
-		var LocalInstanceModel = SwcMC.ServerInfoModel.extend(
+		var LocalInstanceModel = ServerInfoModel.extend(
 			{
-
+			
 				_distsearchGroups: null,
 
 				initialize: function(attributes, options) {
-					SwcMC.ServerInfoModel.prototype.initialize.call(this, attributes, options);
+					ServerInfoModel.prototype.initialize.call(this, attributes, options);
 
 					this._distsearchGroups = options.distsearchGroups;
 
@@ -32,7 +34,7 @@ define(
 					this.on('sync', function() {
 						this.entry.set('name', '');
 						this.populateSearchHeadClustersFromGroups();
-
+						
 						DistributedSearchGroupMixin.initializeDistributedSearchGroups.call(
 							this,
 							this._distsearchGroups,
@@ -52,7 +54,7 @@ define(
 				},
 
 				save: function() {
-					return Promise.all(_.map(
+					return $.when.apply($, _.map(
 						this._distsearchGroups.models,
 						function(model) { return model.save(); }
 					));

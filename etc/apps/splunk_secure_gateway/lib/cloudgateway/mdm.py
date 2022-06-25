@@ -159,7 +159,7 @@ class ServerRegistrationContext(object):
         raise NotImplementedError
 
     @abstractmethod
-    def get_environment_meta(self, device_info, username, registration_info=None):
+    def get_environment_meta(self, device_info, username):
         """
 
         Returns (EnvironmentMetadata): Server side meta information

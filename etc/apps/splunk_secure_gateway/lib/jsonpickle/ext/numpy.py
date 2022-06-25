@@ -114,7 +114,7 @@ class NumpyNDArrayHandlerBinary(NumpyNDArrayHandler):
             if size_threshold is None, values are always stored as nested lists
         :param compression: a compression module or None
             valid values for 'compression' are {zlib, bz2, None}
-            if compression is None, no compression is applied
+            if compresion is None, no compression is applied
         """
         self.size_threshold = size_threshold
         self.compression = compression
@@ -136,13 +136,13 @@ class NumpyNDArrayHandlerBinary(NumpyNDArrayHandler):
             data = super(NumpyNDArrayHandlerBinary, self).flatten(obj, data)
         else:
             # encode as binary
-            if obj.dtype == object:
+            if obj.dtype == np.object:
                 # There's a bug deep in the bowels of numpy that causes a
                 # segfault when round-tripping an ndarray of dtype object.
                 # E.g., the following will result in a segfault:
                 #     import numpy as np
                 #     arr = np.array([str(i) for i in range(3)],
-                #                    dtype=object)
+                #                    dtype=np.object)
                 #     dtype = arr.dtype
                 #     shape = arr.shape
                 #     buf = arr.tobytes()
@@ -188,7 +188,7 @@ class NumpyNDArrayHandlerBinary(NumpyNDArrayHandler):
                 buf = self.compression.decompress(buf)
             # See note above about segfault bug for numpy dtype object. Those
             # are saved as a list to work around that.
-            if dtype == object:
+            if dtype == np.object:
                 values = json.loads(buf.decode())
                 arr = np.array(values, dtype=dtype, order=data.get('order', 'C'))
                 shape = data.get('shape', None)
@@ -232,7 +232,7 @@ class NumpyNDArrayHandlerView(NumpyNDArrayHandlerBinary):
     def __init__(self, mode='warn', size_threshold=16, compression=zlib):
         """
         :param mode: {'warn', 'raise', 'ignore'}
-            How to react when encountering array-like objects whose
+            How to react when encountering array-like objects whos
             references we cannot safely serialize
         :param size_threshold: nonnegative int or None
             valid values for 'size_threshold' are all nonnegative
@@ -240,7 +240,7 @@ class NumpyNDArrayHandlerView(NumpyNDArrayHandlerBinary):
             if size_threshold is None, values are always stored as nested lists
         :param compression: a compression module or None
             valid values for 'compression' are {zlib, bz2, None}
-            if compression is None, no compression is applied
+            if compresion is None, no compression is applied
         """
         super(NumpyNDArrayHandlerView, self).__init__(size_threshold, compression)
         self.mode = mode
@@ -329,19 +329,9 @@ def register_handlers():
     register(np.dtype, NumpyDTypeHandler, base=True)
     register(np.generic, NumpyGenericHandler, base=True)
     register(np.ndarray, NumpyNDArrayHandlerView(), base=True)
-    # Numpy 1.20 has custom dtypes that must be registered separately.
-    register(np.dtype(np.void).__class__, NumpyDTypeHandler, base=True)
-    register(np.dtype(np.float32).__class__, NumpyDTypeHandler, base=True)
-    register(np.dtype(np.int32).__class__, NumpyDTypeHandler, base=True)
-    register(np.dtype(np.datetime64).__class__, NumpyDTypeHandler, base=True)
 
 
 def unregister_handlers():
     unregister(np.dtype)
     unregister(np.generic)
     unregister(np.ndarray)
-    # Numpy 1.20 dtypes
-    unregister(np.dtype(np.void).__class__)
-    unregister(np.dtype(np.float32).__class__)
-    unregister(np.dtype(np.int32).__class__)
-    unregister(np.dtype(np.datetime64).__class__)

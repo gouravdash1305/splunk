@@ -4,9 +4,14 @@ define(
 		'underscore',
 		'backbone',
 		'module',
+		'models/services/data/ui/Nav',
+		'collections/shared/FlashMessages',
+		'views/Base',
 		'splunk_monitoring_console/views/Title',
 		'splunk_monitoring_console/views/table/Master',
-		'@splunk/swc-mc',
+		'views/shared/controls/ControlGroup',
+		'views/shared/controls/LabelControl',
+		'views/shared/FlashMessagesLegacy',
         'splunk_monitoring_console/views/table/controls/ConfigureAllConfirmationDialog',
         'splunk_monitoring_console/views/table/controls/FailureDialog',
         'splunk_monitoring_console/views/table/controls/SimpleDialog',
@@ -14,6 +19,8 @@ define(
         'splunk_monitoring_console/views/table/controls/UserConfirmationDialog',
         'splunk_monitoring_console/views/table/controls/ResetToFactoryModeConfirmationDialog',
         'splunk_monitoring_console/views/table/controls/DistributedModeWarningDialog',
+		'splunk.util',
+		'util/splunkd_utils',
         './Master.pcss'
 	],
 	function(
@@ -21,9 +28,14 @@ define(
 		_,
 		Backbone,
 		module,
+		Nav,
+		FlashMessagesCollection,
+		BaseView,
 		TitleView,
 		TableView,
-		SwcMC,
+		ControlGroup,
+		LabelControl,
+		FlashMessagesView,
         ConfigureAllConfirmationDialog,
         FailureDialog,
         SimpleDialog,
@@ -31,6 +43,8 @@ define(
         UserConfirmationDialog,
 		ResetToFactoryModeConfirmationDialog,
 		DistributedModeWarningDialog,
+		util,
+		splunkd_utils,
         css
 	){
 		var DMC_DUPLICATE_INSTANCE_NAME_ERROR = _("Duplicate instance name. Ensure each instance has a unique instance (host) name.").t();
@@ -42,8 +56,8 @@ define(
 		var DMC_BOTH_SEARCH_HEAD_AND_INDEXER_WARNING_GENERIC = _("At least one of your instances is both a search head and an indexer. We strongly discourage this configuration.").t();
 		var DMC_BOTH_INDEXER_WITH_KV_STORE_WARNING_SPECIFIC = _("This instance is an indexer with a KV store. We strongly discourage this configuration.").t();
 		var DMC_BOTH_INDEXER_WITH_KV_STORE_WARNING_GENERIC = _("At least one of your instances is both an indexer with a KV store. We strongly discourage this configuration.").t();
-		var DMC_BOTH_CLUSTER_MASTER_AND_INDEXER_WARNING_SPECIFIC = _("This instance is both a cluster manager and an indexer. We strongly discourage this configuration.").t();
-		var DMC_BOTH_CLUSTER_MASTER_AND_INDEXER_WARNING_GENERIC = _("At least one of your instances is both a cluster manager and an indexer. We strongly discourage this configuration.").t();
+		var DMC_BOTH_CLUSTER_MASTER_AND_INDEXER_WARNING_SPECIFIC = _("This instance is both a cluster master and an indexer. We strongly discourage this configuration.").t();
+		var DMC_BOTH_CLUSTER_MASTER_AND_INDEXER_WARNING_GENERIC = _("At least one of your instances is both a cluster master and an indexer. We strongly discourage this configuration.").t();
 		var DMC_INSTANCE_NOT_FORWARDING_LOGS_GENERIC = _("At least one of your instances is not forwarding its internal logs.").t();
 		var DMC_INSTANCE_NOT_FORWARDING_LOGS_SPECIFIC = _("This instance is not forwarding its internal logs.").t();
 		var DMC_INSTANCE_FORWARDING_STATE_UNKNOWN = _("The forwarding state of this instance cannot be determined.").t();
@@ -53,8 +67,8 @@ define(
 		var DMC_SHC_DEPLOYER_PLUS_OTHER_ROLES_GENERIC = _("At least one of your instances is a search head deployer plus other non-deployer roles. We recommend only deployer roles per search head deployer.").t();
 		var DMC_INDEXER_PLUS_OTHER_ROLES_SPECIFIC = _("This instance is an indexer plus other roles. We recommend only one role per indexer.").t();
 		var DMC_INDEXER_PLUS_OTHER_ROLES_GENERIC = _("At least one of your instances is an indexer plus other roles. We recommend only one role per indexer.").t();
-		var DMC_INDEXER_CLUSTER_IS_GUID_SPECIFIC = _("This instance appears to have no indexer cluster label set. We recommend you set the indexer cluster label on the cluster manager.").t();
-		var DMC_INDEXER_CLUSTER_IS_GUID_GENERAL = _("At least one of your instances appears to have no indexer cluster label set. We recommend you set the indexer cluster label on the cluster manager.").t();
+		var DMC_INDEXER_CLUSTER_IS_GUID_SPECIFIC = _("This instance appears to have no indexer cluster label set. We recommend you set the indexer cluster label on the cluster master.").t();
+		var DMC_INDEXER_CLUSTER_IS_GUID_GENERAL = _("At least one of your instances appears to have no indexer cluster label set. We recommend you set the indexer cluster label on the cluster master.").t();
 		var DMC_SEARCH_HEAD_CLUSTER_IS_GUID_SPECIFIC = _("This instance appears to have no search head cluster label set. We recommend you set the search head cluster on any search head cluster member.").t();
 		var DMC_SEARCH_HEAD_CLUSTER_IS_GUID_GENERAL = _("At least one of your instances appears to have no search head cluster label set. We recommend you set the search head cluster on any search head cluster member.").t();
 		var DMC_SHC_DEPLOYER_NO_CLUSTER_SPECIFIC = _("This instance is a search head deployer without a search head cluster label. We recommend you edit this instance to set its search head cluster label.").t();
@@ -69,7 +83,7 @@ define(
 		var GUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 		var generateNotRespondPeerErrorMessage = function() {
-			var url = SwcMC.SplunkUtil.make_url("/manager/splunk_monitoring_console/search/distributed/peers");
+			var url = util.make_url("/manager/splunk_monitoring_console/search/distributed/peers");
 			return _("Unable to connect to this instance. Go ").t() + "<a target='_blank' href='"+url+"''>here</a>" + _(" and ensure this instance has been configured properly.").t();
 		};
 
@@ -91,26 +105,26 @@ define(
         	firstPart += _(" could not be written.").t();
 
         	var secondPart = _("Please make sure these instances are up. Check ").t() + '<a href="' +
-				SwcMC.SplunkUtil.make_url('/manager/splunk_monitoring_console/search/distributed/peers') +
+        		util.make_url('/manager/splunk_monitoring_console/search/distributed/peers') +
         		'">' + _("settings").t() + '</a> ' +
         		_("for more information.").t();
 
         	return firstPart + " " + secondPart;
         };
 
-		return SwcMC.BaseView.extend({
+		return BaseView.extend({
 			moduleId: module.id,
 			_originallyConfigured: null,
 
 			initialize: function() {
-				SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+				BaseView.prototype.initialize.apply(this, arguments);
 
 				this._originallyConfigured = this.model.appLocal.entry.content.get('configured');
 
 				this.collection = this.collection || {};
-                this.collection.flashMessages = new SwcMC.FlashMessagesCollection();
+                this.collection.flashMessages = new FlashMessagesCollection();
 
-                this.children.flashMessages = new SwcMC.FlashMessagesLegacyView({
+                this.children.flashMessages = new FlashMessagesView({
                     collection: this.collection.flashMessages,
                     escape: false
                 });
@@ -120,7 +134,7 @@ define(
 
 				// Mode switcher is not displayed for cloud, Lite and Splunk Free instances
 				if (this._isModeSwitchVisible()) {
-					this.children.standaloneSwitch = new SwcMC.ControlGroupView({
+					this.children.standaloneSwitch = new ControlGroup({
 						controlClass: 'standalone-switch',
 						controlType: 'SyntheticRadio',
 						controlOptions: {
@@ -135,7 +149,7 @@ define(
 					});
 				}
 				else {
-				    this.children.standaloneSwitch = new SwcMC.LabelControlView({
+				    this.children.standaloneSwitch = new LabelControl({
 				        additionalClassNames: 'mode'
 				    });
 					var currentMode = _('Mode: ').t() + (this.model.appLocal.entry.content.get('configured') == '1' ? DMC_DISTRIBUTED_MODE_LABEL : DMC_STANDALONE_MODE_LABEL);
@@ -185,7 +199,7 @@ define(
 				this.model.state.on('change:changesMade', this._updateChangesMade, this);
 			},
 
-			events: $.extend({}, SwcMC.BaseView.prototype.events, {
+			events: $.extend({}, BaseView.prototype.events, {
                 'click .btn.configure': function(e) {
                     e.preventDefault();
                     this.collection.flashMessages.reset();
@@ -510,9 +524,9 @@ define(
 				var isConfigured = this.model.appLocal.entry.content.get('configured');
 
 				// three nav xml files exist: one for default, distributed mode, and single instance mode
-				var nav = new SwcMC.DataUINavModel();
+				var nav = new Nav();
 				// grabbing default to write in later
-				var nav_default = new SwcMC.DataUINavModel({
+				var nav_default = new Nav({
 					id: "/servicesNS/nobody/splunk_monitoring_console/data/ui/nav/default"
 				});
 				var navDfd = $.Deferred();
@@ -521,7 +535,7 @@ define(
 				var nav_mode = isConfigured ? "default.distributed" : "default.single";
 
 				// grabbing the correct nav file based on the state we are trying to enter
-				nav.fetch({url: SwcMC.SplunkdUtils.fullpath(nav.url + "/" + nav_mode, {
+				nav.fetch({url: splunkd_utils.fullpath(nav.url + "/" + nav_mode, {
 					app: "splunk_monitoring_console",
 					owner: "nobody"
 				})}).done(function() {
@@ -531,7 +545,7 @@ define(
 					//console.log("Source nav fetch failed.");
 				});
 
-				navDfd.then(function() {
+				$.when(navDfd).done(function() {
 					nav_default.entry.content.set("eai:data", nav_html);
 					nav_default.save().done(function() { navDefaultDfd.resolve(); });
 				});
@@ -547,25 +561,16 @@ define(
                 var dmcStandaloneSearch = this.collection.savedSearches.find(function(savedSearch) {
                     return DMC_STANDALONE_PATTERN.test(savedSearch.entry.get('name'));
                 });
-				dmcStandaloneSearch.entry.content.set('disabled', true);
+                dmcStandaloneSearch.entry.content.set('disabled', true);
 
-				/*
-				 * SPL-177995:
-				 * Adding Health Config model to control whether we need to turn on the distributed_health_reporter feature
-				 * It should map to whether MC is on distributed mode: (distributed_health_reporter = On) or standalone mode:
-				 * (distributed_health_reporter = Off)
-				 */
-				this.model.appLocal.entry.content.get('configured') ?
-					this.model.healthConfig.entry.content.set('disabled', false) :
-					this.model.healthConfig.entry.content.set('disabled', true);
-
-                var deferred = [peersDfd, this.model.appLocal.save(), this.model.healthConfig.save(), navDefaultDfd, dmcStandaloneSearch.save()];
-				loading.show();
-				Promise.all(deferred).then(function([response]) {
+                var deferred = [peersDfd, this.model.appLocal.save(), navDefaultDfd, dmcStandaloneSearch.save()];
+                $.when.apply($, deferred).progress(function() {
+                	loading.show();
+                }()).done(function(response) {
                 	this.model.state.set('changesMade', false);
                 	var peersErrorMessage = null;
 
-					if (isConfigured) { // we are currently in distributed mode
+                	if (isConfigured) { // we are currently in distributed mode
                     	var hostIdx = response.fields.indexOf('host');
                     	var peerUriIdx = response.fields.indexOf('peerURI');
                     	var hostsWritten = _.uniq(
@@ -592,7 +597,7 @@ define(
                         message: DMC_CONFIGURE_ALL_CONFIRMATION_MESSAGE
                     }).render();
                     dialog.show();
-                }.bind(this)).catch(function() {
+                }.bind(this)).fail(function() {
                 	loading.hide();
 					var dialog;
 					if(this.collection.peers.assets.models.length > 0 && this.collection.peers.assets.models[0].error.get('messages').length > 0 && this.collection.peers.assets.models[0].error.get('messages')[0].message) {

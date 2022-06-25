@@ -5,28 +5,38 @@
  define([
  	'underscore',
  	'module',
-    '@splunk/swc-mc',
-    'contrib/text!./Master.html',
+ 	'views/Base',
+ 	'views/shared/CollectionPaginator',
+    'views/shared/dataenrichment/preview/components/SelectPageCount',
+    'views/shared/CollectionCount',
+    'views/shared/controls/SyntheticSelectControl',
+    'views/shared/controls/TextControl',
+    'contrib/text!splunk_monitoring_console/views/settings/overview_preferences/Master.html',
     'splunk_monitoring_console/views/settings/overview_preferences/Grid'
  ], function(
  	_,
  	module,
- 	SwcMC,
+ 	BaseView,
+ 	CollectionPaginatorView,
+ 	SelectPageCountView,
+ 	CollectionCountView,
+ 	SyntheticSelectControlView,
+ 	TextControlView,
  	template,
  	GridView
  ){
- 	return SwcMC.BaseView.extend({
+ 	return BaseView.extend({
  		moduleId: module.id,
  		template: template,
 
  		initialize: function(options) {
-			SwcMC.BaseView.prototype.initialize.call(this, options);
+ 			BaseView.prototype.initialize.call(this, options);
 
  			this.children.gridView = new GridView({
                 collection: { thresholdConfigs: this.collection.thresholdConfigs }
  			});
 
-			this.children.textNameFilter = new SwcMC.TextControlView({
+			this.children.textNameFilter = new TextControlView({
 				model: this.collection.thresholdConfigs.fetchData,
 				modelAttribute: 'searchFilter', 
 				inputClassName: 'search-query',
@@ -34,11 +44,11 @@
 				placeholder: _('filter').t()
 			});
 
-			this.children.collectionPaginatorView = new SwcMC.CollectionPaginatorView({
+			this.children.collectionPaginatorView = new CollectionPaginatorView({
 				collection: this.collection.thresholdConfigs
 			});
 
-			this.children.selectPageCountView = new SwcMC.SyntheticSelectControlView({
+			this.children.selectPageCountView = new SyntheticSelectControlView({
                 modelAttribute: 'count',
                 model: this.collection.thresholdConfigs.fetchData,
                 items: [
@@ -54,7 +64,7 @@
                 toggleClassName: 'btn-pill'
             });
 
-			this.children.collectionCountView = new SwcMC.CollectionCountView({
+			this.children.collectionCountView = new CollectionCountView({
 				collection: this.collection.thresholdConfigs,
 				countLabel: _('mappings').t()
 			});

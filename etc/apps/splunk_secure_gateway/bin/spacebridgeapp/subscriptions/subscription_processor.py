@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Subscription asynchronous processor methods
 
@@ -20,7 +20,6 @@ from spacebridgeapp.subscriptions.subscription_update_message import build_serve
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, JWT_TOKEN_TYPE
 from spacebridgeapp.exceptions.spacebridge_exceptions import SpacebridgeApiRequestError
 from spacebridgeapp.data.visualization_type import VisualizationType
-from spacebridgeapp.data.dashboard_data import VisualizationData
 from spacebridgeapp.search.input_token_support import inject_tokens_into_string, load_input_tokens
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.time_utils import is_datetime_expired, get_current_timestamp_str
@@ -137,23 +136,16 @@ def _to_auth_header(credentials):
     return auth_header
 
 
-_TERMINAL_STATES = [DispatchState.DONE.value, DispatchState.FAILED.value]
-
-
-def _is_job_complete(job_status):
-    return job_status.dispatch_state in _TERMINAL_STATES
-
-
 async def _refresh_search_job(subscription_search, credentials, input_tokens,
                               async_splunk_client, async_kvstore_client):
 
     if not credentials:
-        LOGGER.debug("Refresh failed, no credentials associated with search.  search_key=%s",
+        LOGGER.debug("No credentials associated with search, will not update.  search_key=%s",
                      subscription_search.key())
         return
 
     user_creds = credentials[subscription_search.owner]
-    LOGGER.debug("Refresh search with credentials user=%s, key=%s, search_key=%s",
+    LOGGER.debug("Refreshing search with credentials user=%s, key=%s, search_key=%s",
                  user_creds.user, user_creds.key, subscription_search.key())
     user_auth_header = _to_auth_header(user_creds)
 
@@ -169,22 +161,18 @@ async def _refresh_search_job(subscription_search, credentials, input_tokens,
     return True
 
 
-async def _refresh_search_job_if_expired(subscription_search, credentials, input_tokens, job_status,
+async def _refresh_search_job_if_expired(subscription_search, credentials, input_tokens,
                                          async_splunk_client, async_kvstore_client):
-    is_refreshing = subscription_search.is_refreshing()
-    is_update_passed = is_datetime_expired(subscription_search.next_update_time)
-    is_job_complete = _is_job_complete(job_status)
+    if subscription_search.is_refreshing() and is_datetime_expired(subscription_search.next_update_time):
+        LOGGER.debug("Refresh time has passed, start new search job, search_key=%s", subscription_search.key())
 
-    is_refresh_required = is_refreshing and is_update_passed and is_job_complete
-
-    LOGGER.debug("Refresh required check search_key=%s, is_refresh_required=%s, is_refreshing=%s, is_update_passed=%s, is_job_complete=%s",
-                 subscription_search.key(), is_refresh_required, is_refreshing, is_update_passed, is_job_complete)
-
-    if is_refresh_required:
         await _refresh_search_job(subscription_search, credentials, input_tokens,
                                   async_splunk_client, async_kvstore_client)
 
     return True
+
+
+_COMPLETED_DISPATCH = [DispatchState.DONE.value, DispatchState.FAILED.value]
 
 
 async def _handle_expired_sid(system_auth_header, subscription_search, credentials, input_tokens,
@@ -239,7 +227,7 @@ async def process_pubsub_subscription(system_auth_header, encryption_context, as
     LOGGER.debug("Search job status, search_key=%s, job=%s", subscription_search.key(), job_status)
     dependant_search_count = dependant_searches[subscription_search.key()]
 
-    LOGGER.debug("Search job dependants search_key=%s, user_subscriptions=%s, dependant_search_count=%s",
+    LOGGER.debug("Search job dependendants search_key=%s, user_subscriptions=%s, depdendant_search_count=%s",
                  subscription_search.key(), len(user_subscriptions), dependant_search_count)
     if not job_status and (len(user_subscriptions) > 0 or dependant_search_count > 0):
         job_status = await _handle_expired_sid(system_auth_header, subscription_search,
@@ -267,7 +255,7 @@ async def process_pubsub_subscription(system_auth_header, encryption_context, as
         LOGGER.debug("Search has subscribers search_key=%s, subscriber_count=%s, dependant_search_count=%s",
                      subscription_search.key(), len(user_subscriptions), dependant_search_count)
 
-        await _refresh_search_job_if_expired(subscription_search, credentials, input_tokens, job_status,
+        await _refresh_search_job_if_expired(subscription_search, credentials, input_tokens,
                                              async_splunk_client, async_kvstore_client)
 
         subscription_search.last_update_time = get_current_timestamp_str()
@@ -328,10 +316,6 @@ async def process_subscription(request_context=None,
                                                  server_subscription_update=server_subscription_update,
                                                  async_splunk_client=async_splunk_client,
                                                  map_post_search=map_post_search)
-    elif search and search.ds_test:  # This means we have a ds.test data_source
-        LOGGER.debug("ds.test data source found, search_key=%s, sid=%s, data_source_id=%s",
-                     subscription.subscription_key, search.sid, search.search_type_id)
-        build_ds_test_update(search=search, server_subscription_update=server_subscription_update)
     else:
         LOGGER.debug("Search not found, search_key=%s, sid=%s", subscription.subscription_key, search.sid)
 
@@ -396,41 +380,8 @@ async def process_single_subscription_update(request_context,
                                                             job_status=job_status)
 
             build_server_subscription_update(subscription_update, server_subscription_update)
-            _log_subscription_update_event(search, subscription_update, server_subscription_update)
         else:
             LOGGER.debug("No visualization data found, sid=%s, visualization_id=%s", sid, visualization_id)
     else:
         LOGGER.debug("No search job status found, sid=%s, visualization_id=%s", sid, visualization_id)
 
-
-def build_ds_test_update(search, server_subscription_update):
-    """
-    This helper method will be SubscriptionUpdate from ds_test specified values
-    :param search:
-    :param server_subscription_update:
-    :return:
-    """
-    # Read search and build subscription_update from visualization_data stored in search.ds.test
-    # Build visualization_data
-    visualization_data = VisualizationData.from_ds_test(search.ds_test)
-    subscription_update = build_subscription_update(search=search, visualization_data=visualization_data)
-    build_server_subscription_update(subscription_update, server_subscription_update)
-    _log_subscription_update_event(search, subscription_update, server_subscription_update)
-
-
-def _log_subscription_update_event(search, subscription_update, server_subscription_update):
-    """
-    Helper method to used to log the subscription update event for the post process updates
-    :param search: 
-    :param subscription_update: 
-    :param server_subscription_update: 
-    :return: 
-    """
-    # Log this Subscription Event
-    LOGGER.info(f"Send Post Process Single Subscription Update. search_key={search.key()}, "
-                f"subscription_id={server_subscription_update.subscriptionId}, "
-                f"update_id={server_subscription_update.updateId}, "
-                f"request_id={server_subscription_update.requestId}, "
-                f"type={type(subscription_update).__name__}, "
-                f"done_progress={subscription_update.done_progress}, "
-                f"dispatch_state={subscription_update.dispatch_state}")

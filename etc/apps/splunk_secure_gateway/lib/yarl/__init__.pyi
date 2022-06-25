@@ -13,7 +13,6 @@ _QueryVariable = Union[_SimpleQuery, Sequence[_SimpleQuery]]
 _Query = Union[
     None, str, Mapping[str, _QueryVariable], Sequence[Tuple[str, _QueryVariable]]
 ]
-
 @final
 class URL:
     scheme: Final[str]

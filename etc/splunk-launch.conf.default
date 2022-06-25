@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 
 # Modify the following line to suit the location of your Splunk install.
 # If unset, Splunk will use the parent of the directory containing the splunk
@@ -20,4 +20,3 @@ SPLUNK_SERVER_NAME=Splunkd
 # (This setting can be specified as username or as UID.)
 #
 # SPLUNK_OS_USER
-PYTHONHTTPSVERIFY=0

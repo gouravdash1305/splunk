@@ -3,11 +3,13 @@
  */
 
 define([
+    'jquery',
     'underscore',
     'module',
     'splunk_monitoring_console/views/overview/distributed_mode/components/SingleSearchResult',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/components/SingleValue.html'
 ], function(
+    $,
     _,
     module,
     SingleSearchResultView,

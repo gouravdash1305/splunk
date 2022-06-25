@@ -10,14 +10,12 @@ ttl_days = 3
 minimum_iteration_time_seconds = 30
 * If processing jobs takes longer than this value, a warning will be logged
 maximum_iteration_time_warn_threshold_seconds = 300
+* Define the parallelism for processing subscriptions, the special value N_CPU means the number of available cores. Otherwise it should be an integer.
+subscription_processor_parallelism = N_CPU
 
 [ssg_subscription_clean_up_modular_input://default]
 * Grace period after which subscriptions and searches will be cleaned up
 cleanup_threshold_seconds = 300
-
-[ssg_config_modular_input://default]
-* No params required
-param1 =
 
 [ssg_registered_users_list_modular_input://default]
 * No params required
@@ -32,13 +30,5 @@ param1 =
 param1 =
 
 [ssg_delete_tokens_modular_input://default"]
-* No params required
-param1 =
-
-[ssg_registered_devices_modular_input://default]
-* No params required
-param1 =
-
-[ssg_enable_modular_input://default"]
 * No params required
 param1 =

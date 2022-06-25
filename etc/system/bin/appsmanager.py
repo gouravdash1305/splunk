@@ -1,5 +1,5 @@
 ################################################################################
-#                            Remote Application Management                     #
+#                            Remote Application Management                            #
 ################################################################################
 
 from contextlib import closing
@@ -7,12 +7,12 @@ from contextlib import closing
 import splunk
 import splunk.bundle as bundle
 import splunk.clilib.bundle_paths as bundle_paths
-import splunk.clilib.cli_common as cli_common
 import splunk.rest
 import splunk.rest.format as format
 import json
 import logging as logger
-import splunk.safe_lxml_etree as etree
+import lxml.etree as etree
+import defusedxml.lxml as safe_lxml
 import os
 import sys
 import platform
@@ -26,8 +26,7 @@ from future.moves.urllib.request import urlopen, Request, URLopener
 DEFAULT_URL = "https://apps.splunk.com/api/apps"
 LOGIN_URL   = "https://apps.splunk.com/api/account:login/"
 VETTED_APPS_URI = "/services/appsbrowser/v1/app/"
-VETTED_APP_INSTALL_METHOD_SINGLE = "simple"
-VETTED_APP_INSTALL_METHOD_DISTRIBUTED = "appmgmt_phase"
+VETTED_APP_INSTALL_METHOD = "simple"
 INSTANCE_TYPE_CLOUD = "cloud"
 
 HTTP_ACTION         = "action"
@@ -54,6 +53,7 @@ NSMAP = { 'a' : format.ATOM_NS,
 
 URLOPEN_TIMEOUT     = 15
 
+
 def isCloud(sessionKey):
     """ Returns true if running on a cloud stack i.e instanceType == 'cloud' """
     server_conf = bundle.getConf('server', sessionKey)
@@ -61,12 +61,6 @@ def isCloud(sessionKey):
             server_conf['general']['instanceType'] == INSTANCE_TYPE_CLOUD):
         return True
     return False
-
-
-def getAppInstallMethod() -> str:
-    server_config = cli_common.getConfStanza("server", "applicationsManagement")
-    return server_config.get("filterAppInstallMethod", VETTED_APP_INSTALL_METHOD_SINGLE)
-
 
 class RemoteAppsHandlerList(splunk.rest.BaseRestHandler):
 
@@ -173,7 +167,7 @@ class RemoteAppsLogin(RemoteAppsSetup):
             bundle_paths.BundleInstaller().validate_server_cert(self._login, self._sslpol)
             # Forward post arguments, including username and password.
             with closing(urlopen(self._login, post_args, URLOPEN_TIMEOUT)) as f:
-                root = etree.parse(f).getroot()
+                root = safe_lxml.parse(f).getroot()
                 token = root.xpath("a:id", namespaces=NSMAP)[0].text
                 if self.request["output_mode"] == "json":
                     self.response.setHeader('content-type', 'application/json')
@@ -267,24 +261,31 @@ class RemoteAppsManager(RemoteAppsSetup):
         if self.args[HTTP_ACTION] not in (HTTP_ACTION_INSTALL, HTTP_ACTION_DOWNLOAD):
             raise splunk.BadRequest("Invalid value '%s' for argument '%s'" %
                                     (self.args[HTTP_ACTION], HTTP_ACTION))
+        # check if this is a cloud stack 
         if isCloud(self.sessionKey):
             app_name = self.pathParts[self.BASE_DEPTH + 1]
-            getargs = {'appid': app_name, 'offset': 0, 'limit': 1}
-            try:
-                # TODO:  pass `app_version` to Splunkbase
-                app_version = self.pathParts[self.BASE_DEPTH + 2]
-            except IndexError:
-                app_version = ""
-            logger.info("querying vetted app with args: %s" % getargs)
-
-            serverResponse, serverContent = splunk.rest.simpleRequest(VETTED_APPS_URI, self.sessionKey, getargs, keepTrailingSlash=True)
-            if serverResponse.status != 200:
-                raise splunk.BadRequest('Error while querying Splunkbase. Splunkd returned %s' % serverContent)
-            vetted_apps = json.loads(serverContent).get('results', [])
-            if len(vetted_apps) == 0 or vetted_apps[0]['appid'] != app_name \
-                    or not self._is_valid_install_method(vetted_apps[0]):
+            # Get all cloud apps and see if the app being installed is vetted for cloud
+            # i.e install_method == simple
+            # TODO: Change to just querying for the app in question when BASE-4074
+            # is finished. 
+            getargs = {'offset': 0, 'limit': 100}
+            vetted_apps = []
+            while 1:
+                serverResponse, serverContent = splunk.rest.simpleRequest(VETTED_APPS_URI, self.sessionKey, getargs)
+                if serverResponse.status != 200:
+                    raise splunk.BadRequest('Error while querying Splunkbase. Splunkd returned %s' % serverContent)
+                vetted_app_data = json.loads(serverContent)
+                if not vetted_app_data['results']:
+                    break
+                else:
+                    getargs['offset'] += 100
+                    vetted_apps.extend(vetted_app_data['results'])
+            for app in vetted_apps:
+                if app['appid'] == app_name and app['install_method'] == VETTED_APP_INSTALL_METHOD:
+                    break
+            else:
                 raise splunk.BadRequest('App %s is not vetted for Splunk Cloud.' % app_name)
-
+            
         url = self._native_to_foreign_url()
         root = self._get_feed_root(url)
         if default_version:
@@ -372,7 +373,7 @@ class RemoteAppsManager(RemoteAppsSetup):
             # Forward GET arguments, and add user-agent.
             args_dict = {}
             headers = {}
-
+            
             args_dict.update(self.request["query"])
             if (len(extra_get_args) > 0):
                 args_dict.update(extra_get_args)
@@ -384,8 +385,8 @@ class RemoteAppsManager(RemoteAppsSetup):
             logger.debug("Getting feed from: %s" % target_url)
 
             if self._agent:
-                headers["User-Agent"] = self._agent
-
+                headers["User-Agent"] = self._agent            
+                
             bundle_paths.BundleInstaller().validate_server_cert(target_url, self._sslpol)
             req = Request(target_url, None, headers)
             f = urlopen(req, None, URLOPEN_TIMEOUT)
@@ -393,12 +394,12 @@ class RemoteAppsManager(RemoteAppsSetup):
             raise splunk.RESTException(e.code, e.msg)
         except URLError as e:
             logger.exception(e)
-            raise splunk.RESTException(503, "Splunk is unable to connect to the Internet to find more apps.")
+            raise splunk.RESTException(503, "Splunk is unable to connect to the Internet to find more apps.")   
         except Exception as e:
             logger.exception(e)
             raise splunk.RESTException(404, "Resource not found")
         try:
-            root = etree.parse(f).getroot()
+            root = safe_lxml.parse(f).getroot()
             f.close()
             return root
         except Exception as e:
@@ -416,14 +417,6 @@ class RemoteAppsManager(RemoteAppsSetup):
         url += '/' + 'local'
         url += '/' + quote(b.prettyname())
         return url
-
-    def _is_valid_install_method(self, vetted_app):
-        """
-        Validate install method based on server configuration
-        """
-        if getAppInstallMethod() == VETTED_APP_INSTALL_METHOD_DISTRIBUTED:
-            return vetted_app['install_method_distributed'] == VETTED_APP_INSTALL_METHOD_DISTRIBUTED
-        return vetted_app['install_method_single'] == VETTED_APP_INSTALL_METHOD_SINGLE
 
     def _transform_feed(self, xml):
         """

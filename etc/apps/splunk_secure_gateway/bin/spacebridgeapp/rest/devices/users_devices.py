@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 """
 
 import sys
@@ -13,10 +13,8 @@ from spacebridgeapp.util import py23
 
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util import constants
-from spacebridgeapp.rest.devices.util import augment_device_with_metadata
 from spacebridgeapp.rest.base_endpoint import BaseRestHandler
-from spacebridgeapp.rest.services.splunk_service import get_all_mobile_users, get_all_users, \
-    get_devices_for_user, get_devices_metadata, user_is_administrator
+from spacebridgeapp.rest.services.splunk_service import get_all_mobile_users, get_all_users, get_devices_for_user
 from http import HTTPStatus
 
 
@@ -38,10 +36,7 @@ class DevicesForUser(BaseRestHandler, PersistentServerConnectionApplication):
         """
         # Retrieves all devices from that user's devices kvstore collection
         LOGGER.info('Getting devices in kvstore belonging to all users for user=%s' % request['session']['user'])
-        authtoken = request['session']['authtoken']
-        all_devices = get_devices_for_registered_users(authtoken)
-        devices_meta = get_devices_metadata(authtoken)
-        augment_device_with_metadata(all_devices, devices_meta)
+        all_devices = get_devices_for_registered_users(authtoken=request['session']['authtoken'])
 
         return {
             'payload': all_devices,
@@ -60,14 +55,7 @@ def get_devices_for_registered_users(authtoken):
     :param authtoken: Authorization token to supply to the kvstore interface
     :return: List of devices
     """
-
-    # This branching logic is necessary as a work around to an issue with the /authentication/users endpoint in Core
-    # The bug blocks inherited admins are not able to view other admins,
-    # which is an issue on cloud instances because of sc_admins
-    users = [user for user in get_all_mobile_users(authtoken)]
-
-    if not user_is_administrator(authtoken):
-        users = [user for user in users if user in get_all_users(authtoken)]
+    users = [user for user in get_all_mobile_users(authtoken) if user in get_all_users(authtoken)] + ['nobody']
 
     devices = reduce(lambda acc, user: acc + get_devices_for_user(user, authtoken), users, [])
     return devices

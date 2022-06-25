@@ -1,28 +1,29 @@
+# Copyright 2016 Splunk, Inc.
+# SPDX-FileCopyrightText: 2020 2020
 #
-# Copyright 2021 Splunk Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-License-Identifier: Apache-2.0
 
-"""Splunk platform related utilities."""
+"""
+Splunk platform related utilities.
+"""
 
 import os
 import os.path as op
-import socket
 import subprocess
-from configparser import ConfigParser
+import socket
+
+try:
+    from ConfigParser import ConfigParser
+
+    CONF_PARSER_KWARGS = {}
+except ImportError:
+    from configparser import ConfigParser
+
+    CONF_PARSER_KWARGS = {"strict": False}
+
 from io import StringIO
-from typing import List, Optional, Tuple, Union
+
+from . import utils
 
 __all__ = [
     "make_splunkhome_path",
@@ -62,11 +63,11 @@ def _splunk_etc():
     return os.path.normpath(result)
 
 
-def _get_shared_storage() -> Optional[str]:
+def _get_shared_storage():
     """Get splunk shared storage name.
 
-    Returns:
-        Splunk shared storage name.
+    :returns: Splunk shared storage name.
+    :rtype: ``string``
     """
 
     try:
@@ -89,7 +90,7 @@ def _verify_path_prefix(path, start):
     return len(path_drive) == len(start_drive)
 
 
-def make_splunkhome_path(parts: Union[List, Tuple]) -> str:
+def make_splunkhome_path(parts):
     """Construct absolute path by $SPLUNK_HOME and `parts`.
 
     Concatenate $SPLUNK_HOME and `parts` to an absolute path.
@@ -97,14 +98,12 @@ def make_splunkhome_path(parts: Union[List, Tuple]) -> str:
     the return path will be $SPLUNK_HOME/etc/apps/Splunk_TA_test.
     Note: this function assumed SPLUNK_HOME is in environment varialbes.
 
-    Arguments:
-        parts: Path parts.
+    :param parts: Path parts.
+    :type parts: ``list, tuple``
+    :returns: Absolute path.
+    :rtype: ``string``
 
-    Returns:
-        Absolute path.
-
-    Raises:
-        ValueError: Escape from intended parent directories.
+    :raises ValueError: Escape from intended parent directories.
     """
 
     relpath = os.path.normpath(os.path.join(*parts))
@@ -139,28 +138,28 @@ def make_splunkhome_path(parts: Union[List, Tuple]) -> str:
     # Check that we haven't escaped from intended parent directories.
     if os.path.relpath(fullpath, basepath)[0:2] == "..":
         raise ValueError(
-            f'Illegal escape from parent directory "{basepath}": {fullpath}'
+            'Illegal escape from parent directory "%s": %s' % (basepath, fullpath)
         )
     return fullpath
 
 
-def get_splunk_host_info() -> Tuple:
+def get_splunk_host_info():
     """Get splunk host info.
 
-    Returns:
-        Tuple of (server_name, host_name).
+    :returns: Tuple of (server_name, host_name).
+    :rtype: ``tuple``
     """
 
     server_name = get_conf_key_value("server", "general", "serverName")
     host_name = socket.gethostname()
-    return server_name, host_name
+    return (server_name, host_name)
 
 
-def get_splunk_bin() -> str:
+def get_splunk_bin():
     """Get absolute path of splunk CLI.
 
-    Returns:
-        Absolute path of splunk CLI.
+    :returns: absolute path of splunk CLI
+    :rtype: ``string``
     """
 
     if os.name == "nt":
@@ -170,14 +169,14 @@ def get_splunk_bin() -> str:
     return make_splunkhome_path(("bin", splunk_bin))
 
 
-def get_splunkd_access_info() -> Tuple[str, str, int]:
+def get_splunkd_access_info():
     """Get splunkd server access info.
 
-    Returns:
-        Tuple of (scheme, host, port).
+    :returns: Tuple of (scheme, host, port).
+    :rtype: ``tuple``
     """
 
-    if get_conf_key_value("server", "sslConfig", "enableSplunkdSSL") == "true":
+    if utils.is_true(get_conf_key_value("server", "sslConfig", "enableSplunkdSSL")):
         scheme = "https"
     else:
         scheme = "http"
@@ -192,70 +191,68 @@ def get_splunkd_access_info() -> Tuple[str, str, int]:
         port_idx = bindip.rfind(":")
         host = bindip[:port_idx] if port_idx > 0 else bindip
 
-    return scheme, host, port
+    return (scheme, host, port)
 
 
-def get_splunkd_uri() -> str:
+def get_splunkd_uri():
     """Get splunkd uri.
 
-    Returns:
-        Splunkd uri.
+    :returns: Splunkd uri.
+    :rtype: ``string``
     """
 
     if os.environ.get("SPLUNKD_URI"):
         return os.environ["SPLUNKD_URI"]
 
     scheme, host, port = get_splunkd_access_info()
-    return f"{scheme}://{host}:{port}"
+    return "{scheme}://{host}:{port}".format(scheme=scheme, host=host, port=port)
 
 
-def get_conf_key_value(conf_name: str, stanza: str, key: str) -> Union[str, List, dict]:
+def get_conf_key_value(conf_name, stanza, key):
     """Get value of `key` of `stanza` in `conf_name`.
 
-    Arguments:
-        conf_name: Config file.
-        stanza: Stanza name.
-        key: Key name.
+    :param conf_name: Config file.
+    :type conf_name: ``string``
+    :param stanza: Stanza name.
+    :type stanza: ``string``
+    :param key: Key name.
+    :type key: ``string``
+    :returns: Config value.
+    :rtype: ``(string, list, dict)``
 
-    Returns:
-        Config value.
-
-    Raises:
-        KeyError: If `stanza` or `key` doesn't exist.
+    :raises KeyError: If `stanza` or `key` doesn't exist.
     """
 
     stanzas = get_conf_stanzas(conf_name)
     return stanzas[stanza][key]
 
 
-def get_conf_stanza(conf_name: str, stanza: str) -> dict:
+def get_conf_stanza(conf_name, stanza):
     """Get `stanza` in `conf_name`.
 
-    Arguments:
-        conf_name: Config file.
-        stanza: Stanza name.
+    :param conf_name: Config file.
+    :type conf_name: ``string``
+    :param stanza: Stanza name.
+    :type stanza: ``string``
+    :returns: Config stanza.
+    :rtype: ``dict``
 
-    Returns:
-        Config stanza.
-
-    Raises:
-         KeyError: If stanza doesn't exist.
+    :raises KeyError: If stanza doesn't exist.
     """
 
     stanzas = get_conf_stanzas(conf_name)
     return stanzas[stanza]
 
 
-def get_conf_stanzas(conf_name: str) -> dict:
+def get_conf_stanzas(conf_name):
     """Get stanzas of `conf_name`
 
-    Arguments:
-        conf_name: Config file.
+    :param conf_name: Config file.
+    :type conf_name: ``string``
+    :returns: Config stanzas.
+    :rtype: ``dict``
 
-    Returns:
-        Config stanzas.
-
-    Examples:
+    Usage::
        >>> stanzas = get_conf_stanzas('server')
        >>> return: {'serverName': 'testServer', 'sessionTimeout': '1h', ...}
     """
@@ -263,7 +260,7 @@ def get_conf_stanzas(conf_name: str) -> dict:
     if conf_name.endswith(".conf"):
         conf_name = conf_name[:-5]
 
-    # TODO: dynamically calculate SPLUNK_HOME
+    # TODO: dynamically caculate SPLUNK_HOME
     btool_cli = [
         op.join(os.environ["SPLUNK_HOME"], "bin", "splunk"),
         "cmd",
@@ -271,15 +268,13 @@ def get_conf_stanzas(conf_name: str) -> dict:
         conf_name,
         "list",
     ]
-    p = subprocess.Popen(  # nosemgrep: python.lang.security.audit.dangerous-subprocess-use.dangerous-subprocess-use
-        btool_cli, stdout=subprocess.PIPE, stderr=subprocess.PIPE
-    )
+    p = subprocess.Popen(btool_cli, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, _ = p.communicate()
 
     if isinstance(out, bytes):
         out = out.decode()
 
-    parser = ConfigParser(**{"strict": False})
+    parser = ConfigParser(**CONF_PARSER_KWARGS)
     parser.optionxform = str
     parser.readfp(StringIO(out))
 

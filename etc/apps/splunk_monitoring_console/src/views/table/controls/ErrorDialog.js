@@ -1,17 +1,21 @@
 define(
     [
+        'jquery',
         'underscore',
         'module',
         'backbone',
-        '@splunk/swc-mc',
-        'splunk_monitoring_console/views/table/controls/SimpleDialog'
+        'collections/shared/FlashMessages',
+        'splunk_monitoring_console/views/table/controls/SimpleDialog',
+        'views/shared/FlashMessagesLegacy'
     ],
     function(
+        $,
         _,
         module,
         Backbone,
-        SwcMC,
-        SimpleDialog
+        FlashMessagesCollection,
+        SimpleDialog,
+        FlashMessagesView
     ) {
         return SimpleDialog.extend({
             moduleId: module.id,
@@ -25,9 +29,9 @@ define(
 
                 this.collection = this.collection || Backbone.Collection();
 
-                this.collection.flashMessages = new SwcMC.FlashMessagesCollection();
+                this.collection.flashMessages = new FlashMessagesCollection();
 
-                this.children.flashMessagesView = new SwcMC.FlashMessagesLegacyView({
+                this.children.flashMessagesView = new FlashMessagesView({
                     collection: this.collection.flashMessages
                 });
 

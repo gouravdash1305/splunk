@@ -1,4 +1,4 @@
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 class EncryptionKeyError(Exception):
     def __init__(self, message, http_code):
         self.message = "Unable to retrieve encryption keys with error={}".format(message)

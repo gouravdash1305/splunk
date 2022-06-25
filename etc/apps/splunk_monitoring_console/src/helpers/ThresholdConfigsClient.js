@@ -7,12 +7,12 @@ define([
 	'jquery',
     'underscore',
     'splunk_monitoring_console/helpers/Formatters',
-    '@splunk/swc-mc'
+    'util/color_utils'
 ], function (
 	$,
 	_,
 	Formatters,
-    SwcMC
+    color_util
 ) {
 	var BINARY_KEYS = { 'up_down_status': 1 },
         RATIONAL_KEYS = { 'search_concurrency': 1},
@@ -128,10 +128,10 @@ define([
                     if (key === 'field') {
                         field = value;
                     } else if (key === 'default') {
-                        value = SwcMC.ColorUtils.replaceSymbols(value, "#");
+                        value = color_util.replaceSymbols(value, "#");
                         thresholds['defaultRange'] = callerIsThresholdConfigModel ? value : { color: value };
                     } else {
-                        key = SwcMC.ColorUtils.replaceSymbols(key, "#");
+                        key = color_util.replaceSymbols(key, "#");
                     	thresholds[value] = callerIsThresholdConfigModel ? key : { color: key, formattedRange: this.getFormattedRange(name, value.split('-')) };
                     }
         		}

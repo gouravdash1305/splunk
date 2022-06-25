@@ -1,4 +1,4 @@
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 from spacebridgeapp.util.time_utils import get_current_timestamp
 
 class CachedResult(object):

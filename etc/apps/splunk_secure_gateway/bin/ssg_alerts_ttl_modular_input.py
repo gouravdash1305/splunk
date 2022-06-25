@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular input which periodically goes and deletes old alerts from KV Store
 """
@@ -7,7 +7,7 @@ import sys
 from spacebridgeapp.util import py23
 from splunk.clilib.bundle_paths import make_splunkhome_path
 
-from spacebridgeapp.util.base_modular_input import BaseModularInput
+from solnlib import modular_input
 from spacebridgeapp.util.splunk_utils.common import modular_input_should_run
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util import constants
@@ -16,7 +16,7 @@ from spacebridgeapp.rest.services.kvstore_service import KVStoreCollectionAccess
 from spacebridgeapp.util.time_utils import get_current_timestamp
 
 
-class AlertsTTLModularInput(BaseModularInput):
+class AlertsTTLModularInput(modular_input.ModularInput):
     title = 'Splunk Secure Gateway Mobile Alerts TTL'
     description = 'Cleans up storage of old mobile alerts'
     app = 'Splunk Secure Gateway'
@@ -31,9 +31,6 @@ class AlertsTTLModularInput(BaseModularInput):
         """
         Executes the modular input using the input config which specifies TTL for alerts
         """
-        if not super(AlertsTTLModularInput, self).do_run(input_config):
-            return
-
         if not modular_input_should_run(self.session_key, logger=self.logger):
             self.logger.debug("Modular input will not run on this node.")
             return

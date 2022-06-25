@@ -1,28 +1,32 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Python module for migrating data from SCG to SSG
 """
 import json
 import time
 import warnings
+import sys
 import os
 from http import HTTPStatus
 import splunk
+import splunk.rest as rest
 from spacebridgeapp.util import py23, constants
 
 warnings.filterwarnings('ignore', '.*service_identity.*', UserWarning)
 
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 
+from spacebridgeapp.util.string_utils import encode_whitespace
 from spacebridgeapp.request.splunk_auth_header import SplunkAuthHeader
 from spacebridgeapp.rest.services.kvstore_service import get_all_collections
 from spacebridgeapp.logging import setup_logging
-from spacebridgeapp.util.app_info import APP_ID_TO_META_MAP, get_app_platform
+from spacebridgeapp.util.app_info import APP_ID_TO_PLATFORM_MAP, get_app_platform
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, ENCRYPTION_KEYS, \
     MDM_SIGN_PUBLIC_KEY, MDM_SIGN_PRIVATE_KEY, CLOUDGATEWAY_APP_NAME, META_COLLECTION_NAME, NOBODY, KEY, \
     MIGRATION_DONE, STATUS
-from spacebridgeapp.rest.services.splunk_service import fetch_sensitive_data, update_or_create_sensitive_data
+from spacebridgeapp.rest.services.splunk_service import get_app_list_request, fetch_sensitive_data, \
+    update_or_create_sensitive_data
 from spacebridgeapp.rest.services.kvstore_service import KVStoreCollectionAccessObject as KvStore
 
 # WHAT LOG SHOULD THIS BE GOING TO
@@ -42,15 +46,14 @@ PENDING = "0"
 DONE = "1"
 APP_NAME = "app_name"
 
-
 def resolve_device_platform_and_type(device):
-    if constants.PLATFORM not in device and device[constants.APP_ID] in APP_ID_TO_META_MAP:
+    if constants.PLATFORM not in device and device[constants.APP_ID] in APP_ID_TO_PLATFORM_MAP:
         device[constants.PLATFORM] = get_app_platform(device[constants.APP_ID])
-    if constants.DEVICE_TYPE in device and device[constants.DEVICE_TYPE] == constants.APPLE_TV:
-        device[constants.DEVICE_TYPE] = constants.SPLUNK_TV
-        device[constants.APP] = constants.SPLUNK_TV
-    if constants.DEVICE_TYPE in device and device[constants.DEVICE_TYPE] == constants.ALERTS_IOS_LEGACY:
-        device[constants.DEVICE_TYPE] = constants.ALERTS_IOS
+    if constants.REGISTERED_DEVICES_DEVICE_TYPE in device and device[constants.REGISTERED_DEVICES_DEVICE_TYPE] == constants.APPLE_TV:
+        device[constants.REGISTERED_DEVICES_DEVICE_TYPE] = constants.SPLUNK_TV
+        device[constants.APP_NAME] = constants.SPLUNK_TV
+    if constants.REGISTERED_DEVICES_DEVICE_TYPE in device and device[constants.REGISTERED_DEVICES_DEVICE_TYPE] == constants.ALERTS_IOS_LEGACY:
+        device[constants.REGISTERED_DEVICES_DEVICE_TYPE] = constants.ALERTS_IOS
         device[APP_NAME] = constants.ALERTS_IOS
 
     return device

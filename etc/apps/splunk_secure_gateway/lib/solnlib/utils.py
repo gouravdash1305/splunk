@@ -1,20 +1,11 @@
+# Copyright 2016 Splunk, Inc.
+# SPDX-FileCopyrightText: 2020 2020
 #
-# Copyright 2021 Splunk Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+# SPDX-License-Identifier: Apache-2.0
 
-"""Common utilities."""
+"""
+Common utilities.
+"""
 
 import datetime
 import logging
@@ -22,54 +13,34 @@ import os
 import signal
 import time
 import traceback
+
+try:
+    from urllib import parse as urlparse
+except ImportError:
+    from urllib2 import urlparse
+
 from functools import wraps
-from typing import Any, Callable, List, Tuple, Union
-from urllib import parse as urlparse
 
 __all__ = [
     "handle_teardown_signals",
     "datetime_to_seconds",
     "is_true",
     "is_false",
+    "escape_json_control_chars",
     "retry",
     "extract_http_scheme_host_port",
-    "remove_http_proxy_env_vars",
 ]
 
 
-def remove_http_proxy_env_vars() -> None:
-    """Removes HTTP(s) proxies from environment variables.
-
-    Removes the following environment variables:
-        * http_proxy
-        * https_proxy
-        * HTTP_PROXY
-        * HTTPS_PROXY
-
-    This function can be used in Splunk modular inputs code before starting the
-    ingestion to ensure that no proxy is going to be used when doing requests.
-    In case of proxy is needed, it can be defined in the modular inputs code.
-    """
-    env_vars_to_remove = (
-        "http_proxy",
-        "https_proxy",
-        "HTTP_PROXY",
-        "HTTPS_PROXY",
-    )
-    for env_var in env_vars_to_remove:
-        if env_var in os.environ:
-            del os.environ[env_var]
-
-
-def handle_teardown_signals(callback: Callable):
+def handle_teardown_signals(callback):
     """Register handler for SIGTERM/SIGINT/SIGBREAK signal.
 
     Catch SIGTERM/SIGINT/SIGBREAK signals, and invoke callback
     Note: this should be called in main thread since Python only catches
     signals in main thread.
 
-    Arguments:
-        callback: Callback for tear down signals.
+    :param callback: Callback for tear down signals.
+    :type callback: ``function``
     """
 
     signal.signal(signal.SIGTERM, callback)
@@ -79,28 +50,26 @@ def handle_teardown_signals(callback: Callable):
         signal.signal(signal.SIGBREAK, callback)
 
 
-def datetime_to_seconds(dt: datetime.datetime) -> float:
-    """Convert UTC datetime to seconds since epoch.
+def datetime_to_seconds(dt):
+    """Convert UTC datatime to seconds since epoch.
 
-    Arguments:
-        dt: Date time.
-
-    Returns:
-        Seconds since epoch.
+    :param dt: Date time.
+    :type dt: datetime.
+    :returns: Seconds since epoch.
+    :rtype: ``float``
     """
 
     epoch_time = datetime.datetime.utcfromtimestamp(0)
     return (dt - epoch_time).total_seconds()
 
 
-def is_true(val: Union[str, int]) -> bool:
+def is_true(val):
     """Decide if `val` is true.
 
-    Arguments:
-        val: Value to check.
-
-    Returns:
-        True or False.
+    :param val: Value to check.
+    :type val: ``(integer, string)``
+    :returns: True or False.
+    :rtype: ``bool``
     """
 
     value = str(val).strip().upper()
@@ -109,14 +78,13 @@ def is_true(val: Union[str, int]) -> bool:
     return False
 
 
-def is_false(val: Union[str, int]) -> bool:
+def is_false(val):
     """Decide if `val` is false.
 
-    Arguments:
-        val: Value to check.
-
-    Returns:
-        True or False.
+    :param val: Value to check.
+    :type val: ``(integer, string)``
+    :returns: True or False.
+    :rtype: ``bool``
     """
 
     value = str(val).strip().upper()
@@ -125,21 +93,48 @@ def is_false(val: Union[str, int]) -> bool:
     return False
 
 
-def retry(
-    retries: int = 3,
-    reraise: bool = True,
-    default_return: Any = None,
-    exceptions: List = None,
-):
-    """A decorator to run function with max `retries` times if there is
-    exception.
+def escape_json_control_chars(json_str):
+    """Escape json control chars in `json_str`.
 
-    Arguments:
-        retries: (optional) Max retries times, default is 3.
-        reraise: Whether exception should be reraised, default is True.
-        default_return: (optional) Default return value for function
-            run after max retries and reraise is False.
-        exceptions: (optional) List of exceptions that should retry.
+    :param json_str: Json string to escape.
+    :type json_str: ``string``
+    :returns: Escaped string.
+    :rtype: ``string``
+    """
+
+    control_chars = ((r"\n", "\\\\n"), (r"\r", "\\\\r"), (r"\r\n", "\\\\r\\\\n"))
+    for ch, replace in control_chars:
+        json_str = json_str.replace(ch, replace)
+    return json_str
+
+
+def unescape_json_control_chars(json_str):
+    """Unescape json control chars in `json_str`.
+
+    :param json_str: Json string to unescape.
+    :type json_str: ``string``
+    :returns: Unescaped string.
+    :rtype: ``string``
+    """
+
+    control_chars = (("\\\\n", r"\n"), ("\\\\r", r"\r"), ("\\\\r\\\\n", r"\r\n"))
+    for ch, replace in control_chars:
+        json_str = json_str.replace(ch, replace)
+    return json_str
+
+
+def retry(retries=3, reraise=True, default_return=None, exceptions=None):
+    """A decorator to run function with max `retries` times
+    if there is exception.
+
+    :param retries: (optional) Max retries times, default is 3.
+    :type retries: ``integer``
+    :param reraise: Whether exception should be reraised, default is True.
+    :type reraise: ``bool``
+    :param default_return: (optional) Default return value for function
+        run after max retries and reraise is False.
+    :param exceptions: (optional) List of exceptions that should retry.
+    :type exceptions: ``list``
     """
 
     max_tries = max(retries, 0) + 1
@@ -176,20 +171,23 @@ def retry(
     return do_retry
 
 
-def extract_http_scheme_host_port(http_url: str) -> Tuple:
+def extract_http_scheme_host_port(http_url):
     """Extract scheme, host and port from a HTTP URL.
 
-    Arguments:
-        http_url: HTTP URL to extract.
+    :param http_url: HTTP URL to extract.
+    :type http_url: ``string``
+    :returns: A tuple of scheme, host and port
+    :rtype: ``tuple``
 
-    Returns:
-        A tuple of scheme, host and port
-
-    Raises:
-        ValueError: If `http_url` is not in http(s)://hostname:port format.
+    :raises ValueError: If `http_url` is not in http(s)://hostname:port format.
     """
 
-    http_info = urlparse.urlparse(http_url)
+    try:
+        http_info = urlparse.urlparse(http_url)
+    except Exception:
+        raise ValueError(str(http_url) + " is not in http(s)://hostname:port format")
+
     if not http_info.scheme or not http_info.hostname or not http_info.port:
         raise ValueError(http_url + " is not in http(s)://hostname:port format")
-    return http_info.scheme, http_info.hostname, http_info.port
+
+    return (http_info.scheme, http_info.hostname, http_info.port)

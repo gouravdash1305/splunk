@@ -5,7 +5,7 @@ define(
         'underscore',
         'splunkjs/mvc',
         'uri/route',
-        'splunk_monitoring_console/views/overview/Alerts_old',
+        'splunk_monitoring_console/views/overview/Alerts',
         'splunkjs/mvc/sharedmodels',
         'util/console',
         'splunkjs/mvc/simplexml/ready!'
@@ -27,7 +27,7 @@ define(
         var model = {};
 
         model.serverInfoModel = sharedModels.get('serverInfo');
-        model.serverInfoModel.dfd.then(function() {
+        $.when(model.serverInfoModel.dfd).then(function() {
             // Create the alert view and attach to the dashboard
             var alertsView = new AlertsView({
                 model: {

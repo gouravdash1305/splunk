@@ -23,8 +23,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='common.proto',
   package='Application',
   syntax='proto3',
-  serialized_options=_b('Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssg'),
-  serialized_pb=_b('\n\x0c\x63ommon.proto\x12\x0b\x41pplication\x1a\x13\x65vent_handler.proto\x1a\x11\x66orm_inputs.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x19google/protobuf/any.proto\"\x80\x03\n\x05\x45rror\x12%\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x17.Application.Error.Code\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x34\n\x0eminimumVersion\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x13\n\x0bstatus_code\x18\x04 \x01(\x05\"\xf3\x01\n\x04\x43ode\x12\x11\n\rERROR_UNKNOWN\x10\x00\x12\x1f\n\x1b\x45RROR_SESSION_TOKEN_EXPIRED\x10\x01\x12\x15\n\x11\x45RROR_API_REQUEST\x10\x02\x12\x1c\n\x18\x45RROR_RESPONSE_TOO_LARGE\x10\x03\x12\x1f\n\x1b\x45RROR_REQUEST_NOT_SUPPORTED\x10\x04\x12\"\n\x1e\x45RROR_REQUEST_UPGRADE_REQUIRED\x10\x05\x12&\n\"ERROR_COMPANION_APP_NOT_REGISTERED\x10\x06\x12\x15\n\x11\x45RROR_JWT_EXPIRED\x10\x07\"\xca\x05\n\x05\x41lert\x12\x35\n\x0cnotification\x18\x01 \x01(\x0b\x32\x1f.Application.Alert.Notification\x12)\n\x06\x64\x65tail\x18\x02 \x01(\x0b\x32\x19.Application.Alert.Detail\x1a*\n\x0c\x43\x61llToAction\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x1a\xf8\x01\n\x0cNotification\x12-\n\x08severity\x18\x01 \x01(\x0e\x32\x1b.Application.Alert.Severity\x12\x0f\n\x07\x61lertId\x18\x02 \x01(\t\x12\r\n\x05title\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x35\n\x0c\x63\x61llToAction\x18\x05 \x01(\x0b\x32\x1f.Application.Alert.CallToAction\x12\x11\n\tcreatedAt\x18\x06 \x01(\t\x12\x0f\n\x07\x61ppName\x18\x07 \x01(\t\x12\x16\n\x0e\x64isplayAppName\x18\x08 \x01(\t\x12\x11\n\ttriggerId\x18\t \x01(\t\x1a\xef\x01\n\x06\x44\x65tail\x12\x12\n\nresultJson\x18\x01 \x01(\t\x12\x10\n\x08searchId\x18\x02 \x01(\t\x12\x13\n\x0bresultsLink\x18\x03 \x01(\t\x12\x12\n\nsearchName\x18\x04 \x01(\t\x12\r\n\x05owner\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x61shboardId\x18\x06 \x01(\t\x12?\n\x14\x64\x61shboardDescription\x18\x07 \x01(\x0b\x32!.Application.DashboardDescription\x12\x31\n\rdashboardData\x18\x08 \x03(\x0b\x32\x1a.Application.DashboardData\"F\n\x08Severity\x12\r\n\tUNDEFINED\x10\x00\x12\x08\n\x04INFO\x10\x01\x12\x0b\n\x07WARNING\x10\x02\x12\t\n\x05\x45RROR\x10\x03\x12\t\n\x05\x46\x41TAL\x10\x04\"\x0b\n\tSnoozeAll\"f\n\x06Snooze\x12\x10\n\x08snoozeId\x18\x01 \x01(\t\x12\x0f\n\x07\x65ndTime\x18\x02 \x01(\x03\x12+\n\tsnoozeAll\x18\x03 \x01(\x0b\x32\x16.Application.SnoozeAllH\x00\x42\x0c\n\nsnoozeType\"H\n\x18\x44\x61shboardVisualizationId\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\x17\n\x0fvisualizationId\x18\x02 \x01(\t\"\xdc\x01\n\rDashboardData\x12G\n\x18\x64\x61shboardVisualizationId\x18\x01 \x01(\x0b\x32%.Application.DashboardVisualizationId\x12\x39\n\x11visualizationData\x18\x02 \x01(\x0b\x32\x1e.Application.VisualizationData\x12G\n\x18trellisVisualizationData\x18\x03 \x01(\x0b\x32%.Application.TrellisVisualizationData\"\xb9\x02\n\x11VisualizationData\x12\x0e\n\x06\x66ields\x18\x01 \x03(\t\x12\x36\n\x07\x63olumns\x18\x02 \x03(\x0b\x32%.Application.VisualizationData.Column\x12=\n\nfieldsMeta\x18\x03 \x03(\x0b\x32).Application.VisualizationData.FieldsMeta\x1a\x18\n\x06\x43olumn\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x82\x01\n\nFieldsMeta\x12\x45\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x35.Application.VisualizationData.FieldsMeta.FieldsEntry\x1a-\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xbe\x01\n\x18TrellisVisualizationData\x12H\n\x0ctrellisCells\x18\x01 \x01(\x0b\x32\x32.Application.TrellisVisualizationData.TrellisCells\x12\x39\n\x11visualizationData\x18\x02 \x03(\x0b\x32\x1e.Application.VisualizationData\x1a\x1d\n\x0cTrellisCells\x12\r\n\x05\x63\x65lls\x18\x01 \x03(\t\"\x8f\x04\n\x14\x44\x61shboardDescription\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07\x61ppName\x18\x04 \x01(\t\x12\x15\n\rusesCustomCss\x18\x05 \x01(\x08\x12\x1c\n\x14usesCustomJavascript\x18\x06 \x01(\x08\x12\x1f\n\x17usesCustomVisualization\x18\x07 \x01(\x08\x12\x16\n\x0eusesCustomHtml\x18\x08 \x01(\x08\x12\x12\n\nisFavorite\x18\t \x01(\x08\x12\x34\n\ndefinition\x18\n \x01(\x0b\x32 .Application.DashboardDefinition\x12\x16\n\x0e\x64isplayAppName\x18\x0b \x01(\t\x12,\n\x0binputTokens\x18\x0c \x03(\x0b\x32\x17.Application.InputToken\x12\x1f\n\x04meta\x18\r \x01(\x0b\x32\x11.Application.Meta\x12;\n\rudfDefinition\x18\x0e \x01(\x0b\x32$.Application.UDFDashboardDescription\x12\x14\n\x0csubmitButton\x18\x0f \x01(\x08\x12\x0f\n\x07\x61utoRun\x18\x10 \x01(\x08\x12\r\n\x05isUdf\x18\x11 \x01(\x08\x12\r\n\x05theme\x18\x12 \x01(\t\x12\x0c\n\x04tags\x18\x13 \x03(\t\"\xde\x03\n\nInputToken\x12\x11\n\ttokenName\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ultValue\x18\x02 \x01(\t\x12-\n\ntimepicker\x18\x03 \x01(\x0b\x32\x17.Application.TimepickerH\x00\x12)\n\x08\x64ropdown\x18\x04 \x01(\x0b\x32\x15.Application.DropdownH\x00\x12#\n\x05radio\x18\x05 \x01(\x0b\x32\x12.Application.RadioH\x00\x12)\n\x08\x63heckbox\x18\x06 \x01(\x0b\x32\x15.Application.CheckboxH\x00\x12\'\n\x07textbox\x18\x07 \x01(\x0b\x32\x14.Application.TextboxH\x00\x12/\n\x0bmultiselect\x18\x08 \x01(\x0b\x32\x18.Application.MultiselectH\x00\x12\x0f\n\x07\x64\x65pends\x18\t \x03(\t\x12\x0f\n\x07rejects\x18\n \x03(\t\x12\x34\n\nconditions\x18\x0b \x03(\x0b\x32\x1c.Application.ChangeConditionB\x02\x18\x01\x12#\n\x06\x63hange\x18\x0c \x01(\x0b\x32\x13.Application.Change\x12\x19\n\x11searchWhenChanged\x18\r \x01(\x08\x42\x0b\n\tinputType\"\x8a\x01\n\x0f\x43hangeCondition\x12\x15\n\rrequiredValue\x18\x01 \x01(\t\x12.\n\tsetTokens\x18\x02 \x03(\x0b\x32\x1b.Application.ConditionToken\x12\x30\n\x0bunsetTokens\x18\x03 \x03(\x0b\x32\x1b.Application.ConditionToken\"7\n\x0e\x43onditionToken\x12\x11\n\ttokenName\x18\x01 \x01(\t\x12\x12\n\ntokenValue\x18\x02 \x01(\t\")\n\x04Meta\x12!\n\x19originalDashboardDeepLink\x18\x01 \x01(\t\"\xe0\x01\n\x17UDFDashboardDescription\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x32\n\x0eudfDataSources\x18\x04 \x03(\x0b\x32\x1a.Application.UDFDataSource\x12\x1a\n\x12visualizationsJson\x18\x05 \x01(\t\x12\x12\n\nlayoutJson\x18\x06 \x01(\t\x12\x12\n\ninputsJson\x18\x07 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ultsJson\x18\x08 \x01(\t\"A\n\rUDFDataSource\x12\x14\n\x0c\x64\x61taSourceId\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04json\x18\x03 \x01(\t\"\x99\x02\n\x13\x44\x61shboardDefinition\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\'\n\x04rows\x18\x04 \x03(\x0b\x32\x19.Application.DashboardRow\x12\x0f\n\x07refresh\x18\x05 \x01(\t\x12<\n\x08searches\x18\x06 \x03(\x0b\x32*.Application.DashboardVisualization.Search\x12\x14\n\x0c\x61rCompatible\x18\x07 \x01(\x08\x12;\n\x0evisualizations\x18\x08 \x03(\x0b\x32#.Application.DashboardVisualization\"]\n\x0c\x44\x61shboardRow\x12+\n\x06panels\x18\x01 \x03(\x0b\x32\x1b.Application.DashboardPanel\x12\x0f\n\x07\x64\x65pends\x18\x02 \x03(\t\x12\x0f\n\x07rejects\x18\x03 \x03(\t\"\xac\x01\n\x0e\x44\x61shboardPanel\x12\r\n\x05title\x18\x01 \x01(\t\x12;\n\x0evisualizations\x18\x02 \x03(\x0b\x32#.Application.DashboardVisualization\x12\x0f\n\x07\x64\x65pends\x18\x03 \x03(\t\x12\x0f\n\x07rejects\x18\x04 \x03(\t\x12,\n\x0binputTokens\x18\x05 \x03(\x0b\x32\x17.Application.InputToken\"\xcb\x0c\n\x16\x44\x61shboardVisualization\x12\n\n\x02id\x18\x01 \x01(\t\x12:\n\x06search\x18\x02 \x01(\x0b\x32*.Application.DashboardVisualization.Search\x12\x36\n\x04type\x18\x03 \x01(\x0e\x32(.Application.DashboardVisualization.Type\x12\x41\n\x07options\x18\x04 \x03(\x0b\x32\x30.Application.DashboardVisualization.OptionsEntry\x12\r\n\x05title\x18\x05 \x01(\t\x12;\n\x07\x66ormats\x18\x06 \x03(\x0b\x32*.Application.DashboardVisualization.Format\x12)\n\tdrillDown\x18\x07 \x01(\x0b\x32\x16.Application.DrillDown\x12\x0f\n\x07\x64\x65pends\x18\x08 \x03(\t\x12\x0f\n\x07rejects\x18\t \x03(\t\x12\x0e\n\x06\x66ields\x18\n \x03(\t\x1a\xfd\x02\n\x06Search\x12\x10\n\x08\x65\x61rliest\x18\x01 \x01(\t\x12\x0e\n\x06latest\x18\x02 \x01(\t\x12\x0f\n\x07refresh\x18\x03 \x01(\t\x12K\n\x0brefreshType\x18\x04 \x01(\x0e\x32\x36.Application.DashboardVisualization.Search.RefreshType\x12\x13\n\x0bsampleRatio\x18\x05 \x01(\x02\x12\x12\n\npostSearch\x18\x06 \x01(\t\x12\x0f\n\x07\x64\x65pends\x18\x07 \x03(\t\x12\x0f\n\x07rejects\x18\x08 \x03(\t\x12\x32\n\x0esearchHandlers\x18\t \x03(\x0b\x32\x1a.Application.SearchHandler\x12\x18\n\x10searchTokenNames\x18\n \x03(\t\"Z\n\x0bRefreshType\x12\x18\n\x14REFRESH_TYPE_UNKNOWN\x10\x00\x12\x16\n\x12REFRESH_TYPE_DELAY\x10\x01\x12\x19\n\x15REFRESH_TYPE_INTERVAL\x10\x02\x1a\x61\n\x0c\x43olorPalette\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x10\n\x08maxColor\x18\x02 \x01(\t\x12\x10\n\x08midColor\x18\x03 \x01(\t\x12\x10\n\x08minColor\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x1a\x8d\x01\n\x05Scale\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x0f\n\x07minType\x18\x02 \x01(\t\x12\x10\n\x08minValue\x18\x03 \x01(\t\x12\x0f\n\x07midType\x18\x04 \x01(\t\x12\x10\n\x08midValue\x18\x05 \x01(\t\x12\x0f\n\x07maxType\x18\x06 \x01(\t\x12\x10\n\x08maxValue\x18\x07 \x01(\t\x12\r\n\x05value\x18\x08 \x01(\t\x1a\xa1\x02\n\x06\x46ormat\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05\x66ield\x18\x02 \x01(\t\x12\x46\n\x0c\x63olorPalette\x18\x03 \x01(\x0b\x32\x30.Application.DashboardVisualization.ColorPalette\x12\x38\n\x05scale\x18\x04 \x01(\x0b\x32).Application.DashboardVisualization.Scale\x12H\n\x07options\x18\x05 \x03(\x0b\x32\x37.Application.DashboardVisualization.Format.OptionsEntry\x1a.\n\x0cOptionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a.\n\x0cOptionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xfd\x01\n\x04Type\x12#\n\x1f\x44\x41SHBOARD_VISUALIZATION_UNKNOWN\x10\x00\x12!\n\x1d\x44\x41SHBOARD_VISUALIZATION_CHART\x10\x01\x12\x1f\n\x1b\x44\x41SHBOARD_VISUALIZATION_MAP\x10\x02\x12\"\n\x1e\x44\x41SHBOARD_VISUALIZATION_SINGLE\x10\x03\x12!\n\x1d\x44\x41SHBOARD_VISUALIZATION_TABLE\x10\x04\x12!\n\x1d\x44\x41SHBOARD_VISUALIZATION_EVENT\x10\x05\x12\"\n\x1e\x44\x41SHBOARD_VISUALIZATION_SEARCH\x10\x06\"+\n\x0c\x42\x65\x61\x63onRegion\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\"2\n\x0b\x43oordinates\x12\x10\n\x08latitude\x18\x01 \x01(\x02\x12\x11\n\tlongitude\x18\x02 \x01(\x02\"\xa5\x01\n\x0fNearbyEntityKey\x12\x15\n\x0bgeofenceKey\x18\x01 \x01(\tH\x00\x12;\n\tbeaconKey\x18\x02 \x01(\x0b\x32&.Application.NearbyEntityKey.BeaconKeyH\x00\x1a\x37\n\tBeaconKey\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\r\n\x05major\x18\x02 \x01(\x05\x12\r\n\x05minor\x18\x03 \x01(\x05\x42\x05\n\x03key\"\xf9\x04\n\x0cNearbyEntity\x12\r\n\x05title\x18\x01 \x01(\t\x12\x46\n\x10\x62\x65\x61\x63onDefinition\x18\x02 \x01(\x0b\x32*.Application.NearbyEntity.BeaconDefinitionH\x00\x12J\n\x12geofenceDefinition\x18\x03 \x01(\x0b\x32,.Application.NearbyEntity.GeofenceDefinitionH\x00\x1aG\n\x10\x42\x65\x61\x63onDefinition\x12\x33\n\x03key\x18\x01 \x01(\x0b\x32&.Application.NearbyEntityKey.BeaconKey\x1a\xda\x01\n\x12GeofenceDefinition\x12Y\n\x10\x63ircularGeofence\x18\x01 \x01(\x0b\x32=.Application.NearbyEntity.GeofenceDefinition.CircularGeofenceH\x00\x12\x0b\n\x03key\x18\x02 \x01(\t\x1aL\n\x10\x43ircularGeofence\x12(\n\x06\x63\x65nter\x18\x01 \x01(\x0b\x32\x18.Application.Coordinates\x12\x0e\n\x06radius\x18\x02 \x01(\x02\x42\x0e\n\x0cgeofenceType\x1a\x8b\x01\n\x13\x42\x65\x61\x63onDashboardPair\x12:\n\x06\x62\x65\x61\x63on\x18\x01 \x01(\x0b\x32*.Application.NearbyEntity.BeaconDefinition\x12\x34\n\tdashboard\x18\x02 \x01(\x0b\x32!.Application.DashboardDescription:\x02\x18\x01\x42\x12\n\x10nearbyEntityType\"_\n\x16NearbyDashboardMapping\x12/\n\x0cnearbyEntity\x18\x01 \x01(\x0b\x32\x19.Application.NearbyEntity\x12\x14\n\x0c\x64\x61shboardIDs\x18\x02 \x03(\t\"A\n\x16SessionTokenWithExpiry\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x11\n\texpiresAt\x18\x02 \x01(\x03\"S\n\nTrustToken\x12\x1d\n\x15\x65ncryptedSessionToken\x18\x01 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\x12\x14\n\x0c\x64\x65ploymentId\x18\x03 \x01(\x0c\":\n\x11\x44\x65viceCredentials\x12\x12\n\ntrustToken\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"\xc6\x01\n\x05Group\x12\x0f\n\x07groupId\x18\x01 \x01(\t\x12\x11\n\tgroupName\x18\x02 \x01(\t\x12\x35\n\x0cresourceType\x18\x03 \x01(\x0e\x32\x1f.Application.Group.ResourceType\x12\x13\n\x0bresourceIds\x18\x04 \x03(\t\x12!\n\x19lastModifiedUnixTimestamp\x18\x05 \x01(\x03\"*\n\x0cResourceType\x12\x0b\n\x07INVALID\x10\x00\x12\r\n\tDASHBOARD\x10\x01\"4\n\x0eGenericMessage\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\x0c\x42@Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssgb\x06proto3')
+  serialized_options=None,
+  serialized_pb=_b('\n\x0c\x63ommon.proto\x12\x0b\x41pplication\x1a\x13\x65vent_handler.proto\x1a\x11\x66orm_inputs.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x19google/protobuf/any.proto\"\x80\x03\n\x05\x45rror\x12%\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x17.Application.Error.Code\x12\x0f\n\x07message\x18\x02 \x01(\t\x12\x34\n\x0eminimumVersion\x18\x03 \x01(\x0b\x32\x1c.google.protobuf.StringValue\x12\x13\n\x0bstatus_code\x18\x04 \x01(\x05\"\xf3\x01\n\x04\x43ode\x12\x11\n\rERROR_UNKNOWN\x10\x00\x12\x1f\n\x1b\x45RROR_SESSION_TOKEN_EXPIRED\x10\x01\x12\x15\n\x11\x45RROR_API_REQUEST\x10\x02\x12\x1c\n\x18\x45RROR_RESPONSE_TOO_LARGE\x10\x03\x12\x1f\n\x1b\x45RROR_REQUEST_NOT_SUPPORTED\x10\x04\x12\"\n\x1e\x45RROR_REQUEST_UPGRADE_REQUIRED\x10\x05\x12&\n\"ERROR_COMPANION_APP_NOT_REGISTERED\x10\x06\x12\x15\n\x11\x45RROR_JWT_EXPIRED\x10\x07\"\xca\x05\n\x05\x41lert\x12\x35\n\x0cnotification\x18\x01 \x01(\x0b\x32\x1f.Application.Alert.Notification\x12)\n\x06\x64\x65tail\x18\x02 \x01(\x0b\x32\x19.Application.Alert.Detail\x1a*\n\x0c\x43\x61llToAction\x12\x0b\n\x03uri\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x1a\xf8\x01\n\x0cNotification\x12-\n\x08severity\x18\x01 \x01(\x0e\x32\x1b.Application.Alert.Severity\x12\x0f\n\x07\x61lertId\x18\x02 \x01(\t\x12\r\n\x05title\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x35\n\x0c\x63\x61llToAction\x18\x05 \x01(\x0b\x32\x1f.Application.Alert.CallToAction\x12\x11\n\tcreatedAt\x18\x06 \x01(\t\x12\x0f\n\x07\x61ppName\x18\x07 \x01(\t\x12\x16\n\x0e\x64isplayAppName\x18\x08 \x01(\t\x12\x11\n\ttriggerId\x18\t \x01(\t\x1a\xef\x01\n\x06\x44\x65tail\x12\x12\n\nresultJson\x18\x01 \x01(\t\x12\x10\n\x08searchId\x18\x02 \x01(\t\x12\x13\n\x0bresultsLink\x18\x03 \x01(\t\x12\x12\n\nsearchName\x18\x04 \x01(\t\x12\r\n\x05owner\x18\x05 \x01(\t\x12\x13\n\x0b\x64\x61shboardId\x18\x06 \x01(\t\x12?\n\x14\x64\x61shboardDescription\x18\x07 \x01(\x0b\x32!.Application.DashboardDescription\x12\x31\n\rdashboardData\x18\x08 \x03(\x0b\x32\x1a.Application.DashboardData\"F\n\x08Severity\x12\r\n\tUNDEFINED\x10\x00\x12\x08\n\x04INFO\x10\x01\x12\x0b\n\x07WARNING\x10\x02\x12\t\n\x05\x45RROR\x10\x03\x12\t\n\x05\x46\x41TAL\x10\x04\"\x0b\n\tSnoozeAll\"f\n\x06Snooze\x12\x10\n\x08snoozeId\x18\x01 \x01(\t\x12\x0f\n\x07\x65ndTime\x18\x02 \x01(\x03\x12+\n\tsnoozeAll\x18\x03 \x01(\x0b\x32\x16.Application.SnoozeAllH\x00\x42\x0c\n\nsnoozeType\"H\n\x18\x44\x61shboardVisualizationId\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\x17\n\x0fvisualizationId\x18\x02 \x01(\t\"\x93\x01\n\rDashboardData\x12G\n\x18\x64\x61shboardVisualizationId\x18\x01 \x01(\x0b\x32%.Application.DashboardVisualizationId\x12\x39\n\x11visualizationData\x18\x02 \x01(\x0b\x32\x1e.Application.VisualizationData\"\xb9\x02\n\x11VisualizationData\x12\x0e\n\x06\x66ields\x18\x01 \x03(\t\x12\x36\n\x07\x63olumns\x18\x02 \x03(\x0b\x32%.Application.VisualizationData.Column\x12=\n\nfieldsMeta\x18\x03 \x03(\x0b\x32).Application.VisualizationData.FieldsMeta\x1a\x18\n\x06\x43olumn\x12\x0e\n\x06values\x18\x01 \x03(\t\x1a\x82\x01\n\nFieldsMeta\x12\x45\n\x06\x66ields\x18\x01 \x03(\x0b\x32\x35.Application.VisualizationData.FieldsMeta.FieldsEntry\x1a-\n\x0b\x46ieldsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xbe\x01\n\x18TrellisVisualizationData\x12H\n\x0ctrellisCells\x18\x01 \x01(\x0b\x32\x32.Application.TrellisVisualizationData.TrellisCells\x12\x39\n\x11visualizationData\x18\x02 \x03(\x0b\x32\x1e.Application.VisualizationData\x1a\x1d\n\x0cTrellisCells\x12\r\n\x05\x63\x65lls\x18\x01 \x03(\t\"\xe3\x03\n\x14\x44\x61shboardDescription\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0f\n\x07\x61ppName\x18\x04 \x01(\t\x12\x15\n\rusesCustomCss\x18\x05 \x01(\x08\x12\x1c\n\x14usesCustomJavascript\x18\x06 \x01(\x08\x12\x1f\n\x17usesCustomVisualization\x18\x07 \x01(\x08\x12\x16\n\x0eusesCustomHtml\x18\x08 \x01(\x08\x12\x12\n\nisFavorite\x18\t \x01(\x08\x12\x34\n\ndefinition\x18\n \x01(\x0b\x32 .Application.DashboardDefinition\x12\x16\n\x0e\x64isplayAppName\x18\x0b \x01(\t\x12,\n\x0binputTokens\x18\x0c \x03(\x0b\x32\x17.Application.InputToken\x12\x1f\n\x04meta\x18\r \x01(\x0b\x32\x11.Application.Meta\x12;\n\rudfDefinition\x18\x0e \x01(\x0b\x32$.Application.UDFDashboardDescription\x12\x14\n\x0csubmitButton\x18\x0f \x01(\x08\x12\x0f\n\x07\x61utoRun\x18\x10 \x01(\x08\"\xde\x03\n\nInputToken\x12\x11\n\ttokenName\x18\x01 \x01(\t\x12\x14\n\x0c\x64\x65\x66\x61ultValue\x18\x02 \x01(\t\x12-\n\ntimepicker\x18\x03 \x01(\x0b\x32\x17.Application.TimepickerH\x00\x12)\n\x08\x64ropdown\x18\x04 \x01(\x0b\x32\x15.Application.DropdownH\x00\x12#\n\x05radio\x18\x05 \x01(\x0b\x32\x12.Application.RadioH\x00\x12)\n\x08\x63heckbox\x18\x06 \x01(\x0b\x32\x15.Application.CheckboxH\x00\x12\'\n\x07textbox\x18\x07 \x01(\x0b\x32\x14.Application.TextboxH\x00\x12/\n\x0bmultiselect\x18\x08 \x01(\x0b\x32\x18.Application.MultiselectH\x00\x12\x0f\n\x07\x64\x65pends\x18\t \x03(\t\x12\x0f\n\x07rejects\x18\n \x03(\t\x12\x34\n\nconditions\x18\x0b \x03(\x0b\x32\x1c.Application.ChangeConditionB\x02\x18\x01\x12#\n\x06\x63hange\x18\x0c \x01(\x0b\x32\x13.Application.Change\x12\x19\n\x11searchWhenChanged\x18\r \x01(\x08\x42\x0b\n\tinputType\"\x8a\x01\n\x0f\x43hangeCondition\x12\x15\n\rrequiredValue\x18\x01 \x01(\t\x12.\n\tsetTokens\x18\x02 \x03(\x0b\x32\x1b.Application.ConditionToken\x12\x30\n\x0bunsetTokens\x18\x03 \x03(\x0b\x32\x1b.Application.ConditionToken\"7\n\x0e\x43onditionToken\x12\x11\n\ttokenName\x18\x01 \x01(\t\x12\x12\n\ntokenValue\x18\x02 \x01(\t\")\n\x04Meta\x12!\n\x19originalDashboardDeepLink\x18\x01 \x01(\t\"\xca\x01\n\x17UDFDashboardDescription\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x32\n\x0eudfDataSources\x18\x04 \x03(\x0b\x32\x1a.Application.UDFDataSource\x12\x1a\n\x12visualizationsJson\x18\x05 \x01(\t\x12\x12\n\nlayoutJson\x18\x06 \x01(\t\x12\x12\n\ninputsJson\x18\x07 \x01(\t\"A\n\rUDFDataSource\x12\x14\n\x0c\x64\x61taSourceId\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0c\n\x04json\x18\x03 \x01(\t\"\x99\x02\n\x13\x44\x61shboardDefinition\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\'\n\x04rows\x18\x04 \x03(\x0b\x32\x19.Application.DashboardRow\x12\x0f\n\x07refresh\x18\x05 \x01(\t\x12<\n\x08searches\x18\x06 \x03(\x0b\x32*.Application.DashboardVisualization.Search\x12\x14\n\x0c\x61rCompatible\x18\x07 \x01(\x08\x12;\n\x0evisualizations\x18\x08 \x03(\x0b\x32#.Application.DashboardVisualization\"]\n\x0c\x44\x61shboardRow\x12+\n\x06panels\x18\x01 \x03(\x0b\x32\x1b.Application.DashboardPanel\x12\x0f\n\x07\x64\x65pends\x18\x02 \x03(\t\x12\x0f\n\x07rejects\x18\x03 \x03(\t\"\xac\x01\n\x0e\x44\x61shboardPanel\x12\r\n\x05title\x18\x01 \x01(\t\x12;\n\x0evisualizations\x18\x02 \x03(\x0b\x32#.Application.DashboardVisualization\x12\x0f\n\x07\x64\x65pends\x18\x03 \x03(\t\x12\x0f\n\x07rejects\x18\x04 \x03(\t\x12,\n\x0binputTokens\x18\x05 \x03(\x0b\x32\x17.Application.InputToken\"\xcb\x0c\n\x16\x44\x61shboardVisualization\x12\n\n\x02id\x18\x01 \x01(\t\x12:\n\x06search\x18\x02 \x01(\x0b\x32*.Application.DashboardVisualization.Search\x12\x36\n\x04type\x18\x03 \x01(\x0e\x32(.Application.DashboardVisualization.Type\x12\x41\n\x07options\x18\x04 \x03(\x0b\x32\x30.Application.DashboardVisualization.OptionsEntry\x12\r\n\x05title\x18\x05 \x01(\t\x12;\n\x07\x66ormats\x18\x06 \x03(\x0b\x32*.Application.DashboardVisualization.Format\x12)\n\tdrillDown\x18\x07 \x01(\x0b\x32\x16.Application.DrillDown\x12\x0f\n\x07\x64\x65pends\x18\x08 \x03(\t\x12\x0f\n\x07rejects\x18\t \x03(\t\x12\x0e\n\x06\x66ields\x18\n \x03(\t\x1a\xfd\x02\n\x06Search\x12\x10\n\x08\x65\x61rliest\x18\x01 \x01(\t\x12\x0e\n\x06latest\x18\x02 \x01(\t\x12\x0f\n\x07refresh\x18\x03 \x01(\t\x12K\n\x0brefreshType\x18\x04 \x01(\x0e\x32\x36.Application.DashboardVisualization.Search.RefreshType\x12\x13\n\x0bsampleRatio\x18\x05 \x01(\x02\x12\x12\n\npostSearch\x18\x06 \x01(\t\x12\x0f\n\x07\x64\x65pends\x18\x07 \x03(\t\x12\x0f\n\x07rejects\x18\x08 \x03(\t\x12\x32\n\x0esearchHandlers\x18\t \x03(\x0b\x32\x1a.Application.SearchHandler\x12\x18\n\x10searchTokenNames\x18\n \x03(\t\"Z\n\x0bRefreshType\x12\x18\n\x14REFRESH_TYPE_UNKNOWN\x10\x00\x12\x16\n\x12REFRESH_TYPE_DELAY\x10\x01\x12\x19\n\x15REFRESH_TYPE_INTERVAL\x10\x02\x1a\x61\n\x0c\x43olorPalette\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x10\n\x08maxColor\x18\x02 \x01(\t\x12\x10\n\x08midColor\x18\x03 \x01(\t\x12\x10\n\x08minColor\x18\x04 \x01(\t\x12\r\n\x05value\x18\x05 \x01(\t\x1a\x8d\x01\n\x05Scale\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\x0f\n\x07minType\x18\x02 \x01(\t\x12\x10\n\x08minValue\x18\x03 \x01(\t\x12\x0f\n\x07midType\x18\x04 \x01(\t\x12\x10\n\x08midValue\x18\x05 \x01(\t\x12\x0f\n\x07maxType\x18\x06 \x01(\t\x12\x10\n\x08maxValue\x18\x07 \x01(\t\x12\r\n\x05value\x18\x08 \x01(\t\x1a\xa1\x02\n\x06\x46ormat\x12\x0c\n\x04type\x18\x01 \x01(\t\x12\r\n\x05\x66ield\x18\x02 \x01(\t\x12\x46\n\x0c\x63olorPalette\x18\x03 \x01(\x0b\x32\x30.Application.DashboardVisualization.ColorPalette\x12\x38\n\x05scale\x18\x04 \x01(\x0b\x32).Application.DashboardVisualization.Scale\x12H\n\x07options\x18\x05 \x03(\x0b\x32\x37.Application.DashboardVisualization.Format.OptionsEntry\x1a.\n\x0cOptionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\x1a.\n\x0cOptionsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xfd\x01\n\x04Type\x12#\n\x1f\x44\x41SHBOARD_VISUALIZATION_UNKNOWN\x10\x00\x12!\n\x1d\x44\x41SHBOARD_VISUALIZATION_CHART\x10\x01\x12\x1f\n\x1b\x44\x41SHBOARD_VISUALIZATION_MAP\x10\x02\x12\"\n\x1e\x44\x41SHBOARD_VISUALIZATION_SINGLE\x10\x03\x12!\n\x1d\x44\x41SHBOARD_VISUALIZATION_TABLE\x10\x04\x12!\n\x1d\x44\x41SHBOARD_VISUALIZATION_EVENT\x10\x05\x12\"\n\x1e\x44\x41SHBOARD_VISUALIZATION_SEARCH\x10\x06\"+\n\x0c\x42\x65\x61\x63onRegion\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\r\n\x05title\x18\x02 \x01(\t\"2\n\x0b\x43oordinates\x12\x10\n\x08latitude\x18\x01 \x01(\x02\x12\x11\n\tlongitude\x18\x02 \x01(\x02\"\xa5\x01\n\x0fNearbyEntityKey\x12\x15\n\x0bgeofenceKey\x18\x01 \x01(\tH\x00\x12;\n\tbeaconKey\x18\x02 \x01(\x0b\x32&.Application.NearbyEntityKey.BeaconKeyH\x00\x1a\x37\n\tBeaconKey\x12\x0c\n\x04uuid\x18\x01 \x01(\t\x12\r\n\x05major\x18\x02 \x01(\x05\x12\r\n\x05minor\x18\x03 \x01(\x05\x42\x05\n\x03key\"\xf9\x04\n\x0cNearbyEntity\x12\r\n\x05title\x18\x01 \x01(\t\x12\x46\n\x10\x62\x65\x61\x63onDefinition\x18\x02 \x01(\x0b\x32*.Application.NearbyEntity.BeaconDefinitionH\x00\x12J\n\x12geofenceDefinition\x18\x03 \x01(\x0b\x32,.Application.NearbyEntity.GeofenceDefinitionH\x00\x1aG\n\x10\x42\x65\x61\x63onDefinition\x12\x33\n\x03key\x18\x01 \x01(\x0b\x32&.Application.NearbyEntityKey.BeaconKey\x1a\xda\x01\n\x12GeofenceDefinition\x12Y\n\x10\x63ircularGeofence\x18\x01 \x01(\x0b\x32=.Application.NearbyEntity.GeofenceDefinition.CircularGeofenceH\x00\x12\x0b\n\x03key\x18\x02 \x01(\t\x1aL\n\x10\x43ircularGeofence\x12(\n\x06\x63\x65nter\x18\x01 \x01(\x0b\x32\x18.Application.Coordinates\x12\x0e\n\x06radius\x18\x02 \x01(\x02\x42\x0e\n\x0cgeofenceType\x1a\x8b\x01\n\x13\x42\x65\x61\x63onDashboardPair\x12:\n\x06\x62\x65\x61\x63on\x18\x01 \x01(\x0b\x32*.Application.NearbyEntity.BeaconDefinition\x12\x34\n\tdashboard\x18\x02 \x01(\x0b\x32!.Application.DashboardDescription:\x02\x18\x01\x42\x12\n\x10nearbyEntityType\"_\n\x16NearbyDashboardMapping\x12/\n\x0cnearbyEntity\x18\x01 \x01(\x0b\x32\x19.Application.NearbyEntity\x12\x14\n\x0c\x64\x61shboardIDs\x18\x02 \x03(\t\"A\n\x16SessionTokenWithExpiry\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x11\n\texpiresAt\x18\x02 \x01(\x03\"S\n\nTrustToken\x12\x1d\n\x15\x65ncryptedSessionToken\x18\x01 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\x12\x14\n\x0c\x64\x65ploymentId\x18\x03 \x01(\x0c\":\n\x11\x44\x65viceCredentials\x12\x12\n\ntrustToken\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"\xc6\x01\n\x05Group\x12\x0f\n\x07groupId\x18\x01 \x01(\t\x12\x11\n\tgroupName\x18\x02 \x01(\t\x12\x35\n\x0cresourceType\x18\x03 \x01(\x0e\x32\x1f.Application.Group.ResourceType\x12\x13\n\x0bresourceIds\x18\x04 \x03(\t\x12!\n\x19lastModifiedUnixTimestamp\x18\x05 \x01(\x03\"*\n\x0cResourceType\x12\x0b\n\x07INVALID\x10\x00\x12\r\n\tDASHBOARD\x10\x01\"4\n\x0eGenericMessage\x12\x11\n\tnamespace\x18\x01 \x01(\t\x12\x0f\n\x07message\x18\x02 \x01(\x0c\x62\x06proto3')
   ,
   dependencies=[event__handler__pb2.DESCRIPTOR,form__inputs__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,google_dot_protobuf_dot_any__pb2.DESCRIPTOR,])
 
@@ -131,8 +131,8 @@ _DASHBOARDVISUALIZATION_SEARCH_REFRESHTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=4938,
-  serialized_end=5028,
+  serialized_start=4799,
+  serialized_end=4889,
 )
 _sym_db.RegisterEnumDescriptor(_DASHBOARDVISUALIZATION_SEARCH_REFRESHTYPE)
 
@@ -173,8 +173,8 @@ _DASHBOARDVISUALIZATION_TYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5614,
-  serialized_end=5867,
+  serialized_start=5475,
+  serialized_end=5728,
 )
 _sym_db.RegisterEnumDescriptor(_DASHBOARDVISUALIZATION_TYPE)
 
@@ -195,8 +195,8 @@ _GROUP_RESOURCETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=7236,
-  serialized_end=7278,
+  serialized_start=7097,
+  serialized_end=7139,
 )
 _sym_db.RegisterEnumDescriptor(_GROUP_RESOURCETYPE)
 
@@ -626,13 +626,6 @@ _DASHBOARDDATA = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='trellisVisualizationData', full_name='Application.DashboardData.trellisVisualizationData', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -646,7 +639,7 @@ _DASHBOARDDATA = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=1424,
-  serialized_end=1644,
+  serialized_end=1571,
 )
 
 
@@ -676,8 +669,8 @@ _VISUALIZATIONDATA_COLUMN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1803,
-  serialized_end=1827,
+  serialized_start=1730,
+  serialized_end=1754,
 )
 
 _VISUALIZATIONDATA_FIELDSMETA_FIELDSENTRY = _descriptor.Descriptor(
@@ -713,8 +706,8 @@ _VISUALIZATIONDATA_FIELDSMETA_FIELDSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1915,
-  serialized_end=1960,
+  serialized_start=1842,
+  serialized_end=1887,
 )
 
 _VISUALIZATIONDATA_FIELDSMETA = _descriptor.Descriptor(
@@ -743,8 +736,8 @@ _VISUALIZATIONDATA_FIELDSMETA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1830,
-  serialized_end=1960,
+  serialized_start=1757,
+  serialized_end=1887,
 )
 
 _VISUALIZATIONDATA = _descriptor.Descriptor(
@@ -787,8 +780,8 @@ _VISUALIZATIONDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1647,
-  serialized_end=1960,
+  serialized_start=1574,
+  serialized_end=1887,
 )
 
 
@@ -818,8 +811,8 @@ _TRELLISVISUALIZATIONDATA_TRELLISCELLS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2124,
-  serialized_end=2153,
+  serialized_start=2051,
+  serialized_end=2080,
 )
 
 _TRELLISVISUALIZATIONDATA = _descriptor.Descriptor(
@@ -855,8 +848,8 @@ _TRELLISVISUALIZATIONDATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1963,
-  serialized_end=2153,
+  serialized_start=1890,
+  serialized_end=2080,
 )
 
 
@@ -979,27 +972,6 @@ _DASHBOARDDESCRIPTION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='isUdf', full_name='Application.DashboardDescription.isUdf', index=16,
-      number=17, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='theme', full_name='Application.DashboardDescription.theme', index=17,
-      number=18, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tags', full_name='Application.DashboardDescription.tags', index=18,
-      number=19, type=9, cpp_type=9, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1012,8 +984,8 @@ _DASHBOARDDESCRIPTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2156,
-  serialized_end=2683,
+  serialized_start=2083,
+  serialized_end=2566,
 )
 
 
@@ -1130,8 +1102,8 @@ _INPUTTOKEN = _descriptor.Descriptor(
       name='inputType', full_name='Application.InputToken.inputType',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2686,
-  serialized_end=3164,
+  serialized_start=2569,
+  serialized_end=3047,
 )
 
 
@@ -1175,8 +1147,8 @@ _CHANGECONDITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3167,
-  serialized_end=3305,
+  serialized_start=3050,
+  serialized_end=3188,
 )
 
 
@@ -1213,8 +1185,8 @@ _CONDITIONTOKEN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3307,
-  serialized_end=3362,
+  serialized_start=3190,
+  serialized_end=3245,
 )
 
 
@@ -1244,8 +1216,8 @@ _META = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3364,
-  serialized_end=3405,
+  serialized_start=3247,
+  serialized_end=3288,
 )
 
 
@@ -1305,13 +1277,6 @@ _UDFDASHBOARDDESCRIPTION = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='defaultsJson', full_name='Application.UDFDashboardDescription.defaultsJson', index=7,
-      number=8, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1324,8 +1289,8 @@ _UDFDASHBOARDDESCRIPTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3408,
-  serialized_end=3632,
+  serialized_start=3291,
+  serialized_end=3493,
 )
 
 
@@ -1369,8 +1334,8 @@ _UDFDATASOURCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3634,
-  serialized_end=3699,
+  serialized_start=3495,
+  serialized_end=3560,
 )
 
 
@@ -1449,8 +1414,8 @@ _DASHBOARDDEFINITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3702,
-  serialized_end=3983,
+  serialized_start=3563,
+  serialized_end=3844,
 )
 
 
@@ -1494,8 +1459,8 @@ _DASHBOARDROW = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3985,
-  serialized_end=4078,
+  serialized_start=3846,
+  serialized_end=3939,
 )
 
 
@@ -1553,8 +1518,8 @@ _DASHBOARDPANEL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4081,
-  serialized_end=4253,
+  serialized_start=3942,
+  serialized_end=4114,
 )
 
 
@@ -1648,8 +1613,8 @@ _DASHBOARDVISUALIZATION_SEARCH = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4647,
-  serialized_end=5028,
+  serialized_start=4508,
+  serialized_end=4889,
 )
 
 _DASHBOARDVISUALIZATION_COLORPALETTE = _descriptor.Descriptor(
@@ -1706,8 +1671,8 @@ _DASHBOARDVISUALIZATION_COLORPALETTE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5030,
-  serialized_end=5127,
+  serialized_start=4891,
+  serialized_end=4988,
 )
 
 _DASHBOARDVISUALIZATION_SCALE = _descriptor.Descriptor(
@@ -1785,8 +1750,8 @@ _DASHBOARDVISUALIZATION_SCALE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5130,
-  serialized_end=5271,
+  serialized_start=4991,
+  serialized_end=5132,
 )
 
 _DASHBOARDVISUALIZATION_FORMAT_OPTIONSENTRY = _descriptor.Descriptor(
@@ -1822,8 +1787,8 @@ _DASHBOARDVISUALIZATION_FORMAT_OPTIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5517,
-  serialized_end=5563,
+  serialized_start=5378,
+  serialized_end=5424,
 )
 
 _DASHBOARDVISUALIZATION_FORMAT = _descriptor.Descriptor(
@@ -1880,8 +1845,8 @@ _DASHBOARDVISUALIZATION_FORMAT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5274,
-  serialized_end=5563,
+  serialized_start=5135,
+  serialized_end=5424,
 )
 
 _DASHBOARDVISUALIZATION_OPTIONSENTRY = _descriptor.Descriptor(
@@ -1917,8 +1882,8 @@ _DASHBOARDVISUALIZATION_OPTIONSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5517,
-  serialized_end=5563,
+  serialized_start=5378,
+  serialized_end=5424,
 )
 
 _DASHBOARDVISUALIZATION = _descriptor.Descriptor(
@@ -2011,8 +1976,8 @@ _DASHBOARDVISUALIZATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4256,
-  serialized_end=5867,
+  serialized_start=4117,
+  serialized_end=5728,
 )
 
 
@@ -2049,8 +2014,8 @@ _BEACONREGION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5869,
-  serialized_end=5912,
+  serialized_start=5730,
+  serialized_end=5773,
 )
 
 
@@ -2087,8 +2052,8 @@ _COORDINATES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5914,
-  serialized_end=5964,
+  serialized_start=5775,
+  serialized_end=5825,
 )
 
 
@@ -2132,8 +2097,8 @@ _NEARBYENTITYKEY_BEACONKEY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6070,
-  serialized_end=6125,
+  serialized_start=5931,
+  serialized_end=5986,
 )
 
 _NEARBYENTITYKEY = _descriptor.Descriptor(
@@ -2172,8 +2137,8 @@ _NEARBYENTITYKEY = _descriptor.Descriptor(
       name='key', full_name='Application.NearbyEntityKey.key',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5967,
-  serialized_end=6132,
+  serialized_start=5828,
+  serialized_end=5993,
 )
 
 
@@ -2203,8 +2168,8 @@ _NEARBYENTITY_BEACONDEFINITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6314,
-  serialized_end=6385,
+  serialized_start=6175,
+  serialized_end=6246,
 )
 
 _NEARBYENTITY_GEOFENCEDEFINITION_CIRCULARGEOFENCE = _descriptor.Descriptor(
@@ -2240,8 +2205,8 @@ _NEARBYENTITY_GEOFENCEDEFINITION_CIRCULARGEOFENCE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6514,
-  serialized_end=6590,
+  serialized_start=6375,
+  serialized_end=6451,
 )
 
 _NEARBYENTITY_GEOFENCEDEFINITION = _descriptor.Descriptor(
@@ -2280,8 +2245,8 @@ _NEARBYENTITY_GEOFENCEDEFINITION = _descriptor.Descriptor(
       name='geofenceType', full_name='Application.NearbyEntity.GeofenceDefinition.geofenceType',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6388,
-  serialized_end=6606,
+  serialized_start=6249,
+  serialized_end=6467,
 )
 
 _NEARBYENTITY_BEACONDASHBOARDPAIR = _descriptor.Descriptor(
@@ -2317,8 +2282,8 @@ _NEARBYENTITY_BEACONDASHBOARDPAIR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6609,
-  serialized_end=6748,
+  serialized_start=6470,
+  serialized_end=6609,
 )
 
 _NEARBYENTITY = _descriptor.Descriptor(
@@ -2364,8 +2329,8 @@ _NEARBYENTITY = _descriptor.Descriptor(
       name='nearbyEntityType', full_name='Application.NearbyEntity.nearbyEntityType',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=6135,
-  serialized_end=6768,
+  serialized_start=5996,
+  serialized_end=6629,
 )
 
 
@@ -2402,8 +2367,8 @@ _NEARBYDASHBOARDMAPPING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6770,
-  serialized_end=6865,
+  serialized_start=6631,
+  serialized_end=6726,
 )
 
 
@@ -2440,8 +2405,8 @@ _SESSIONTOKENWITHEXPIRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6867,
-  serialized_end=6932,
+  serialized_start=6728,
+  serialized_end=6793,
 )
 
 
@@ -2485,8 +2450,8 @@ _TRUSTTOKEN = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=6934,
-  serialized_end=7017,
+  serialized_start=6795,
+  serialized_end=6878,
 )
 
 
@@ -2523,8 +2488,8 @@ _DEVICECREDENTIALS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7019,
-  serialized_end=7077,
+  serialized_start=6880,
+  serialized_end=6938,
 )
 
 
@@ -2583,8 +2548,8 @@ _GROUP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7080,
-  serialized_end=7278,
+  serialized_start=6941,
+  serialized_end=7139,
 )
 
 
@@ -2621,8 +2586,8 @@ _GENERICMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=7280,
-  serialized_end=7332,
+  serialized_start=7141,
+  serialized_end=7193,
 )
 
 _ERROR.fields_by_name['code'].enum_type = _ERROR_CODE
@@ -2644,7 +2609,6 @@ _SNOOZE.oneofs_by_name['snoozeType'].fields.append(
 _SNOOZE.fields_by_name['snoozeAll'].containing_oneof = _SNOOZE.oneofs_by_name['snoozeType']
 _DASHBOARDDATA.fields_by_name['dashboardVisualizationId'].message_type = _DASHBOARDVISUALIZATIONID
 _DASHBOARDDATA.fields_by_name['visualizationData'].message_type = _VISUALIZATIONDATA
-_DASHBOARDDATA.fields_by_name['trellisVisualizationData'].message_type = _TRELLISVISUALIZATIONDATA
 _VISUALIZATIONDATA_COLUMN.containing_type = _VISUALIZATIONDATA
 _VISUALIZATIONDATA_FIELDSMETA_FIELDSENTRY.containing_type = _VISUALIZATIONDATA_FIELDSMETA
 _VISUALIZATIONDATA_FIELDSMETA.fields_by_name['fields'].message_type = _VISUALIZATIONDATA_FIELDSMETA_FIELDSENTRY
@@ -3121,7 +3085,6 @@ GenericMessage = _reflection.GeneratedProtocolMessageType('GenericMessage', (_me
 _sym_db.RegisterMessage(GenericMessage)
 
 
-DESCRIPTOR._options = None
 _VISUALIZATIONDATA_FIELDSMETA_FIELDSENTRY._options = None
 _INPUTTOKEN.fields_by_name['conditions']._options = None
 _DASHBOARDVISUALIZATION_FORMAT_OPTIONSENTRY._options = None

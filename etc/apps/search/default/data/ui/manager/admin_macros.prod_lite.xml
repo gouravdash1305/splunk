@@ -1,4 +1,4 @@
-<endpoint name="data/macros" showAppContext="1">
+<endpoint name="admin/macros" showAppContext="1">
   <header>Search macros</header>
   <breadcrumb>
     <parent hidecurrent="False">advancedsearch</parent>
@@ -6,7 +6,7 @@
   </breadcrumb>
   <menu name="knowledge_configurations">
     <label>Search macros</label>
-    <url>/manager/%(namespace)s/data/macros</url>
+    <url>/manager/%(namespace)s/admin/macros</url>
     <description>View, edit, and create search macros.</description>
     <order>65</order>
   </menu>

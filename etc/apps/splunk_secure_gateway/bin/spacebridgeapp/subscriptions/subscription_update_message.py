@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module to build subscription update message
 """
@@ -57,28 +57,28 @@ def build_splapp_subscription_update(request_id, subscription_id, update_id, sub
     return server_application_message
 
 
-def build_server_subscription_update(subscription_update, server_subscription_update):
+def build_server_subscription_update(subscription_update, server_susbscription_update):
     """
     Build serverSubscriptionUpdate from subscription_update
     :param subscription_update:
-    :param server_subscription_update:
+    :param server_susbscription_update:
     :return:
     """
     if isinstance(subscription_update, ServerDashboardVisualizationEvent):
-        subscription_update.set_protobuf(server_subscription_update.dashboardVisualizationEvent)
+        subscription_update.set_protobuf(server_susbscription_update.dashboardVisualizationEvent)
     elif isinstance(subscription_update, ServerUdfDatasourceEvent):
-        subscription_update.set_protobuf(server_subscription_update.udfDataSourceEvent)
+        subscription_update.set_protobuf(server_susbscription_update.udfDataSourceEvent)
     elif isinstance(subscription_update, ServerDashboardInputSearchEvent):
-        subscription_update.set_protobuf(server_subscription_update.dashboardInputSearchEvent)
+        subscription_update.set_protobuf(server_susbscription_update.dashboardInputSearchEvent)
     elif isinstance(subscription_update, ServerSavedSearchEvent):
-        subscription_update.set_protobuf(server_subscription_update.serverSavedSearchResultEvent)
+        subscription_update.set_protobuf(server_susbscription_update.serverSavedSearchResultEvent)
     elif isinstance(subscription_update, SpacebridgeError):
-        subscription_update.set_proto(server_subscription_update)
+        subscription_update.set_proto(server_susbscription_update)
     elif isinstance(subscription_update, TrellisDashboardVisualizationEvent):
-        subscription_update.set_protobuf(server_subscription_update.trellisDashboardVisualizationEvent)
+        subscription_update.set_protobuf(server_susbscription_update.trellisDashboardVisualizationEvent)
     else:
-        server_subscription_update.error.code = common_pb2.Error.ERROR_UNKNOWN
-        server_subscription_update.error.message = 'Unexpected Error!'
+        server_susbscription_update.error.code = common_pb2.Error.ERROR_UNKNOWN
+        server_susbscription_update.error.message = 'Unexpected Error!'
 
 
 def build_signed_envelope(signed_envelope, recipient, sender_id, request_id, encrypted_payload, sign):

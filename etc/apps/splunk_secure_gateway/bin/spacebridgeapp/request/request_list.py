@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Map of processing requests
 """
@@ -18,7 +18,7 @@ from spacebridgeapp.request.subscription_request_processor import \
     process_subscribe_request, process_unsubscribe_request, process_ping_request, process_subscribe_update_request
 from spacebridgeapp.request.request_processor import process_device_credentials_validate_request
 from spacebridgeapp.rest.clients.async_client_factory import FACTORY, KVSTORE, SPLUNK, SPACEBRIDGE
-from spacebridgeapp.udf.udf_request_processor import process_udf_hosted_resource_get
+from spacebridgeapp.request.udf_request_processor import process_udf_hosted_resource_get
 from spacebridgeapp.request.request_processor import process_complete_device_registration_request
 from spacebridgeapp.request.generic_request_processor import process_generic_message_request
 from spacebridgeapp.request.token_refresh_request_processor import process_token_refresh_request

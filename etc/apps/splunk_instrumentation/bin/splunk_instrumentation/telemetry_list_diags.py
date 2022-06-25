@@ -13,6 +13,19 @@ try:
 except Exception:
     raise
 
+
+def get_search_heads(splunkd):
+    """
+    Get the list of search head mgmt uri's
+    """
+    shcluster_config = splunkd.get_json_content('/services/shcluster/config')
+    if not shcluster_config['disabled']:
+        shcluster_member_entries = splunkd.get_json('/services/shcluster/member/members')['entry']
+        return [entry['content']['mgmt_uri'] for entry in shcluster_member_entries]
+    else:
+        return []
+
+
 class ListDiagsHandler(PersistentServerConnectionApplication):
     """
     Lists the status for all known diags on a single server or SHC
@@ -41,32 +54,28 @@ class ListDiagsHandler(PersistentServerConnectionApplication):
         try:
             arg = self.parse_arg(arg)
             splunkd = self.get_service(token=arg['session']['authtoken'])
+            splunkd_system = self.get_service(token=arg['system_authtoken'])
 
-            nodes = []
+            search_heads = []
             try:
                 # Use the system-authenticated splunkd service as some users
                 # will not have the capability to list search head cluster members.
                 # (We do not expose this list, it is only used internally).
-                nodes = splunkd.get('/services/remote-proxy/nodes').get('body').read()
-                
+                search_heads = get_search_heads(splunkd_system)
             except Exception:
                 # The shcluster status endpoints may throw if clustering is disabled.
                 # We'll still want to return the diags from this host though, so
                 # continue.
                 pass
 
-            SearchHeads = [sh for sh in json.loads(nodes)['nodes'] if 'SHC Member' in sh['role']]
-            body = splunkd.get_json('/services/diag/status')
-            if SearchHeads:
-                for SearchHead in SearchHeads:
-                    try:
-                        res = splunkd.get_json('/services/remote-proxy/diag/status',proxy_to=SearchHead['proxy_to'])
-                        body['errors'].extend(list(res['errors']))
-                        body['statuses'].extend(list(res['statuses']))
-                    except Exception as e:
-                        pass
-            
-            return {'payload': json.dumps(body),
+            if search_heads:
+                body = splunkd.get('/services/diag/status', storageHost=search_heads).get('body').read()
+            else:
+                body = splunkd.get('/services/diag/status').get('body').read()
+
+            if sys.version_info >= (3, 0):
+                body = body.decode()
+            return {'payload': body,
                     'status': 200}
         except Exception:
             return {'payload': 'Internal server error', 'status': 500}

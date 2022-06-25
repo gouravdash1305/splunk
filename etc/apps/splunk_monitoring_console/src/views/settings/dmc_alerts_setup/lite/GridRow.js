@@ -11,7 +11,9 @@ define([
     'underscore',
     'backbone',
     'module',
-    '@splunk/swc-mc',
+    'models/search/Alert',
+    'views/Base',
+    'util/general_utils',
     'contrib/text!./GridRow.html',  
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/EnableAlertDialog',
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/DisableAlertDialog',
@@ -21,13 +23,15 @@ define([
     _,
     Backbone,
     module,
-    SwcMC,
+    AlertModel,
+    BaseView,
+    util,
     template,
     EnableAlertDialog,
     DisableAlertDialog,
     EditAlertDialog
 ) {
-	return SwcMC.BaseView.extend({
+	return BaseView.extend({
 		moduleId: module.id,
 		tagName: 'tr',
 		className: 'list-item',
@@ -69,7 +73,7 @@ define([
         },
 
 		onEditAlert: function () {
-            this.alert = new SwcMC.AlertModel();
+            this.alert = new AlertModel();
             this.alertModelDeferred = $.Deferred();
             this.alert.set('id', '/servicesNS/nobody/splunk_monitoring_console/saved/searches/' + this.model.savedSearch.entry.get('name'));
 
@@ -82,7 +86,7 @@ define([
                 }.bind(this)
             });
 
-            this.alertModelDeferred.then(function() {
+            $.when(this.alertModelDeferred).then(function() {
                 this.children.editAlertDialog = new EditAlertDialog({
                     onHiddenRemove: true,
                     model: 

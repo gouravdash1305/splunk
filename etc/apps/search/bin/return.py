@@ -1,10 +1,5 @@
 #   Version 4.0
 #
-# NOTE: This script is used for a deprecated form of the 'return' command
-# titled 'oldreturn'. The original script can be invoked by replacing usage of
-# 'return' with 'oldreturn' -- the C++ implementation of this command can be
-# found in src/search/processors/ReturnProcessor.(h/cpp).
-#
 # GOAL: to make subsearches easier, shorter, more obvious.
 # current examples from answers.splunk.com
 #     [... | head 2 | eval time=_time | fields time]

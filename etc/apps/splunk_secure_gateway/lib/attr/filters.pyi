@@ -1,5 +1,4 @@
-from typing import Any, Union
-
+from typing import Union, Any
 from . import Attribute, _FilterType
 
 def include(*what: Union[type, Attribute[Any]]) -> _FilterType[Any]: ...

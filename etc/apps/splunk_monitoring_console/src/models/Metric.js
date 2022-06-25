@@ -1,7 +1,7 @@
 define(
     [
         'underscore',
-        'splunk_monitoring_console/models/StaticIdSplunkDBase'
+        'models/StaticIdSplunkDBase'
     ],
     function(
         _,

@@ -7,7 +7,6 @@ suite('Monitoring Console Anomalies Component', function () {
     setup(function () {
         configure({ adapter: new EnzymeAdapterReact16() });
         this.props = {
-            isDistributed: false,
             anomalies: [],
         };
         this.wrapper = shallow(<Anomalies {...this.props} />);
@@ -33,7 +32,6 @@ suite('Monitoring Console Anomalies Component', function () {
 
     test('Test anomalies component with anomalies', function () {
         this.wrapper.setProps({
-            isDistributed: false,
             anomalies: [
                 {
                     'name': ['File Monitor Input', 'TailReader-0'],

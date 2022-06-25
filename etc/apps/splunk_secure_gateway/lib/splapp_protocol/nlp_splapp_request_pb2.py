@@ -19,8 +19,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='nlp_splapp_request.proto',
   package='Application',
   syntax='proto3',
-  serialized_options=_b('\n\036com.splunk.nlp.spacebridge.appP\001Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssg'),
-  serialized_pb=_b('\n\x18nlp_splapp_request.proto\x12\x0b\x41pplication\"1\n\x18SavedSearchSPLGetRequest\x12\x15\n\rsavedSearchId\x18\x01 \x01(\t\"(\n\x19SavedSearchSPLGetResponse\x12\x0b\n\x03spl\x18\x01 \x01(\t\"/\n\x13SavedSearchMetaData\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"3\n\x18SavedSearchesSyncRequest\x12\x17\n\x0fifModifiedSince\x18\x01 \x01(\x03\"\\\n\x19SavedSearchesSyncResponse\x12?\n\x15savedSearchesMetaData\x18\x01 \x03(\x0b\x32 .Application.SavedSearchMetaData\"-\n\x11\x44\x61shboardMetaData\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"0\n\x15\x44\x61shboardsSyncRequest\x12\x17\n\x0fifModifiedSince\x18\x01 \x01(\x03\"T\n\x16\x44\x61shboardsSyncResponse\x12:\n\x12\x64\x61shboardsMetaData\x18\x01 \x03(\x0b\x32\x1e.Application.DashboardMetaDataBb\n\x1e\x63om.splunk.nlp.spacebridge.appP\x01Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssgb\x06proto3')
+  serialized_options=_b('\n\036com.splunk.nlp.spacebridge.appP\001'),
+  serialized_pb=_b('\n\x18nlp_splapp_request.proto\x12\x0b\x41pplication\"1\n\x18SavedSearchSPLGetRequest\x12\x15\n\rsavedSearchId\x18\x01 \x01(\t\"(\n\x19SavedSearchSPLGetResponse\x12\x0b\n\x03spl\x18\x01 \x01(\t\"/\n\x13SavedSearchMetaData\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"3\n\x18SavedSearchesSyncRequest\x12\x17\n\x0fifModifiedSince\x18\x01 \x01(\x03\"\\\n\x19SavedSearchesSyncResponse\x12?\n\x15savedSearchesMetaData\x18\x01 \x03(\x0b\x32 .Application.SavedSearchMetaData\"-\n\x11\x44\x61shboardMetaData\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\"0\n\x15\x44\x61shboardsSyncRequest\x12\x17\n\x0fifModifiedSince\x18\x01 \x01(\x03\"T\n\x16\x44\x61shboardsSyncResponse\x12:\n\x12\x64\x61shboardsMetaData\x18\x01 \x03(\x0b\x32\x1e.Application.DashboardMetaDataB\"\n\x1e\x63om.splunk.nlp.spacebridge.appP\x01\x62\x06proto3')
 )
 
 

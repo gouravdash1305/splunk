@@ -1,22 +1,19 @@
 from typing import (
-    Any,
-    AnyStr,
-    Callable,
     Container,
-    ContextManager,
-    Iterable,
     List,
-    Mapping,
-    Match,
-    Optional,
-    Pattern,
-    Tuple,
-    Type,
-    TypeVar,
     Union,
+    TypeVar,
+    Type,
+    Any,
+    Optional,
+    Tuple,
+    Iterable,
+    Mapping,
+    Callable,
+    Match,
+    AnyStr,
     overload,
 )
-
 from . import _ValidatorType
 
 _T = TypeVar("_T")
@@ -27,10 +24,6 @@ _I = TypeVar("_I", bound=Iterable)
 _K = TypeVar("_K")
 _V = TypeVar("_V")
 _M = TypeVar("_M", bound=Mapping)
-
-def set_disabled(run: bool) -> None: ...
-def get_disabled() -> bool: ...
-def disabled() -> ContextManager[None]: ...
 
 # To be more precise on instance_of use some overloads.
 # If there are more than 3 items in the tuple then we fall back to Any
@@ -55,7 +48,7 @@ def optional(
 def in_(options: Container[_T]) -> _ValidatorType[_T]: ...
 def and_(*validators: _ValidatorType[_T]) -> _ValidatorType[_T]: ...
 def matches_re(
-    regex: Union[Pattern[AnyStr], AnyStr],
+    regex: AnyStr,
     flags: int = ...,
     func: Optional[
         Callable[[AnyStr, AnyStr, int], Optional[Match[AnyStr]]]
@@ -71,8 +64,3 @@ def deep_mapping(
     mapping_validator: Optional[_ValidatorType[_M]] = ...,
 ) -> _ValidatorType[_M]: ...
 def is_callable() -> _ValidatorType[_T]: ...
-def lt(val: _T) -> _ValidatorType[_T]: ...
-def le(val: _T) -> _ValidatorType[_T]: ...
-def ge(val: _T) -> _ValidatorType[_T]: ...
-def gt(val: _T) -> _ValidatorType[_T]: ...
-def max_len(length: int) -> _ValidatorType[_T]: ...

@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This file contains an example indexes.conf.  Use this file to configure
 # indexing properties.
@@ -147,14 +147,11 @@ thawedPath=$SPLUNK_DB/main/thaweddb
 # hard to predict.
 maxDataSize = auto_high_volume
 maxHotBuckets = 10
-# Allow the main index up to 8TB of the 50TB volume limit.
-homePath.maxDataSizeMB = 8000000
-
 
 [idx1_large_vol]
 homePath=volume:large_indexes/idx1_large_vol/db
 coldPath=volume:large_indexes/idx1_large_vol/colddb
-thawedPath=$SPLUNK_DB/idx1_large/thaweddb
+homePath=$SPLUNK_DB/idx1_large/thaweddb
 # this index will exceed the default of .5TB requiring a change to maxTotalDataSizeMB
 maxTotalDataSizeMB = 750000
 maxDataSize = auto_high_volume
@@ -227,9 +224,6 @@ thawedPath=$SPLUNK_DB/main/thaweddb
 # large buckets and more hot buckets are desirable for higher volume indexes
 maxDataSize = auto_high_volume
 maxHotBuckets = 10
-# Allow main index to override global and use 8TB of the 50TB volume limit.
-homePath.maxDataSizeMB = 8000000
-
 
 ### This example demonstrates how to configure a volume that points to
 ### S3-based remote storage and indexes that use this volume.  The setting

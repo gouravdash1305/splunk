@@ -261,7 +261,7 @@ class URL:
             return url
 
     def __init_subclass__(cls):
-        raise TypeError("Inheriting a class {!r} from URL is forbidden".format(cls))
+        raise TypeError("Inheritance a class {!r} from URL is forbidden".format(cls))
 
     def __str__(self):
         val = self._val
@@ -271,9 +271,6 @@ class URL:
 
     def __repr__(self):
         return "{}('{}')".format(self.__class__.__name__, str(self))
-
-    def __bytes__(self):
-        return str(self).encode("ascii")
 
     def __eq__(self, other):
         if not type(other) is URL:
@@ -883,7 +880,9 @@ class URL:
         val = self._val
         return URL(
             self._val._replace(
-                netloc=self._make_netloc(val.username, val.password, val.hostname, port)
+                netloc=self._make_netloc(
+                    val.username, val.password, val.hostname, port, encode=True
+                )
             ),
             encoded=True,
         )

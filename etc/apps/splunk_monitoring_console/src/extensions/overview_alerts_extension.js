@@ -2,7 +2,7 @@ define([
     'underscore',
     'jquery',
     'backbone',
-    'splunk_monitoring_console/views/overview/Alerts_old',
+    'splunk_monitoring_console/views/overview/Alerts',
     'splunkjs/mvc/sharedmodels',
     'splunkjs/mvc/simplexml/ready!'
 ], function(
@@ -17,7 +17,7 @@ define([
     var model = {};
 
     model.serverInfoModel = SharedModels.get('serverInfo');
-    model.serverInfoModel.dfd.then(function() {
+    $.when(model.serverInfoModel.dfd).then(function() {
 
         // Create the alert view and attach to the dashboard
         var alertsView = new AlertsView({

@@ -5,7 +5,7 @@ define([
     'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
     'splunk_monitoring_console/views/overview/distributed_mode/components/ProgressBar',
     'splunk_monitoring_console/views/overview/distributed_mode/topology/StatusFilter',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/components/ResourceUsageSection.html'
@@ -13,7 +13,7 @@ define([
     $,
     _,
     module,
-    SwcMC,
+    BaseView,
     ProgressBarView,
     StatusFilterView,
     Template
@@ -30,13 +30,13 @@ define([
      * @param {String}          CPU_TOOLTIP (optional)
      * @param {string}          MEMORY_TOOLTIP (optional)
      */
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         className: 'dmc-single-values-section',
         initialize: function() {
             var that = this;
 
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.managementRoles = this.options.managementRoles;
             this.compiledStatusFilterTemplate = _.template(this.statusFilterTemplate);

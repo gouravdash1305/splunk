@@ -21,8 +21,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='http.proto',
   package='Spacebridge',
   syntax='proto3',
-  serialized_options=_b('\n+com.splunk.mobile.spacebridge.messages.httpP\001ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridge'),
-  serialized_pb=_b('\n\nhttp.proto\x12\x0bSpacebridge\x1a\x0fsb_common.proto\"\xad\x05\n\tHttpError\x12)\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x1b.Spacebridge.HttpError.Code\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xe3\x04\n\x04\x43ode\x12\x11\n\rERROR_UNKNOWN\x10\x00\x12\x1b\n\x17\x45RROR_VALIDATION_FAILED\x10\x01\x12\x1b\n\x17\x45RROR_AUTH_CODE_EXPIRED\x10\x02\x12\x1b\n\x17\x45RROR_AUTH_CODE_UNKNOWN\x10\x03\x12\x1f\n\x1b\x45RROR_ROUTING_UNDELIVERABLE\x10\x04\x12$\n ERROR_NOTIFICATION_UNDELIVERABLE\x10\x05\x12\x1f\n\x1b\x45RROR_MESSAGE_UNDELIVERABLE\x10\x06\x12\x19\n\x15\x45RROR_UPDATE_REQUIRED\x10\x07\x12\x1d\n\x19\x45RROR_CREDENTIALS_INVALID\x10\x08\x12\x1e\n\x1a\x45RROR_APPLICATION_DISABLED\x10\t\x12\x11\n\rERROR_TIMEOUT\x10\n\x12\x17\n\x13\x45RROR_ASSET_INVALID\x10\x0b\x12\x1d\n\x19\x45RROR_RATE_LIMIT_EXCEEDED\x10\x0c\x12(\n$ERROR_REGISTRATION_VALIDATION_FAILED\x10\r\x12\x1c\n\x18\x45RROR_INSTANCE_NOT_FOUND\x10\x0e\x12\x1b\n\x17\x45RROR_HASH_CODE_EXPIRED\x10\x0f\x12\x1b\n\x17\x45RROR_HASH_CODE_UNKNOWN\x10\x10\x12\x1b\n\x17\x45RROR_HASH_CODE_INVALID\x10\x11\x12(\n$ERROR_AUTH_CODE_PREVIOUSLY_CONFIRMED\x10\x12\x12\x1b\n\x17\x45RROR_AUTH_CODE_INVALID\x10\x13\"T\n\x15MdmVerificationBundle\x12\x1b\n\x13publicKeyForSigning\x18\x01 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x02 \x01(\x0c\"\x96\x03\n\x1b\x44\x65viceAuthenticationRequest\x12)\n\x07\x61ppType\x18\x01 \x01(\x0e\x32\x14.Spacebridge.AppTypeB\x02\x18\x01\x12/\n\x0c\x64\x65viceFamily\x18\x02 \x01(\x0e\x32\x19.Spacebridge.DeviceFamily\x12\x15\n\tpublicKey\x18\x03 \x01(\x0c\x42\x02\x18\x01\x12\x1b\n\x13publicKeyForSigning\x18\x04 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x05 \x01(\x0c\x12\r\n\x05\x61ppId\x18\x07 \x01(\t\x12\x15\n\rclientVersion\x18\x08 \x01(\t\x12\x17\n\x0f\x61ppFriendlyName\x18\t \x01(\t\x12\x13\n\x0b\x61ppPlatform\x18\n \x01(\t\x12\'\n\x1fserializedMdmVerificationBundle\x18\x0b \x01(\x0c\x12&\n\x1emdmVerificationBundleSignature\x18\x0c \x01(\x0c\x12\"\n\x1a\x61uthenticationCodeOverride\x18\r \x01(\t\"\xd3\x01\n\x1c\x44\x65viceAuthenticationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x44\n\x07payload\x18\x02 \x01(\x0b\x32\x31.Spacebridge.DeviceAuthenticationResponse.PayloadH\x00\x1a\x38\n\x07Payload\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\x12\x11\n\texpiresAt\x18\x02 \x01(\tB\n\n\x08response\"s\n\x1fNotificationRegistrationRequest\x12\x10\n\x08\x46\x43MToken\x18\x01 \x01(\t\x12/\n\x0c\x64\x65viceFamily\x18\x02 \x01(\x0e\x32\x19.Spacebridge.DeviceFamily\x12\r\n\x05\x61ppId\x18\x03 \x01(\t\"I\n NotificationRegistrationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"=\n\x13\x45nvironmentMetadata\x12\x1a\n\x12serializedMetadata\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\t\"E\n\x1b\x44\x65viceUnregistrationRequest\x12\x14\n\x0c\x64\x65ploymentId\x18\x01 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\"E\n\x1c\x44\x65viceUnregistrationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"8\n\x1a\x41uthenticationQueryRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\"\x8a\x04\n\x1b\x41uthenticationQueryResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x43\n\x07payload\x18\x02 \x01(\x0b\x32\x30.Spacebridge.AuthenticationQueryResponse.PayloadH\x00\x1a\xf0\x02\n\x07Payload\x12)\n\x07\x61ppType\x18\x01 \x01(\x0e\x32\x14.Spacebridge.AppTypeB\x02\x18\x01\x12/\n\x0c\x64\x65viceFamily\x18\x02 \x01(\x0e\x32\x19.Spacebridge.DeviceFamily\x12\x10\n\x08\x64\x65viceId\x18\x03 \x01(\x0c\x12\x15\n\tpublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\x1b\n\x13publicKeyForSigning\x18\x05 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x06 \x01(\x0c\x12\r\n\x05\x61ppId\x18\x07 \x01(\t\x12\x15\n\rclientVersion\x18\x08 \x01(\t\x12\x17\n\x0f\x61ppFriendlyName\x18\t \x01(\t\x12\x13\n\x0b\x61ppPlatform\x18\n \x01(\t\x12\'\n\x1fserializedMdmVerificationBundle\x18\x0b \x01(\x0c\x12&\n\x1emdmVerificationBundleSignature\x18\x0c \x01(\x0c\x42\n\n\x08response\"\x9d\x02\n DevicePairingConfirmationRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\x12\x1f\n\x13\x64\x65ploymentPublicKey\x18\x03 \x01(\x0c\x42\x02\x18\x01\x12\x1e\n\x12\x65phemeralPublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\"\n\x1a\x65ncryptedCredentialsBundle\x18\x05 \x01(\x0c\x12%\n\x1d\x64\x65ploymentPublicKeyForSigning\x18\x06 \x01(\x0c\x12(\n deploymentPublicKeyForEncryption\x18\x07 \x01(\x0c\x12\x15\n\rserverVersion\x18\x08 \x01(\t\"J\n!DevicePairingConfirmationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\xeb\x01\n\x11\x43redentialsBundle\x12\x14\n\x0csessionToken\x18\x02 \x01(\t\x12\x10\n\x08userName\x18\x03 \x01(\t\x12\x16\n\x0e\x64\x65ploymentName\x18\x04 \x01(\t\x12\x14\n\x0cserverTypeId\x18\x05 \x01(\t\x12)\n\ttokenType\x18\x06 \x01(\x0e\x32\x16.Spacebridge.TokenType\x12\x16\n\x0etokenExpiresAt\x18\x07 \x01(\x03\x12=\n\x13\x65nvironmentMetadata\x18\n \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\"9\n\x1b\x41uthenticationResultRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\"\xf2\x02\n\x1c\x41uthenticationResultResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x44\n\x07payload\x18\x02 \x01(\x0b\x32\x31.Spacebridge.AuthenticationResultResponse.PayloadH\x00\x1a\xd6\x01\n\x07Payload\x12\x1e\n\x12\x65phemeralPublicKey\x18\x01 \x01(\x0c\x42\x02\x18\x01\x12\"\n\x1a\x65ncryptedCredentialsBundle\x18\x02 \x01(\x0c\x12\x1f\n\x13\x64\x65ploymentPublicKey\x18\x03 \x01(\x0c\x42\x02\x18\x01\x12%\n\x1d\x64\x65ploymentPublicKeyForSigning\x18\x04 \x01(\x0c\x12(\n deploymentPublicKeyForEncryption\x18\x05 \x01(\x0c\x12\x15\n\rserverVersion\x18\t \x01(\tB\n\n\x08response\"\x81\x01\n\x13NotificationMessage\x12\n\n\x02id\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\x0c\x12\x0e\n\x06sender\x18\x03 \x01(\x0c\x12\x1e\n\x12\x65phemeralPublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\x0f\n\x07payload\x18\x05 \x01(\x0c\x12\x11\n\tcreatedAt\x18\x06 \x01(\x03\"\xda\x01\n\x17SendNotificationRequest\x12\x12\n\nttlSeconds\x18\x01 \x01(\x05\x12\x13\n\x0b\x63ollapseKey\x18\x02 \x01(\t\x12\x33\n\x0esignedEnvelope\x18\x03 \x01(\x0b\x32\x1b.Spacebridge.SignedEnvelope\x12?\n\x08priority\x18\x04 \x01(\x0e\x32-.Spacebridge.SendNotificationRequest.Priority\" \n\x08Priority\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04HIGH\x10\x01\"A\n\x18SendNotificationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"I\n\x12SendMessageRequest\x12\x33\n\x0esignedEnvelope\x18\x01 \x01(\x0b\x32\x1b.Spacebridge.SignedEnvelope\"<\n\x13SendMessageResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"Q\n\x1fRegisterSigningPublicKeyRequest\x12\x1b\n\x13publicKeyForSigning\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"I\n RegisterSigningPublicKeyResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\x98\x01\n\x1dMdmAuthenticationGrantRequest\x12\x1b\n\x13\x63lientMdmPermission\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x1aG\n\x13\x43lientMdmPermission\x12\x10\n\x08\x63lientId\x18\x01 \x01(\x0c\x12\x1e\n\x16mdmPublicKeyForSigning\x18\x02 \x01(\x0c\"G\n\x1eMdmAuthenticationGrantResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\xab\x05\n$MdmAuthenticationConfirmationRequest\x12\x14\n\x0c\x63onfirmation\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x1a\xe1\x02\n\x12PairingInformation\x12=\n\x13registrationVersion\x18\x01 \x01(\x0e\x32 .Spacebridge.RegistrationVersion\x12\x14\n\x0csessionToken\x18\x02 \x01(\t\x12\x10\n\x08userName\x18\x03 \x01(\t\x12\x15\n\rserverVersion\x18\x04 \x01(\t\x12\x16\n\x0e\x64\x65ploymentName\x18\x05 \x01(\t\x12\x1d\n\x15registrationAttemptId\x18\x06 \x01(\t\x12\x14\n\x0cserverTypeId\x18\x07 \x01(\t\x12)\n\ttokenType\x18\x08 \x01(\x0e\x32\x16.Spacebridge.TokenType\x12\x16\n\x0etokenExpiresAt\x18\t \x01(\x03\x12=\n\x13\x65nvironmentMetadata\x18\n \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\x1a\xab\x01\n\x12\x43onfirmationResult\x12\x62\n\x12pairingInformation\x18\x01 \x01(\x0b\x32\x44.Spacebridge.MdmAuthenticationConfirmationRequest.PairingInformationH\x00\x12\'\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06result\x1aH\n\x0c\x43onfirmation\x12\x13\n\x0brequestorId\x18\x01 \x01(\x0c\x12#\n\x1b\x65ncryptedConfirmationResult\x18\x03 \x01(\x0c\"N\n%MdmAuthenticationConfirmationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\x9b\x01\n\x19MdmAuthenticationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12I\n\x0c\x63onfirmation\x18\x02 \x01(\x0b\x32\x31.Spacebridge.MdmAuthenticationConfirmationRequestH\x00\x42\n\n\x08response\"\xf4\x01\n\x0fStorageResponse\x12\x37\n\x07payload\x18\x01 \x01(\x0b\x32$.Spacebridge.StorageResponse.PayloadH\x00\x12\'\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x1au\n\x07Payload\x12\x0f\n\x07readUri\x18\x01 \x01(\t\x12\x15\n\texpiresAt\x18\x02 \x01(\tB\x02\x18\x01\x12\x10\n\x08\x61ssetKey\x18\x03 \x01(\t\x12\x18\n\x10readUriExpiresAt\x18\x04 \x01(\t\x12\x16\n\x0e\x61ssetExpiresAt\x18\x05 \x01(\tB\x08\n\x06result\"\xc3\x01\n\x17GenerateReadUriResponse\x12?\n\x07payload\x18\x01 \x01(\x0b\x32,.Spacebridge.GenerateReadUriResponse.PayloadH\x00\x12\'\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x1a\x34\n\x07Payload\x12\x0f\n\x07readUri\x18\x01 \x01(\t\x12\x18\n\x10readUriExpiresAt\x18\x02 \x01(\tB\x08\n\x06result*X\n\x07\x41ppType\x12\x13\n\x0f\x41PPTYPE_INVALID\x10\x00\x12\x12\n\x0e\x41PPTYPE_ALERTS\x10\x01\x12\x14\n\x10\x41PPTYPE_APPLE_TV\x10\x02\x12\x0e\n\nAPPTYPE_AR\x10\x03*X\n\x0c\x44\x65viceFamily\x12\x18\n\x14\x44\x45VICEFAMILY_INVALID\x10\x00\x12\x14\n\x10\x44\x45VICEFAMILY_IOS\x10\x01\x12\x18\n\x14\x44\x45VICEFAMILY_ANDROID\x10\x02*.\n\tTokenType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SESSION\x10\x01\x12\x07\n\x03JWT\x10\x02\x42w\n+com.splunk.mobile.spacebridge.messages.httpP\x01ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridgeb\x06proto3')
+  serialized_options=_b('\n+com.splunk.mobile.spacebridge.messages.httpP\001'),
+  serialized_pb=_b('\n\nhttp.proto\x12\x0bSpacebridge\x1a\x0fsb_common.proto\"\xf1\x03\n\tHttpError\x12)\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x1b.Spacebridge.HttpError.Code\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xa7\x03\n\x04\x43ode\x12\x11\n\rERROR_UNKNOWN\x10\x00\x12\x1b\n\x17\x45RROR_VALIDATION_FAILED\x10\x01\x12\x1b\n\x17\x45RROR_AUTH_CODE_EXPIRED\x10\x02\x12\x1b\n\x17\x45RROR_AUTH_CODE_UNKNOWN\x10\x03\x12\x1f\n\x1b\x45RROR_ROUTING_UNDELIVERABLE\x10\x04\x12$\n ERROR_NOTIFICATION_UNDELIVERABLE\x10\x05\x12\x1f\n\x1b\x45RROR_MESSAGE_UNDELIVERABLE\x10\x06\x12\x19\n\x15\x45RROR_UPDATE_REQUIRED\x10\x07\x12\x1d\n\x19\x45RROR_CREDENTIALS_INVALID\x10\x08\x12\x1e\n\x1a\x45RROR_APPLICATION_DISABLED\x10\t\x12\x11\n\rERROR_TIMEOUT\x10\n\x12\x17\n\x13\x45RROR_ASSET_INVALID\x10\x0b\x12\x1d\n\x19\x45RROR_RATE_LIMIT_EXCEEDED\x10\x0c\x12(\n$ERROR_REGISTRATION_VALIDATION_FAILED\x10\r\"\xa1\x02\n\x1b\x44\x65viceAuthenticationRequest\x12)\n\x07\x61ppType\x18\x01 \x01(\x0e\x32\x14.Spacebridge.AppTypeB\x02\x18\x01\x12/\n\x0c\x64\x65viceFamily\x18\x02 \x01(\x0e\x32\x19.Spacebridge.DeviceFamily\x12\x15\n\tpublicKey\x18\x03 \x01(\x0c\x42\x02\x18\x01\x12\x1b\n\x13publicKeyForSigning\x18\x04 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x05 \x01(\x0c\x12\r\n\x05\x61ppId\x18\x07 \x01(\t\x12\x15\n\rclientVersion\x18\x08 \x01(\t\x12\x17\n\x0f\x61ppFriendlyName\x18\t \x01(\t\x12\x13\n\x0b\x61ppPlatform\x18\n \x01(\t\"\xd3\x01\n\x1c\x44\x65viceAuthenticationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x44\n\x07payload\x18\x02 \x01(\x0b\x32\x31.Spacebridge.DeviceAuthenticationResponse.PayloadH\x00\x1a\x38\n\x07Payload\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\x12\x11\n\texpiresAt\x18\x02 \x01(\tB\n\n\x08response\"d\n\x1fNotificationRegistrationRequest\x12\x10\n\x08\x46\x43MToken\x18\x01 \x01(\t\x12/\n\x0c\x64\x65viceFamily\x18\x02 \x01(\x0e\x32\x19.Spacebridge.DeviceFamily\"I\n NotificationRegistrationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"=\n\x13\x45nvironmentMetadata\x12\x1a\n\x12serializedMetadata\x18\x01 \x01(\x0c\x12\n\n\x02id\x18\x02 \x01(\t\"E\n\x1b\x44\x65viceUnregistrationRequest\x12\x14\n\x0c\x64\x65ploymentId\x18\x01 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\"E\n\x1c\x44\x65viceUnregistrationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"8\n\x1a\x41uthenticationQueryRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\"\xb9\x03\n\x1b\x41uthenticationQueryResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x43\n\x07payload\x18\x02 \x01(\x0b\x32\x30.Spacebridge.AuthenticationQueryResponse.PayloadH\x00\x1a\x9f\x02\n\x07Payload\x12)\n\x07\x61ppType\x18\x01 \x01(\x0e\x32\x14.Spacebridge.AppTypeB\x02\x18\x01\x12/\n\x0c\x64\x65viceFamily\x18\x02 \x01(\x0e\x32\x19.Spacebridge.DeviceFamily\x12\x10\n\x08\x64\x65viceId\x18\x03 \x01(\x0c\x12\x15\n\tpublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\x1b\n\x13publicKeyForSigning\x18\x05 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x06 \x01(\x0c\x12\r\n\x05\x61ppId\x18\x07 \x01(\t\x12\x15\n\rclientVersion\x18\x08 \x01(\t\x12\x17\n\x0f\x61ppFriendlyName\x18\t \x01(\t\x12\x13\n\x0b\x61ppPlatform\x18\n \x01(\tB\n\n\x08response\"\x9d\x02\n DevicePairingConfirmationRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\x12\x1f\n\x13\x64\x65ploymentPublicKey\x18\x03 \x01(\x0c\x42\x02\x18\x01\x12\x1e\n\x12\x65phemeralPublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\"\n\x1a\x65ncryptedCredentialsBundle\x18\x05 \x01(\x0c\x12%\n\x1d\x64\x65ploymentPublicKeyForSigning\x18\x06 \x01(\x0c\x12(\n deploymentPublicKeyForEncryption\x18\x07 \x01(\x0c\x12\x15\n\rserverVersion\x18\x08 \x01(\t\"J\n!DevicePairingConfirmationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\xeb\x01\n\x11\x43redentialsBundle\x12\x14\n\x0csessionToken\x18\x02 \x01(\t\x12\x10\n\x08userName\x18\x03 \x01(\t\x12\x16\n\x0e\x64\x65ploymentName\x18\x04 \x01(\t\x12\x14\n\x0cserverTypeId\x18\x05 \x01(\t\x12)\n\ttokenType\x18\x06 \x01(\x0e\x32\x16.Spacebridge.TokenType\x12\x16\n\x0etokenExpiresAt\x18\x07 \x01(\x03\x12=\n\x13\x65nvironmentMetadata\x18\n \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\"9\n\x1b\x41uthenticationResultRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\"\xf2\x02\n\x1c\x41uthenticationResultResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x44\n\x07payload\x18\x02 \x01(\x0b\x32\x31.Spacebridge.AuthenticationResultResponse.PayloadH\x00\x1a\xd6\x01\n\x07Payload\x12\x1e\n\x12\x65phemeralPublicKey\x18\x01 \x01(\x0c\x42\x02\x18\x01\x12\"\n\x1a\x65ncryptedCredentialsBundle\x18\x02 \x01(\x0c\x12\x1f\n\x13\x64\x65ploymentPublicKey\x18\x03 \x01(\x0c\x42\x02\x18\x01\x12%\n\x1d\x64\x65ploymentPublicKeyForSigning\x18\x04 \x01(\x0c\x12(\n deploymentPublicKeyForEncryption\x18\x05 \x01(\x0c\x12\x15\n\rserverVersion\x18\t \x01(\tB\n\n\x08response\"n\n\x13NotificationMessage\x12\n\n\x02id\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\x0c\x12\x0e\n\x06sender\x18\x03 \x01(\x0c\x12\x1e\n\x12\x65phemeralPublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\x0f\n\x07payload\x18\x05 \x01(\x0c\"\xda\x01\n\x17SendNotificationRequest\x12\x12\n\nttlSeconds\x18\x01 \x01(\x05\x12\x13\n\x0b\x63ollapseKey\x18\x02 \x01(\t\x12\x33\n\x0esignedEnvelope\x18\x03 \x01(\x0b\x32\x1b.Spacebridge.SignedEnvelope\x12?\n\x08priority\x18\x04 \x01(\x0e\x32-.Spacebridge.SendNotificationRequest.Priority\" \n\x08Priority\x12\n\n\x06NORMAL\x10\x00\x12\x08\n\x04HIGH\x10\x01\"A\n\x18SendNotificationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"I\n\x12SendMessageRequest\x12\x33\n\x0esignedEnvelope\x18\x01 \x01(\x0b\x32\x1b.Spacebridge.SignedEnvelope\"<\n\x13SendMessageResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"Q\n\x1fRegisterSigningPublicKeyRequest\x12\x1b\n\x13publicKeyForSigning\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"I\n RegisterSigningPublicKeyResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\x98\x01\n\x1dMdmAuthenticationGrantRequest\x12\x1b\n\x13\x63lientMdmPermission\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x1aG\n\x13\x43lientMdmPermission\x12\x10\n\x08\x63lientId\x18\x01 \x01(\x0c\x12\x1e\n\x16mdmPublicKeyForSigning\x18\x02 \x01(\x0c\"G\n\x1eMdmAuthenticationGrantResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\xab\x05\n$MdmAuthenticationConfirmationRequest\x12\x14\n\x0c\x63onfirmation\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x1a\xe1\x02\n\x12PairingInformation\x12=\n\x13registrationVersion\x18\x01 \x01(\x0e\x32 .Spacebridge.RegistrationVersion\x12\x14\n\x0csessionToken\x18\x02 \x01(\t\x12\x10\n\x08userName\x18\x03 \x01(\t\x12\x15\n\rserverVersion\x18\x04 \x01(\t\x12\x16\n\x0e\x64\x65ploymentName\x18\x05 \x01(\t\x12\x1d\n\x15registrationAttemptId\x18\x06 \x01(\t\x12\x14\n\x0cserverTypeId\x18\x07 \x01(\t\x12)\n\ttokenType\x18\x08 \x01(\x0e\x32\x16.Spacebridge.TokenType\x12\x16\n\x0etokenExpiresAt\x18\t \x01(\x03\x12=\n\x13\x65nvironmentMetadata\x18\n \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\x1a\xab\x01\n\x12\x43onfirmationResult\x12\x62\n\x12pairingInformation\x18\x01 \x01(\x0b\x32\x44.Spacebridge.MdmAuthenticationConfirmationRequest.PairingInformationH\x00\x12\'\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06result\x1aH\n\x0c\x43onfirmation\x12\x13\n\x0brequestorId\x18\x01 \x01(\x0c\x12#\n\x1b\x65ncryptedConfirmationResult\x18\x03 \x01(\x0c\"N\n%MdmAuthenticationConfirmationResponse\x12%\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpError\"\x9b\x01\n\x19MdmAuthenticationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12I\n\x0c\x63onfirmation\x18\x02 \x01(\x0b\x32\x31.Spacebridge.MdmAuthenticationConfirmationRequestH\x00\x42\n\n\x08response\"\xac\x01\n\x0fStorageResponse\x12\x37\n\x07payload\x18\x01 \x01(\x0b\x32$.Spacebridge.StorageResponse.PayloadH\x00\x12\'\n\x05\x65rror\x18\x02 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x1a-\n\x07Payload\x12\x0f\n\x07readUri\x18\x01 \x01(\t\x12\x11\n\texpiresAt\x18\x02 \x01(\tB\x08\n\x06result*X\n\x07\x41ppType\x12\x13\n\x0f\x41PPTYPE_INVALID\x10\x00\x12\x12\n\x0e\x41PPTYPE_ALERTS\x10\x01\x12\x14\n\x10\x41PPTYPE_APPLE_TV\x10\x02\x12\x0e\n\nAPPTYPE_AR\x10\x03*X\n\x0c\x44\x65viceFamily\x12\x18\n\x14\x44\x45VICEFAMILY_INVALID\x10\x00\x12\x14\n\x10\x44\x45VICEFAMILY_IOS\x10\x01\x12\x18\n\x14\x44\x45VICEFAMILY_ANDROID\x10\x02*.\n\tTokenType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SESSION\x10\x01\x12\x07\n\x03JWT\x10\x02\x42/\n+com.splunk.mobile.spacebridge.messages.httpP\x01\x62\x06proto3')
   ,
   dependencies=[sb__common__pb2.DESCRIPTOR,])
 
@@ -51,8 +51,8 @@ _APPTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5767,
-  serialized_end=5855,
+  serialized_start=4990,
+  serialized_end=5078,
 )
 _sym_db.RegisterEnumDescriptor(_APPTYPE)
 
@@ -78,8 +78,8 @@ _DEVICEFAMILY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5857,
-  serialized_end=5945,
+  serialized_start=5080,
+  serialized_end=5168,
 )
 _sym_db.RegisterEnumDescriptor(_DEVICEFAMILY)
 
@@ -105,8 +105,8 @@ _TOKENTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=5947,
-  serialized_end=5993,
+  serialized_start=5170,
+  serialized_end=5216,
 )
 _sym_db.RegisterEnumDescriptor(_TOKENTYPE)
 
@@ -185,35 +185,11 @@ _HTTPERROR_CODE = _descriptor.EnumDescriptor(
       name='ERROR_REGISTRATION_VALIDATION_FAILED', index=13, number=13,
       serialized_options=None,
       type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR_INSTANCE_NOT_FOUND', index=14, number=14,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR_HASH_CODE_EXPIRED', index=15, number=15,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR_HASH_CODE_UNKNOWN', index=16, number=16,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR_HASH_CODE_INVALID', index=17, number=17,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR_AUTH_CODE_PREVIOUSLY_CONFIRMED', index=18, number=18,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='ERROR_AUTH_CODE_INVALID', index=19, number=19,
-      serialized_options=None,
-      type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=119,
-  serialized_end=730,
+  serialized_end=542,
 )
 _sym_db.RegisterEnumDescriptor(_HTTPERROR_CODE)
 
@@ -234,8 +210,8 @@ _SENDNOTIFICATIONREQUEST_PRIORITY = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3774,
-  serialized_end=3806,
+  serialized_start=3267,
+  serialized_end=3299,
 )
 _sym_db.RegisterEnumDescriptor(_SENDNOTIFICATIONREQUEST_PRIORITY)
 
@@ -275,45 +251,7 @@ _HTTPERROR = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=45,
-  serialized_end=730,
-)
-
-
-_MDMVERIFICATIONBUNDLE = _descriptor.Descriptor(
-  name='MdmVerificationBundle',
-  full_name='Spacebridge.MdmVerificationBundle',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='publicKeyForSigning', full_name='Spacebridge.MdmVerificationBundle.publicKeyForSigning', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='publicKeyForEncryption', full_name='Spacebridge.MdmVerificationBundle.publicKeyForEncryption', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=732,
-  serialized_end=816,
+  serialized_end=542,
 )
 
 
@@ -387,27 +325,6 @@ _DEVICEAUTHENTICATIONREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='serializedMdmVerificationBundle', full_name='Spacebridge.DeviceAuthenticationRequest.serializedMdmVerificationBundle', index=9,
-      number=11, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mdmVerificationBundleSignature', full_name='Spacebridge.DeviceAuthenticationRequest.mdmVerificationBundleSignature', index=10,
-      number=12, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='authenticationCodeOverride', full_name='Spacebridge.DeviceAuthenticationRequest.authenticationCodeOverride', index=11,
-      number=13, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -420,8 +337,8 @@ _DEVICEAUTHENTICATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=819,
-  serialized_end=1225,
+  serialized_start=545,
+  serialized_end=834,
 )
 
 
@@ -458,8 +375,8 @@ _DEVICEAUTHENTICATIONRESPONSE_PAYLOAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1371,
-  serialized_end=1427,
+  serialized_start=980,
+  serialized_end=1036,
 )
 
 _DEVICEAUTHENTICATIONRESPONSE = _descriptor.Descriptor(
@@ -498,8 +415,8 @@ _DEVICEAUTHENTICATIONRESPONSE = _descriptor.Descriptor(
       name='response', full_name='Spacebridge.DeviceAuthenticationResponse.response',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1228,
-  serialized_end=1439,
+  serialized_start=837,
+  serialized_end=1048,
 )
 
 
@@ -524,13 +441,6 @@ _NOTIFICATIONREGISTRATIONREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='appId', full_name='Spacebridge.NotificationRegistrationRequest.appId', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -543,8 +453,8 @@ _NOTIFICATIONREGISTRATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1441,
-  serialized_end=1556,
+  serialized_start=1050,
+  serialized_end=1150,
 )
 
 
@@ -574,8 +484,8 @@ _NOTIFICATIONREGISTRATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1558,
-  serialized_end=1631,
+  serialized_start=1152,
+  serialized_end=1225,
 )
 
 
@@ -612,8 +522,8 @@ _ENVIRONMENTMETADATA = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1633,
-  serialized_end=1694,
+  serialized_start=1227,
+  serialized_end=1288,
 )
 
 
@@ -650,8 +560,8 @@ _DEVICEUNREGISTRATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1696,
-  serialized_end=1765,
+  serialized_start=1290,
+  serialized_end=1359,
 )
 
 
@@ -681,8 +591,8 @@ _DEVICEUNREGISTRATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1767,
-  serialized_end=1836,
+  serialized_start=1361,
+  serialized_end=1430,
 )
 
 
@@ -712,8 +622,8 @@ _AUTHENTICATIONQUERYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1838,
-  serialized_end=1894,
+  serialized_start=1432,
+  serialized_end=1488,
 )
 
 
@@ -794,20 +704,6 @@ _AUTHENTICATIONQUERYRESPONSE_PAYLOAD = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='serializedMdmVerificationBundle', full_name='Spacebridge.AuthenticationQueryResponse.Payload.serializedMdmVerificationBundle', index=10,
-      number=11, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mdmVerificationBundleSignature', full_name='Spacebridge.AuthenticationQueryResponse.Payload.mdmVerificationBundleSignature', index=11,
-      number=12, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -820,8 +716,8 @@ _AUTHENTICATIONQUERYRESPONSE_PAYLOAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2039,
-  serialized_end=2407,
+  serialized_start=1633,
+  serialized_end=1920,
 )
 
 _AUTHENTICATIONQUERYRESPONSE = _descriptor.Descriptor(
@@ -860,8 +756,8 @@ _AUTHENTICATIONQUERYRESPONSE = _descriptor.Descriptor(
       name='response', full_name='Spacebridge.AuthenticationQueryResponse.response',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1897,
-  serialized_end=2419,
+  serialized_start=1491,
+  serialized_end=1932,
 )
 
 
@@ -940,8 +836,8 @@ _DEVICEPAIRINGCONFIRMATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2422,
-  serialized_end=2707,
+  serialized_start=1935,
+  serialized_end=2220,
 )
 
 
@@ -971,8 +867,8 @@ _DEVICEPAIRINGCONFIRMATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2709,
-  serialized_end=2783,
+  serialized_start=2222,
+  serialized_end=2296,
 )
 
 
@@ -1044,8 +940,8 @@ _CREDENTIALSBUNDLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2786,
-  serialized_end=3021,
+  serialized_start=2299,
+  serialized_end=2534,
 )
 
 
@@ -1075,8 +971,8 @@ _AUTHENTICATIONRESULTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3023,
-  serialized_end=3080,
+  serialized_start=2536,
+  serialized_end=2593,
 )
 
 
@@ -1141,8 +1037,8 @@ _AUTHENTICATIONRESULTRESPONSE_PAYLOAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3227,
-  serialized_end=3441,
+  serialized_start=2740,
+  serialized_end=2954,
 )
 
 _AUTHENTICATIONRESULTRESPONSE = _descriptor.Descriptor(
@@ -1181,8 +1077,8 @@ _AUTHENTICATIONRESULTRESPONSE = _descriptor.Descriptor(
       name='response', full_name='Spacebridge.AuthenticationResultResponse.response',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3083,
-  serialized_end=3453,
+  serialized_start=2596,
+  serialized_end=2966,
 )
 
 
@@ -1228,13 +1124,6 @@ _NOTIFICATIONMESSAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='createdAt', full_name='Spacebridge.NotificationMessage.createdAt', index=5,
-      number=6, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1247,8 +1136,8 @@ _NOTIFICATIONMESSAGE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3456,
-  serialized_end=3585,
+  serialized_start=2968,
+  serialized_end=3078,
 )
 
 
@@ -1300,8 +1189,8 @@ _SENDNOTIFICATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3588,
-  serialized_end=3806,
+  serialized_start=3081,
+  serialized_end=3299,
 )
 
 
@@ -1331,8 +1220,8 @@ _SENDNOTIFICATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3808,
-  serialized_end=3873,
+  serialized_start=3301,
+  serialized_end=3366,
 )
 
 
@@ -1362,8 +1251,8 @@ _SENDMESSAGEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3875,
-  serialized_end=3948,
+  serialized_start=3368,
+  serialized_end=3441,
 )
 
 
@@ -1393,8 +1282,8 @@ _SENDMESSAGERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3950,
-  serialized_end=4010,
+  serialized_start=3443,
+  serialized_end=3503,
 )
 
 
@@ -1431,8 +1320,8 @@ _REGISTERSIGNINGPUBLICKEYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4012,
-  serialized_end=4093,
+  serialized_start=3505,
+  serialized_end=3586,
 )
 
 
@@ -1462,8 +1351,8 @@ _REGISTERSIGNINGPUBLICKEYRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4095,
-  serialized_end=4168,
+  serialized_start=3588,
+  serialized_end=3661,
 )
 
 
@@ -1500,8 +1389,8 @@ _MDMAUTHENTICATIONGRANTREQUEST_CLIENTMDMPERMISSION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4252,
-  serialized_end=4323,
+  serialized_start=3745,
+  serialized_end=3816,
 )
 
 _MDMAUTHENTICATIONGRANTREQUEST = _descriptor.Descriptor(
@@ -1537,8 +1426,8 @@ _MDMAUTHENTICATIONGRANTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4171,
-  serialized_end=4323,
+  serialized_start=3664,
+  serialized_end=3816,
 )
 
 
@@ -1568,8 +1457,8 @@ _MDMAUTHENTICATIONGRANTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4325,
-  serialized_end=4396,
+  serialized_start=3818,
+  serialized_end=3889,
 )
 
 
@@ -1662,8 +1551,8 @@ _MDMAUTHENTICATIONCONFIRMATIONREQUEST_PAIRINGINFORMATION = _descriptor.Descripto
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4481,
-  serialized_end=4834,
+  serialized_start=3974,
+  serialized_end=4327,
 )
 
 _MDMAUTHENTICATIONCONFIRMATIONREQUEST_CONFIRMATIONRESULT = _descriptor.Descriptor(
@@ -1702,8 +1591,8 @@ _MDMAUTHENTICATIONCONFIRMATIONREQUEST_CONFIRMATIONRESULT = _descriptor.Descripto
       name='result', full_name='Spacebridge.MdmAuthenticationConfirmationRequest.ConfirmationResult.result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4837,
-  serialized_end=5008,
+  serialized_start=4330,
+  serialized_end=4501,
 )
 
 _MDMAUTHENTICATIONCONFIRMATIONREQUEST_CONFIRMATION = _descriptor.Descriptor(
@@ -1739,8 +1628,8 @@ _MDMAUTHENTICATIONCONFIRMATIONREQUEST_CONFIRMATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5010,
-  serialized_end=5082,
+  serialized_start=4503,
+  serialized_end=4575,
 )
 
 _MDMAUTHENTICATIONCONFIRMATIONREQUEST = _descriptor.Descriptor(
@@ -1776,8 +1665,8 @@ _MDMAUTHENTICATIONCONFIRMATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=4399,
-  serialized_end=5082,
+  serialized_start=3892,
+  serialized_end=4575,
 )
 
 
@@ -1807,8 +1696,8 @@ _MDMAUTHENTICATIONCONFIRMATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5084,
-  serialized_end=5162,
+  serialized_start=4577,
+  serialized_end=4655,
 )
 
 
@@ -1848,8 +1737,8 @@ _MDMAUTHENTICATIONRESPONSE = _descriptor.Descriptor(
       name='response', full_name='Spacebridge.MdmAuthenticationResponse.response',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5165,
-  serialized_end=5320,
+  serialized_start=4658,
+  serialized_end=4813,
 )
 
 
@@ -1873,27 +1762,6 @@ _STORAGERESPONSE_PAYLOAD = _descriptor.Descriptor(
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
-      serialized_options=_b('\030\001'), file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='assetKey', full_name='Spacebridge.StorageResponse.Payload.assetKey', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='readUriExpiresAt', full_name='Spacebridge.StorageResponse.Payload.readUriExpiresAt', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='assetExpiresAt', full_name='Spacebridge.StorageResponse.Payload.assetExpiresAt', index=4,
-      number=5, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
@@ -1907,8 +1775,8 @@ _STORAGERESPONSE_PAYLOAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=5440,
-  serialized_end=5557,
+  serialized_start=4933,
+  serialized_end=4978,
 )
 
 _STORAGERESPONSE = _descriptor.Descriptor(
@@ -1947,86 +1815,8 @@ _STORAGERESPONSE = _descriptor.Descriptor(
       name='result', full_name='Spacebridge.StorageResponse.result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=5323,
-  serialized_end=5567,
-)
-
-
-_GENERATEREADURIRESPONSE_PAYLOAD = _descriptor.Descriptor(
-  name='Payload',
-  full_name='Spacebridge.GenerateReadUriResponse.Payload',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='readUri', full_name='Spacebridge.GenerateReadUriResponse.Payload.readUri', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='readUriExpiresAt', full_name='Spacebridge.GenerateReadUriResponse.Payload.readUriExpiresAt', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=5703,
-  serialized_end=5755,
-)
-
-_GENERATEREADURIRESPONSE = _descriptor.Descriptor(
-  name='GenerateReadUriResponse',
-  full_name='Spacebridge.GenerateReadUriResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='Spacebridge.GenerateReadUriResponse.payload', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='error', full_name='Spacebridge.GenerateReadUriResponse.error', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_GENERATEREADURIRESPONSE_PAYLOAD, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='result', full_name='Spacebridge.GenerateReadUriResponse.result',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=5570,
-  serialized_end=5765,
+  serialized_start=4816,
+  serialized_end=4988,
 )
 
 _HTTPERROR.fields_by_name['code'].enum_type = _HTTPERROR_CODE
@@ -2109,17 +1899,7 @@ _STORAGERESPONSE.fields_by_name['payload'].containing_oneof = _STORAGERESPONSE.o
 _STORAGERESPONSE.oneofs_by_name['result'].fields.append(
   _STORAGERESPONSE.fields_by_name['error'])
 _STORAGERESPONSE.fields_by_name['error'].containing_oneof = _STORAGERESPONSE.oneofs_by_name['result']
-_GENERATEREADURIRESPONSE_PAYLOAD.containing_type = _GENERATEREADURIRESPONSE
-_GENERATEREADURIRESPONSE.fields_by_name['payload'].message_type = _GENERATEREADURIRESPONSE_PAYLOAD
-_GENERATEREADURIRESPONSE.fields_by_name['error'].message_type = _HTTPERROR
-_GENERATEREADURIRESPONSE.oneofs_by_name['result'].fields.append(
-  _GENERATEREADURIRESPONSE.fields_by_name['payload'])
-_GENERATEREADURIRESPONSE.fields_by_name['payload'].containing_oneof = _GENERATEREADURIRESPONSE.oneofs_by_name['result']
-_GENERATEREADURIRESPONSE.oneofs_by_name['result'].fields.append(
-  _GENERATEREADURIRESPONSE.fields_by_name['error'])
-_GENERATEREADURIRESPONSE.fields_by_name['error'].containing_oneof = _GENERATEREADURIRESPONSE.oneofs_by_name['result']
 DESCRIPTOR.message_types_by_name['HttpError'] = _HTTPERROR
-DESCRIPTOR.message_types_by_name['MdmVerificationBundle'] = _MDMVERIFICATIONBUNDLE
 DESCRIPTOR.message_types_by_name['DeviceAuthenticationRequest'] = _DEVICEAUTHENTICATIONREQUEST
 DESCRIPTOR.message_types_by_name['DeviceAuthenticationResponse'] = _DEVICEAUTHENTICATIONRESPONSE
 DESCRIPTOR.message_types_by_name['NotificationRegistrationRequest'] = _NOTIFICATIONREGISTRATIONREQUEST
@@ -2147,7 +1927,6 @@ DESCRIPTOR.message_types_by_name['MdmAuthenticationConfirmationRequest'] = _MDMA
 DESCRIPTOR.message_types_by_name['MdmAuthenticationConfirmationResponse'] = _MDMAUTHENTICATIONCONFIRMATIONRESPONSE
 DESCRIPTOR.message_types_by_name['MdmAuthenticationResponse'] = _MDMAUTHENTICATIONRESPONSE
 DESCRIPTOR.message_types_by_name['StorageResponse'] = _STORAGERESPONSE
-DESCRIPTOR.message_types_by_name['GenerateReadUriResponse'] = _GENERATEREADURIRESPONSE
 DESCRIPTOR.enum_types_by_name['AppType'] = _APPTYPE
 DESCRIPTOR.enum_types_by_name['DeviceFamily'] = _DEVICEFAMILY
 DESCRIPTOR.enum_types_by_name['TokenType'] = _TOKENTYPE
@@ -2159,13 +1938,6 @@ HttpError = _reflection.GeneratedProtocolMessageType('HttpError', (_message.Mess
   # @@protoc_insertion_point(class_scope:Spacebridge.HttpError)
   ))
 _sym_db.RegisterMessage(HttpError)
-
-MdmVerificationBundle = _reflection.GeneratedProtocolMessageType('MdmVerificationBundle', (_message.Message,), dict(
-  DESCRIPTOR = _MDMVERIFICATIONBUNDLE,
-  __module__ = 'http_pb2'
-  # @@protoc_insertion_point(class_scope:Spacebridge.MdmVerificationBundle)
-  ))
-_sym_db.RegisterMessage(MdmVerificationBundle)
 
 DeviceAuthenticationRequest = _reflection.GeneratedProtocolMessageType('DeviceAuthenticationRequest', (_message.Message,), dict(
   DESCRIPTOR = _DEVICEAUTHENTICATIONREQUEST,
@@ -2420,21 +2192,6 @@ StorageResponse = _reflection.GeneratedProtocolMessageType('StorageResponse', (_
 _sym_db.RegisterMessage(StorageResponse)
 _sym_db.RegisterMessage(StorageResponse.Payload)
 
-GenerateReadUriResponse = _reflection.GeneratedProtocolMessageType('GenerateReadUriResponse', (_message.Message,), dict(
-
-  Payload = _reflection.GeneratedProtocolMessageType('Payload', (_message.Message,), dict(
-    DESCRIPTOR = _GENERATEREADURIRESPONSE_PAYLOAD,
-    __module__ = 'http_pb2'
-    # @@protoc_insertion_point(class_scope:Spacebridge.GenerateReadUriResponse.Payload)
-    ))
-  ,
-  DESCRIPTOR = _GENERATEREADURIRESPONSE,
-  __module__ = 'http_pb2'
-  # @@protoc_insertion_point(class_scope:Spacebridge.GenerateReadUriResponse)
-  ))
-_sym_db.RegisterMessage(GenerateReadUriResponse)
-_sym_db.RegisterMessage(GenerateReadUriResponse.Payload)
-
 
 DESCRIPTOR._options = None
 _DEVICEAUTHENTICATIONREQUEST.fields_by_name['appType']._options = None
@@ -2446,5 +2203,4 @@ _DEVICEPAIRINGCONFIRMATIONREQUEST.fields_by_name['ephemeralPublicKey']._options 
 _AUTHENTICATIONRESULTRESPONSE_PAYLOAD.fields_by_name['ephemeralPublicKey']._options = None
 _AUTHENTICATIONRESULTRESPONSE_PAYLOAD.fields_by_name['deploymentPublicKey']._options = None
 _NOTIFICATIONMESSAGE.fields_by_name['ephemeralPublicKey']._options = None
-_STORAGERESPONSE_PAYLOAD.fields_by_name['expiresAt']._options = None
 # @@protoc_insertion_point(module_scope)

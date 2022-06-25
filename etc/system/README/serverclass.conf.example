@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # Example 1
 # Matches all clients and includes all apps in the server class
@@ -97,7 +97,7 @@ whitelist.select_field = Client
 whitelist.from_pathname = etc/system/local/clients.csv
 
 # Example 6c
-# Use (allow list|deny list) CSV file import to read some values from the Client
+# Use (sllow list|deny list) CSV file import to read some values from the Client
 # field (ignoring all other fields) where ServerType is one of T1, T2, or
 # starts with dc.
 [serverClass:MyApps]

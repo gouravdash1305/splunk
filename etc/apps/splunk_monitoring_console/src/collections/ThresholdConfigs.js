@@ -1,19 +1,19 @@
 define([
 	'jquery',
 	'underscore',
-	'@splunk/swc-mc',
+	'collections/SplunkDsBase',
     'splunk_monitoring_console/helpers/ThresholdConfigsClient'
 ], function(
 	$,
 	_,
-	SwcMC,
+	BaseCollection,
     ThresholdConfigsClientHelper
 ){
-	return SwcMC.SplunkDsBaseCollection.extend({
+	return BaseCollection.extend({
 		url: 'configs/conf-macros',
         
         initialize: function() {
-            SwcMC.SplunkDsBaseCollection.prototype.initialize.apply(this, arguments);
+            BaseCollection.prototype.initialize.apply(this, arguments);
 
             this.listenTo(this.paging, 'change', this._updateTotal);
         },
@@ -31,7 +31,7 @@ define([
                     });
                     break;
             }
-            return SwcMC.SplunkDsBaseCollection.prototype.sync.apply(this, arguments);
+            return BaseCollection.prototype.sync.apply(this, arguments);
         },
 
         resetToDefault: function() {
@@ -64,7 +64,7 @@ define([
                 dfds.push(model.save());
             });
 
-            return Promise.all(dfds);
+            return $.when.apply($, dfds);
         },
 
         _updateTotal: function() {

@@ -3,10 +3,13 @@ import posixpath
 import zipfile
 import itertools
 import contextlib
+import sys
 import pathlib
 
-
-__all__ = ['Path']
+if sys.version_info < (3, 7):
+    from collections import OrderedDict
+else:
+    OrderedDict = dict
 
 
 def _parents(path):
@@ -50,7 +53,7 @@ def _ancestry(path):
         path, tail = posixpath.split(path)
 
 
-_dedupe = dict.fromkeys
+_dedupe = OrderedDict.fromkeys
 """Deduplicate an iterable in original order"""
 
 
@@ -101,7 +104,7 @@ class CompleteDirs(zipfile.ZipFile):
             return source
 
         if not isinstance(source, zipfile.ZipFile):
-            return cls(source)
+            return cls(_pathlib_compat(source))
 
         # Only allow for FastLookup when supplied zipfile is read-only
         if 'r' not in source.mode:
@@ -128,6 +131,17 @@ class FastLookup(CompleteDirs):
             return self.__lookup
         self.__lookup = super(FastLookup, self)._name_set()
         return self.__lookup
+
+
+def _pathlib_compat(path):
+    """
+    For path-like objects, convert to a filename for compatibility
+    on Python 3.6.1 and earlier.
+    """
+    try:
+        return path.__fspath__()
+    except AttributeError:
+        return str(path)
 
 
 class Path:
@@ -246,18 +260,6 @@ class Path:
         return pathlib.Path(self.at).name or self.filename.name
 
     @property
-    def suffix(self):
-        return pathlib.Path(self.at).suffix or self.filename.suffix
-
-    @property
-    def suffixes(self):
-        return pathlib.Path(self.at).suffixes or self.filename.suffixes
-
-    @property
-    def stem(self):
-        return pathlib.Path(self.at).stem or self.filename.stem
-
-    @property
     def filename(self):
         return pathlib.Path(self.root.filename).joinpath(self.at)
 
@@ -297,7 +299,7 @@ class Path:
         return self.__repr.format(self=self)
 
     def joinpath(self, *other):
-        next = posixpath.join(self.at, *other)
+        next = posixpath.join(self.at, *map(_pathlib_compat, other))
         return self._next(self.root.resolve_dir(next))
 
     __truediv__ = joinpath

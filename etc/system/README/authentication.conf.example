@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This is an example authentication.conf. authentication.conf is used to
 # configure LDAP, Scripted, SAML and Proxy SSO authentication in addition 
@@ -240,7 +240,6 @@ apiHostname = api-xyz.duosecurity.com
 appSecretKey = mustBeARandomStringOfSize40OrLonger
 integrationKey = mustBeADuoProvidedStringOfSize20
 secretKey = mustBeADuoProvidedStringOfSize40
-enableMfaAuthRest = true
 
 ##### Proxy SSO auth example
 
@@ -249,8 +248,8 @@ authSettings = my_proxy
 authType = ProxySSO
 
 [my_proxy]
-excludedUsers = user1,user2
-excludedAutoMappedRoles = admin
+blacklistedUsers = user1,user2
+blacklistedAutoMappedRoles = admin
 defaultRoleIfMissing = user
 
 [roleMap_proxySSO]

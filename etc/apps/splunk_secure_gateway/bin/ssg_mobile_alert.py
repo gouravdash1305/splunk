@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Script for custom mobile alert action which is called when
 a mobile alert is triggered.
@@ -8,6 +8,7 @@ a mobile alert is triggered.
 import sys
 import os
 import warnings
+import time
 from base64 import b64decode
 
 warnings.filterwarnings('ignore', '.*service_identity.*', UserWarning)
@@ -54,8 +55,8 @@ from spacebridgeapp.util.mtls import build_mtls_spacebridge_client
 from spacebridgeapp.dashboard.parse_search import get_string_field
 from spacebridgeapp.util.constants import SUBJECT, SEVERITY, CALL_TO_ACTION_URL, CALL_TO_ACTION_LABEL, \
     ALERT_TIMESTAMP_FIELD, ALERT_DASHBOARD_ID, DASHBOARD_TOGGLE, ALERT_ID, ALERT_MESSAGE, ALERT_SUBJECT, \
-    CONFIGURATION, SAVED_SEARCH_RESULT, SESSION_KEY, RESULTS_LINK, SEARCH_ID, OWNER, APP, SEARCH_NAME, \
-    ATTACH_DASHBOARD_TOGGLE, ATTACH_TABLE_TOGGLE, TOKEN, FIELDNAME, RESULT
+    CONFIGURATION, SAVED_SEARCH_RESULT, SESSION_KEY, RESULTS_LINK, SEARCH_ID, OWNER, APP_NAME, SEARCH_NAME, \
+    ATTACH_DASHBOARD_TOGGLE, ATTACH_TABLE_TOGGLE, TOKEN, FIELDNAME, RESULT, USER
 
 from spacebridgeapp.logging import setup_logging
 
@@ -108,7 +109,9 @@ async def do_trigger(alert_payload):
     alert_sid = alert_payload[SEARCH_ID]
     preprocess_payload(alert_payload)
 
-    request_context = RequestContext(auth_header=auth_header, is_alert=True)
+    # Default to empty string so urllib.quote doesn't fail if user doesn't exist
+    user = alert_payload[RESULT].get(USER, '')
+    request_context = RequestContext(auth_header=auth_header, is_alert=True, current_user=user)
 
     LOGGER.info("get_registered_devices alert_sid=%s", alert_sid)
     registered_devices = await get_registered_devices(request_context, async_kvstore_client, alert_payload)
@@ -430,7 +433,7 @@ async def fetch_search_job_dashboard_tuple(request_context, alert_payload, async
     :param async_splunk_client:
     :return:
     """
-    app_name = alert_payload[APP]
+    app_name = alert_payload[APP_NAME]
     owner = alert_payload[OWNER]
     search_id = alert_payload[SEARCH_ID]
     configuration = alert_payload[CONFIGURATION]
@@ -518,14 +521,14 @@ async def build_alert(request_context, alert_payload=None, async_splunk_client=N
     call_to_action = CallToAction(uri=configuration[CALL_TO_ACTION_URL],
                                   title=configuration[CALL_TO_ACTION_LABEL])
 
-    display_app_name = await fetch_display_app_name(request_context, alert_payload[APP], async_splunk_client)
+    display_app_name = await fetch_display_app_name(request_context, alert_payload[APP_NAME], async_splunk_client)
     notification = Notification(alert_id=configuration[ALERT_ID],
                                 severity=configuration[SEVERITY],
                                 description=configuration[ALERT_MESSAGE],
                                 title=configuration[SUBJECT],
                                 created_at=configuration[ALERT_TIMESTAMP_FIELD],
                                 call_to_action=call_to_action,
-                                app_name=alert_payload[APP],
+                                app_name=alert_payload[APP_NAME],
                                 display_app_name=display_app_name)
 
     detail = Detail(results_link=alert_payload[RESULTS_LINK],

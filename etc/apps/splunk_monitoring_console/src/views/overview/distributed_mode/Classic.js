@@ -2,9 +2,10 @@
  * Created by ykou on 12/29/14.
  */
 define([
+        'jquery',
         'underscore',
         'module',
-        '@splunk/swc-mc',
+        'views/Base',
         'splunk_monitoring_console/views/overview/distributed_mode/components/IndexerPanel',
         'splunk_monitoring_console/views/overview/distributed_mode/components/SearchHeadPanel',
         'splunk_monitoring_console/views/overview/distributed_mode/components/ClusterMasterPanel',
@@ -12,9 +13,10 @@ define([
         'splunk_monitoring_console/views/overview/distributed_mode/components/DeploymentServerPanel'
     ],
     function(
+        $,
         _,
         module,
-        SwcMC,
+        BaseView,
         IndexerPanelView,
         SearchHeadPanelView,
         ClusterMasterPanelView,
@@ -34,7 +36,7 @@ define([
             DMC_CLUSTER_MASTER_RAWDATA_SIZE_DOC: _('Represents a unique set of all compressed rawdata in replicated indexes.').t(),
             DMC_CLUSTER_MASTER_CPU_DOC: _('Snapshot machine-wide CPU usage averaged across all cluster masters.').t(),
             DMC_CLUSTER_MASTER_MEMORY_DOC: _('Snapshot machine-wide physical memory usage averaged across all cluster masters.').t(),
-            DMC_LICENSE_MASTER_WARNINGS_DOC: _('Number of license peers with at least one hard warning.').t(),
+            DMC_LICENSE_MASTER_WARNINGS_DOC: _('Number of license slaves with at least one hard warning.').t(),
             DMC_LICENSE_MASTER_LICENSE_USAGE_DOC: _('License usage and capacity aggregated across all license masters.').t(),
             DMC_LICENSE_MASTER_CPU_DOC: _('Snapshot machine-wide CPU usage averaged across all license masters.').t(),
             DMC_LICENSE_MASTER_MEMORY_DOC: _('Snapshot machine-wide physical memory usage averaged across all license masters.').t(),
@@ -42,10 +44,10 @@ define([
             DMC_DEPLOYMENT_SERVER_MEMORY_DOC: _('Snapshot machine-wide physical memory usage averaged across all deployment servers.').t()
         };
 
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             moduleId: module.id,
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
 
                 this.children.indexerPanel = new IndexerPanelView({
                     collection: {
@@ -155,7 +157,7 @@ define([
                 this.$el.append(this.children.deploymentServerPanel.render().$el);
                 return this;
             },
-            template: '<div class="alert alert-error dmc-overview-search-error-banner" style="display: none;"><i class="icon-alert"></i>' + _('One or more searches failed or cancelled, please make sure all Splunk instances are up and double check the ').t() + '<a href="monitoringconsole_configure">setup</a>' + _(' page.').t() + '</div>'
+            template: '<div class="alert alert-error dmc-overview-search-error-banner" style="display: none;"><i class="icon-alert" />' + _('One or more searches failed or cancelled, please make sure all Splunk instances are up and double check the ').t() + '<a href="monitoringconsole_configure">setup</a>' + _(' page.').t() + '</div>'
         });
     }
 );

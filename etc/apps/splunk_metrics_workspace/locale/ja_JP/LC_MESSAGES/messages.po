@@ -1,14 +1,14 @@
 # Translations template for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-05 19:32+0000\n"
-"PO-Revision-Date: 2021-03-19 15:31+0000\n"
+"POT-Creation-Date: 2020-08-17 20:05+0000\n"
+"PO-Revision-Date: 2020-09-07 13:48+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,7 +16,29 @@ msgstr ""
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ja\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:39
+msgid ""
+"\n"
+"  cursor: "
+msgstr ""
+"\n"
+"  カーソル："
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:39
+msgid ""
+"\n"
+"  display: inline-block;\n"
+"  cursor: "
+msgstr ""
+"\n"
+"  表示：inline-block;\n"
+"  カーソル："
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:6
+msgid " 0o1"
+msgstr " 0o1"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Dashboard/SaveDashboardPanel.jsx:89
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:90
@@ -140,11 +162,14 @@ msgid "(Refreshing)"
 msgstr "(更新中)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertPanel/AlertPanel.jsx:23
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:255
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:251
 #, python-format
 msgid "(Time span=%(span)s)"
 msgstr "(時間範囲=%(span)s)"
 
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/main.aaee9aca1af307a2ec8f.bundle.js:1
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/workflow-headless/fixtures/common.js:237326
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/workflow-sauce/fixtures/common.js:237326
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/lib/index.js:1
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/HierarchyMenuItem.jsx:21
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/internationalized-names.js:57
@@ -156,9 +181,17 @@ msgstr "(デフォルト)"
 msgid "(over %(span)s intervals)"
 msgstr "(%(span)s間隔で)"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:600
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:6
+msgid "+0x1"
+msgstr "+0x1"
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:601
 msgid ", "
 msgstr ", "
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:6
+msgid "0b1"
+msgstr "0b1"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/DataPanel.jsx:335
 msgid "1 match found"
@@ -218,11 +251,11 @@ msgstr "新規フィルターの追加"
 msgid "Add New Reference Line"
 msgstr "新規リファレンスラインの追加"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:176
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:174
 msgid "Add a horizontal line to indicate significant values or thresholds."
 msgstr "重要な値や閾値を示す水平線を追加します。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionFilterSection.jsx:128
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionFilterSection.jsx:126
 msgid "Add dimension filter"
 msgstr "ディメンションフィルターの追加"
 
@@ -247,7 +280,7 @@ msgid ""
 "After an alert is triggered, subsequent alerts will not be triggered until after the throttle period."
 msgstr "アラートの生成後、抑制期間を過ぎるまでそれ以降のアラートは生成されません。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:205
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:199
 msgid "Aggregation"
 msgstr "集計"
 
@@ -263,8 +296,8 @@ msgstr "アラートタイミング"
 msgid "Alerts"
 msgstr "アラート"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:57
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:63
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:55
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:61
 msgid "Alerts cannot be saved to a dashboard."
 msgstr "アラートはダッシュボードには保存できません。"
 
@@ -291,11 +324,10 @@ msgstr "すべてのグラフが読み込まれました。"
 msgid "All time"
 msgstr "全時間"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:441
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:429
 msgid "Analysis"
 msgstr "分析"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:48
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TimePicker/TimePickerDialog.jsx:26
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TransientPanel/TransientPanel.jsx:29
 msgid "Apply"
@@ -350,7 +382,6 @@ msgstr "文字、数字、およびアンダースコアーのみを使用でき
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDialog/AlertFormModal.jsx:44
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDialog/DeleteAlertDialog.jsx:30
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Dashboard/SaveDashboardPanel.jsx:141
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:43
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/TimeSpanPicker.jsx:139
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/YAxisForm.jsx:145
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Report/SaveAsReportModal.jsx:78
@@ -394,12 +425,12 @@ msgstr "グラフ"
 msgid "Choose the type of time range"
 msgstr "時間範囲のタイプを選択してください。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:385
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:386
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/icons/ClearAll.jsx:10
 msgid "Clear All"
 msgstr "すべてクリア"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:385
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:386
 msgid "Clear All Matches"
 msgstr "すべての一致をクリア"
 
@@ -518,7 +549,7 @@ msgstr "ダッシュボードID"
 msgid "Dashboard Title"
 msgstr "ダッシュボードのタイトル"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:345
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:337
 msgid "Data"
 msgstr "データ"
 
@@ -570,15 +601,11 @@ msgstr "詳細"
 msgid "Details"
 msgstr "詳細"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:141
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:135
 msgid "Dimension"
 msgstr "ディメンション"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:95
-msgid "Display"
-msgstr "表示"
-
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:271
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:264
 msgid "Display an earlier time range."
 msgstr "以前の時間範囲を表示します。"
 
@@ -691,7 +718,7 @@ msgstr "CSVとしてエクスポート"
 msgid "Export as PNG"
 msgstr "PNGとしてエクスポート"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:143
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:139
 msgid "Failed to fetch measure."
 msgstr "測定値を取得できませんでした。"
 
@@ -709,7 +736,7 @@ msgstr "インデックスの読み込みに失敗しました: %(error)s"
 msgid "Field Filter"
 msgstr "フィールドフィルター"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:406
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:407
 msgid "Filter"
 msgstr "フィルター"
 
@@ -730,7 +757,7 @@ msgid "Filtered"
 msgstr "フィルタリング済み"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDetails/AlertDetails.jsx:163
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:148
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:146
 msgid "Filters"
 msgstr "フィルター"
 
@@ -766,7 +793,7 @@ msgstr "%(datetimeEarliest)sから%(datetimeLatest)sまで"
 msgid "Global Actions"
 msgstr "グローバルアクション"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalControls/GlobalControls.jsx:145
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalControls/GlobalControls.jsx:133
 msgid "Global controls"
 msgstr "グローバル制御"
 
@@ -822,8 +849,7 @@ msgstr "階層が見つかりません：%(sourceName)s"
 msgid "High"
 msgstr "高"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:104
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:161
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:155
 msgid "Highest"
 msgstr "最も高い"
 
@@ -856,7 +882,7 @@ msgstr "含める"
 msgid "Include Value"
 msgstr "値を含める"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:149
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:147
 msgid "Include or exclude values from specific dimensions."
 msgstr "特定のディメンションからの値を含めるか、または除外します。"
 
@@ -912,13 +938,11 @@ msgstr "左"
 msgid "Let's bring you up to speed!"
 msgstr "スピードを上げましょう！"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:112
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:173
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:167
 msgid "Limit"
 msgstr "制限"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:102
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:159
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:153
 msgid "Limit Type"
 msgstr "制限タイプ"
 
@@ -972,8 +996,7 @@ msgstr "ループバックは0より大きくなければなりません"
 msgid "Low"
 msgstr "低"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:105
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:162
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:156
 msgid "Lowest"
 msgstr "最も低い"
 
@@ -1081,7 +1104,7 @@ msgstr "利用できるデータがありません"
 msgid "No details found for this alert."
 msgstr "このアラートの詳細が見つかりません。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:143
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:144
 msgid "No matches"
 msgstr "一致がありません"
 
@@ -1093,7 +1116,7 @@ msgstr "オプションがありません"
 msgid "No thresholds found for this alert"
 msgstr "このアラートの閾値が見つかりません"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:108
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:105
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/TimeShift/TimeShift.jsx:19
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/view-utils.js:8
 msgid "None"
@@ -1205,7 +1228,7 @@ msgstr "rawデータ"
 msgid "Reference Line Time Range"
 msgstr "リファレンスラインの時間範囲"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:175
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:173
 msgid "Reference Lines"
 msgstr "リファレンスライン"
 
@@ -1258,11 +1281,11 @@ msgstr "レポート%(reportName)sが作成されました。レポートを表�
 msgid "Required"
 msgstr "必須"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:82
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:80
 msgid "Reset zoom to enable auto-refresh"
 msgstr "ズームをリセットして自動更新を有効にする"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:83
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:81
 msgid "Reset zoom to enable refresh"
 msgstr "ズームをリセットして更新を有効にする"
 
@@ -1296,8 +1319,8 @@ msgid "Save All To Dashboard"
 msgstr "すべてダッシュボードに保存"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:117
-msgid "Save All To Dashboard Studio"
-msgstr "すべてダッシュボードスタジオに保存"
+msgid "Save All To Dashboards App Beta"
+msgstr "すべてをダッシュボードAppに保存 (ベータ)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Dashboard/SaveDashboardPanel.jsx:115
 msgid "Save As Dashboard Panel"
@@ -1307,13 +1330,13 @@ msgstr "ダッシュボードパネルとして保存"
 msgid "Save As Report"
 msgstr "レポートとして保存"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:129
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:127
 msgid "Save all charts to Dashboard (XML)"
 msgstr "すべてのグラフをダッシュボード(XML)に保存"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:137
-msgid "Save all charts to Dashboard Studio"
-msgstr "すべてのグラフをダッシュボードスタジオに保存"
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:135
+msgid "Save all charts to Dashboards App (beta)"
+msgstr "すべてのグラフをダッシュボードAppに保存(ベータ)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/panel-utils.js:347
 msgid "Save as Report"
@@ -1333,10 +1356,13 @@ msgstr "ストリーミングアラートとして保存"
 msgid "Save to Dashboard (XML)"
 msgstr "ダッシュボード(XML)に保存"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:116
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/panel-utils.js:337
-msgid "Save to Dashboard Studio"
-msgstr "ダッシュボードスタジオに保存"
+msgid "Save to Dashboards App (beta)"
+msgstr "ダッシュボードAppに保存(ベータ)"
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:116
+msgid "Save to Dashboards App Beta"
+msgstr "ダッシュボードAppに保存(ベータ)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/YAxisForm.jsx:129
 msgid "Scale"
@@ -1364,15 +1390,15 @@ msgstr "秒"
 msgid "Seconds Ago"
 msgstr "秒前"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:378
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:379
 msgid "Select All"
 msgstr "すべて選択"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:378
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:379
 msgid "Select All Matches"
 msgstr "すべての一致を選択"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionsDropdown.jsx:89
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionsDropdown.jsx:82
 msgid "Select a dimension"
 msgstr "ディメンションを選択"
 
@@ -1384,7 +1410,7 @@ msgstr "時間範囲を選択してください。"
 msgid "Select a valid chart to add this series"
 msgstr "このシリーズに追加する有効なグラフを選択してください"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:138
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:134
 msgid "Select an aggregation."
 msgstr "集計を選択してください。"
 
@@ -1399,15 +1425,15 @@ msgid "Select index filters"
 msgstr "インデックスフィルターの選択"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ReferenceLinePanel/ReferenceLinePanel.jsx:172
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:206
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:200
 msgid "Select or type an aggregation."
 msgstr "集計を選択または入力してください。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:146
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:147
 msgid "Select..."
 msgstr "選択..."
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Hierarchies.jsx:80
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Hierarchies.jsx:79
 msgid "Selected Index:"
 msgstr "選択済みのインデックス："
 
@@ -1479,21 +1505,15 @@ msgstr "スパン"
 msgid "Span Period"
 msgstr "スパン期間"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalControls/GlobalSplitButton.jsx:9
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:247
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:241
 msgid "Split By"
 msgstr "分割基準"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:184
-msgid "Split Metrics by a Dimension"
-msgstr "ディメンションでメトリックスを分割"
-
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDetails/AlertDetails.jsx:175
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:75
 msgid "Split by"
 msgstr "分割基準"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:248
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:242
 msgid "Split this series into separate values."
 msgstr "このシリーズを個別の値に分割します。"
 
@@ -1592,7 +1612,7 @@ msgstr ""
 msgid "There are no metric indexes"
 msgstr "メトリクスインデックスがありません"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:77
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:76
 msgid ""
 "There are not enough data points within the current time range. Select a wider time range to expand "
 "your results."
@@ -1600,14 +1620,14 @@ msgstr ""
 "現在の時間範囲内に十分な数のデータポイントがありません。もっと広い時間範囲を選択して、結果を拡張してく"
 "ださい。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:70
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:69
 msgid ""
 "There are too many data points within the current time range. Select a shorter time range to refine "
 "your results."
 msgstr ""
 "現在の時間範囲内のデータポイントが多すぎます。もっと狭い時間範囲を選択して、結果を絞り込んでください。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:61
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:60
 #, python-format
 msgid ""
 "There is no data available for %(measures)s. To see data on the chart, select a different time range, "
@@ -1623,7 +1643,7 @@ msgstr ""
 "[アラートとして保存]ダイアログを開くときに問題が発生しました。ダイアログを閉じてから再試行してくださ"
 "い。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:225
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:219
 msgid "This aggregation should only be used with accumulating counter metrics."
 msgstr "この集計は、累積カウンターメトリックスとのみ一緒に使用する必要があります。"
 
@@ -1684,7 +1704,7 @@ msgstr "時間範囲"
 msgid "Time Range Picker"
 msgstr "タイムレンジピッカー"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:270
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:263
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TimePicker/TimePickerForm.jsx:48
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TimePicker/TimePickerForm.jsx:210
 msgid "Time Shift"
@@ -1767,7 +1787,7 @@ msgstr "Appを起動できません"
 msgid "Unable to load panel."
 msgstr "パネルを読み込めません。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:86
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:85
 msgid "Unable to process the chart's time range. Using default time range"
 msgstr "グラフの時間範囲を処理できません。デフォルトの時間範囲を使用します"
 
@@ -1931,7 +1951,7 @@ msgid "by"
 msgstr "基準"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-series.js:188
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/series.js:40
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/series.js:35
 #, python-format
 msgid "by %(dimension)s"
 msgstr "基準：%(dimension)s"

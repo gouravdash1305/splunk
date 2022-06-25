@@ -119,7 +119,7 @@ class RdLock:
     def acquire(self, blocking : bool = True, timeout : float = -1) -> None:
         my_id = threading.get_ident()
         assert self.lock_holder != my_id
-        self.lock.acquire(blocking, timeout) # pylint: disable=consider-using-with
+        self.lock.acquire(blocking, timeout)
         assert self.lock_holder is None
         self.lock_holder = my_id
 

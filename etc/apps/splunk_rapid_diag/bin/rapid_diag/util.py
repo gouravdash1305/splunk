@@ -9,10 +9,8 @@ import json
 import time
 import math
 import getpass
-import struct
 from functools import wraps
 from typing import Optional, List, Union, Callable, Type, Any, Dict
-from types import SimpleNamespace
 from logging import Logger
 
 # local imports
@@ -26,7 +24,7 @@ from splunk.rest import simpleRequest
 
 BUILD_FORMAT = "%Y-%m-%dT%Hh%Mm%Ss%fus"
 IS_LINUX = sys.platform.startswith('linux')
-SPLUNK_COM_API = 'https://api.splunk.com'
+
 
 SERVER_NAME : Optional[str] = None
 def get_server_name(session_key : str) -> str:
@@ -267,18 +265,3 @@ def get_templates_path() -> str:
     """
     return get_splunkhome_path(
     ["etc", "apps", "splunk_rapid_diag", "SampleTasks"])
-
-def get_platform_maxint() -> int:
-    """This function returns the maximum int size allowed on the current OS for setting csv field size
-    """
-    max_bits = struct.Struct('i').size * 8
-    platform_c_maxint = 2**(max_bits - 1 ) - 1
-    return int(platform_c_maxint)
-
-def generate_splunkcom_payload(data: JsonObject) -> SimpleNamespace:
-    """ Generates the payload to send to info_gather"""
-    sn_upload = SimpleNamespace()
-    sn_upload.upload_user = data['upload_user']
-    sn_upload.upload_password = data['upload_password']
-    sn_upload.upload_uri = SPLUNK_COM_API
-    return sn_upload

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module to manage Subscriptions
 """
@@ -10,8 +10,6 @@ from collections import defaultdict
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.subscriptions.subscription_search_requests import update_searches, update_subscriptions
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
-from spacebridgeapp.util.config import secure_gateway_config as config
-from spacebridgeapp.subscriptions.process_manager import subprocess_subscription
 
 LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + '_subscription_manager.log', 'subscription_manager')
 
@@ -41,6 +39,7 @@ class SubscriptionManager(object):
 
     def __init__(self, input_config, encryption_context, auth_header,
                  minimum_iteration_time_seconds,
+                 process_manager,
                  search_loader,
                  job_context,
                  async_kvstore_client,
@@ -63,6 +62,7 @@ class SubscriptionManager(object):
         self.minimum_iteration_time_seconds = minimum_iteration_time_seconds
         self.warn_threshold_seconds = warn_threshold_seconds
         self.shard_id = shard_id
+        self.process_manager = process_manager
         self.base_job_context = job_context
         self.load_searches = search_loader
         self.subscription_updates = {}
@@ -99,12 +99,7 @@ class SubscriptionManager(object):
         for category in PROCESS_CATEGORY_ORDER:
             job_contexts = [self.base_job_context.with_search(search_context, self.subscription_updates)
                             for search_context in search_contexts[category]]
-
-            task_list = [asyncio.create_task(subprocess_subscription(job_context, config.get_mtls_enabled()))
-                         for job_context in job_contexts]
-
-            category_result = [await task for task in task_list]
-
+            category_result = self.process_manager.delegate(category, job_contexts)
             job_results = job_results + category_result
 
         self.subscription_updates = await self._run_post_job_updates(job_results)

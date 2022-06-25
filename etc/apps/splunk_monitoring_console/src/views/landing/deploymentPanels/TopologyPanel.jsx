@@ -6,7 +6,7 @@ import Tooltip from '@splunk/react-ui/Tooltip';
 import WaitSpinner from '@splunk/react-ui/WaitSpinner';
 import SearchJob from '@splunk/search-job';
 import { createURL } from '@splunk/splunk-utils/url';
-import { GeneralUtils } from '@splunk/swc-mc';
+import utils from 'util/general_utils';
 import './TopologyPanel.pcss';
 
 class TopologyPanel extends Component {
@@ -36,7 +36,7 @@ class TopologyPanel extends Component {
         });
 
         this.state = {
-            indexes: (GeneralUtils.normalizeBoolean(this.props.appLocal.entry.content.get('configured')) ?
+            indexes: (utils.normalizeBoolean(this.props.appLocal.entry.content.get('configured')) ?
                 undefined : this.props.indexes),
             indexers: undefined,
             indexerVersions: undefined,
@@ -52,7 +52,7 @@ class TopologyPanel extends Component {
     }
 
     componentDidMount() {
-        if (GeneralUtils.normalizeBoolean(this.props.appLocal.entry.content.get('configured'))) {
+        if (utils.normalizeBoolean(this.props.appLocal.entry.content.get('configured'))) {
             this.indexesJob = SearchJob.create({
                 search:
                     `| rest splunk_server_group=dmc_group_indexer splunk_server_group="*"
@@ -283,7 +283,7 @@ class TopologyPanel extends Component {
         };
 
         const getIndexesURL = () => (
-            GeneralUtils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
+            utils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
                 createURL(
                     'app/splunk_monitoring_console/indexes_and_volumes_deployment',
                     {
@@ -311,7 +311,7 @@ class TopologyPanel extends Component {
 
                         {
                             indexers > 0 && indexerVersions &&
-                            GeneralUtils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
+                            utils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
                             (
                                 <div className="topologyMiniCard">
                                     <Link
@@ -358,7 +358,7 @@ class TopologyPanel extends Component {
 
                         {
                             searchHeads > 0 && searchHeadVersions &&
-                            GeneralUtils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
+                            utils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
                             (
                                 <div className="topologyMiniCard">
                                     <Link
@@ -405,7 +405,7 @@ class TopologyPanel extends Component {
 
                         {
                             clusterMasters > 0 && clusterMasterVersions &&
-                            GeneralUtils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
+                            utils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
                             (
                                 <div className="topologyMiniCard">
                                     <Link
@@ -419,7 +419,7 @@ class TopologyPanel extends Component {
                                     </Link>
                                     <br />
                                     <div className="topologyLabel">
-                                        { clusterMasters > 1 ? gettext('Cluster Managers') : gettext('Cluster Manager') }
+                                        { clusterMasters > 1 ? gettext('Cluster Masters') : gettext('Cluster Master') }
                                     </div>
                                     {clusterMasterVersions.map(version => (
                                         <div
@@ -452,7 +452,7 @@ class TopologyPanel extends Component {
 
                         {
                             licenseMasters > 0 && licenseMasterVersions &&
-                            GeneralUtils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
+                            utils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
                             (
                                 <div className="topologyMiniCard">
                                     <Link
@@ -466,7 +466,7 @@ class TopologyPanel extends Component {
                                     </Link>
                                     <br />
                                     <div className="topologyLabel">
-                                        { licenseMasters > 1 ? gettext('License Managers') : gettext('License Manager') }
+                                        { licenseMasters > 1 ? gettext('License Masters') : gettext('License Master') }
                                     </div>
                                     {licenseMasterVersions.map(version => (
                                         <div
@@ -499,7 +499,7 @@ class TopologyPanel extends Component {
 
                         {
                             deploymentServers > 0 && deploymentServerVersions &&
-                            GeneralUtils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
+                            utils.normalizeBoolean(appLocal.entry.content.get('configured')) ?
                             (
                                 <div className="topologyMiniCard">
                                     <Link

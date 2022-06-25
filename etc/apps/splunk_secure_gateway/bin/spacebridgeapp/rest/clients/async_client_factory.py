@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Factory class to return async client types
 """
@@ -8,8 +8,6 @@ from spacebridgeapp.rest.clients.async_non_ssl_client import AsyncNonSslClient
 from spacebridgeapp.rest.clients.async_kvstore_client import AsyncKvStoreClient
 from spacebridgeapp.rest.clients.async_splunk_client import AsyncSplunkClient
 from spacebridgeapp.rest.clients.async_spacebridge_client import AsyncSpacebridgeClient
-from spacebridgeapp.rest.clients.async_itsi_client import AsyncITSIClient
-from spacebridgeapp.rest.clients.async_request_client import AsyncRequestClient
 from spacebridgeapp.metrics.telemetry_client import AsyncTelemetryClient
 
 # Value factory selectors
@@ -22,13 +20,12 @@ SPLUNK = 'async_splunk_client'
 SPACEBRIDGE = 'async_spacebridge_client'
 TELEMETRY = 'async_telemetry_client'
 SUBSCRIPTIONS = 'async_subscription_client'
-ITSI = 'async_itsi_client'
-REQUESTS = 'async_request_client'
 
 
 class AsyncClientFactory(object):
 
-    def __init__(self, uri, spacebridge_client=None):
+    def __init__(self, uri,
+                 spacebridge_client=None):
         """
 
         :param uri: string representing uri to make request to
@@ -42,8 +39,6 @@ class AsyncClientFactory(object):
         self._async_telemetry_client = None
         self._subscription_client = None
         self._spacebridge_client = spacebridge_client
-        self._async_itsi_client = None
-        self._async_request_client = None
 
     def from_value(self, value):
         """
@@ -65,10 +60,6 @@ class AsyncClientFactory(object):
             return self.telemetry_client()
         elif SUBSCRIPTIONS == value:
             return self.subscription_client()
-        elif ITSI == value:
-            return self.itsi_client()
-        elif REQUESTS == value:
-            return self.request_client()
         return None
 
     def async_client(self) -> AsyncClient:
@@ -106,13 +97,3 @@ class AsyncClientFactory(object):
         if not self._subscription_client:
             self._subscription_client = SubscriptionClient(self.kvstore_client(), self.splunk_client())
         return self._subscription_client
-
-    def itsi_client(self) -> AsyncITSIClient:
-        if not self._async_itsi_client:
-            self._async_itsi_client = AsyncITSIClient(self.uri)
-        return self._async_itsi_client
-    
-    def request_client(self) -> AsyncRequestClient:
-        if not self._async_request_client:
-            self._async_request_client = AsyncRequestClient(self.kvstore_client())
-        return self._async_request_client

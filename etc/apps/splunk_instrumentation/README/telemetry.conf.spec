@@ -45,12 +45,12 @@ optInVersionAcknowledged = <number>
 
 sendLicenseUsage = true|false
 * Send the licensing usage information of splunk/app to the app owner
-* Defaults to true
+* Defaults to false
 
 sendAnonymizedUsage = true|false
 * Send the anonymized usage information about various categories like
   infrastructure, utilization etc of splunk/app to Splunk, Inc
-* Defaults to true
+* Defaults to false
 
 sendSupportUsage = true|false
 * Send the support usage information about various categories like
@@ -60,7 +60,7 @@ sendSupportUsage = true|false
 sendAnonymizedWebAnalytics = true|false
 * Send the anonymized usage information about user interaction with
   splunk performed through the web UI
-* Defaults to true
+* Defaults to false
 
 precheckSendLicenseUsage = true|false
 * Default value for sending license usage in opt in modal

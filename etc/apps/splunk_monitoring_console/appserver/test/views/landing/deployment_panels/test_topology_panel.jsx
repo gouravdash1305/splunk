@@ -1,6 +1,7 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme';
-import { AppLocalModel, ClusterConfigModel } from '@splunk/swc-mc';
+import AppLocalModel from 'models/services/AppLocal';
+import ClusterConfigModel from 'models/services/cluster/Config';
 import TopologyPanel from 'splunk_monitoring_console/views/landing/deploymentPanels/TopologyPanel';
 import EnzymeAdapterReact16 from 'enzyme-adapter-react-16';
 

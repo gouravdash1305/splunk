@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" script="common_control.js, forwarder_monitoring_extension.js" stylesheet="forwarder_monitoring_extension.css">
+<form hideEdit="True" script="common_control.js, forwarder_monitoring_extension.js" stylesheet="forwarder_monitoring_extension.css">
   <label>Forwarders: Deployment</label>
   <fieldset autoRun="true" submitButton="false">
     <input id="show_instances_input" type="checkbox" searchWhenChanged="true" token="show_instances_forwarding_logs">

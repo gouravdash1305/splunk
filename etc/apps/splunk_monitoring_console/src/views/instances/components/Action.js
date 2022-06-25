@@ -4,18 +4,18 @@
 define([
     'jquery',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
     'splunk_monitoring_console/views/instances/components/ViewMenu'
 ], function(
     $,
     module,
-    SwcMC,
+    BaseView,
     ViewMenu
 ) {
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
             this.children.viewMenu = new ViewMenu({
                 instance: this.options.instance,
                 earliest: this.options.earliest,

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular Input for deleting expired tokens created by Splunk Secure Gateway
 """
@@ -17,9 +17,9 @@ from spacebridgeapp.util import py23, constants
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 
 import splunk
+from solnlib import modular_input
 import time
 from http import HTTPStatus
-from spacebridgeapp.util.base_modular_input import BaseModularInput
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.splunk_utils.common import modular_input_should_run
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
@@ -36,7 +36,7 @@ LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + '.log', 'ssg_delete_tokens_modular
 TIMEOUT_SECONDS = 5
 
 
-class DeleteTokensModularInput(BaseModularInput):
+class DeleteTokensModularInput(modular_input.ModularInput):
     title = 'Splunk Secure Gateway Deleting Expired Tokens'
     description = 'Delete expired or invalid tokens created by Secure Gateway from Splunk'
     app = 'Splunk Secure Gateway'
@@ -64,8 +64,6 @@ class DeleteTokensModularInput(BaseModularInput):
         :param input_config:
         :return:
         """
-        if not super(DeleteTokensModularInput, self).do_run(input_config):
-            return
 
         if not modular_input_should_run(self.session_key, logger=self.logger):
             self.logger.debug("Modular input will not run on this node.")
@@ -125,7 +123,7 @@ class DeleteTokensSync(object):
 
                 index_to_delete = min(3, len(tokens))
                 for i in range(0, index_to_delete - 1):
-                    if tokens[i]['content']['claims']['exp'] < current_time:
+                    if token[i]['content']['claims']['exp'] < current_time:
                         index_to_delete = i
                         break
 

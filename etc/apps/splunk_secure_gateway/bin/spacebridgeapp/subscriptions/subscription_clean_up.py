@@ -1,6 +1,6 @@
 
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 """
 import json
 from spacebridgeapp.logging import setup_logging
@@ -58,7 +58,6 @@ class SubscriptionCleanUp(object):
         collection.delete_expired_items(expired_time=stuck_search_delete_time,
                                         expiration_attribute_name=LAST_UPDATE_TIME)
         collection.delete_items_by_query({VERSION: {NOT_EQUAL: 2}})
-        collection.delete_items_by_query({LAST_UPDATE_TIME: None})
 
     def _clean_user_namespaced_items(self):
         users = get_all_mobile_users(self.session_key)

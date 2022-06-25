@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for accessing and setting opt-in signals
 """
@@ -16,22 +16,19 @@ sys.path.append(make_splunkhome_path(['etc', 'apps', 'splunk_secure_gateway', 'l
 
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.time_utils import get_current_timestamp
-from spacebridgeapp.rest.base_endpoint import BaseRestHandler, build_error_payload
+from spacebridgeapp.rest.base_endpoint import BaseRestHandler
 from spacebridgeapp.rest.services.kvstore_service import KVStoreCollectionAccessObject as KVStore
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, SESSION, AUTHTOKEN, USER, PAYLOAD, STATUS, \
     META_COLLECTION_NAME, NOBODY, TIMESTAMP, KEY, SYSTEM_AUTHTOKEN
-from spacebridgeapp.metrics.metrics_collector import OptInPageMetric
-from spacebridgeapp.rest.config.deployment_info import ensure_deployment_friendly_name
+
 
 LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + ".log", "opt_in_handler")
 
 OPT_IN = 'opt_in'
 TYPE = 'type'
 
-# The soc2 opt-in type is left over to maintain backwards compatibility of old opt-in signal, this will maintain
-# acknowledgement from previous opt-ins
+# Currently only support 'soc2' opt-in type by default
 SOC2 = 'soc2'
-DEFAULT_OPT_IN = SOC2
 
 
 class OptInHandler(BaseRestHandler, PersistentServerConnectionApplication):
@@ -44,14 +41,14 @@ class OptInHandler(BaseRestHandler, PersistentServerConnectionApplication):
         BaseRestHandler.__init__(self)
 
     def get(self, request):
-        f"""
-        Get the opt_in value by type.  Currently hardcoded to {DEFAULT_OPT_IN} type
+        """
+        Get the opt_in value by type.  Currently hardcoded to 'soc2' type
         :param request:
         :return:
         """
         try:
             auth_token = request[SESSION][AUTHTOKEN]
-            opt_in = get_opt_in(DEFAULT_OPT_IN, auth_token)
+            opt_in = get_opt_in(SOC2, auth_token)
 
             return {
                 PAYLOAD: opt_in,
@@ -61,33 +58,33 @@ class OptInHandler(BaseRestHandler, PersistentServerConnectionApplication):
             return build_error_payload(e)
 
     def post(self, request):
-        f"""
-        Post call to opt-in by type.  Currently hardcoded to {DEFAULT_OPT_IN} type
+        """
+        Post call to opt-in by type.  Currently hardcoded to 'soc2' type
         :param request:
         :return:
         """
         try:
             # system_auth token required to add key in nobody namespace
             system_authtoken = request[SYSTEM_AUTHTOKEN]
-
-            # Ensure the deployment_name is set but ignore any errors as it's not a requirement for opt-in
-            try:
-                ensure_deployment_friendly_name(auth_token=system_authtoken)
-            except splunk.RESTException:
-                LOGGER.warning("Ignoring deployment_friendly_name failure.  Not a requirement for opt-in.")
-
             user = request[SESSION][USER]
-            set_opt_in(DEFAULT_OPT_IN, user, system_authtoken)
-            metric = OptInPageMetric(system_authtoken, LOGGER, user, 'opt_in')
-            LOGGER.debug('opt_in_metrics=%s', metric)
-            metric.send_to_telemetry()
-
+            set_opt_in(SOC2, user, system_authtoken)
             return {
                 PAYLOAD: {},
                 STATUS: HTTPStatus.OK
             }
         except splunk.RESTException as e:
             return build_error_payload(e)
+
+
+# Package helpers
+def build_error_payload(e):
+    return {
+        PAYLOAD: {
+            'message': e.get_message_text(),
+            'description': e.get_extended_message_text()
+        },
+        STATUS: e.statusCode
+    }
 
 
 # Helpers to access KVStore
@@ -151,7 +148,7 @@ def is_opt_in(opt_in_type, auth_token):
     try:
         opt_in = get_opt_in(opt_in_type, auth_token)
         if opt_in and OPT_IN in opt_in and opt_in[OPT_IN]:
-            return True
+            return opt_in
     except splunk.RESTException as e:
         pass
     return False

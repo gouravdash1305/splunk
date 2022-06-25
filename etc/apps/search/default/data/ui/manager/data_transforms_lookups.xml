@@ -113,7 +113,7 @@
           <key name="requiredIfVisible" />
           <key name="submitValueEdit">value if form_data.get('type')=='external' else None</key>
           <key name="submitValueAdd">value if form_data.get('type')=='external' else None</key>
-          <key name="exampleText">Specify the command and arguments to invoke to perform lookups. The command must be a Python script located in $SPLUNK_HOME/etc/apps/app_name/bin.</key>
+          <key name="exampleText">Specify the command and arguments to invoke to perform lookups. The command must be a Python script located in $SPLUNK_HOME/etc/apps/app_name/bin or $SPLUNK_HOME/etc/searchscripts.</key>
         </element>
         <element name="spl-ctrl_ex_cmd_fields_list" type="textfield" label="Supported fields">
           <view name="create"/>

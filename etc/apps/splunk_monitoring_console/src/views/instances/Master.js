@@ -6,10 +6,20 @@ define([
     'underscore',
     'backbone',
     'module',
+    'splunk.i18n',
+    'splunk.util',
+    'models/classicurl',
+    'views/Base',
+    "splunkjs/mvc/utils",
+    "splunkjs/mvc/searchmanager",
+    "splunkjs/mvc/tableview",
+    "splunkjs/mvc/dropdownview",
     'splunk_monitoring_console/views/instances/components/Action',
-    'splunk_monitoring_console/views/utils',
-    '@splunk/swc-mc',
+    'views/monitoringconsole/utils',
+    'views/shared/controls/SyntheticSelectControl',
     'contrib/text!splunk_monitoring_console/views/instances/Master.html',
+    'util/time',
+    'uri/route',
     './Master.pcss'
 ],
     function(
@@ -17,10 +27,20 @@ define([
         _,
         Backbone,
         module,
+        i18n,
+        splunkUtil,
+        classicurl,
+        BaseView,
+        utils,
+        SearchManager,
+        TableView,
+        DropdownInput,
         ActionView,
         dmc_utils,
-        SwcMC,
+        SyntheticSelectControl,
         Template,
+        time_utils,
+        route,
         css
         ){
         var SEARCH_SPLUNK_INSTANCES = function(group) {
@@ -48,13 +68,13 @@ define([
          *
          */
 
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             moduleId: module.id,
             template: Template,
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
 
-                var learnMoreLink = SwcMC.URIRoute.docHelp(
+                var learnMoreLink = route.docHelp(
                     this.model.application.get('root'),
                     this.model.application.get('locale'),
                     'app.management_console.instances'
@@ -68,8 +88,8 @@ define([
                 this.earliest = this.model.earliestModel.get('value') || DEFAULT_EARLIEST;
                 this.latest = this.model.latestModel.get('value') || DEFAULT_LATEST;
                 this.description = this._getDescription();
-                this.drilldownSearchString = SwcMC.ClassicURLModel.get('search') ? SwcMC.ClassicURLModel.get('search') : undefined;
-                this.group = SwcMC.ClassicURLModel.get('group') ? SwcMC.ClassicURLModel.get('group') : undefined;
+                this.drilldownSearchString = classicurl.get('search') ? classicurl.get('search') : undefined;
+                this.group = classicurl.get('group') ? classicurl.get('group') : undefined;
 
                 // create group options
                 this.groupDropdownOptions = [ALL_GROUP_OPTION];
@@ -96,7 +116,7 @@ define([
                     this.groupDropdownDefault = ALL_GROUP_OPTION['value'];
                 }
 
-                this.groupDropdownView = new SwcMC.DropdownView({
+                this.groupDropdownView = new DropdownInput({
                     "id": "groupDropdown",
                     "choices": this.groupDropdownOptions,
                     "labelField": "label",
@@ -113,39 +133,39 @@ define([
                 this.groupDropdownView.on("change", function(newValue) {
                     $('.dmc-instances-total-count').text('');
                     if (newValue == CUSTOM_GROUP_OPTION['value']) {
-                        SwcMC.ClassicURLModel.unset('group');
+                        classicurl.unset('group');
                         this.instanceSearchManager.settings.set("search", this.drilldownSearchString);
                     }
                     else {
-                        SwcMC.ClassicURLModel.set('group', newValue);
+                        classicurl.set('group', newValue);
                         this.instanceSearchManager.settings.set("search", SEARCH_SPLUNK_INSTANCES(newValue));
                     }
-                    SwcMC.ClassicURLModel.save();
+                    classicurl.save();
                     this.render();
                 }.bind(this));
 
                 // Populating search for field 'field1'
-                var smcGetGroups = new SwcMC.SearchManager({
+                var smcGetGroups = new SearchManager({
                     "id": "smcGetGroups",
                     "search": "| `dmc_get_groups`",
                     "earliest_time": this.earliest,
                     "status_buckets": 0,
                     "latest_time": this.latest,
                     "cancelOnUnload": true,
-                    "app": SwcMC.Utils.getCurrentApp(),
+                    "app": utils.getCurrentApp(),
                     "auto_cancel": 90,
                     "preview": true,
                     "runWhenTimeIsUndefined": false
                 }, {tokens: true});
 
-                this.instanceSearchManager = new SwcMC.SearchManager({
+                this.instanceSearchManager = new SearchManager({
                     "id": "instanceSearchManager",
                     "latest_time": this.latest,
                     "earliest_time": this.earliest,
                     "search": this.searchString,
                     "status_buckets": 0,
                     "cancelOnUnload": true,
-                    "app": SwcMC.Utils.getCurrentApp(),
+                    "app": utils.getCurrentApp(),
                     "auto_cancel": 90,
                     "preview": true,
                     "runWhenTimeIsUndefined": false
@@ -156,7 +176,7 @@ define([
                     $('.dmc-instances-total-count').text(totalCount + unit);
                 });
 
-                this.instancesTable = new SwcMC.TableView({
+                this.instancesTable = new TableView({
                     "id": "instancesTable",
                     "refresh.time.visible": "false",
                     "managerid": "instanceSearchManager",
@@ -168,7 +188,7 @@ define([
                 }, {tokens: true});
 
                 // Use the BaseCellRenderer class to create a custom table cell renderer
-                var CustomIconCellRenderer = SwcMC.TableView.BaseCellRenderer.extend({
+                var CustomIconCellRenderer = TableView.BaseCellRenderer.extend({
                     canRender: function(cellData) {
                         return cellData.field === 'Action' || cellData.field === 'Status' || cellData.field === 'Role';
                     },
@@ -221,7 +241,7 @@ define([
                 // Render the table
                 this.instancesTable.render();
 
-                this.children.countPerPageDropdownView = new SwcMC.SyntheticSelectControlView({
+                this.children.countPerPageDropdownView = new SyntheticSelectControl({
                     model: this.instancesTable.settings,
                     modelAttribute: 'pageSize',
                     items: [
@@ -247,11 +267,7 @@ define([
                 if (!time) {
                     return '';
                 }
-                return SwcMC.Splunki18n.format_datetime(SwcMC.TimeUtil.isoToDateObject(time), 'short');
-            },
-
-            _escapeDescription: function(description) {
-                return SwcMC.SplunkUtil.escapeHtml(description);
+                return i18n.format_datetime(time_utils.isoToDateObject(time), 'short');
             },
 
             _escapeDescription: function(description) {
@@ -259,9 +275,9 @@ define([
             },
 
             _getDescription: function() {
-                if (SwcMC.ClassicURLModel.get('description')) {
+                if (classicurl.get('description')) {
                     var timeRange = _("Time range: ").t() + this._formatTime(this.earliest) + _(" ~ ").t() + this._formatTime(this.latest) + _(". ").t();
-                    var escapedDescription = this._escapeDescription(SwcMC.ClassicURLModel.get('description'));
+                    var escapedDescription = this._escapeDescription(classicurl.get('description'));
                     return timeRange + _(escapedDescription).t();
                 }
                 return undefined;

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 # Splunk specific dependencies
 import sys
 
@@ -39,8 +39,8 @@ class SecureGatewayAsyncCheck(GeneratingCommand):
 
         if not self.useProxy:
             proxy = None
-        proxy_url = 'http://{}:{}'.format(proxy["host"], proxy["port"]) if proxy else None
-        client = AsyncClient(AioHttpClient(proxy=proxy_url))
+
+        client = AsyncClient(AioHttpClient(proxy=proxy))
 
         try:
             result = await client.async_get_request(uri, None)

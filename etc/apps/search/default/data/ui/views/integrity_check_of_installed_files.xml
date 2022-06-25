@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True">
+<form hideEdit="True">
   <label>Integrity Check of Installed Files</label>
   <fieldset submitButton="false" autoRun="true"></fieldset>
   <row>
@@ -56,9 +56,9 @@
       </html>
       <table>
         <search>
-          <query>| rest splunk_server=$splunk_server$ /services/server/status/installed-file-integrity
-| fields check_failures.*
-| untable splunk_server file_path check_result
+          <query>| rest splunk_server=$splunk_server$ /services/server/status/installed-file-integrity 
+| fields check_failures.* 
+| untable splunk_server file_path check_result 
 | replace "check_failures.*" WITH "*" IN file_path
 | fields file_path check_result
 | rename file_path AS "File path" check_result AS "Check result"</query>

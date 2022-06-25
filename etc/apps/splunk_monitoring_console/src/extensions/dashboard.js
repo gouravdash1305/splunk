@@ -34,13 +34,14 @@ define([
 
     if (_.contains(REDIRECT_VIEWS, thisPage)) {
         $('.dashboard-body > :not(.dashboard-header)').css('visibility', 'hidden');
-        currentApp.dfd.then(function() {
+        currentApp.dfd.done(function() {
             var configured = currentApp.entry.content.get('configured');
+            
             if (!configured) {
                 $('.dashboard-header').append('<p>' + _("This dashboard is not available, because the Monitoring Console is in standalone mode.").t() + '</p>');
                 invokeStandalone();
             } else {
-                $('.dashboard-body > :not(.dashboard-header)').css('visibility', 'visible');
+                $('.dashboard-body > :not(.dashboard-header)').css('visibility', 'visibile');
             }
         });
     }

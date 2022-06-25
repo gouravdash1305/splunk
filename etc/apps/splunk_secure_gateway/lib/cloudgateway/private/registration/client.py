@@ -11,7 +11,7 @@ from cloudgateway import py23
 from functools import partial
 
 
-def build_device_authentication_request(device_info, mdm_encryption_context=None):
+def build_device_authentication_request(device_info):
     """Builds a DeviceAuthenticationRequest proto which will be sent
     to Cloud Gateway
 
@@ -30,25 +30,10 @@ def build_device_authentication_request(device_info, mdm_encryption_context=None
     device_authentication_request.appFriendlyName = device_info.app_name if device_info.app_name else ""
     device_authentication_request.appPlatform = device_info.platform if device_info.platform else ""
 
-    if mdm_encryption_context:
-        mdm_bundle = http_pb2.MdmVerificationBundle()
-        mdm_bundle.publicKeyForSigning = device_info.sign_public_key
-        mdm_bundle.publicKeyForEncryption = device_info.encrypt_public_key
-        serialized_bundle = mdm_bundle.SerializeToString()
-
-        device_authentication_request.serializedMdmVerificationBundle = serialized_bundle
-        device_authentication_request.mdmVerificationBundleSignature = \
-            sign_detached(mdm_encryption_context.sodium_client,
-                          mdm_encryption_context.sign_private_key(),
-                          serialized_bundle)
-
-
-
     return device_authentication_request
 
 
-def make_device_authentication_request(device_info, encryption_context, config, key_bundle=None,
-                                       mdm_encryption_context=None):
+def make_device_authentication_request(device_info, encryption_context, config, key_bundle=None):
     """Makes a device authentication request to Cloud Gateway. If successful,
     Cloud Gateway will return a DeviceAuthenticationResponse object.
 
@@ -66,7 +51,7 @@ def make_device_authentication_request(device_info, encryption_context, config, 
     """
 
     with requests_ssl_context(key_bundle) as cert:
-        request_proto = build_device_authentication_request(device_info, mdm_encryption_context)
+        request_proto = build_device_authentication_request(device_info)
         try:
             spacebridge_header = {'Authorization': sb_auth_header(encryption_context)}
             return requests.post(sb_client_auth_endpoint(config),

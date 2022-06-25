@@ -11,7 +11,7 @@ from splunk.persistconn.application import PersistentServerConnectionApplication
 
 # local imports
 import logger_manager as log
-from rapid_diag_handler_utils import  persistent_handler_wrap_handle, create_rapiddiag_payload
+from rapid_diag_handler_utils import get_endpoint, persistent_handler_wrap_handle, create_rapiddiag_payload
 from rapid_diag.task_handler import TaskHandler
 from rapid_diag.collector.tools_collector import ToolsCollector
 from rapid_diag.collector.system_call_trace import SystemCallTrace
@@ -86,10 +86,17 @@ class RapidDiagInfoEndpoint(PersistentServerConnectionApplication):
 
     def _handle(self, args : JsonObject) -> JsonObject:
         force_reload = next((arg[1] for arg in args['query'] if arg[0]=='force_reload'), False)
+        local = next((arg[1] for arg in args['query'] if arg[0]=='local'), False)
         collector_availability_status : Union[List[JsonObject], JsonObject] = {}
-        if force_reload:
-            tool_manager = SessionGlobals.get_tool_availability_manager()
-            tool_manager.reset()
-        collector_availability_status = get_collector_availability_status(args['system_authtoken'])
+
+        if not local:
+            if force_reload:
+                tool_manager = SessionGlobals.get_tool_availability_manager()
+                tool_manager.reset()
+
+            collector_availability_status = get_collector_availability_status(args['system_authtoken'])
+        else:
+            collector_availability_status = get_endpoint('rapid_diag/info' + (' force_reload=1' if force_reload else ''),
+                                                            args['system_authtoken'])
         _LOGGER.debug("Response: %s", str(collector_availability_status))
         return create_rapiddiag_payload(data=collector_availability_status)

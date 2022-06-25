@@ -8,10 +8,10 @@
 define(
     [
         'underscore',
-        '@splunk/swc-mc'
+        'collections/services/saved/Searches'
     ],
-    function(_, SwcMC) {
-        return SwcMC.SavedSearchesCollection.extend({
+    function(_, SavedSearchCollection) {
+        return SavedSearchCollection.extend({
             /**
              * Generates the search string to pass in the EAI Request. This is calculated from the name and
              * description attributes.
@@ -41,7 +41,7 @@ define(
                         _.isUndefined(options.data.count) && model.fetchData.set('count', 25);
                         break;
                 }
-                return SwcMC.SavedSearchesCollection.prototype.sync.apply(this, arguments);
+                return SavedSearchCollection.prototype.sync.apply(this, arguments);
             }
         });
     }

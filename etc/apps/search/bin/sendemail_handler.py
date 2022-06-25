@@ -1,16 +1,14 @@
-import re
-from smtplib import SMTPNotSupportedError 
 import socket
-
-from email.header import Header
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
 import splunk.admin as admin
 import splunk.entity as en
 import splunk.mining.dcutils as dcu
 import splunk.secure_smtplib as secure_smtplib
 import splunk.ssl_context as ssl_context
+import re
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.header import Header
 
 logger = dcu.getLogger()
 
@@ -140,16 +138,7 @@ class SendemailRestHandler(admin.MConfigHandler):
     if len(username) > 0 and len(password) > 0:
         smtp.login(username, password)
 
-    # Installed SMTP daemon may not support UTF8. 
-    # This can only be determined if SMTPNotSupportedError is raised. 
-    # Try without SMTPUTF8 option if raised.
-    try:
-        # mail_options SMTPUTF8 allows UTF8 message serialization
-        smtp.sendmail(sender, recipients, message.as_string(), mail_options=["SMTPUTF8"])
-    except SMTPNotSupportedError:
-        # sendmail is not configured to handle UTF8
-        smtp.sendmail(sender, recipients, message.as_string())
-    
+    smtp.sendmail(sender, recipients, message.as_string())
     smtp.quit()
 
   def getAlertActions(self, sessionKey):

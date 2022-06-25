@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for representation of data objects for dashboard_data
 """
@@ -14,20 +14,13 @@ os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 from splapp_protocol import common_pb2
 from spacebridgeapp.data.base import SpacebridgeAppBase
 from spacebridgeapp.data import form_input_data
-from spacebridgeapp.udf.udf_data import UdfDashboardDescription
+from spacebridgeapp.dashboard.udf_data import UdfDashboardDescription
 from spacebridgeapp.util.type_to_string import to_utf8_str
-from spacebridgeapp.search.input_token_support import get_tokens_for_search
 from spacebridgeapp.util import constants
 from spacebridgeapp.logging import setup_logging
 
 LOGGER = setup_logging(constants.SPACEBRIDGE_APP_NAME + "_dashboard_data.log", "dashboard_data")
 
-NAME = 'name'
-COLUMNS = 'columns'
-FIELDS = 'fields'
-OPTIONS = 'options'
-DATA = 'data'
- 
 
 class DashboardVisualizationId(SpacebridgeAppBase):
     """Pair of dashboard id and visualization id.
@@ -73,10 +66,9 @@ class DashboardData(SpacebridgeAppBase):
     """Pair of visualization id and the corresponding data
     """
 
-    def __init__(self, dashboard_visualization_id=None, visualization_data=None, trellis_visualization_data=None):
+    def __init__(self, dashboard_visualization_id=None, visualization_data=None):
         self.visualization_data = visualization_data
         self.dashboard_visualization_id = dashboard_visualization_id
-        self.trellis_visualization_data = trellis_visualization_data
 
     def set_protobuf(self, proto):
         """Takes a proto of type DashboardData and populates
@@ -88,8 +80,6 @@ class DashboardData(SpacebridgeAppBase):
         self.dashboard_visualization_id.set_protobuf(proto.dashboardVisualizationId)
         if self.visualization_data is not None:
             self.visualization_data.set_protobuf(proto.visualizationData)
-        if self.trellis_visualization_data is not None:
-            self.trellis_visualization_data.set_protobuf(proto.trellisVisualizationData)
 
     def to_protobuf(self):
         """returns protobuf representation of this object
@@ -175,41 +165,6 @@ class VisualizationData(SpacebridgeAppBase):
         self.field_names = field_names
         self.columns = columns
         self.fields_meta_list = fields_meta_list
-
-    @staticmethod
-    def from_response_json(json_object):
-        """
-        Static helper to create VisualizationData object from a response_json
-        :param json_object:
-        :return:
-        """
-        fields_meta = []
-        columns = []
-        field_names = []
-        if isinstance(json_object, dict):
-            if FIELDS in json_object:
-                fields = json_object[FIELDS]
-                field_names = [field[NAME] if isinstance(field, dict) and NAME in field else field for field in fields]
-                fields_meta = [{NAME: field} if isinstance(field, str) else field for field in fields]
-
-            if COLUMNS in json_object:
-                columns = [Column(column) for column in json_object[COLUMNS]]
-
-        return VisualizationData(field_names=field_names, fields_meta_list=fields_meta, columns=columns)
-
-    @staticmethod
-    def from_ds_test(ds_test):
-        """
-        Static helper to create VisualizationData object from ds.test data_source
-        :param ds_test:
-        :return:
-        """
-        if isinstance(ds_test, dict):
-            if OPTIONS in ds_test:
-                options = ds_test[OPTIONS]
-                if DATA in options:
-                    return VisualizationData.from_response_json(options[DATA])
-        return VisualizationData.from_response_json(None)
 
     def set_protobuf(self, proto):
         proto.fields.extend(self.field_names)
@@ -315,17 +270,11 @@ class DashboardDescription(SpacebridgeAppBase):
                  meta=None,
                  definition=None,
                  submit_button=False,
-                 auto_run=False,
-                 is_udf=False,
-                 theme="",
-                 tags=None):
-
-        if tags is None:
-            tags = []
+                 auto_run=False):
 
         self.dashboard_id = dashboard_id
         self.title = title
-        self.description = description if description is not None else ""
+        self.description = description
         self.app_name = app_name
         self.display_app_name = display_app_name
         self.uses_custom_css = uses_custom_css
@@ -338,9 +287,6 @@ class DashboardDescription(SpacebridgeAppBase):
         self.definition = definition
         self.submit_button = submit_button
         self.auto_run = auto_run
-        self.is_udf = is_udf
-        self.theme = theme
-        self.tags = tags
 
     def set_protobuf(self, proto):
         """Takes a proto of type DashboardDescription and populates
@@ -351,7 +297,7 @@ class DashboardDescription(SpacebridgeAppBase):
         """
         proto.dashboardId = self.dashboard_id
         proto.title = self.title
-        proto.description = self.description if self.description is not None else ""
+        proto.description = self.description
         proto.appName = self.app_name
         proto.displayAppName = self.display_app_name
         proto.usesCustomCss = self.uses_custom_css
@@ -373,13 +319,8 @@ class DashboardDescription(SpacebridgeAppBase):
             else:
                 self.definition.set_protobuf(proto.definition)
 
-        tags_list = [to_utf8_str(tag) for tag in self.tags]
-        proto.tags.extend(tags_list)
-
         proto.submitButton = self.submit_button
         proto.autoRun = self.auto_run
-        proto.isUdf = self.is_udf
-        proto.theme = self.theme
 
     def to_protobuf(self):
         """returns protobuf representation of this object
@@ -464,7 +405,7 @@ class DashboardDefinition(SpacebridgeAppBase):
         """
         proto.dashboardId = self.dashboard_id
         proto.title = self.title
-        proto.description = self.description if self.description is not None else ""
+        proto.description = self.description
         proto.refresh = self.refresh
 
         rows_protos = [row.to_protobuf() for row in self.list_rows]
@@ -613,7 +554,6 @@ class InputToken(SpacebridgeAppBase):
         self.set_protobuf(proto)
         return proto
 
-
 class ChangeCondition(SpacebridgeAppBase):
     """
     Container for data for change condition. A change condition contains change tokens
@@ -647,7 +587,6 @@ class ChangeCondition(SpacebridgeAppBase):
         self.set_protobuf(proto)
         return proto
 
-
 class ConditionToken(SpacebridgeAppBase):
     """
     Container for data for a condition token
@@ -667,7 +606,6 @@ class ConditionToken(SpacebridgeAppBase):
         proto = common_pb2.ConditionToken()
         self.set_protobuf(proto)
         return proto
-
 
 class DashboardRow(SpacebridgeAppBase):
     """Container for data for dashboard row. A row contains
@@ -819,16 +757,13 @@ class Search(SpacebridgeAppBase):
                  sample_ratio=0,
                  post_search="",
                  query="",
-                 app=None,
                  ref=None,
                  base=None,
                  id=None,
                  depends=None,
                  rejects=None,
-                 search_handlers=None):
-
-        if refresh is None:
-            refresh = ""
+                 search_handlers=None,
+                 search_token_names=None):
 
         if depends is None:
             depends = []
@@ -839,6 +774,9 @@ class Search(SpacebridgeAppBase):
         if search_handlers is None:
             search_handlers = []
 
+        if search_token_names is None:
+            search_token_names = []
+
         self.earliest = earliest
         self.latest = latest
         self.refresh = refresh
@@ -847,6 +785,7 @@ class Search(SpacebridgeAppBase):
         self.depends = depends
         self.rejects = rejects
         self.search_handlers = search_handlers
+        self.search_token_names = search_token_names
 
         # This field is not going to be used but is here because it was defined in proto
         self.post_search = post_search
@@ -854,17 +793,8 @@ class Search(SpacebridgeAppBase):
         # These fields are not persisted to proto
         self.query = query
         self.ref = ref
-        self.app = app
         self.base = base
         self.id = id
-
-        # Populate search_token_names
-        self.search_token_names = []
-        self.search_token_names.extend(get_tokens_for_search(self.query))
-        self.search_token_names.extend(get_tokens_for_search(self.earliest))
-        self.search_token_names.extend(get_tokens_for_search(self.latest))
-        self.search_token_names.extend(get_tokens_for_search(self.refresh))
-        self.search_token_names = sorted(list(set(self.search_token_names)))
 
     def set_protobuf(self, proto):
         """Takes a proto of type Search and populates
@@ -1025,9 +955,8 @@ class Format(SpacebridgeAppBase):
         self.set_protobuf(proto)
         return proto
 
-
 class DashboardVisualization(SpacebridgeAppBase):
-    """ A dashboard visualization consists of a visualization id, the search associated to the visualization,
+    """ A dasboard visualization consists of a visualization id, the search associated to the visualization,
     the visualization type and a map of misc options.
     """
 

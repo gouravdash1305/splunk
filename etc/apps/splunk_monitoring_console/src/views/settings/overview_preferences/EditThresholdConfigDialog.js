@@ -9,8 +9,12 @@ define([
 	'underscore',
 	'backbone',
 	'module',
+	'models/shared/LinkAction',
+	'models/Base',
 	'splunk_monitoring_console/models/ThresholdConfig',
-	'@splunk/swc-mc',
+	'views/shared/FlashMessages',
+	'views/shared/Modal',
+    'util/splunkd_utils',
     'splunk_monitoring_console/views/settings/overview_preferences/components/ColorRangeControlGroup',
     'splunk_monitoring_console/helpers/ThresholdConfigsClient'
 ], function (
@@ -18,19 +22,23 @@ define([
 	_,
 	Backbone,
 	module,
+	LinkAction,
+	BaseModel,
 	ThresholdConfig,
-	SwcMC,
+	FlashMessagesView,
+	Modal,
+	splunkDUtils,
 	ColorRangesControlGroup,
 	ThresholdConfigsClientHelper
 ) {
-	return SwcMC.ModalView.extend({
+	return Modal.extend({
 		moduleId: module.id,
-        className: SwcMC.ModalView.CLASS_NAME + ' edit-dialog-modal',
+        className: Modal.CLASS_NAME + ' edit-dialog-modal',
         _allInputsValid: true,
 
 		initialize: function (options) {
-			SwcMC.ModalView.prototype.initialize.apply(this, arguments);
-			this.children.flashMessagesView = new SwcMC.FlashMessagesView({ model: { thresholdConfig: this.model.thresholdConfig }});
+			Modal.prototype.initialize.apply(this, arguments);
+			this.children.flashMessagesView = new FlashMessagesView({ model: { thresholdConfig: this.model.thresholdConfig }});
 
 			this.ranges = this.model.colorRanges.rangesValuesToArray();
             this.colors = this.model.colorRanges.colorValuesToArray();
@@ -80,7 +88,7 @@ define([
 	        if (failed) {
 	            this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('validation_failed',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -88,7 +96,7 @@ define([
 	        }
 	    },
 
-		events: $.extend({}, SwcMC.ModalView.prototype.events, {
+		events: $.extend({}, Modal.prototype.events, {
 			'shown': function(e) {
 				$(document).off('focusin.modal');
 			},
@@ -114,7 +122,7 @@ define([
 	            var errMessage = _('Failed to save changes to color mapping.').t();
 	            this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('save_failed',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -125,17 +133,17 @@ define([
 		render: function () {
 			var BUTTON_SAVE = '<a href="#" id="save-edit-btn" class="btn btn-primary modal-btn-save modal-btn-primary">' + _('Save').t() + '</a>';
 			
-			this.$el.html(SwcMC.ModalView.TEMPLATE);
-			this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html( _('Edit: ').t() + this.model.colorRanges.get('displayName'));
-			this.$(SwcMC.ModalView.BODY_SELECTOR).show();
-			this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
-			this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template());
+			this.$el.html(Modal.TEMPLATE);
+			this.$(Modal.HEADER_TITLE_SELECTOR).html( _('Edit: ').t() + this.model.colorRanges.get('displayName'));
+			this.$(Modal.BODY_SELECTOR).show();
+			this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
+			this.$(Modal.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template());
 
 			this.children.colorRangesView.render().appendTo(this.$('.color-ranges-view-placeholder'));
 			this.children.flashMessagesView.render().appendTo(this.$('.flash-messages-view-placeholder'));
 			
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(BUTTON_SAVE);
+			this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
+			this.$(Modal.FOOTER_SELECTOR).append(BUTTON_SAVE);
 
 
 			return this;

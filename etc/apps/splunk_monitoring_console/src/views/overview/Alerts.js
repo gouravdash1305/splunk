@@ -6,31 +6,55 @@ define([
         'underscore',
         'backbone',
         'module',
-        '@splunk/swc-mc',
+        'views/Base',
+        'splunkjs/mvc/searchmanager',
+        'splunkjs/mvc/tableview',
+        'splunkjs/mvc/utils',
+        'splunkjs/mvc/dropdownview',
+        'models/search/Job',
+        'models/services/search/jobs/Result',
+        'collections/services/saved/Searches',
+        'views/shared/controls/SyntheticSelectControl',
         'splunk_monitoring_console/views/overview/util',
-        'contrib/text!./Alerts.html',
-        'contrib/text!../../svg/Alert.svg'
+        'splunk.util',
+        'splunk.config',
+        'splunk.i18n',
+        'uri/route',
+        'contrib/text!splunk_monitoring_console/views/overview/Alerts.html',
+        'contrib/text!splunk_monitoring_console/svg/Alert.svg'
     ],
     function(
         $,
         _,
         Backbone,
         module,
-        SwcMC,
+        BaseView,
+        SearchManager,
+        TableView,
+        utils,
+        DropdownView,
+        SearchJobModel,
+        ResultModel,
+        SavedSearchesCollection,
+        SyntheticSelectControl,
         dmcUtil,
+        util,
+        config,
+        i18n,
+        route,
         Template,
         AlertIcon
     ){
-        var root = (SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.indexOf("/") === 0 ? SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.substring(1) : SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH);
+        var root = (config.MRSPARKLE_ROOT_PATH.indexOf("/") === 0 ? config.MRSPARKLE_ROOT_PATH.substring(1) : config.MRSPARKLE_ROOT_PATH);
 
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             moduleId: module.id,
             id: 'smc-alerts-view-container',
             template: Template,
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
                 this.$el.html(this.compiledTemplate({
-                    alerts_setup_link: SwcMC.URIRoute.page(root, SwcMC.SplunkConfig.LOCALE, 'splunk_monitoring_console', 'monitoringconsole_alerts_setup'),
+                    alerts_setup_link: route.page(root, config.LOCALE, 'splunk_monitoring_console', 'monitoringconsole_alerts_setup'),
                     AlertIcon: AlertIcon,
                     serverInfo: this.model.serverInfo
                 }));
@@ -39,17 +63,17 @@ define([
 
                 this.alertsTableView = this._alertsTableView();
 
-                var customInstanceRenderer = SwcMC.TableView.BaseCellRenderer.extend({
+                var customInstanceRenderer = TableView.BaseCellRenderer.extend({
                     canRender: function(cellData) {
                         return cellData.field === "Instance";
                     },
 
                     render: function($td, cellData) {
                         var sid = cellData.value;
-                        var searchJob = new SwcMC.JobModel({id: sid});
+                        var searchJob = new SearchJobModel({id: sid});
                         searchJob.fetch().done(function() {
                             var link_id = searchJob.entry.links.get("results");
-                            var result = new SwcMC.JobsResultModel({id: link_id});
+                            var result = new ResultModel({id: link_id});
                             result.fetch().done(function() {
                                 var instances = _.unique(result.results.map(function(instance) {
                                     return instance.get('Instance')[0];
@@ -79,7 +103,8 @@ define([
                 this._bindFilterByNumRows();
 
                 if(!this.model.serverInfo.isCloud() && !this.model.serverInfo.isLite()) {
-                    this.options.deferreds.distSearchGroupsDfd.then(function() {
+
+                    $.when(this.options.deferreds.distSearchGroupsDfd).done(function() {
                         if ((this.model.appLocal.entry.content.get('configured') == '0') && (this.collection.distSearchGroups.models.length === 0)) {
                             // standalone mode and not set up yet.
                             this.needsSetup();
@@ -90,17 +115,17 @@ define([
 
             _alertsSearchManager: function() {
                 // search to grab all triggered alerts (defaulted to filter within last hour)
-                return new SwcMC.SearchManager({
+                return new SearchManager({
                     id: 'alerts-fired-search',
                     search: '| `dmc_get_all_triggered_alerts(1440)`',
                     cancelOnUnload: true,
-                    app: SwcMC.Utils.getCurrentApp()
+                    app: utils.getCurrentApp()
                 });
             },
 
             _alertsTableView: function() {
                 // splunkjs table to display alerts
-                return new SwcMC.TableView({
+                return new TableView({
                     id: "alerts-table",
                     managerid: "alerts-fired-search",
                     el: this.$("#alerts-fired-table-view"),
@@ -121,11 +146,11 @@ define([
                 var alert_id = encodeURI(encodeURI('/servicesNS/nobody/splunk_monitoring_console/alerts/fired_alerts/'+alert_name));
 
                 // monster helper method to construct url
-                window.open(SwcMC.URIRoute.triggeredAlerts(root, SwcMC.SplunkConfig.LOCALE, 'splunk_monitoring_console', {'data': {'app': 'splunk_monitoring_console', 'owner': '-', 'serverity': '*', 'alerts_id': alert_id}}), "_blank");
+                window.open(route.triggeredAlerts(root, config.LOCALE, 'splunk_monitoring_console', {'data': {'app': 'splunk_monitoring_console', 'owner': '-', 'serverity': '*', 'alerts_id': alert_id}}), "_blank");
             },
 
             _dropdownFilterByLast: function() {
-                return new SwcMC.SyntheticSelectControlView({
+                return new SyntheticSelectControl({
                     model: null,
                     modelAttribute: null,
                     label: this.model.serverInfo.isLite() ? "" : _('Filter by Last:').t(),
@@ -146,7 +171,7 @@ define([
                 });
             },
             _dropdownFilterByNumRows: function() {
-                return new SwcMC.SyntheticSelectControlView({
+                return new SyntheticSelectControl({
                     model: null,
                     modelAttribute: null,
                     defaultValue: '5',
@@ -200,8 +225,8 @@ define([
             render: function() {
                 this.$('.control-options').append(this.dropdownFilterByLast.render().el);
                 this.$('.control-options').append(this.dropdownFilterByNumRows.render().el);
-                this.$('#triggered-alerts-link').attr('href', SwcMC.URIRoute.triggeredAlerts(root, SwcMC.SplunkConfig.LOCALE, 'splunk_monitoring_console', {'data': {'eai:acl.app': 'splunk_monitoring_console', 'eai:acl.owner': '*', 'serverity': '*'}}));
-                this.$('#smc-alerts-count').attr('href', SwcMC.URIRoute.triggeredAlerts(root, SwcMC.SplunkConfig.LOCALE, 'splunk_monitoring_console'));
+                this.$('#triggered-alerts-link').attr('href', route.triggeredAlerts(root, config.LOCALE, 'splunk_monitoring_console', {'data': {'eai:acl.app': 'splunk_monitoring_console', 'eai:acl.owner': '*', 'serverity': '*'}}));
+                this.$('#smc-alerts-count').attr('href', route.triggeredAlerts(root, config.LOCALE, 'splunk_monitoring_console'));
 
                 return this;
             },

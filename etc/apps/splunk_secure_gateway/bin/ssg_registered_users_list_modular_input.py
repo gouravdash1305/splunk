@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular Input for refreshing the list of registered users
 """
@@ -16,7 +16,7 @@ from spacebridgeapp.util import py23, constants
 
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 
-from spacebridgeapp.util.base_modular_input import BaseModularInput
+from solnlib import modular_input
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.splunk_utils.common import modular_input_should_run
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
@@ -24,7 +24,7 @@ from spacebridgeapp.users.registered_users_sync import RegisteredUsersSync
 from spacebridgeapp.rest.services.splunk_service import get_splunk_auth_type
 
 
-class RegisteredUsersListModularInput(BaseModularInput):
+class RegisteredUsersListModularInput(modular_input.ModularInput):
     title = 'Splunk Secure Gateway Registered Users List'
     description = 'Sync the list of registered gateway users'
     app = 'Splunk Secure Gateway'
@@ -52,9 +52,6 @@ class RegisteredUsersListModularInput(BaseModularInput):
         :param input_config:
         :return:
         """
-        if not super(RegisteredUsersListModularInput, self).do_run(input_config):
-            return
-
         if not modular_input_should_run(self.session_key, logger=self.logger):
             self.logger.debug("Modular input will not run on this node.")
             return

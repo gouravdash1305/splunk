@@ -4,10 +4,13 @@ define(
         'underscore',
         'jquery',
         'backbone',
-        '@splunk/swc-mc',
+        'views/Base',
+        'views/shared/TableHead',
         'splunk_monitoring_console/views/table/TableRow',
         'splunk_monitoring_console/views/table/MoreInfo',
-        '@splunk/swc-mc',
+        'views/shared/delegates/TableRowToggle',
+        'views/shared/tablecaption/Master',
+        'views/shared/controls/SyntheticSelectControl',
         'splunk_monitoring_console/views/table/controls/EditAllMenu'
     ],
     function(
@@ -15,22 +18,25 @@ define(
         _,
         $,
         Backbone,
-        SwcMC,
+        BaseView,
+        TableHeadView,
         TableRowView,
         MoreInfoView,
-        SwcMC,
+        TableRowToggleView,
+        TableCaptionView,
+        SyntheticSelectControl,
         EditAllMenu
     ) {
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             moduleId: module.id,
 
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
 
                 this.collection = this.collection || {};
                 this.collection.clientSidePeers = new Backbone.Collection();
                 this.collection.clientSidePeers.paging = new Backbone.Model();
-                this.children.tableRowToggle = new SwcMC.TableRowToggleView({el: this.el, collapseOthers: true });
+                this.children.tableRowToggle = new TableRowToggleView({el: this.el, collapseOthers: true });
 
                 var columns = [
                         { label: _('i').t(), className: 'col-info', html: '<i class="icon-info"></i>'},
@@ -86,14 +92,14 @@ define(
                     });
                 }
 
-                this.children.head = new SwcMC.TableHeadView({
+                this.children.head = new TableHeadView({
                     model: this.model.state,
                     columns: columns,
                     checkboxClassName: 'col-select-all'
                 });
 
                 if (!this.model.localInstance) {
-                    this.children.caption = new SwcMC.TableCaptionMasterView({
+                    this.children.caption = new TableCaptionView({
                         countLabel: _("Instances").t(),
                         model: {
                             state: this.model.state,
@@ -105,7 +111,7 @@ define(
                         filterKey: ['peerName']
                     });
 
-                    this.children.count = new SwcMC.SyntheticSelectControlView({
+                    this.children.count = new SyntheticSelectControl({
                         modelAttribute: 'count',
                         model: this.model.state,
                         items: [
@@ -129,7 +135,7 @@ define(
                 this.activate();
 
                 this.listenTo(this.model.state, 'select-all-click', function() {
-                    this.collection.peers.each(function(peer){
+                    this.collection.clientSidePeers.each(function(peer){
                         peer.trigger('select-all-click');
                     });
                 });

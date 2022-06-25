@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for input token support
 """
@@ -96,25 +96,26 @@ def inject_tokens_into_string(input_tokens, query, default=None):
     return transformed_query
 
 
-def get_tokens_for_search(string):
+def get_tokens_for_search(query):
     """
-    Takes a string and finds all input tokens within that string
-    :param string: [String] String with input tokens
+    Takes a query and finds all input tokens within that query
+    :param query: [String] SPL query
     :return:
     """
-    if not string:
+    if not query:
         return []
 
-    # Parse for tokens in string
-    remaining_string = string
+    # Parse for tokens in query
+    processed_query = ''
+    remaining_query = query
     search_tokens = []
-    while len(remaining_string) > 0:
-        result = _INPUT_TOKEN_PATTERN.search(remaining_string)
+    while len(remaining_query) > 0:
+        result = _INPUT_TOKEN_PATTERN.search(remaining_query)
         if result:
             token = result.group(1)
             search_tokens.append(token)
-            split_index = remaining_string.find(result.group(0)) + len(result.group(0))
-            remaining_string = remaining_string[split_index:]
+            split_index = remaining_query.find(result.group(0)) + len(result.group(0))
+            remaining_query = remaining_query[split_index:]
         else:
             break
 
@@ -174,23 +175,6 @@ def set_default_token_values(input_tokens, input_tokens_meta):
 
         if default_value and token_name not in input_tokens.keys():
             input_tokens[token_name] = default_value
-
-
-def map_default_token_values(input_tokens, default_input_tokens):
-    """
-    Helper method to take a default_input_token map and map it to an existing input_tokens map
-    :param input_tokens: Existing inputs_tokens map to amend
-    :param default_input_tokens: Default input_tokens map use to map onto existing input_tokens
-    :return input_tokens dict
-    """
-    if input_tokens is None:
-        input_tokens = {}
-
-    if default_input_tokens:
-        for token_name, default_value in default_input_tokens.items():
-            if default_value and token_name not in input_tokens:
-                input_tokens[token_name] = default_value
-    return input_tokens
 
 
 def load_input_tokens(search_input_tokens_str):

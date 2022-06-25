@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for any requests that will return the raw json
 """
@@ -42,33 +42,15 @@ async def fetch_dashboard_list_for_app(request_context, app_name, params, async_
     return total, dashboards
 
 
-def _generate_params(app_name, dashboard_ids, dashboard_tags, tagging_config_map=None,
-                     minimal_list=True, offset=0, max_results=0):
-    """
-    Helper method to generate params object for DashboardList API call
-    :param app_name:
-    :param dashboard_ids:
-    :param dashboard_tags:
-    :param tagging_config_map:
-    :param minimal_list:
-    :param offset:
-    :param max_results:
-    :return:
-    """
+def _generate_params(app_name, dashboard_ids, minimal_list=True, offset=0, max_results=0):
     search_app_name = []
     global_search = True
-
-    if not tagging_config_map:
-        tagging_config_map = {}
 
     if app_name != GLOBAL_APP_SEARCH:
         search_app_name = [app_name]
         global_search = False
 
-    search_str = generate_search_str(app_names=search_app_name,
-                                     dashboard_ids=dashboard_ids,
-                                     dashboard_tags=dashboard_tags,
-                                     tagging_config_map=tagging_config_map)
+    search_str = generate_search_str(search_app_name, dashboard_ids)
     params = {'output_mode': 'json',
               'search': search_str,
               'sort_dir': 'asc',
@@ -89,8 +71,6 @@ async def fetch_dashboard_list_json(request_context,
                                     max_results=0,
                                     app_names=None,
                                     dashboard_ids=None,
-                                    dashboard_tags=None,
-                                    tagging_config_map=None,
                                     async_splunk_client=None,
                                     minimal_list=True):
     """
@@ -100,8 +80,6 @@ async def fetch_dashboard_list_json(request_context,
     :param max_results:
     :param app_names:
     :param dashboard_ids:
-    :param dashboard_tags:
-    :param tagging_config_map:
     :param async_splunk_client:
     :param minimal_list: Causes the API to be called with digest=1, should be used if dashboard structure is not needed
     :return:
@@ -117,12 +95,8 @@ async def fetch_dashboard_list_json(request_context,
     LOGGER.debug("Fetching dashboards for apps=%s", app_names)
 
     for app in app_names:
-        params_app = _generate_params(app_name=app, dashboard_tags=dashboard_tags, dashboard_ids=dashboard_ids,
-                                      tagging_config_map=tagging_config_map, minimal_list=minimal_list, offset=offset,
-                                      max_results=max_results)
-        total_app, dashboards_app = await fetch_dashboard_list_for_app(request_context=request_context,
-                                                                       app_name=app, params=params_app,
-                                                                       async_splunk_client=async_splunk_client)
+        params_app = _generate_params(app, dashboard_ids, minimal_list, offset, max_results)
+        total_app, dashboards_app = await fetch_dashboard_list_for_app(request_context, app, params_app, async_splunk_client)
 
         total += total_app
 

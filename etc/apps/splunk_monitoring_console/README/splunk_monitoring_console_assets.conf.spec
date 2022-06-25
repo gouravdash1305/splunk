@@ -1,7 +1,7 @@
 # This file describes the splunk_monitoring_console_assets.conf file that is included
 # with the Splunk Monitoring Console.
 #
-# THIS FILE IS FOR INTERNAL USE ONLY.
+# THIS FILE IS FOR INTERNAL USE ONLY. 
 # DO NOT EDIT default/splunk_monitoring_console_assets.conf.
 # DO NOT EDIT local/splunk_monitoring_console_assets.conf.
 #
@@ -27,11 +27,6 @@ blackList = <search-peer-identifier>, <search-peer-identifier>, ...
 		* Example: myindexer.foo.com:8089
 	* This list identifies search peers whose data should explicity not appear in Monitoring Console dashboards
 
-mc_auto_config = [disabled|enabled]
-	* Allows the Monitoring Console to detect search peers, and enable distributed mode automatically. The search peer detection script is run periodically, and at service start.
-	* A value of "enabled" means that the Monitoring Console sets itself into distributed mode when search peers are configured on the Monitoring Console instance.
-	* A value of "disabled" means that the search peer detection script is not run, and distributed mode must be set manually.
-	* Default: enabled
 
 # ---- Overrides for search peers ----
 # In some cases, you might wish to override which host and host_fqdn values the

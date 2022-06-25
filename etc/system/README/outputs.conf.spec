@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # Forwarders require outputs.conf. Splunk instances that do not forward
 # do not use it. Outputs.conf determines how the forwarder sends data to
@@ -48,7 +48,7 @@
 # settings unique to a particular level). It then describes the optional
 # settings, which you can set at any of the three levels.
 # Default: true
-# If set to 'true', prevents the logs from being forwarded to the indexing tiers.
+# If set to 'true', prevents the logs from being forwarder to the indexing tiers.
 
 [httpout]
 
@@ -57,24 +57,24 @@ httpEventCollectorToken = <string>
 * HEC uses this token to authenticate inbound connections.
 * No default.
 
-uri = <string>
+uri = <uri>
 * The URI and management port of the Http Event Collector(HEC) end point.
 * For example, https://SplunkHEC01.example.com:8088
 * No default.
 
 batchSize = <integer>
-* The size, in bytes, of the HTTP OUT send buffer.
+* The size of the HTTP OUT send buffer, in bytes.
 * HTTP OUT batch pipeline data before sending out.
-* If the current buffer size is greater than 'batchSize', HEC sends the data
-  out immediately.
-* Default: 65536
+* If current buffer size is greater than batchSize(in bytes),
+* the data will be send out immediately.
+* Default = 65536
 
 batchTimeout = <integer>
-* How often, in seconds, to send out pipeline data.
+* How often ( in seconds) to send out pipeline data.
 * HTTP OUT batch pipeline data before sending out.
-* If the wait time is greater than 'batchTimeout', HEC sends the data 
-  out immediately.
-* Default: 30
+* If the wait time is greater than batchTimeout (in seconds),
+* the data will be send out immediately.
+* Default = 30
 
 #----TCP Output Global Configuration -----
 # You can overwrite the global configurations specified here in the
@@ -86,13 +86,13 @@ batchTimeout = <integer>
 
 [tcpout]
 
-defaultGroup = <comma-separated list>
+defaultGroup = <target_group>, <target_group>, ...
 * A comma-separated list of one or more target group names, specified later
   in [tcpout:<target_group>] stanzas.
 * The forwarder sends all data to the specified groups.
-* If you don't want to forward data automatically, don't configure this setting.
-* Can be overridden by the '_TCP_ROUTING' setting in the inputs.conf file, 
-  which in turn can be overridden by a props.conf or transforms.conf modifier.
+* If you don't want to forward data automatically, don't set this setting.
+* Can be overridden by an inputs.conf '_TCP_ROUTING' setting, which in turn
+  can be overridden by a props.conf or transforms.conf modifier.
 * Starting with version 4.2, this setting is no longer required.
 
 indexAndForward = <boolean>
@@ -123,11 +123,9 @@ indexAndForward = <boolean>
 
 [tcpout:<target_group>]
 
-server = <comma-separated list>
+server = [<ip>|<servername>]:<port>, [<ip>|<servername>]:<port>, ...
 * A comma-separated list of one or more systems to send data to over a
   TCP socket.
-* You can specify each element as either an IP address or a hostname
-  and a port number. For example: 192.168.1.10:9997, mysplunkserver.com:9997
 * Required if the 'indexerDiscovery' setting is not set.
 * Typically used to specify receiving Splunk systems, although you can use
   it to send data to non-Splunk systems (see the 'sendCookedData' setting).
@@ -143,9 +141,9 @@ blockWarnThreshold = <integer>
   to a large value (for example, 2000000).
 * Default: 100
 
-indexerDiscovery = <string>
-* The name of the manager node to use for indexer discovery.
-* Instructs the forwarder to fetch the list of indexers from the manager node
+indexerDiscovery = <name>
+* The name of the master node to use for indexer discovery.
+* Instructs the forwarder to fetch the list of indexers from the master node
   specified in the corresponding [indexer_discovery:<name>] stanza.
 * No default.
 
@@ -179,14 +177,13 @@ token = <string>
 
 sendCookedData = <boolean>
 * Whether or not to send processed or unprocessed data to the receiving server.
-* A value of "true" means Splunk software processes the events before sending them
-  to the server, thus "cooking" them.
-* A value of "false" means events are raw and untouched prior to sending.
+* If set to "true", events are cooked (have been processed by Splunk software).
+* If set to "false", events are raw and untouched prior to sending.
 * Set to "false" if you are sending events to a third-party system.
 * Default: true
 
 heartbeatFrequency = <integer>
-* How often, in seconds, to send a heartbeat packet to the receiving server.
+* How often (in seconds) to send a heartbeat packet to the receiving server.
 * This setting is a mechanism for the forwarder to know that the receiver
   (indexer) is alive. If the indexer does not send a return packet to the
   forwarder, the forwarder declares the receiver unreachable and does not
@@ -217,9 +214,7 @@ blockWarnThreshold = <integer>
 * Default: 100
 
 compressed = <boolean>
-* Whether or not forwarders and receivers communicate with one another in 
-  compressed format.
-* A value of "true" means the receiver communicates with the forwarder in
+* If set to "true", the receiver communicates with the forwarder in
   compressed format.
 * If set to "true", you do not need to set the 'compressed' setting to "true"
   in the inputs.conf file on the receiver for compression
@@ -244,7 +239,7 @@ negotiateNewProtocol = <boolean>
 * Default: true
 
 channelReapInterval = <integer>
-* How often, in milliseconds, that channel codes are reaped, or made
+* How often, in milliseconds, channel codes are reaped, or made
   available for re-use.
 * This value sets the minimum time between reapings. In practice,
   consecutive reapings might be separated by greater than the number of
@@ -258,23 +253,22 @@ channelTTL = <integer>
 * Default: 300000 (5 minutes)
 
 channelReapLowater = <integer>
+* If the number of active channels is greater than 'channelReapLowater',
+  Splunk software reaps old channels to make their channel codes available
+  for reuse.
+* If the number of active channels is less than 'channelReapLowater',
+  Splunk software does not reap channels, no matter how old they are.
 * This value essentially determines how many active-but-old channels Splunk
   software keeps "pinned" in memory on both sides of a
   Splunk-to-Splunk connection.
-* If the number of active channels is greater than 'channelReapLowater',
-  Splunk software reaps old channels to make their channel codes available
-  for re-use.
-* If the number of active channels is less than 'channelReapLowater',
-  Splunk software does not reap channels, no matter how old they are.
 * A non-zero value helps ensure that Splunk software does not waste network
   resources by "thrashing" channels in the case of a forwarder sending
   a trickle of data.
 * Default: 10
 
-socksServer = <string>
-* The IP address or server name of the Socket Secure version 5 (SOCKS5) server.
-* Required. Specify this value as either an IP address or hostname and port
-  number, for example: 192.168.1.10:8080 or mysplunkserver.com:8080.
+socksServer = [<ip>|<servername>]:<port>
+* The IP address or servername of the Socket Secure version 5 (SOCKS5) server.
+* Required.
 * This setting specifies the port on which the SOCKS5 server is listening.
 * After you configure and restart the forwarder, it connects to the SOCKS5
   proxy host, and optionally authenticates to the server on demand if
@@ -282,22 +276,22 @@ socksServer = <string>
 * NOTE: Only SOCKS5 servers are supported.
 * No default.
 
-socksUsername = <string>
+socksUsername = <username>
 * The SOCKS5 username to use when authenticating against the SOCKS5 server.
 * Optional.
 
-socksPassword = <string>
+socksPassword = <password>
 * The SOCKS5 password to use when authenticating against the SOCKS5 server.
 * Optional.
 
 socksResolveDNS = <boolean>
-* Whether or not a forwarder should rely on the SOCKS5 proxy server Domain
-  Name Server (DNS) to resolve hostnames of indexers in the output group to 
-  which the forwarder sends data.
-* A value of "true" means the forwarder sends the hostnames of the indexers to the
+* Whether or not the forwarder should rely on the SOCKS5 proxy server Domain
+  Name Server (DNS) to resolve hostnames of indexers in the output group it is
+  forwarding data to.
+* If set to "true", the forwarder sends the hostnames of the indexers to the
   SOCKS5 server, and lets the SOCKS5 server do the name resolution. It
   does not attempt to resolve the hostnames on its own.
-* A value of "false" means the forwarder attempts to resolve the hostnames of the
+* If set to "false", the forwarder attempts to resolve the hostnames of the
   indexers through DNS on its own.
 * Optional.
 * Default: false
@@ -407,22 +401,6 @@ maxConnectionsPerIndexer = <integer>
   per indexer at any point in time.
 * Default: 2
 
-connectionsPerTarget = [<integer>|auto]
-* The maximum number of allowed outbound connections for each target IP address
-  as resolved by DNS on the machine.
-* A value of "auto" or < 1 means splunkd configures a value for connections for each
-  target IP address. Depending on the number of IP addresses that DNS resolves,
-  splunkd sets 'connectionsPerTarget' as follows:
-  * If the number of resolved target IP addresses is greater than or equal to 10,
-    'connectionsPerTarget' gets a value of 1.
-  * If the number of resolved target IP addresses is greater than 5
-    and less than 10, 'connectionsPerTarget' gets a value of 2.
-  * If the number of resolved target IP addresses is greater than 3
-    or less than equal to 5, 'connectionsPerTarget' gets a value of 3.
-  * If the number of resolved target IP addresses is less than or equal to 3,
-    'connectionsPerTarget' gets a value of 4.
-* Default: auto
-
 connectionTimeout = <integer>
 * The time to wait, in seconds, for a forwarder to establish a connection
   with an indexer.
@@ -468,13 +446,6 @@ ackTimeoutOnShutdown = <integer>
   forwarder shutdown.
 * Default: 30 seconds
 
-polling_interval = <integer>
-* The initial time to wait upon splunk start, in seconds, for the forwarder to fetch
-  the list of indexers from the indexer discovery server specified in
-  the corresponding [indexer_discovery:<name>] stanza. Subsequently polling interval
-  is set by indexer discovery server response.
-* Default: 5 seconds
-
 dnsResolutionInterval = <integer>
 * The base time interval, in seconds, at which indexer Domain Name Server
   (DNS) names are resolved to IP addresses.
@@ -497,11 +468,11 @@ forceTimebasedAutoLB = <boolean>
 # These settings are only applicable under the global [tcpout] stanza.
 # This filter does not work if it is created under any other stanza.
 
-forwardedindex.<n>.whitelist = <regular expression>
-forwardedindex.<n>.blacklist = <regular expression>
+forwardedindex.<n>.whitelist = <regex>
+forwardedindex.<n>.blacklist = <regex>
 * These filters determine which events get forwarded to the index,
   based on the indexes the events are targeted to.
-* An ordered list of allow lists and deny lists, which together
+* An ordered list of whitelists and blacklists, which together
   decide if events are forwarded to an index.
 * The order is determined by <n>. <n> must start at 0 and continue with
   positive integers, in sequence. There cannot be any gaps in the sequence.
@@ -510,17 +481,17 @@ forwardedindex.<n>.blacklist = <regular expression>
     forwardedindex.2.whitelist, ...
 * The filters can start from either whitelist or blacklist. They are tested
   from forwardedindex.0 to forwardedindex.<max>.
-* If both 'forwardedindex.<n>.whitelist' and 'forwardedindex.<n>.blacklist' are
-  present for the same value of n, then 'forwardedindex.<n>.whitelist' is
-  honored. 'forwardedindex.<n>.blacklist' is ignored in this case.
+* If both forwardedindex.<n>.whitelist and forwardedindex.<n>.blacklist are
+  present for the same value of n, then forwardedindex.<n>.whitelist is
+  honored. forwardedindex.<n>.blacklist is ignored in this case.
 * In general, you do not need to change these filters from their default
   settings in $SPLUNK_HOME/system/default/outputs.conf.
 * Filtered out events are not indexed if you do not enable local indexing.
 
 forwardedindex.filter.disable = <boolean>
 * Whether or not index filtering is active.
-* A value of "true" means index filtering is disabled. Events for all indexes
-  are then forwarded.
+* If set to "true", disables index filtering. Events for all indexes are then
+  forwarded.
 * Default: false
 
 #----Automatic Load-Balancing
@@ -537,22 +508,6 @@ autoLBFrequency = <integer>
   stanza.
 * Default: 30
 
-autoLBFrequencyIntervalOnGroupFailure = <integer>
-* When the entire target group is not reachable,
-  'autoLBFrequencyIntervalOnGroupFailure' is the amount of time, in seconds,
-  that a forwarder waits before attempting to connect to a target host in the
-  group.
-* While 'autoLBFrequencyIntervalOnGroupFailure' is in effect, 'autoLBFrequency'
-  is ignored. Once first connection is established to a group, 'autoLBFrequency'
-  comes into effect again.
-* This setting is applied only when
-  'autoLBFrequencyIntervalOnGroupFailure' is less than 'autoLBFrequency'.
-* Every 'autoLBFrequencyIntervalOnGroupFailure' seconds, a new indexer is
-  selected randomly from the list of indexers provided in the server setting
-  of the target group stanza.
-* -1 means this setting is not active.
-* Default: -1
-
 autoLBVolume = <integer>
 * The volume of data, in bytes, to send to an indexer before a new indexer
   is randomly selected from the list of indexers provided in the server
@@ -566,25 +521,6 @@ autoLBVolume = <integer>
 * 0 means the volume-based forwarding is not active.
 * Default: 0
 
-maxSendQSize = <integer>
-* The size of the tcpout client send buffer, in bytes.
-  If tcpout client(indexer/receiver connection) send buffer is full,
-  a new indexer is randomly selected from the list of indexers provided
-  in the server setting of the target group stanza.
-* This setting allows forwarder to switch to new indexer/receiver if current
-  indexer/receiver is slow.
-* A non-zero value means that max send buffer size is set.
-* 0 means no limit on max send buffer size.
-* Default: 0
-
-autoBatch = <boolean>
-* When set to 'true', the forwarder automatically sends chunks/events in batches
-  to target receiving instance connection. The forwarder creates batches only
-  if there are two or more chunks/events available in output connection queue.
-* When set to 'false', the forwarder sends one chunk/event to target receiving
-  instance connection. This is old legacy behavior.
-* Default: true
-
 #----Secure Sockets Layer (SSL) Settings----
 
 # To set up SSL on the forwarder, set the following setting/value pairs.
@@ -596,10 +532,10 @@ useSSL = <true|false|legacy>
   on the 'clientCert' setting to be active for SSL connections.
 * You do not need to set 'clientCert' if 'requireClientCert' is set to
   "false" on the receiver.
-* A value of "true" means the forwarder uses SSL to connect to the receiver.
-* A value of "false" means the forwarder does not use SSL to connect to the
+* If set to "true", then the forwarder uses SSL to connect to the receiver.
+* If set to "false", then the forwarder does not use SSL to connect to the
   receiver.
-* The special value "legacy" means the forwarder uses the 'clientCert' property to
+* If set to "legacy", then the forwarder uses the 'clientCert' property to
   determine whether or not to use SSL to connect.
 * Default: legacy
 
@@ -616,9 +552,9 @@ clientCert = <path>
 * No default.
 
 sslCertPath = <path>
+* The full path to the client SSL certificate.
 * DEPRECATED.
 * Use the 'clientCert' setting instead.
-* The full path to the client SSL certificate.
 
 cipherSuite = <string>
 * The specified cipher string for the input processors.
@@ -652,16 +588,15 @@ sslRootCAPath = <path>
 * DEPRECATED.
 * Use the 'server.conf/[sslConfig]/sslRootCAPath' setting instead.
 * Used only if 'sslRootCAPath' in server.conf is not set.
-* The <path> must refer to a PEM format file containing one or more root
-  CA certificates concatenated together.
+* The <path> must refer to a Privacy Enhanced Mail (PEM) format file
+  containing one or more root CA certificates concatenated together.
 * No default.
 
 sslVerifyServerCert = <boolean>
 * Serves as an additional step for authenticating your indexers.
-* A value of "true" ensures that the server you are connecting to has a valid
-  SSL certificate. 
-  * NOTE: Certificates with the same Common Name as the CA's certificate 
-    will fail this check.
+* If "true", ensure that the server you are connecting to has a valid
+  SSL certificate. Note that certificates with the same Common Name as
+  the CA's certificate will fail this check.
 * Both the common name and the alternate name of the server are then checked
   for a match.
 * Default: false
@@ -671,36 +606,8 @@ tlsHostname = <string>
   with SSL Client Hello.
 * Default: empty string
 
-sslVerifyServerName = <boolean>
-* Whether or not splunkd, as a client, performs a TLS hostname validation check
-  on an SSL certificate that it receives upon an initial connection
-  to a server.
-* A TLS hostname validation check ensures that a client
-  communicates with the correct server, and has not been redirected to
-  another by a machine-in-the-middle attack, where a malicious party inserts
-  themselves between the client and the target server, and impersonates
-  that server during the session.
-* Specifically, the validation check forces splunkd to verify that either
-  the Common Name or the Subject Alternate Name in the certificate that the
-  server presents to the client matches the host name portion of the URL that
-  the client used to connect to the server.
-* For this setting to have any effect, the 'sslVerifyServerCert' setting must
-  have a value of "true". If it doesn't, TLS hostname validation is not possible
-  because certificate verification is not on.
-* A value of "true" for this setting means that splunkd performs a TLS hostname
-  validation check, in effect, verifying the server's name in the certificate.
-  If that check fails, splunkd terminates the SSL handshake immediately. This terminates
-  the connection between the client and the server. Splunkd logs this failure at
-  the ERROR logging level.
-* A value of "false" means that splunkd does not perform the TLS hostname
-  validation check. If the server presents an otherwise valid certificate, the
-  client-to-server connection proceeds normally.
-* Default: false
-
-sslCommonNameToCheck = <comma-separated list>
-* Checks the Common Name of the server's certificate against one or more of the
-  names you specify for this setting.
-* Separate multiple common names with commas.
+sslCommonNameToCheck = <commonName1>, <commonName2>, ...
+* Checks the Common Name of the server's certificate against the names listed here.
 * The Common Name identifies the host name associated with the certificate.
   For example, example www.example.com or example.com
 * If there is no match, assume that Splunk software is not authenticated
@@ -710,10 +617,8 @@ sslCommonNameToCheck = <comma-separated list>
 * This setting is optional.
 * Default: empty string (no common name checking).
 
-sslAltNameToCheck = <comma-separated list>
-* Checks the alternate name of the server's certificate against one or more of
-  the names you specify for this setting.
-* Separate multiple subject alternate names with commas.
+sslAltNameToCheck = <alternateName1>, <alternateName2>, ...
+* Checks the alternate name of the server's certificate against the names listed here.
 * If there is no match, assume that Splunk software is not authenticated
   against this server.
 * You must set the 'sslVerifyServerCert' setting to "true" for this setting to work.
@@ -721,9 +626,8 @@ sslAltNameToCheck = <comma-separated list>
 * Default: no alternate name checking
 
 useClientSSLCompression = <boolean>
-* Whether or not compression on SSL connections is enabled.
-* A value of "true" means compression on SSL is enabled.
-* Default: true
+* Enables compression on SSL.
+* Default: The value of 'server.conf/[sslConfig]/useClientSSLCompression'
 
 sslQuietShutdown = <boolean>
 * Enables quiet shutdown mode in SSL.
@@ -760,7 +664,7 @@ useACK = <boolean>
 * Whether or not to use indexer acknowledgment.
 * Indexer acknowledgment is an optional capability on forwarders that helps
   prevent loss of data when sending data to an indexer.
-* A value of "true" means the forwarder retains a copy of each sent event
+* When set to "true", the forwarder retains a copy of each sent event
   until the receiving system sends an acknowledgment.
   * The receiver sends an acknowledgment when it has fully handled the event
     (typically when it has written it to disk in indexing).
@@ -769,7 +673,7 @@ useACK = <boolean>
   * NOTE: The maximum memory used for the outbound data queues increases
     significantly by default (500KB -> 28MB) when the 'useACK' setting is
     enabled. This is intended for correctness and performance.
-* A value of "false" means the forwarder considers the data fully processed
+* When set to "false", the forwarder considers the data fully processed
   when it finishes writing it to the network socket.
 * You can configure this setting at the [tcpout] or [tcpout:<target_group>]
   stanza levels. You cannot set it for individual servers at the
@@ -788,15 +692,6 @@ useACK = <boolean>
 
 defaultGroup = <target_group>, <target_group>, ...
 
-dropEventsOnQueueFull = <integer>[ms|s|m]
-* See 'dropEventsOnQueueFull' in the "[tcpout]" stanza for
-  information on this setting.
-
-dropClonedEventsOnQueueFull = <integer>[ms|s|m]
-* See 'dropClonedEventsOnQueueFull' in the "[tcpout]" stanza for
-  information on this setting.
-
-#######
 # For the following settings, see the [syslog:<target_group>] stanza.
 
 type = [tcp|udp]
@@ -809,7 +704,7 @@ maxEventSize = <integer>
 # The following settings are required for a syslog output group.
 
 server = [<ip>|<servername>]:<port>
-* The IP address or server name and port where the syslog server is running.
+* The IP address or servername where the syslog server is running.
 * Required.
 * This setting specifies the port on which the syslog server listens.
 * Default: 514
@@ -961,13 +856,11 @@ maxEventSize = <integer>
 # data on a Splunk instance. It has the "index" property, which determines
 # whether indexing occurs.
 #
-# When the Splunk platform instance is not configured as a forwarder, 
-# 'index' is set to "true". That is, the Splunk platform instance indexes 
-# data by default.
+# When Splunk is not configured as a forwarder, 'index' is set to "true".
+# That is, the Splunk instance indexes data by default.
 #
-# When the Splunk platform instance is configured as a forwarder, the
-# processor sets 'index' to "false". That is, the Splunk platform instance
-# does not index data by default.
+# When Splunk is configured as a forwarder, the processor sets 'index' to
+# "false". That is, the Splunk instance does not index data by default.
 #
 # The IndexAndForward processor has no effect on the universal forwarder,
 # which can never index data.
@@ -980,18 +873,18 @@ maxEventSize = <integer>
 [indexAndForward]
 
 index = <boolean>
-* Whether or not indexing is enabled on a Splunk platform instance.
-* A value of "true" means the Splunk platform instance indexes data.
-* A value of "false" means the Splunk platform instance does not index data.
+* Turns indexing on or off on a Splunk instance.
+* If set to "true", the Splunk instance indexes data.
+* If set to "false", the Splunk instance does not index data.
 * The default can vary. It depends on whether the Splunk
-  platform instance is configured as a forwarder, and whether it is
-  modified by any value configured for the 'indexAndForward'
-  setting in the [tcpout] stanza.
+  instance is configured as a forwarder, and whether it is
+  modified by any value configured for the indexAndForward
+  setting in [tcpout].
 
 selectiveIndexing = <boolean>
 * Whether or not to index specific events that have the
   '_INDEX_AND_FORWARD_ROUTING' setting configured.
-* A value of "true" means you can choose to index only specific events that have
+* If set to "true", you can choose to index only specific events that have
   the '_INDEX_AND_FORWARD_ROUTING' setting configured.
 * Configure the '_INDEX_AND_FORWARD_ROUTING' setting in inputs.conf as:
   [<input_stanza>]
@@ -1001,34 +894,31 @@ selectiveIndexing = <boolean>
 [indexer_discovery:<name>]
 
 pass4SymmKey = <string>
-* The security key used to communicate between the cluster manager
+* The security key used to communicate between the cluster master
   and the forwarders.
-* This value must be the same for all forwarders and the manager node.
+* This value must be the same for all forwarders and the master node.
 * You must explicitly set this value for each forwarder.
 * If you specify a password here, you must also specify the same password
-  on the manager node identified by the 'manager_uri' setting.
+  on the master node identified by the 'master_uri' setting.
 
-send_timeout = <decimal>
-* The low-level timeout, in seconds, for sending messages to the manager node.
+send_timeout = <seconds>
+* Low-level timeout for sending messages to the master node.
 * Fractional seconds are allowed (for example, 60.95 seconds).
 * Default: 30
 
-rcv_timeout = <decimal>
-* The low-level timeout, in seconds, for receiving messages from the manager node.
+rcv_timeout = <seconds>
+* Low-level timeout for receiving messages from the master node.
 * Fractional seconds are allowed (for example, 60.95 seconds).
 * Default: 30
 
-cxn_timeout = <decimal>
-* The low-level timeout, in seconds, for connecting to the manager node.
+cxn_timeout = <seconds>
+* Low-level timeout for connecting to the master node.
 * Fractional seconds are allowed (for example, 60.95 seconds).
 * Default: 30
 
-manager_uri = <string>
-* The URI and management port of the cluster manager used in indexer discovery.
-* For example, https://SplunkManager01.example.com:8089
-
-master_uri = <string>
-* DEPRECATED. Use the 'manager_uri' setting instead.
+master_uri = <uri>
+* The URI and management port of the cluster master used in indexer discovery.
+* For example, https://SplunkMaster01.example.com:8089
 
 ####
 # Remote Queue Output
@@ -1039,7 +929,7 @@ master_uri = <string>
 * This section explains possible settings for configuring a remote queue.
 * Each remote_queue stanza represents an individually configured remote
   queue output.
-* NOTE: Only ONE remote queue stanza is supported as an
+* Note that only ONE remote queue stanza is supported as an
   output queue.
 
 remote_queue.* = <string>
@@ -1087,6 +977,7 @@ concurrentChannelLimit = <unsigned integer>
 remote_queue.sqs.access_key = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The access key to use when authenticating with the remote queue
   system that supports the SQS API.
 * If not specified, the forwarder looks for the environment variables
@@ -1094,12 +985,12 @@ remote_queue.sqs.access_key = <string>
   variables are not set and the forwarder is running on EC2, the forwarder
   attempts to use the secret key from the IAM (Identity and Access
   Management) role.
-* Optional.
 * Default: not set
 
 remote_queue.sqs.secret_key = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Specifies the secret key to use when authenticating with the remote queue
   system supporting the SQS API.
 * If not specified, the forwarder looks for the environment variables
@@ -1107,23 +998,23 @@ remote_queue.sqs.secret_key = <string>
   variables are not set and the forwarder is running on EC2, the forwarder
   attempts to use the secret key from the IAM (Identity and Access
   Management) role.
-* Optional.
 * Default: not set
 
 remote_queue.sqs.auth_region = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The authentication region to use when signing the requests while interacting
   with the remote queue system supporting the Simple Queue Service (SQS) API.
 * If not specified and the forwarder is running on EC2, the auth_region is
   constructed automatically based on the EC2 region of the instance where the
   the forwarder is running.
-* Optional.
 * Default: not set
 
-remote_queue.sqs.endpoint = <string>
+remote_queue.sqs.endpoint = <URL>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The URL of the remote queue system supporting the Simple Queue Service (SQS) API.
 * Use the scheme, either http or https, to enable or disable SSL connectivity
   with the endpoint.
@@ -1134,11 +1025,11 @@ remote_queue.sqs.endpoint = <string>
   or a value constructed automatically based on the EC2 region of the
   running instance.
 * Example: https://sqs.us-west-2.amazonaws.com/
-* Optional.
 
 remote_queue.sqs.message_group_id = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Specifies the Message Group ID for Amazon Web Services Simple Queue Service
   (SQS) First-In, First-Out (FIFO) queues.
 * Setting a Message Group ID controls how messages within an AWS SQS queue are
@@ -1152,11 +1043,11 @@ remote_queue.sqs.message_group_id = <string>
 * Otherwise, Splunk software assumes that the SQS queue is a standard queue.
 * Can be between 1-128 alphanumeric or punctuation characters.
 * NOTE: FIFO queues must have Content-Based De-duplication enabled.
-* Optional.
 * Default: not set
 
 remote_queue.sqs.retry_policy = max_count|none
 * Sets the retry policy to use for remote queue operations.
+* Optional.
 * A retry policy specifies whether and how to retry file operations that fail
   for those failures that might be intermittent.
 * Retry policies:
@@ -1164,7 +1055,6 @@ remote_queue.sqs.retry_policy = max_count|none
     retried upon intermittent failure. Set max_count with the
     'max_count.max_retries_per_part' setting.
   + "none": Do not retry file operations upon failure.
-* Optional.
 * Default: max_count
 
 remote_queue.sqs.max_count.max_retries_per_part = <unsigned integer>
@@ -1185,22 +1075,23 @@ remote_queue.sqs.timeout.connect = <unsigned integer>
 remote_queue.sqs.timeout.read = <unsigned integer>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Sets the read timeout, in milliseconds, to use when interacting with the
   SQS for this queue.
-* Optional.
 * Default: 60000
 
 remote_queue.sqs.timeout.write = <unsigned integer>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Sets the write timeout, in milliseconds, to use when interacting with
   the SQS for this queue.
-* Optional.
 * Default: 60000
 
-remote_queue.sqs.large_message_store.endpoint = <string>
+remote_queue.sqs.large_message_store.endpoint = <URL>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The URL of the remote storage system supporting the S3 API.
 * Use the scheme, either http or https, to enable or disable SSL connectivity
   with the endpoint.
@@ -1210,12 +1101,12 @@ remote_queue.sqs.large_message_store.endpoint = <string>
   either a value specified via 'remote_queue.sqs.auth_region' or a value
   constructed automatically based on the EC2 region of the running instance.
 * Example: https://s3-us-west-2.amazonaws.com/
-* Optional.
 * Default: not set
 
 remote_queue.sqs.large_message_store.path = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The remote storage location where messages larger than the underlying
   queue's maximum message size will reside.
 * The format for this value is: <scheme>://<remote-location-specifier>
@@ -1227,21 +1118,21 @@ remote_queue.sqs.large_message_store.path = <string>
     "s3". For example, "path=s3://mybucket/some/path".
 * If not specified, the queue drops messages exceeding the underlying queue's
   maximum message size.
-* Optional.
 * Default: not set
 
 remote_queue.sqs.send_interval = <number><unit>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The interval that the remote queue output processor waits for data to
   arrive before sending a partial batch to the remote queue.
 * Examples: 30s, 1m
-* Optional.
 * Default: 30s
 
 remote_queue.sqs.max_queue_message_size = <integer>[KB|MB|GB]
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The maximum message size to which events are batched for upload to
   the remote queue.
 * Specify this value as an integer followed by KB, MB, or GB (for example,
@@ -1249,7 +1140,6 @@ remote_queue.sqs.max_queue_message_size = <integer>[KB|MB|GB]
 * Queue messages are sent to the remote queue when the next event processed
   would otherwise result in a message exceeding the maximum message size.
 * The maximum value for this setting is 5GB.
-* Optional.
 * Default: 10MB
 
 remote_queue.sqs.enable_data_integrity_checks = <boolean>
@@ -1270,41 +1160,42 @@ remote_queue.sqs.enable_signed_payloads  = <boolean>
 remote_queue.kinesis.access_key = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Specifies the access key to use when authenticating with the remote queue
   system supporting the Kinesis API.
 * If not specified, the forwarder looks for the environment variables
   AWS_ACCESS_KEY_ID or AWS_ACCESS_KEY (in that order). If the environment
   variables are not set and the forwarder is running on EC2, the forwarder
   attempts to use the secret key from the IAM role.
-* Optional.
 * Default: not set
 
 remote_queue.kinesis.secret_key = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Specifies the secret key to use when authenticating with the remote queue
   system supporting the Kinesis API.
 * If not specified, the forwarder looks for the environment variables
   AWS_SECRET_ACCESS_KEY or AWS_SECRET_KEY (in that order). If the environment
   variables are not set and the forwarder is running on EC2, the forwarder
   attempts to use the secret key from the IAM role.
-* Optional.
 * Default: not set
 
 remote_queue.kinesis.auth_region = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The authentication region to use when signing the requests when interacting
   with the remote queue system supporting the Kinesis API.
 * If not specified and the forwarder is running on EC2, the auth_region is
   constructed automatically based on the EC2 region of the instance where the
   the forwarder is running.
-* Optional.
 * Default: not set
 
-remote_queue.kinesis.endpoint = <string>
+remote_queue.kinesis.endpoint = <URL>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The URL of the remote queue system supporting the Kinesis API.
 * Use the scheme, either http or https, to enable or disable SSL connectivity
   with the endpoint.
@@ -1313,7 +1204,6 @@ remote_queue.kinesis.endpoint = <string>
 * If specified, the endpoint must match the effective auth_region, which is
   either a value specified via the 'remote_queue.kinesis.auth_region' setting
   or a value constructed automatically based on the EC2 region of the running instance.
-* Optional.
 * Example: https://kinesis.us-west-2.amazonaws.com/
 
 remote_queue.kinesis.enable_data_integrity_checks = <boolean>
@@ -1365,14 +1255,15 @@ remote_queue.kinesis.timeout.read = <unsigned integer>
 remote_queue.kinesis.timeout.write = <unsigned integer>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Sets the write timeout, in milliseconds, to use when interacting with
   Kinesis for this queue.
-* Optional.
 * Default: 60000
 
-remote_queue.kinesis.large_message_store.endpoint = <string>
+remote_queue.kinesis.large_message_store.endpoint = <URL>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The URL of the remote storage system supporting the S3 API.
 * Use the scheme, either http or https, to enable or disable SSL connectivity
   with the endpoint.
@@ -1382,12 +1273,12 @@ remote_queue.kinesis.large_message_store.endpoint = <string>
   either a value specified via 'remote_queue.kinesis.auth_region' or a value
   constructed automatically based on the EC2 region of the running instance.
 * Example: https://s3-us-west-2.amazonaws.com/
-* Optional.
 * Default: not set
 
 remote_queue.kinesis.large_message_store.path = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The remote storage location where messages larger than the underlying
   queue's maximum message size will reside.
 * The format for this setting is: <scheme>://<remote-location-specifier>
@@ -1400,21 +1291,21 @@ remote_queue.kinesis.large_message_store.path = <string>
      For example, "path=s3://mybucket/some/path".
 * If not specified, the queue drops messages exceeding the underlying queue's
   maximum message size.
-* Optional.
 * Default: not set
 
 remote_queue.kinesis.send_interval = <number><unit>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The interval that the remote queue output processor waits for data to
   arrive before sending a partial batch to the remote queue.
 * For example, 30s, 1m
-* Optional.
 * Default: 30s
 
 remote_queue.kinesis.max_queue_message_size = <integer>[KB|MB|GB]
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The maximum message size to which events are batched for upload to the remote
   queue.
 * Specify this value as an integer followed by KB or MB (for example, 500KB
@@ -1422,32 +1313,25 @@ remote_queue.kinesis.max_queue_message_size = <integer>[KB|MB|GB]
 * Queue messages are sent to the remote queue when the next event processed
   would otherwise result in the message exceeding the maximum message size.
 * The maximum value for this setting is 5GB.
-* Optional.
 * Default: 10MB
 
 remote_queue.kinesis.tenantId = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The ID of the tenant that owns the messages being
   written to the remote queue.
 * If not specified, the messages do not belong to any tenant.
-* Optional.
 * Default: not set
 
 ####
 # Simple Queue Service Smartbus (SQS Smartbus) specific settings
 ####
 
-remote_queue.sqs_smartbus.encoding_format = protobuf|s2s
-* Currently not supported. This setting is related to a feature that is
-  still under development.
-* Specifies the encoding format used to write data to the
-  remote queue.
-* Default: protobuf
-
 remote_queue.sqs_smartbus.access_key = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The access key to use when authenticating with the remote queue
   system that supports the SQS API.
 * If not specified, the splunk instance looks for the environment variables
@@ -1455,12 +1339,12 @@ remote_queue.sqs_smartbus.access_key = <string>
   variables are not set and the forwarder is running on EC2, the splunk instance
   attempts to use the secret key from the IAM (Identity and Access
   Management) role.
-* Optional.
 * Default: not set
 
 remote_queue.sqs_smartbus.secret_key = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Specifies the secret key to use when authenticating with the remote queue
   system supporting the SQS API.
 * If not specified, the splunk instance looks for the environment variables
@@ -1468,7 +1352,6 @@ remote_queue.sqs_smartbus.secret_key = <string>
   variables are not set and the forwarder is running on EC2, the splunk instance
   attempts to use the secret key from the IAM (Identity and Access
   Management) role.
-* Optional.
 * Default: not set
 
 remote_queue.sqs_smartbus.auth_region = <string>
@@ -1482,9 +1365,10 @@ remote_queue.sqs_smartbus.auth_region = <string>
   the splunk instance is running.
 * Default: not set
 
-remote_queue.sqs_smartbus.endpoint = <string>
+remote_queue.sqs_smartbus.endpoint = <URL>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The URL of the remote queue system supporting the Simple Queue Service (SQS) API.
 * Use the scheme, either http or https, to enable or disable SSL connectivity
   with the endpoint.
@@ -1495,11 +1379,11 @@ remote_queue.sqs_smartbus.endpoint = <string>
   or a value constructed automatically based on the EC2 region of the
   running instance.
 * Example: https://sqs.us-west-2.amazonaws.com/
-* Optional.
 
 remote_queue.sqs_smartbus.message_group_id = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Specifies the Message Group ID for Amazon Web Services Simple Queue Service
   (SQS) First-In, First-Out (FIFO) queues.
 * Setting a Message Group ID controls how messages within an AWS SQS queue are
@@ -1513,7 +1397,6 @@ remote_queue.sqs_smartbus.message_group_id = <string>
 * Otherwise, Splunk software assumes that the SQS queue is a standard queue.
 * Can be between 1-128 alphanumeric or punctuation characters.
 * NOTE: FIFO queues must have Content-Based De-duplication enabled.
-* Optional.
 * Default: not set
 
 remote_queue.sqs_smartbus.retry_policy = max_count|none
@@ -1538,30 +1421,31 @@ remote_queue.sqs_smartbus.max_count.max_retries_per_part = <unsigned integer>
 remote_queue.sqs_smartbus.timeout.connect = <unsigned integer>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Sets the connection timeout, in milliseconds, to use when interacting with
   the SQS for this queue.
-* Optional.
 * Default: 5000
 
 remote_queue.sqs_smartbus.timeout.read = <unsigned integer>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Sets the read timeout, in milliseconds, to use when interacting with the
   SQS for this queue.
-* Optional.
 * Default: 60000
 
 remote_queue.sqs_smartbus.timeout.write = <unsigned integer>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * Sets the write timeout, in milliseconds, to use when interacting with
   the SQS for this queue.
-* Optional.
 * Default: 60000
 
-remote_queue.sqs_smartbus.large_message_store.endpoint = <string>
+remote_queue.sqs_smartbus.large_message_store.endpoint = <URL>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The URL of the remote storage system supporting the S3 API.
 * Use the scheme, either http or https, to enable or disable SSL connectivity
   with the endpoint.
@@ -1571,12 +1455,12 @@ remote_queue.sqs_smartbus.large_message_store.endpoint = <string>
   either a value specified via 'remote_queue.sqs_smartbus.auth_region' or a value
   constructed automatically based on the EC2 region of the running instance.
 * Example: https://s3-us-west-2.amazonaws.com/
-* Optional.
 * Default: not set
 
 remote_queue.sqs_smartbus.large_message_store.path = <string>
 * Currently not supported. This setting is related to a feature that is
   still under development.
+* Optional.
 * The remote storage location where messages larger than the underlying
   queue's maximum message size will reside.
 * The format for this value is: <scheme>://<remote-location-specifier>
@@ -1588,77 +1472,6 @@ remote_queue.sqs_smartbus.large_message_store.path = <string>
     "s3". For example, "path=s3://mybucket/some/path".
 * If not specified, the queue drops messages exceeding the underlying queue's
   maximum message size.
-* Optional.
-* Default: not set
-
-remote_queue.sqs_smartbus.large_message_store.sslVerifyServerCert = <boolean>
-* If set to true, the Splunk platform verifies the certificate presented by the S3
-  server and checks that the common name and alternate name match the ones
-  specified in 'remote_queue.sqs_smartbus.large_message_store.sslCommonNameToCheck' and
-  'remote_queue.sqs_smartbus.large_message_store.sslAltNameToCheck'.
-* Default: false
-
-remote_queue.sqs_smartbus.large_message_store.sslVersions = <comma-separated list>
-* Comma-separated list of SSL versions to connect to
-  'remote.sqs_smartbus.large_message_store.endpoint'.
-* The versions available are "ssl3", "tls1.0", "tls1.1", and "tls1.2".
-* The special version "*" selects all supported versions.  The version "tls"
-  selects all versions tls1.0 or newer.
-* If a version is prefixed with "-" it is removed from the list.
-* SSLv2 is always disabled; "-ssl2" is accepted in the version list
-  but does nothing.
-* When configured in FIPS mode, ssl3 is always disabled regardless
-  of this configuration.
-* Default: tls1.2
-
-remote_queue.sqs_smartbus.large_message_store.sslCommonNameToCheck = 
-  <comma-separated list>
-* If this value is set, and 
-  'remote_queue.sqs_smartbus.large_message_store.sslVerifyServerCert' is set to true,
-  the Splunk platform instance checks the common name of the certificate presented by
-  the remote server (specified in
-  'remote_queue.sqs_smartbus.large_message_store.endpoint') against this list
-  of common names.
-* Default: not set
-
-remote_queue.sqs_smartbus.large_message_store.sslAltNameToCheck = <comma-separated list>
-* If this value is set, and 
-  'remote_queue.sqs_smartbus.large_message_store.sslVerifyServerCert' is set to true,
-  the Splunk platform instance checks the alternate name(s) of the certificate
-  presented by the remote server (specified in 
-  'remote_queue.sqs_smartbus.large_message_store.endpoint') against this list of
-  subject alternate names.
-* Default: not set
-
-remote_queue.sqs_smartbus.large_message_store.sslRootCAPath = <path>
-* Full path to the Certificate Authority (CA) certificate PEM format file
-  containing one or more certificates concatenated together. S3 certificate
-  will be validated against the CAs present in this file.
-* Default: The value of [sslConfig]/'caCertFile' in server.conf
-
-remote_queue.sqs_smartbus.large_message_store.cipherSuite = <cipher suite string>
-* If set, uses the specified cipher string for the SSL connection.
-* If not set, uses the default cipher string.
-* Must specify 'dhFile' to enable any Diffie-Hellman ciphers.
-* Default: TLSv1+HIGH:TLSv1.2+HIGH:@STRENGTH
-
-remote_queue.sqs_smartbus.large_message_store.ecdhCurves = <comma-separated list>
-* ECDH curves to use for ECDH key negotiation.
-* Specify the curves in the order of preference.
-* The client sends these curves as a part of Client Hello.
-* Splunk software only supports named curves specified
-  by their short names.
-* The list of valid named curves by their short/long names can be obtained
-  by executing this command:
-  $SPLUNK_HOME/bin/splunk cmd openssl ecparam -list_curves
-* e.g. ecdhCurves = prime256v1,secp384r1,secp521r1
-* Default: not set
-
-remote_queue.sqs_smartbus.large_message_store.dhFile = <string>
-* PEM format Diffie-Hellman parameter file name.
-* DH group size must be no less than 2048bits.
-* This file is required in order to enable any Diffie-Hellman ciphers.
-* Optional.
 * Default: not set
 
 remote_queue.sqs_smartbus.send_interval = <number><unit>
@@ -1667,8 +1480,8 @@ remote_queue.sqs_smartbus.send_interval = <number><unit>
 * Optional.
 * The interval that the remote queue output processor waits for data to
   arrive before sending a partial batch to the remote queue.
-* Examples: 100ms, 5s
-* Default: 2s
+* Examples: 30s, 1m
+* Default: 10s
 
 remote_queue.sqs_smartbus.max_queue_message_size = <integer>[KB|MB|GB]
 * Currently not supported. This setting is related to a feature that is
@@ -1705,333 +1518,5 @@ remote_queue.sqs_smartbus.executor_max_jobs_count = <positive integer>
   still under development.
 * The maximum number of jobs that each worker thread per pipeline set can queue.
 * A value of 0 is equivalent to 1.
-* The maximum value for this setting is 50.
-* Default: 20
-
-remote_queue.sqs_smartbus.large_message_store.encryption_scheme = sse-s3 | sse-c | none
-* Currently not supported. This setting is related to a feature that is
-  still under development.
-* The encryption scheme used by remote storage.
-* Default: none.
-
-remote_queue.sqs_smartbus.large_message_store.kms_endpoint = <string>
-* Currently not supported. This setting is related to a feature that is
-  still under development.
-* The endpoint to connect to for generating KMS keys.
-* This setting is required if 'large_message_store.encryption_scheme' is
-  set to sse-c.
-* Examples: https://kms.us-east-2.amazonaws.com
-* No default.
-
-remote_queue.sqs_smartbus.large_message_store.key_id = <string>
-* Currently not supported. This setting is related to a feature that is
-  still under development.
-* The ID for the primary key that KMS uses to generate a data key pair. 
-  The primary key is stored in AWS.
-* This setting is required if 'large_message_store.encryption_scheme' is
-  set to sse-c.
-* Examples: alias/sqsssekeytrial, 23456789-abcd-1234-11aa-c50f99011223
-* No default.
-
-remote_queue.sqs_smartbus.large_message_store.key_refresh_interval = <string>
-* Currently not supported. This setting is related to a feature that is
-  still under development.
-* The time interval to refresh primary key.
-* Default: 24h
-
-####
-# Remote File System (RFS) Output
-####
-
-[rfs:<name>]
-
-* This section explains the configuration settings for the Ingest Actions
-  feature to send data to a remote file system, such as Amazon S3.
-* Each rfs stanza represents an individually configured location.
-* The "name" is a unique identifier for the remote storage, and is shown
-  as a routing destination when using the Ingest Actions UI.
-* Only one remote stanza configuration is supported.
-* The only supported remote storage scheme is S3: "rfs:s3". All others
-  are currently not supported.
-
-dropEventsOnUploadError = <boolean>
-* Whether or not the Ingest Actions feature drops events if it encounters an
-  error when uploading events to remote storage.
-* A value of "true" means that, if there is an error writing to a remote file system, the
-  error will be logged, and the events in that batch dropped. Ingest will not be
-  blocked, but data might be lost.
-* A value of "false" means, if there is an error writing to a remote file system, the
-  error will be logged, and events will NOT be dropped. splunkd will continually
-  attempt to write the batch. Because events are not dropped, this might cause
-  queues to become blocked, and data ingestion to stop.
-* This setting is optional.
-* Default: false
-
-batchSizeThresholdKB = <integer>
-* The size, in kilobytes, of the events in the RfsOutputProcessor send buffer.
-* RfsOutputProcessor batches events before flushing them to S3.
-* If the current buffer size is greater than 'batchSizeThresholdKB' kilobytes, then
-* the data will be written to S3 immediately.
-* If you increase this setting, you may also want to increase the value of
-  server.conf/[queue:rfsQueue]/maxSize.
-* Default: 2048
-
-batchTimeout = <integer>
-* RfsOutputProcessor batches events before flushing to S3.
-* If a batch has not hit any other criteria for being flushed to S3, and
-  the batch is at least this many seconds old, flush the batch to S3.
-* Default = 30
-
-compression = none|gzip|lz4|zstd
-* Sets the algorithm to use for compression when writing to S3. 
-* The RfsOutputProcessor writes files to S3 with the appropriate extension for the compression
-  algorithm, for example, .zst for zstd, .gz for gzip and .lz4 for lz4.
-* Default: zstd
-
-compressionLevel = <integer>
-* Sets compression level for the specified compression algorithm,
-  when RfsOutputProcessor writes files to S3. Must be between 0 and 10.
-* Default: 3
-
-####
-# "rfs" stanzas, in addition to RfsOutputConfiguration, can take many storage
-# provider-specific settings, for example, for Amazon S3, GCP, or Azure. Refer to
-# "Volume settings" in indexes.conf for all settings. The below are a list of
-# common settings.
-####
-
-path = <string>
-* Required.
-* This setting points to the location on local file system or remote storage location
-  where indexes reside.
-* The format for local file system is:
-  file://<some_mount_point/path>
-* The format for remote storage location is:
-  <scheme>://<remote-location-specifier>
-    * The "scheme" identifies a supported external storage system type.
-    * The "remote-location-specifier" is an external system-specific string for
-      identifying a location inside the storage system.
-    * For Google Cloud Storage, this is specified as "gs://<bucket-name>/path/to/rfsoutput"
-    * For Microsoft Azure Blob storage, this is specified
-      as "azure://<container-name>/path/to/rfsoutput" Note that "<container-name>"
-      is needed here only if 'remote.azure.container_name' is not set.
-    * For Amazon S3 storage, this is specified as "s3://<bucket-name>/<path-to-rfs-output>"
-
-description = <string>
-* Optional.
-* A general description to explain the configuration settings for the Ingest Actions
-  feature to send data to a remote file system.
-* No default.
-
-remote.* = <string>
-* Optional.
-* This section explains possible settings for configuring a remote output.
-* With remote outputs, the splunk indexer might require additional configuration,
-  specific to the type of remote storage. You can pass configuration information
-  to the splunk indexer by specifying the settings through the following schema:
-  remote_queue.<scheme>.<config-variable> = <value>.
-  For example:
-  remote.s3.access_key = ACCESS_KEY
-  Refer to "Volume settings" in indexes.conf for all settings.
-* This setting is optional.
-* No default.
-
-remote.s3.encryption = sse-s3 | sse-kms | sse-c | cse | none
-* The encryption scheme to use for data buckets that are currently being stored (data at rest).
-* sse-s3: Search for "Protecting Data Using Server-Side Encryption with Amazon S3-Managed
-          Encryption Keys" on the Amazon Web Services documentation site.
-* sse-kms: Search for "Protecting Data Using Server-Side Encryption with CMKs Stored in AWS
-           Key Management Service (SSE-KMS)" on the Amazon Web Services documentation site.
-* sse-c: Search for "Protecting Data Using Server-Side Encryption with Customer-Provided Encryption
-         Keys (SSE-C)" on the Amazon Web Services documentation site.
-         Currently not supported. This setting is related to a feature that is still under development.
- * cse: Search for "SmartStore client-side encryption" on the Splunk Enterprise documentation site,
-        and "Protecting Data Using Server-Side Encryption with Customer-Provided Encryption Keys (SSE-C)"
-        on the Amazon Web Services documentation site.
-        Currently not supported. This setting is related to a feature that is still under development.
-* Optional.
-* Default: none
-
-remote.s3.access_key = <string>
-* Specifies the access key to use when authenticating with the remote storage
-  system supporting the S3 API.
-* If not specified, the indexer will look for these environment variables:
-  AWS_ACCESS_KEY_ID or AWS_ACCESS_KEY (in that order).
-* If the environment variables are not set and the indexer is running on EC2,
-  the indexer attempts to use the access key from the IAM role.
-* Optional.
-* No default.
-
-remote.s3.secret_key = <string>
-* Specifies the secret key to use when authenticating with the remote storage
-  system supporting the S3 API.
-* If not specified, the indexer will look for these environment variables:
-  AWS_SECRET_ACCESS_KEY or AWS_SECRET_KEY (in that order).
-* If the environment variables are not set and the indexer is running on EC2,
-  the indexer attempts to use the secret key from the IAM role.
-* Optional.
-* No default.
-
-remote.s3.signature_version = v2|v4
-* The signature version to use when authenticating with the remote storage
-  system supporting the S3 API.
-* For 'sse-kms' and 'sse-c' server-side encryption schemes, and for 'cse'
-  client-side encryption scheme, you must use signature_version=v4.
-* For signature_version=v2 you must set url_version=v1.
-* Optional.
-* Default: v4
-
-remote.s3.url_version = v1|v2
-* Specifies which url version to use, both for parsing the endpoint/path, and
-* for communicating with the remote storage. This value only needs to be
-* specified when running on non-AWS S3-compatible storage that has been configured
-* to use v2 urls.
-* In v1 the bucket is the first element of the path.
-* Example: mydomain.com/bucketname/rest/of/path
-* In v2 the bucket is the outermost subdomain in the endpoint.
-* Exmaple: bucketname.mydomain.com/rest/of/path
-* Default: v1
-
-remote.s3.supports_versioning = <boolean>
-* Specifies whether the remote storage supports versioning.
-* Versioning is a means of keeping multiple variants of an object
-  in the same bucket on the remote storage.
-* This setting determines how splunkd removes data from remote storage.
-  If set to true, splunkd will delete all versions of objects at
-  time of data removal. Otherwise, if set to false, splunkd will use a simple DELETE
-  (See https://docs.aws.amazon.com/AmazonS3/latest/dev/DeletingObjectVersions.html).
-* Optional.
-* Default: true
-
-remote.s3.endpoint = <URL>
-* The URL of the remote storage system supporting the S3 API.
-* The scheme, http or https, can be used to enable or disable SSL connectivity
-  with the endpoint.
-* If not specified and the indexer is running on EC2, the endpoint will be
-  constructed automatically based on the EC2 region of the instance where the
-  indexer is running, as follows: https://<bucketname>.s3-<region>.amazonaws.com
-* Example: https://<bucketname>.s3-us-west-2.amazonaws.com
-* Optional.
-
-remote.s3.encryption = sse-s3 | sse-kms | none
-* The encryption scheme to use for output to remote storage for data stored (data at rest).
-* sse-s3: Search for "Protecting Data Using Server-Side Encryption with Amazon S3-Managed
-          Encryption Keys" on the Amazon Web Services documentation site.
-* sse-kms: Search for "Protecting Data Using Server-Side Encryption with CMKs Stored in AWS
-           Key Management Service (SSE-KMS)" on the Amazon Web Services documentation site.
-* Note: sse-c is not supported for RfsOutputProcessor
-* Optional.
-* No default.
-
-remote.s3.retry_policy = max_count
-* Sets the retry policy to use for remote file operations.
-* A retry policy specifies whether and how to retry file operations that fail
-  for those failures that might be intermittent.
-* Retry policies:
-  + "max_count": Imposes a maximum number of times a file operation will be
-    retried upon intermittent failure both for individual parts of a multipart
-    download or upload and for files as a whole.
-* Optional.
-* Default: max_count
-
-remote.s3.sslVerifyServerCert = <boolean>
-* If this is set to true, Splunk verifies certificate presented by S3
-  server and checks that the common name/alternate name matches the ones
-  specified in 'remote.s3.sslCommonNameToCheck' and
-  'remote.s3.sslAltNameToCheck'.
-* Optional
-* Default: false
-
-remote.s3.sslVersions = <versions_list>
-* Comma-separated list of SSL versions to connect to 'remote.s3.endpoint'.
-* The versions available are "ssl3", "tls1.0", "tls1.1", and "tls1.2".
-* The special version "*" selects all supported versions.  The version "tls"
-  selects all versions tls1.0 or newer.
-* If a version is prefixed with "-" it is removed from the list.
-* SSLv2 is always disabled; "-ssl2" is accepted in the version list
-  but does nothing.
-* When configured in FIPS mode, ssl3 is always disabled regardless
-  of this configuration.
-* Optional.
-* Default: tls1.2
-
-remote.s3.sslCommonNameToCheck = <commonName1>, <commonName2>, ..
-* If this value is set, and 'remote.s3.sslVerifyServerCert' is set to true,
-  splunkd checks the common name of the certificate presented by
-  the remote server (specified in 'remote.s3.endpoint') against this list
-  of common names.
-* Default: not set
-
-remote.s3.sslAltNameToCheck = <alternateName1>, <alternateName2>, ..
-* If this value is set, and 'remote.s3.sslVerifyServerCert' is set to true,
-  splunkd checks the alternate name(s) of the certificate presented by
-  the remote server (specified in 'remote.s3.endpoint') against this list of
-  subject alternate names.
-* No default.
-
-remote.s3.sslRootCAPath = <path>
-* Full path to the Certificate Authority (CA) certificate PEM format file
-  containing one or more certificates concatenated together. S3 certificate
-  will be validated against the CAs present in this file.
-* Optional.
-* Default: The value of '[sslConfig]/caCertFile' in server.conf
-
-remote.s3.cipherSuite = <cipher suite string>
-* If set, uses the specified cipher string for the SSL connection.
-* If not set, uses the default cipher string.
-* Must specify 'dhFile' to enable any Diffie-Hellman ciphers.
-* Optional.
-* Default: TLSv1+HIGH:TLSv1.2+HIGH:@STRENGTH
-
-remote.s3.ecdhCurves = <comma-separated list>
-* ECDH curves to use for ECDH key negotiation.
-* The curves should be specified in the order of preference.
-* The client sends these curves as a part of Client Hello.
-* Splunk software only supports named curves specified
-  by their SHORT names.
-* The list of valid named curves by their short/long names can be obtained
-  by executing this command:
-  $SPLUNK_HOME/bin/splunk cmd openssl ecparam -list_curves
-* e.g. ecdhCurves = prime256v1,secp384r1,secp521r1
-* Optional.
-* No default.
-
-remote.s3.kms.auth_region = <string>
-* Required if 'remote.s3.auth_region' is unset and Splunk can not
-  automatically extract this information.
-* Similar to 'remote.s3.auth_region'.
-* If not specified, KMS access uses 'remote.s3.auth_region'.
-* No default.
-
-remote.s3.kms.key_id = <string>
-* Required if remote.s3.encryption = sse-c | sse-kms | cse
-* Specifies the identifier for Customer Master Key (CMK) on KMS. It can be the
-  unique key ID or the Amazon Resource Name (ARN) of the CMK or the alias
-  name or ARN of an alias that refers to the CMK.
-* Examples:
-  Unique key ID: 1234abcd-12ab-34cd-56ef-1234567890ab
-  CMK ARN: arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab
-  Alias name: alias/ExampleAlias
-  Alias ARN: arn:aws:kms:us-east-2:111122223333:alias/ExampleAlias
-* No default.
-
-remote.s3.kms.<ssl_settings> = <...>
-* Optional.
-* See the descriptions of the SSL settings for remote.s3.<ssl_settings>
-  above. e.g. remote.s3.sslVerifyServerCert.
-* Valid ssl_settings are sslVerifyServerCert, sslVersions, sslRootCAPath,
-  sslAltNameToCheck, sslCommonNameToCheck, cipherSuite, ecdhCurves, and dhFile.
-* All of these settings are optional.
-* All of these settings have the same defaults as
-  'remote.s3.<ssl_settings>'.
-
-authMethod = <string>
-* The authentication method used to access the remote destination.
-* Optional.
-* Do not configure this setting in outputs.conf. The system populates
-* this setting when you choose an Authentication Method in the New or Edit
-* Destination setup window in Splunk Web.
-* Choosing “Access key and Secret key” in Splunk Web sets this
-* setting to “basic”.
-* Choosing “IAM role” in Splunk Web sets this setting to "iam".
-* No default.
+* The maximum value for this setting is 20.
+* Default: 8

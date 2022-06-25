@@ -4,7 +4,6 @@ import Link from '@splunk/react-ui/Link';
 import List from '@splunk/react-ui/List';
 import BookmarkModal from './BookmarkModal';
 import * as Utils from './Utils';
-import styled from 'styled-components'
 import './Bookmark.pcss';
 
 class BookmarkPanel extends Component {
@@ -44,10 +43,6 @@ class BookmarkPanel extends Component {
      * Render bookmark panel.
      */
     render() {
-        const BookmarkListItem = styled(List.Item)`
-            text-align: center;
-            padding: 20px 10px ;
-        `
         return (
             <div className="bookmarks">
                 <List>
@@ -61,14 +56,15 @@ class BookmarkPanel extends Component {
                             </Link>
                         </List.Item>
                     ))}
-                    <BookmarkListItem
+                    <List.Item
                         key={-1}
+                        className="bookmarksBtn"
                     >
                         <BookmarkModal
                             bookmarks={this.props.bookmarks}
                             handleClose={this.handleModalClose}
                         />
-                    </BookmarkListItem>
+                    </List.Item>
                 </List>
             </div>
         );

@@ -141,8 +141,6 @@ class SwaInitScriptRenderer(object):
     template = '''
         <script>
             (function () {
-                const opts = %(options)s;
-                window._splunk_deployment_ID = opts.deploymentID;
                 window._splunk_metrics_events = [];
                 window._splunk_metrics_events.active = true;
 

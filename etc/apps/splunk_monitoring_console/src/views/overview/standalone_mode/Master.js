@@ -1,21 +1,27 @@
 define(
     [
-        'jquery',
         'underscore',
+        'jquery',
         'module',
-        '@splunk/swc-mc',
+        'views/Base',
+        'splunkjs/mvc/utils',
         'splunk_monitoring_console/views/overview/Alerts',
+        'splunkjs/mvc/singleview',
+        "splunkjs/mvc/chartview",
         'contrib/text!splunk_monitoring_console/views/overview/standalone_mode/Master.html',
         '../Master.pcss',
         '../classic-distributed.pcss',
         '../topology.pcss'
     ],
     function(
-        $,
         _,
+        $,
         module,
-        SwcMC,
+        BaseView,
+        utils,
         AlertsView,
+        SingleView,
+        ChartView,
         Template,
         css,
         classicDistributedCss,
@@ -56,8 +62,8 @@ define(
         };
 
         var getFullPath = function(path) {
-            var root = SwcMC.Utils.getPageInfo().root;
-            var locale = SwcMC.Utils.getPageInfo().locale;
+            var root = utils.getPageInfo().root;
+            var locale = utils.getPageInfo().locale;
             return (root ? '/'+root : '') + '/' + locale + path;
         };
 
@@ -138,10 +144,10 @@ define(
             };
         };
 
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             moduleId: module.id,
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
                 this.$el.html(this.compiledTemplate({
                     DMC_TOOLTIP_DELAY: DMC_TOOLTIP_DELAY,
                     DMC_INDEXING_RATE_DOC: DMC_INDEXING_RATE_DOC,
@@ -169,7 +175,7 @@ define(
                 // VIEWS
 
                 // INDEXING
-                var indexingRate = new SwcMC.SingleView({
+                var indexingRate = new SingleView({
                     id: 'indexing-rate-element',
                     managerid: this.options.searchManager.indexingRateSearch.id,
                     underLabel: _('Total').t(),
@@ -223,7 +229,7 @@ define(
                 }.bind(this));
 
 
-                var totalSearchView = new SwcMC.SingleView({
+                var totalSearchView = new SingleView({
                     id: 'concurrent-searches-element',
                     managerid: this.options.searchManager.searchCountByTypeSearch.id,
                     underLabel: 'Searches',
@@ -231,7 +237,7 @@ define(
                     el: this.$('#concurrent-searches-element')
                 });
                 totalSearchView.$el.click(drilldownToSearchActivity()).hover(hoverOnSingleValue, hoverOffSingleValue);
-                var searchPieViz = new SwcMC.ChartView({
+                var searchPieViz = new ChartView({
                     id: 'searches-by-type-element',
                     managerid: this.options.searchManager.searchCountByTypeSearch.id,
                     type: "pie",
@@ -242,7 +248,7 @@ define(
 
 
                 // CPU: hostwide
-                var totalCPUView = new SwcMC.SingleView({
+                var totalCPUView = new SingleView({
                     id: 'cpu-usage-element',
                     managerid: this.options.searchManager.totalCpuMemUsageSearch.id,
                     underLabel: _('All Processes').t(),
@@ -251,7 +257,7 @@ define(
                 });
                 totalCPUView.$el.click(drilldownToResourceUsageMachine()).hover(hoverOnSingleValue, hoverOffSingleValue);
                 // CPU: splunk processes
-                var splunkCPUUsageView = new SwcMC.SingleView({
+                var splunkCPUUsageView = new SingleView({
                     id: 'splunk-cpu-usage-element',
                     managerid: this.options.searchManager.totalCpuMemUsageSearch.id,
                     underLabel: _('Splunk Enterprise').t(),
@@ -259,7 +265,7 @@ define(
                     el: this.$('#splunk-cpu-usage-element')
                 });
                 splunkCPUUsageView.$el.click(drilldownToResourceUsageInstance()).hover(hoverOnSingleValue, hoverOffSingleValue);
-                var CPUPieView = new SwcMC.ChartView({
+                var CPUPieView = new ChartView({
                     id: 'cpu-usage-by-process-element',
                     managerid: this.options.searchManager.cpuResourceUsageSearch.id,
                     type: 'pie',
@@ -269,7 +275,7 @@ define(
                 }).render();
                 CPUPieView.$el.click(drilldownToResourceUsageMachine()).hover(hoverOnViz);
                 // Memory usage: hostwide
-                var totalMemView = new SwcMC.SingleView({
+                var totalMemView = new SingleView({
                     id: 'mem-usage-element',
                     managerid: this.options.searchManager.totalCpuMemUsageSearch.id,
                     field: 'total_mem',
@@ -278,7 +284,7 @@ define(
                 });
                 totalMemView.$el.click(drilldownToResourceUsageMachine()).hover(hoverOnSingleValue, hoverOffSingleValue);
                 // Memory usage: splunk processes
-                var splunkMemView = new SwcMC.SingleView({
+                var splunkMemView = new SingleView({
                     id: 'splunk-mem-usage-element',
                     managerid: this.options.searchManager.totalCpuMemUsageSearch.id,
                     field: 'total_splunk_mem',
@@ -286,7 +292,7 @@ define(
                     el: this.$('#splunk-mem-usage-element')
                 });
                 splunkMemView.$el.click(drilldownToResourceUsageInstance()).hover(hoverOnSingleValue, hoverOffSingleValue);
-                var memPieView = new SwcMC.ChartView({
+                var memPieView = new ChartView({
                     id: 'mem-usage-by-process-element',
                     managerid: this.options.searchManager.memResourceUsageSearch.id,
                     type: 'pie',
@@ -297,7 +303,7 @@ define(
                 memPieView.$el.click(drilldownToResourceUsageMachine()).hover(hoverOnViz);
 
                 // KV Store
-                var kvStoreSize = new SwcMC.SingleView({
+                var kvStoreSize = new SingleView({
                     id: "kv-store-size",
                     underLabel: _("Size of Collections (MB)").t(),
                     managerid: this.options.searchManager.kvStoreCollectionSizeSearch.id,
@@ -306,7 +312,7 @@ define(
                 }).render();
                 kvStoreSize.$el.click(drilldownToKVStoreView()).hover(hoverOnSingleValue, hoverOffSingleValue);
 
-                var kvStoreCollections = new SwcMC.SingleView({
+                var kvStoreCollections = new SingleView({
                     id: "kv-store-collections",
                     underLabel: _("Collections").t(),
                     managerid: this.options.searchManager.kvStoreCollectionCountSearch.id,
@@ -315,7 +321,7 @@ define(
                 }).render();
                 kvStoreCollections.$el.click(drilldownToKVStoreView()).hover(hoverOnSingleValue, hoverOffSingleValue);
 
-                var kvStoreOplogSize = new SwcMC.SingleView({
+                var kvStoreOplogSize = new SingleView({
                     id: "kv-store-oplog-size",
                     underLabel: _("Oplog Size (MB)").t(),
                     managerid: "kv-store-oplog-size-search",

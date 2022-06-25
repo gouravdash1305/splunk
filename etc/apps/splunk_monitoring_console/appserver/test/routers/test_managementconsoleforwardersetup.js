@@ -1,66 +1,58 @@
-define([
-    '@splunk/swc-mc/dist/test-dependencies',
+define(
+[
+    'mocks/models/MockSplunkD',
+    'mocks/collections/MockSplunkDs',
     'splunk_monitoring_console/routers/MonitoringConsoleForwarderSetup',
     'splunk_monitoring_console/views/settings/forwarder_setup/enterprise/Master',
     'splunk_monitoring_console/views/settings/forwarder_setup/lite/Master',
-], function (SwcMcTest, Router, MasterView, MasterLightView) {
-    var LOCALE = 'en-US';
-    var APP = 'splunk_monitoring_console';
-    var PAGE = 'managementconsole_forwarder_setup';
+    'util/qunit_utils'
+], function(
+    MockSplunkD,
+    MockSplunkDs,
+    Router,
+    MasterView,
+    MasterLightView,
+    qunitUtils
+) {
+    var LOCALE = "en-US";
+    var APP = "splunk_monitoring_console";
+    var PAGE = "managementconsole_forwarder_setup";
 
-    suite('DMC Forwarder Setup Router', function () {
-        util(SwcMcTest.QunitUtils.SplunkdPartials);
+    suite('DMC Forwarder Setup Router', function() {
+        util(qunitUtils.SplunkdPartials);
 
-        setup(function () {
+        setup(function() {
             this.router = new Router();
             sinon.spy(MasterView.prototype, 'initialize');
             sinon.spy(MasterLightView.prototype, 'initialize');
 
-            // Refer "Returning Promises from Stubs" section from below
-            // https://www.sitepoint.com/promises-in-javascript-unit-tests-the-definitive-guide/
-            this.router.deferreds.pageViewRendered = sinon.stub();
-            this.router.deferreds.pageViewRendered.returns(Promise.resolve('a success'));
-            this.router.deferreds.searchesCollectionDfd = sinon.stub();
-            this.router.deferreds.searchesCollectionDfd.returns(Promise.resolve('a success'));
+            this.router.deferreds.pageViewRendered.resolve();
+            this.router.deferreds.searchesCollectionDfd.resolve();
             this.router.pageView = {};
-            this.router.collection.searchesCollection = new SwcMcTest.MockSplunkDsCollection();
-            this.router.collection.searchesCollection.add(new SwcMcTest.MockSplunkDModel());
+            this.router.collection.searchesCollection = new MockSplunkDs();
+            this.router.collection.searchesCollection.add(new MockSplunkD());
 
             this.serverInfoStub = sinon.stub(this.router.model.serverInfo, 'isLite');
 
             assert.ok(this.router, 'router created');
         });
 
-        teardown(function () {
+        teardown(function() {
             MasterView.prototype.initialize.restore();
             MasterLightView.prototype.initialize.restore();
             this.serverInfoStub.restore();
         });
 
-        test('initialize enterprise view:', function (done) {
+        test('initialize enterprise view:', function() {
             this.serverInfoStub.returns(false);
             this.router.page(LOCALE, APP, PAGE);
-            this.router.pagePromise.then(function() {
-                assert.equal(
-                    MasterView.prototype.initialize.callCount,
-                    1,
-                    'Enterprise Master View should be instantiated once'
-                );
-                done();
-            });
+            assert.equal(MasterView.prototype.initialize.callCount, 1, 'Enterprise Master View should be instantiated once');
         });
-        test('initialize light view:', function (done) {
+        test('initialize light view:', function() {
             this.serverInfoStub.returns(true);
             this.router.collection.searchesCollection.models[0].entry.content.set('disabled', true);
             this.router.page(LOCALE, APP, PAGE);
-            this.router.pagePromise.then(function() {
-                assert.equal(
-                    MasterLightView.prototype.initialize.callCount,
-                    1,
-                    'Lite Master View should be instantiated once'
-                );
-                done();
-            });
+            assert.equal(MasterLightView.prototype.initialize.callCount, 1, 'Lite Master View should be instantiated once');
         });
     });
 });

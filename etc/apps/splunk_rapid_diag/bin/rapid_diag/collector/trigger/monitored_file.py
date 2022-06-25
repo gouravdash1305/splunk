@@ -47,7 +47,7 @@ class MonitoredFile:
             fd = msvcrt.open_osfhandle(handle.Detach(), os.O_RDONLY)
             self.file = os.fdopen(fd, 'r')
         else:
-            self.file = open(self.fname) # pylint: disable=consider-using-with
+            self.file = open(self.fname)
             statinfo = os.fstat(self.file.fileno())
             self.uid = statinfo.st_ino
 

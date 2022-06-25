@@ -4,13 +4,13 @@
 define([
     'jquery',
     'module',
-    '@splunk/swc-mc'
+    'views/shared/PopTart'
 ], function(
     $,
     module,
-    SwcMC
+    PopTart
     ) {
-    return SwcMC.PopTartView.extend({
+    return PopTart.extend({
         moduleId: module.id,
         events: {
             'click .dmc-custom-drilldown-action': 'onClickMenuItem'

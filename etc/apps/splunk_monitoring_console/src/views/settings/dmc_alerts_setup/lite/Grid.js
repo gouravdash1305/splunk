@@ -9,26 +9,34 @@
  	'underscore',
  	'jquery',
  	'module',
- 	'@splunk/swc-mc',
+ 	'views/Base',
+ 	'helpers/grid/RowIterator',
+ 	'views/shared/FlashMessages',
  	'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/GridRow',
- 	'contrib/text!./Grid.html'
+ 	'contrib/text!./Grid.html',
+ 	'util/splunkd_utils',
+	'util/general_utils'
  ], function(
  	_,
  	$,
  	module,
- 	SwcMC,
+ 	BaseView,
+ 	RowIterator,
+ 	FlashMessagesView,
  	GridRow,
- 	template
+ 	template,
+ 	splunkDUtils,
+	util
  ){
- 	return SwcMC.BaseView.extend({
+ 	return BaseView.extend({
  		moduleId: module.id,
  		template: template,
 
  		initialize: function(options) {
-			SwcMC.BaseView.prototype.initialize.call(this, options);
+ 			BaseView.prototype.initialize.call(this, options);
  			this.validAlertCount = 0;
 
- 			this.children.flashMessages = new SwcMC.FlashMessagesView({
+ 			this.children.flashMessages = new FlashMessagesView({
  				className: 'message-single',
  				collection: {
  					dmc_alerts: this.collection.savedSearches
@@ -46,7 +54,7 @@
 	            var errMessage = _('No preconfigured alerts found.').t();
 	            this.children.flashMessages.flashMsgHelper.addGeneralMessage('no_alerts',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -59,7 +67,7 @@
 	    },
 
  		render: function() {
- 			var rowIterator = new SwcMC.GridRowIteratorHelper();
+ 			var rowIterator = new RowIterator();
  			var $html = $(this.compiledTemplate());
  			
  			rowIterator.eachRow(this.collection.savedSearches, function(savedSearch) {
@@ -84,11 +92,11 @@
  					toShow = false;
  				}
  				
- 				if (alertConfig && !SwcMC.GeneralUtils.normalizeBoolean(alertConfig.entry.content.get('enabled_for_light')) ) {
+ 				if (alertConfig && !util.normalizeBoolean(alertConfig.entry.content.get('enabled_for_light')) ) {
 					toShow = false;
 				}
 
-				if (this.model.serverInfo.isCloud() && !SwcMC.GeneralUtils.normalizeBoolean(alertConfig.entry.content.get('enabled_for_cloud')) ) {
+				if (this.model.serverInfo.isCloud() && !util.normalizeBoolean(alertConfig.entry.content.get('enabled_for_cloud')) ) {
 					toShow = false;
 				}
 

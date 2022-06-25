@@ -5,7 +5,7 @@ define(
         'backbone',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Base',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/controls/InstanceMenu',
-        '@splunk/swc-mc'
+        'util/svg'
     ],
     function(
         $,
@@ -13,7 +13,7 @@ define(
         Backbone,
         BaseElementView,
         InstanceMenu,
-        SwcMC
+        svgUtil
     ) {
         var WIDTH = 300,
             HEIGHT = 30,
@@ -81,16 +81,16 @@ define(
                     statusValue = this.model.instance.entry.content.get(sortKey),
                     status = this.model.thresholdConfig.getStatus(sortKey, statusValue);
 
-                SwcMC.UtilSVG.addClass(this.$el, 'instance-group');
+                svgUtil.addClass(this.$el, 'instance-group');
                 if (statusValue !== null && status) {
                     this.$el.css('fill', status);
 
-                    //SwcMC.UtilSVG.addClass(this.$el, 'instance-color-' + status);
+                    //svgUtil.addClass(this.$el, 'instance-color-' + status);
                 }
             },
 
             _renderBackground: function() {
-                this.$background = SwcMC.UtilSVG.createElement('rect')
+                this.$background = svgUtil.createElement('rect')
                     .attr({
                         'class':'instance-background',
                         x: this.model.drawContext.get('x') + (this._hasStatus() ? STATUS_WIDTH + 1 : 0),
@@ -105,7 +105,7 @@ define(
 
             _renderStatus: function() {
                 if (this._hasStatus()) {
-                    SwcMC.UtilSVG.createElement('rect')
+                    svgUtil.createElement('rect')
                         .attr({
                             'class':'instance-status-background ',
                             x: this.model.drawContext.get('x'),
@@ -121,7 +121,7 @@ define(
             _renderLabel: function() {
                 var labelText = this._getRawLabelText();
 
-                this.$labelText = SwcMC.UtilSVG.createElement('text')
+                this.$labelText = svgUtil.createElement('text')
                     .attr({
                         'class':'instance-label',
                         x: this.model.drawContext.get('x') + 
@@ -131,7 +131,7 @@ define(
                     })
                     .text(this._labelIsCached() ? labelCache[labelText] : labelText)
                     .append(
-                        SwcMC.UtilSVG.createElement('title')
+                        svgUtil.createElement('title')
                             .text(labelText)
                     );
 
@@ -151,7 +151,7 @@ define(
                     $metricEl;
                     
                 if (sortKey !== 'serverName') {
-                    $metricEl = SwcMC.UtilSVG.createElement('text')
+                    $metricEl = svgUtil.createElement('text')
                         .attr({
                             'class':'instance-status',
                             x: this.model.drawContext.get('x') + METRIC_MARGIN_LEFT,
@@ -159,9 +159,9 @@ define(
                         });
                     if (_.isObject(metricLabel)) {
                         $metricEl.text(metricLabel.icon);
-                        SwcMC.UtilSVG.addClass($metricEl, 'instance-status-icon');
+                        svgUtil.addClass($metricEl, 'instance-status-icon');
                         if (_.has(metricLabel, 'cls')) {
-                            SwcMC.UtilSVG.addClass($metricEl, metricLabel.cls);
+                            svgUtil.addClass($metricEl, metricLabel.cls);
                         }
                     } else {
                         $metricEl.text(metricLabel);
@@ -171,7 +171,7 @@ define(
             },
 
             _renderAnchor: function() {
-                this.$anchor = SwcMC.UtilSVG.createElement('rect')
+                this.$anchor = svgUtil.createElement('rect')
                     .attr({
                         x: this.model.drawContext.get('x') + 
                             (this.anchorPosition === 'right' ? WIDTH : WIDTH / 2) + 4,
@@ -216,15 +216,15 @@ define(
 
             _updateRelatedTo: function() {
                 if (this.model.state.get('relatedTo') === this.model.instance.entry.content.get('serverName')) {
-                    SwcMC.UtilSVG.addClass(this.$el, 'active');
+                    svgUtil.addClass(this.$el, 'active');
                 } else {
-                    SwcMC.UtilSVG.removeClass(this.$el, 'active');
+                    svgUtil.removeClass(this.$el, 'active');
                 }
             },
 
             _truncateLabelText: function() {
-                var backgroundWidth = SwcMC.UtilSVG.getBBox(this.$background).width - BACKGROUND_TRUNCATION_ADJUSTMENT,
-                    labelTextWidth = SwcMC.UtilSVG.getBBox(this.$labelText).width,
+                var backgroundWidth = svgUtil.getBBox(this.$background).width - BACKGROUND_TRUNCATION_ADJUSTMENT,
+                    labelTextWidth = svgUtil.getBBox(this.$labelText).width,
                     labelText = this._getRawLabelText(),
                     labelTextTruncated,
                     i = 0;

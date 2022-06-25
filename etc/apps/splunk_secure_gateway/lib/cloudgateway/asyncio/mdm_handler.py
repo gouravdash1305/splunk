@@ -13,10 +13,9 @@ from cloudgateway.device import DeviceInfo, make_device_id
 from cloudgateway.private.encryption.encryption_handler import sign_verify, decrypt_session_token
 from cloudgateway.mdm import MDM_REGISTRATION_VERSION, CloudgatewayMdmRegistrationError
 from spacebridge_protocol import http_pb2, sb_common_pb2
-from splapp_protocol import request_pb2
 from cloudgateway.private.util import constants
 from cloudgateway.private.util.tokens_util import calculate_token_info
-from cloudgateway.private.util.time_utils import get_current_timestamp
+
 
 async def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_context, server_context, logger,
                                             config, request_id):
@@ -69,7 +68,6 @@ async def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_c
         user_session_token = credentials_bundle.sessionToken # JWT session token sent by the client after MDM SAML
         friendly_name = credentials_bundle.registeringAppFriendlyName
         platform = credentials_bundle.registeringAppPlatform
-        device_registered_timestamp = get_current_timestamp()
 
         logger.debug("Validating publicKey signature of MDM request message, request_id={}".format(request_id))
 
@@ -80,16 +78,9 @@ async def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_c
 
         device_info = DeviceInfo(encrypt_public_key, sign_public_key,
                                  device_id=make_device_id(encryption_context, sign_public_key),
-                                 app_id=client_id, client_version="", app_name=friendly_name, platform=platform,
-                                 registration_method=constants.MDM, device_management_method=constants.MDM,
-                                 device_registered_timestamp=device_registered_timestamp)
-
-        registration_info = {
-            "registration_method": request_pb2.VersionGetResponse.MDM
-        }
+                                 app_id=client_id, client_version="", app_name=friendly_name, platform=platform)
 
         if login_type == constants.SAML:
-            device_info.auth_method = constants.SAML
             encrypted_session_token = user_session_token
             raw_token = base64.b64decode(encrypted_session_token)
             decrypted_session_token = decrypt_session_token(encryption_context.sodium_client,
@@ -99,10 +90,7 @@ async def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_c
             session_jsn = json.loads(decrypted_session_token)
             token_type = http_pb2.TokenType.Value('JWT')
             token_expires_at = calculate_token_info(session_jsn['token'])['exp']
-
-            registration_info["registration_type"] = request_pb2.VersionGetResponse.SAML
         else:
-            device_info.auth_method = constants.LOCAL_LDAP
             await server_context.validate(username, password, device_info)
 
             logger.debug("Server validated mdm registration request. request_id={}".format(request_id))
@@ -113,8 +101,6 @@ async def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_c
             token_type = http_pb2.TokenType.Value('SESSION')
             token_expires_at = 0
 
-            registration_info["registration_type"] = request_pb2.VersionGetResponse.LOCAL_LDAP
-
         server_version = await server_context.get_server_version()
 
         logger.debug("Server returned server_version={}, request_id={}".format(server_version, request_id))
@@ -124,8 +110,7 @@ async def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_c
         logger.debug("Server returned deployment_name={}, request_id={}".format(deployment_name, request_id))
 
         server_type_id = await server_context.get_server_type()
-
-        env_metadata = await server_context.get_environment_meta(device_info, username, registration_info=registration_info)
+        env_metadata = await server_context.get_environment_meta(device_info, username)
 
         pairing_info = mdm.build_pairing_info(encrypted_session_token, credentials_bundle.username, server_version,
                                               deployment_name, server_type_id, token_type, token_expires_at,

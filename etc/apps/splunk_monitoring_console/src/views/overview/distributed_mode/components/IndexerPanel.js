@@ -2,6 +2,7 @@
  * Created by ykou on 1/15/15.
  */
 define([
+    'jquery',
     'underscore',
     'module',
     'splunk_monitoring_console/views/overview/distributed_mode/components/Panel',
@@ -9,6 +10,7 @@ define([
     'splunk_monitoring_console/views/overview/distributed_mode/components/ResourceUsageSection',
     'contrib/text!splunk_monitoring_console/svg/Indexer.svg'
 ], function(
+    $,
     _,
     module,
     PanelView,

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module to represent Subscription data objects
 """
@@ -156,7 +156,7 @@ class SubscriptionSearch(SpacebridgeAppBase):
     Object container for a Subscription Search object in kvstore
     """
 
-    _EMPTY_JSON = {}
+    _EMPTY_JSON = '{}'
 
     @staticmethod
     def from_json(json_obj):
@@ -168,11 +168,11 @@ class SubscriptionSearch(SpacebridgeAppBase):
         search = SubscriptionSearch()
         if json_obj:
             search_type = json_obj.get('search_type')
+
             search.dashboard_id = json_obj.get('dashboard_id')
             search.search_type = search_type if search_type else SearchType.VISUALIZATION.value
             search.search_type_id = json_obj.get('search_type_id')
             search.ref = json_obj.get('ref')
-            search.app = json_obj.get('app')
             search.base = json_obj.get('base')
             search.query = json_obj.get('query')
             search.earliest_time = json_obj.get('earliest_time')
@@ -191,7 +191,6 @@ class SubscriptionSearch(SpacebridgeAppBase):
             search.visualization_type = json_obj.get('visualization_type')
             search.trellis_enabled = json_obj.get('trellis_enabled', False)
             search.trellis_split_by = json_obj.get('trellis_split_by', '')
-            search.ds_test = json_obj.get('ds_test')
             search.owner = json_obj.get('owner')
             search._user = json_obj.get('_user')
             search._key = json_obj.get('_key')
@@ -202,7 +201,6 @@ class SubscriptionSearch(SpacebridgeAppBase):
                  search_type=SearchType.VISUALIZATION.value,
                  search_type_id=None,
                  ref=None,
-                 app=None,
                  base=None,
                  query=None,
                  earliest_time=None,
@@ -221,7 +219,6 @@ class SubscriptionSearch(SpacebridgeAppBase):
                  visualization_type=None,
                  trellis_enabled=False,
                  trellis_split_by="",
-                 ds_test=None,
                  version=constants.SUBSCRIPTION_VERSION_2,
                  _user='',
                  _key=''):
@@ -233,7 +230,6 @@ class SubscriptionSearch(SpacebridgeAppBase):
         self.search_type = search_type
         self.search_type_id = search_type_id
         self.ref = ref
-        self.app = app
         self.base = base
         self.query = query
         self.earliest_time = earliest_time
@@ -253,7 +249,6 @@ class SubscriptionSearch(SpacebridgeAppBase):
         self.visualization_type = visualization_type
         self.trellis_enabled = trellis_enabled
         self.trellis_split_by = trellis_split_by
-        self.ds_test = ds_test
         self._user = _user
         self._key = _key
 

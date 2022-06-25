@@ -1,17 +1,10 @@
 import sys
-import types
 from array import array
 from collections import abc
 
 from ._abc import MultiMapping, MutableMultiMapping
 
 _marker = object()
-
-if sys.version_info >= (3, 9):
-    GenericAlias = types.GenericAlias
-else:
-    def GenericAlias(cls):
-        return cls
 
 
 class istr(str):
@@ -82,7 +75,10 @@ class _Base:
         return self.getone(key)
 
     def get(self, key, default=None):
-        """Get first value matching the key."""
+        """Get first value matching the key.
+
+        The method is alias for .getone().
+        """
         return self.getone(key, default)
 
     def __iter__(self):
@@ -133,8 +129,6 @@ class _Base:
     def __repr__(self):
         body = ", ".join("'{}': {!r}".format(k, v) for k, v in self.items())
         return "<{}({})>".format(self.__class__.__name__, body)
-
-    __class_getitem__ = classmethod(GenericAlias)
 
 
 class MultiDictProxy(_Base, MultiMapping):
@@ -441,6 +435,7 @@ class _Iter:
 class _ViewBase:
     def __init__(self, impl):
         self._impl = impl
+        self._version = impl._version
 
     def __len__(self):
         return len(self._impl._items)
@@ -456,11 +451,11 @@ class _ItemsView(_ViewBase, abc.ItemsView):
         return False
 
     def __iter__(self):
-        return _Iter(len(self), self._iter(self._impl._version))
+        return _Iter(len(self), self._iter())
 
-    def _iter(self, version):
+    def _iter(self):
         for i, k, v in self._impl._items:
-            if version != self._impl._version:
+            if self._version != self._impl._version:
                 raise RuntimeError("Dictionary changed during iteration")
             yield k, v
 
@@ -480,11 +475,11 @@ class _ValuesView(_ViewBase, abc.ValuesView):
         return False
 
     def __iter__(self):
-        return _Iter(len(self), self._iter(self._impl._version))
+        return _Iter(len(self), self._iter())
 
-    def _iter(self, version):
+    def _iter(self):
         for item in self._impl._items:
-            if version != self._impl._version:
+            if self._version != self._impl._version:
                 raise RuntimeError("Dictionary changed during iteration")
             yield item[2]
 
@@ -504,11 +499,11 @@ class _KeysView(_ViewBase, abc.KeysView):
         return False
 
     def __iter__(self):
-        return _Iter(len(self), self._iter(self._impl._version))
+        return _Iter(len(self), self._iter())
 
-    def _iter(self, version):
+    def _iter(self):
         for item in self._impl._items:
-            if version != self._impl._version:
+            if self._version != self._impl._version:
                 raise RuntimeError("Dictionary changed during iteration")
             yield item[1]
 

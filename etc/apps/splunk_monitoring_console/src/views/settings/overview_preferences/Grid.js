@@ -7,30 +7,38 @@
  	'underscore',
  	'jquery',
  	'module',
- 	'@splunk/swc-mc',
+ 	'views/Base',
+ 	'util/splunkd_utils',
+ 	'helpers/grid/RowIterator',
+ 	'views/shared/FlashMessages',
+ 	'views/shared/delegates/ColumnSort',
  	'splunk_monitoring_console/views/settings/overview_preferences/GridRow',
  	'contrib/text!./Grid.html'
  ], function(
  	_,
  	$,
  	module,
- 	SwcMC,
+ 	BaseView,
+ 	splunkDUtils,
+ 	RowIterator,
+ 	FlashMessagesView,
+ 	ColumnSort,
  	GridRow,
  	template
  ){
- 	return SwcMC.BaseView.extend({
+ 	return BaseView.extend({
  		moduleId: module.id,
  		template: template,
 
  		initialize: function(options) {
-			SwcMC.BaseView.prototype.initialize.call(this, options);
- 			this.children.columnSort = new SwcMC.ColumnSortView({
+ 			BaseView.prototype.initialize.call(this, options);
+ 			this.children.columnSort = new ColumnSort({
  				el: this.el,
  				model: this.collection.thresholdConfigs.fetchData,
  				autoUpdate: true
  			});
 
- 			this.children.flashMessages = new SwcMC.FlashMessagesView({
+ 			this.children.flashMessages = new FlashMessagesView({
  				className: 'message-single',
  				collection: {
  					thresholdConfigs: this.collection.thresholdConfigs
@@ -48,7 +56,7 @@
 	            var errMessage = _('No preconfigured color mappings found.').t();
 	            this.children.flashMessages.flashMsgHelper.addGeneralMessage('no_threshold_configs',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -57,10 +65,10 @@
 	    },
 
  		render: function() {
- 			var rowIterator = new SwcMC.GridRowIteratorHelper(),
+ 			var rowIterator = new RowIterator(),
  				html = this.compiledTemplate({
- 					sortCellClass: SwcMC.ColumnSortView.SORTABLE_ROW,
- 					sortKeyAttribute: SwcMC.ColumnSortView.SORT_KEY_ATTR
+ 					sortCellClass: ColumnSort.SORTABLE_ROW,
+ 					sortKeyAttribute: ColumnSort.SORT_KEY_ATTR
  				}),
  				$html = $(html);
 

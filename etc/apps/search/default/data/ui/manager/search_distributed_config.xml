@@ -40,23 +40,11 @@
               <key name="class">short</key>
               <key name="exampleText">Set how long to wait for a server to return before removing it from the peers list.</key>
             </element>
-            <element name="connectionTimeout" type="textfield" label="Connection timeout (in seconds)">
+            <element name="serverTimeout" type="textfield" label="Server timeout (in seconds)">
               <view name="edit"/>
               <view name="create"/>
               <key name="class">short</key>
-              <key name="exampleText">The maximum amount of time to wait when attempting to establish a connection to the search peer.</key>
-            </element>
-            <element name="sendTimeout" type="textfield" label="Send timeout (in seconds)">
-              <view name="edit"/>
-              <view name="create"/>
-              <key name="class">short</key>
-              <key name="exampleText">The maximum amount of time to wait when attempting to write or send data to a search peer.</key>
-            </element>
-            <element name="receiveTimeout" type="textfield" label="Receive timeout (in seconds)">
-              <view name="edit"/>
-              <view name="create"/>
-              <key name="class">short</key>
-              <key name="exampleText">The maximum amount of time to wait when attempting to read or receive data from a search peer.</key>
+              <key name="exampleText">Set how long to wait for a search to return before removing timed out servers from the peers list.</key>
             </element>
           </elements>
           <key name="helpText">Set timeout for distributed search peers.</key>

@@ -69,14 +69,10 @@ class DiagService(object):
         sync_error_count = 0
         while True:
             try:
-                statuses = self.splunkd.get_json(ENDPOINTS['DIAG_STATUS'],
+                status = self.splunkd.get_json(ENDPOINTS['DIAG_STATUS'],
                                                owner='nobody',
-                                               app=INST_APP_NAME)
-                for item in statuses:
-                    json_item = json.loads(item)
-                    if (json_item['daigID'] == data['diagID']):
-                        status = item
-                        break
+                                               app=INST_APP_NAME,
+                                               diagID=data['diagID'])['statuses'][0]
 
             except Exception as ex:
                 sync_error_count += 1

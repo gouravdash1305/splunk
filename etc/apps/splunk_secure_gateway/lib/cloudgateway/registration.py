@@ -9,8 +9,7 @@ import sys
 from cloudgateway import py23
 from cloudgateway.key_bundle import KeyBundle
 
-from cloudgateway.private.registration.authenticate import submit_auth_code, parse_spacebridge_response, \
-    is_mdm_signature_valid, verify_mdm_signature
+from cloudgateway.private.registration.authenticate import submit_auth_code, parse_spacebridge_response
 from cloudgateway.private.registration.pairing import build_encypted_credentials_bundle, pair_device_with_sb
 
 from cloudgateway.private.registration import unregister
@@ -20,10 +19,6 @@ from cloudgateway.private.registration.client import make_device_authentication_
 from cloudgateway.private.encryption.encryption_handler import encrypt_for_send
 from cloudgateway.device import DeviceInfo, CredentialsBundle
 from cloudgateway.private.registration.util import sb_auth_header
-from cloudgateway.private.util.constants import (
-    MDM,
-    NOT_MDM
-)
 from cloudgateway.private.exceptions.rest import CloudgatewayServerError, CloudgatewayMaxRetriesError
 from cloudgateway.private.util.config import SplunkConfig
 from functools import partial
@@ -32,8 +27,7 @@ from cloudgateway.private.util.tokens_util import calculate_token_info
 from spacebridge_protocol import http_pb2
 
 
-def authenticate_code(auth_code, encryption_context, resolve_app_name, config=SplunkConfig(), key_bundle=None,
-                      mdm_signing_public_key=None, enforce_mdm=False):
+def authenticate_code(auth_code, encryption_context, resolve_app_name, config=SplunkConfig(), key_bundle=None):
     """
     Part 1/2 of the registration process
     Submit an auth code to space bridge, and retrieve the encryption credentials for the device associated to
@@ -57,23 +51,13 @@ def authenticate_code(auth_code, encryption_context, resolve_app_name, config=Sp
     app_name = app_friendly_name if app_friendly_name else resolve_app_name(sb_response_proto.payload.appId)
     platform = sb_response_proto.payload.appPlatform
 
-    if enforce_mdm:
-        # attempt to verify, throw exception on failure
-        verify_mdm_signature(sb_response_proto.payload, mdm_signing_public_key, encryption_context)
-        device_management_method = MDM
-    else:
-        # attempt to verify, save whether or not verification was succesful
-        mdm_valid = is_mdm_signature_valid(sb_response_proto.payload, mdm_signing_public_key, encryption_context)
-        device_management_method = MDM if mdm_valid else NOT_MDM
-    
     device_encryption_info = DeviceInfo(encrypt_public_key,
                                         sign_public_key,
                                         sb_response_proto.payload.deviceId,
                                         encryption_context.generichash_hex(sign_public_key).upper()[:8],
                                         sb_response_proto.payload.appId,
                                         app_name=app_name,
-                                        platform=platform,
-                                        device_management_method=device_management_method)
+                                        platform=platform)
 
     return device_encryption_info
 
@@ -143,8 +127,7 @@ def unregister_device(device_id, encryption_context, config=SplunkConfig(), key_
     return raw_response
 
 
-def request_code(device_info, encryption_context, config=SplunkConfig(), key_bundle=None,
-                 mdm_encryption_context=None):
+def request_code(device_info, encryption_context, config=SplunkConfig(), key_bundle=None):
     """Submits device's public key information to Cloud Gateway and fetches 10 digit
     pairing code. First part of the registration process for the client.
     Args:
@@ -155,7 +138,7 @@ def request_code(device_info, encryption_context, config=SplunkConfig(), key_bun
         [String]: 10-digit auth code
     """
 
-    r = make_device_authentication_request(device_info, encryption_context, config, key_bundle, mdm_encryption_context)
+    r = make_device_authentication_request(device_info, encryption_context, config, key_bundle)
 
     return parse_device_authentication_response(r)
 

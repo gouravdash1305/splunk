@@ -4,8 +4,14 @@
         <label class="control-label" for="alert_recipients">To</label>
         <div class="controls">
             <splunk-search-dropdown name="action.ssg_mobile_alert.param.alert_recipients"
-                                    search='| rest /services/authorization/roles | table title | dedup title'
-                                    value-field="title" label-field="title" style="vertical-align: top"
+                                    search='| stats count
+                                            | fields - count
+                                            | append [| rest /services/authorization/roles | table id | rex field=id "roles\/(?<role>.+)"
+                                            | eval id=role
+                                            | table id role
+                                            | where role != "splunk-system-role" and role != "can_delete" and role != "user" and role != "power" ]
+                                            | dedup id, role'
+                                    value-field="id" label-field="role" style="vertical-align: top"
             />
         </div>
         <span style="margin-top:-15px !important;" class="help-block">Select the role that should receive this alert. All users with the selected role will receive this alert.</span>

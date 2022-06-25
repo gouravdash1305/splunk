@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This is an example transforms.conf.  Use this file to create regexes and
 # rules for transforms.  Use this file in tandem with props.conf.
@@ -97,7 +97,7 @@ DEST_KEY = _raw
 # Route to an alternate index:
 
 [AppRedirect]
-REGEX = (Application)
+REGEX = Application
 DEST_KEY = _MetaData:Index
 FORMAT = Verbose
 

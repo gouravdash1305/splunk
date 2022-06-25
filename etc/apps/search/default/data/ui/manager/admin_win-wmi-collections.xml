@@ -99,8 +99,8 @@
               <key name="processValueList">', '.join(value) if isinstance(value, list) else value</key>
               <key name="caseSensitiveMatch">false</key>                    
               <key name="nullUnlessFieldSet">classes</key>
-              <key name="submitValueAdd">value</key>
-              <key name="submitValueEdit">value</key>
+              <key name="submitValueAdd">eval('value')</key>
+              <key name="submitValueEdit">eval('value')</key>          
               <key name="dynamicOptions" type="dict">
                 <key name="entityField">'fields'</key>
                 <key name="splunkSource">'/admin/win-wmi-find-collection'</key>
@@ -126,8 +126,8 @@
               <view name="edit"/>
               <view name="create"/>
               <key name="labelList">Instances</key>
-              <key name="submitValueAdd">value</key>
-              <key name="submitValueEdit">value</key>
+              <key name="submitValueAdd">eval('value')</key>
+              <key name="submitValueEdit">eval('value')</key>
               <key name="processValueList">', '.join(value) if isinstance(value, list) else value or 'All'</key>
               <key name="nullUnlessFieldSet">classes</key>          
               <key name="caseSensitiveMatch">false</key>          

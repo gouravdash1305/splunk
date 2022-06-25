@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Client to send data to the telemetry endpoint
 """
@@ -43,23 +43,33 @@ def create_telemetry_payload(event):
     }
 
 
-def post_event(event_jsn, session_token, logger):
+def post_request(uri, auth_header, logger, params=None, data=None, headers=None):
+    """
+    Makes a synchronous post request to a given uri
+    :param uri: string representing uri to make request to
+    :param params: Optional parameters to be append as the query string to the URL
+    :param data: Request body
+    :param auth_header: A value to supply for the Authorization header
+    :param headers: header to send with post request.
+    :return:
+    """
+    if not headers:
+        headers = {HEADER_CONTENT_TYPE: APPLICATION_JSON}
+
+    if auth_header is not None:
+        headers[HEADER_AUTHORIZATION] = repr(auth_header)
+
+    return requests.post(url=uri,
+                         headers=headers,
+                         params=params,
+                         verify=False,
+                         data=data)
+
+
+def post_event(event_jsn, auth_header, logger):
     payload = create_telemetry_payload(event_jsn)
-    logger.debug("attempting to post metrics")
-    params = {
-        'output_mode': 'json'
-    }
-
-    r, content = rest.simpleRequest(
-        get_telemetry_uri(),
-        sessionKey=session_token,
-        getargs=params,
-        jsonargs=json.dumps(payload),
-        method='POST',
-        rawResult=True
-    )
-
-    logger.info(F"Posted metrics data to telemetry with response={str(r.status)}")
+    r = post_request(uri=get_telemetry_uri(), auth_header=auth_header, logger=logger, data=json.dumps(payload))
+    logger.debug("Posted metrics data to telemetry with response=%s" % str(r.text))
     return r
 
 
@@ -157,12 +167,12 @@ class AsyncTelemetryClient(AsyncClient):
         if self.installation_environment is None:
             await self.set_installation_environment(auth_header)
 
-        event.update({constants.INSTANCEID: self.telemetry_instance_id,
+        event.update({constants.INSTANCE_ID: self.telemetry_instance_id,
                       constants.SPLUNK_VERSION: self.splunk_version,
                       constants.INSTALLATION_ENVIRONMENT: self.installation_environment.name})
         if not self.telemetry_instance_id:
             self.telemetry_instance_id = await get_telemetry_instance_id(self, auth_header)
-        event.update({constants.INSTANCEID: self.telemetry_instance_id})
+        event.update({constants.INSTANCE_ID: self.telemetry_instance_id})
         payload = create_telemetry_payload(event)
 
         try:

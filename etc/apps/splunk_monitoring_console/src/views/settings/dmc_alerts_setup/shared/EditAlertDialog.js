@@ -10,13 +10,19 @@ define([
 	'underscore',
 	'backbone',
 	'module',
-	'@splunk/swc-mc'
+	'models/shared/LinkAction',
+	'views/shared/FlashMessages',
+	'views/shared/Modal',
+    'util/splunkd_utils'
 ], function (
 	$,
 	_,
 	Backbone,
 	module,
-	SwcMC
+	LinkAction,
+	FlashMessagesView,
+	Modal,
+	splunkDUtils
 ) {
 
     var licenseUsageSearchStringForCloud = '| rest splunk_server_group=dmc_group_license_master services/licenser/usage/license_usage | \
@@ -24,17 +30,17 @@ define([
         eval totalGB=round(quota/1024/1024/1024,3) | eval percentage=round(usedGB / totalGB, 3)*100 | \
         fields percentage, usedGB, totalGB | where percentage > 90';
 
-	return SwcMC.ModalView.extend({
+	return Modal.extend({
 		moduleId: module.id,
-        className: SwcMC.ModalView.CLASS_NAME + ' edit-dialog-modal modal-wide',
+        className: Modal.CLASS_NAME + ' edit-dialog-modal modal-wide',
 
 		initialize: function (options) {
-			SwcMC.ModalView.prototype.initialize.apply(this, arguments);
-			this.children.flashMessagesView = new SwcMC.FlashMessagesView({ model: { alert: this.model.alert, alertConfig: this.model.alertConfig }});
+			Modal.prototype.initialize.apply(this, arguments);
+			this.children.flashMessagesView = new FlashMessagesView({ model: { alert: this.model.alert, alertConfig: this.model.alertConfig }});
 			this.alertName = this.model.alert.entry.get('name');
 		},
 
-		events: $.extend({}, SwcMC.ModalView.prototype.events, {
+		events: $.extend({}, Modal.prototype.events, {
 			'click .modal-btn-save': function (e) {
 				e.preventDefault();
 				if (this._allInputsValid) {
@@ -94,7 +100,7 @@ define([
 	            var errMessage = errorMessage ? errorMessage : _('Failed to save changes to alert.').t();
 	            this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('save_failed',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -105,16 +111,16 @@ define([
 		render: function () {
 			var BUTTON_SAVE = '<a href="#" id="save-edit-btn" class="btn btn-primary modal-btn-save modal-btn-primary">' + _('Save').t() + '</a>';
 
-			this.$el.html(SwcMC.ModalView.TEMPLATE);
-			this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html( _('Edit Alert: ').t() + this.alertName);
-			this.$(SwcMC.ModalView.BODY_SELECTOR).show();
-			this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
+			this.$el.html(Modal.TEMPLATE);
+			this.$(Modal.HEADER_TITLE_SELECTOR).html( _('Edit Alert: ').t() + this.alertName);
+			this.$(Modal.BODY_SELECTOR).show();
+			this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
 
 			this._renderContent();
 			this.children.flashMessagesView.render().appendTo(this.$('.flash-messages-view-placeholder'));
 
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(BUTTON_SAVE);
+            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
+			this.$(Modal.FOOTER_SELECTOR).append(BUTTON_SAVE);
 
 			return this;
 		},
@@ -142,7 +148,7 @@ define([
 			}
 
 			// generating modal html from template
-			this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({
+			this.$(Modal.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({
 				name: this.model.alert.entry.get('name'),
 				description: description,
 				parameterLabels: parameterLabels,
@@ -265,7 +271,7 @@ define([
 	            	attributes to their original form.').t();
 	            this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('out_of_sync',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {

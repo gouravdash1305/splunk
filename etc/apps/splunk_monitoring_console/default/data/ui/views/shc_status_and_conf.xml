@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" script="common_control.js" stylesheet="shared.css, health-check.css">
+<form hideEdit="True" script="common_control.js" stylesheet="shared.css, health-check.css">
   <label>Search Head Clustering: Status and Configuration</label>
   <fieldset autoRun="true" submitButton="false">
     <input type="dropdown" searchWhenChanged="true" token="group">
@@ -269,6 +269,7 @@
           </query>
         </search>
         <option name="underLabel">Historical</option>
+        <option name="height">80px</option>
         <option name="drilldown">all</option>
         <drilldown>
           <set token="show_total_hist_search_details">true</set>
@@ -286,6 +287,7 @@
           </query>
         </search>
         <option name="underLabel">Real-time</option>
+        <option name="height">80px</option>
         <option name="drilldown">all</option>
         <drilldown>
           <unset token="show_total_hist_search_details"></unset>
@@ -306,6 +308,7 @@
           </query>
         </search>
         <option name="underLabel">Historical</option>
+        <option name="height">80px</option>
         <option name="drilldown">all</option>
         <drilldown>
           <unset token="show_total_hist_search_details"></unset>
@@ -323,6 +326,7 @@
           </query>
         </search>
         <option name="underLabel">Real-time</option>
+        <option name="height">80px</option>
         <option name="drilldown">all</option>
         <drilldown>
           <unset token="show_total_hist_search_details"></unset>
@@ -340,6 +344,7 @@
           </query>
         </search>
         <option name="underLabel">Summarization</option>
+        <option name="height">80px</option>
         <option name="drilldown">all</option>
         <drilldown>
           <unset token="show_total_hist_search_details"></unset>

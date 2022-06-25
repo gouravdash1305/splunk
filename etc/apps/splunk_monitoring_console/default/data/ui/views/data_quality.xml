@@ -1,4 +1,4 @@
-<dashboard version="1.1" hideEdit="True" script="common_control.js">
+<dashboard hideEdit="True" script="common_control.js">
   <label>Data Quality</label>
   <description>
       This dashboard helps you assess the quality of your incoming data by revealing issues that

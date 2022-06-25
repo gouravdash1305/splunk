@@ -1,27 +1,22 @@
-import json
-import requests
+from cloudgateway.private.util.tokens_util import calculate_token_info
+from splunk import rest as rest
 
+import json
+import base64
+import requests
 from cloudgateway.auth import SimpleUserCredentials, UserAuthCredentials
 from cloudgateway.private.util import constants
-from cloudgateway.private.util.tokens_util import calculate_token_info
 from cloudgateway.private.util.http_status import HTTPStatus
 from spacebridge_protocol import http_pb2
 
-try:
-    from splunk import rest as rest
-except ImportError:
-    pass
-
 NOT_BEFORE = "+0d"
 EXPIRES_ON = "+30d"
-
 
 class SplunkAuthHeader(object):
     """
     Wrapper for a splunk session token. Returns a splunk auth header when stringified
     to be used on HTTP requests to Splunk's REST apis
     """
-
     def __init__(self, session_token):
         self.session_token = session_token
 
@@ -29,7 +24,7 @@ class SplunkAuthHeader(object):
         return 'Splunk {0}'.format(self.session_token)
 
     def validate(self, async_splunk_client):
-        raise NotImplementedError
+       raise NotImplementedError
 
 
 class SplunkBasicCredentials(SimpleUserCredentials):
@@ -109,6 +104,7 @@ class SplunkJWTCredentials(UserAuthCredentials):
         })
 
 
+
 def authenticate_splunk_credentials(username, password):
     """
     Checks whether a supplied username/password pair are valid Splunk credentials. Throws an error otherwise.
@@ -135,3 +131,4 @@ def authenticate_splunk_credentials(username, password):
         exception.msg = 'Error: unable to authenticate client'
 
     raise exception
+

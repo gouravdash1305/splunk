@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for any base classes that we want other data classes
 to inherit from
@@ -20,7 +20,7 @@ class SpacebridgeAppBase(object):
         return jsonpickle.encode(self)
 
     def __eq__(self, obj):
-        if isinstance(obj, self.__class__) and len(vars(self)) == len(vars(obj)):
+        if isinstance(obj, self.__class__):
             return all(getattr(obj, attr) == getattr(self, attr) for attr in vars(self).keys())
         return False
 

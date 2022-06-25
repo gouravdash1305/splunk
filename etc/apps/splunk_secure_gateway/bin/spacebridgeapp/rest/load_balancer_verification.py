@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for accessing and setting kvstore records
 """
@@ -21,8 +21,7 @@ def get_uri(session_key):
     :param session_key:
     :return: URI string
     """
-    load_balancer_address = config.get_load_balancer_address()
-    uri = load_balancer_address if load_balancer_address else rest.makeSplunkdUri()
+    uri = config.get_config(stanza=config.SETUP, key=config.LOAD_BALANCER_ADDRESS, default=rest.makeSplunkdUri())
     if not uri:
         raise GetConfigError("Failed to get load balancer address from cloudgateway.conf")
 

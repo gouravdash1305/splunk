@@ -1,5 +1,4 @@
-<form hideEdit="True" version="1.1" theme="dark">
-  <tags>mobile,tv</tags>
+<form hideEdit="True">
   <label>Subscription Tracing</label>
   <description>Use this dashboard to troubleshoot a panel that isn’t loading. Select a time range and a panel ID to get troubleshooting logs and a stack trace.</description>
   <search id="base">

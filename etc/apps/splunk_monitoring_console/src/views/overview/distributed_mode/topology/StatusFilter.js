@@ -3,17 +3,19 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        '@splunk/swc-mc',
+        'models/Base',
+        'views/Base',
         'contrib/text!./StatusFilter.html',
         'splunk_monitoring_console/helpers/Formatters',
         'splunk_monitoring_console/helpers/ThresholdConfigsClient',
-        'bootstrap'
+        'bootstrap.tooltip'
     ],
     function(
         $,
         _,
         Backbone,
-        SwcMC,
+        BaseModel,
+        BaseView,
         Template,
         Formatters,
         ThresholdConfigsClientHelper
@@ -21,11 +23,11 @@ define(
     ) {
         var UNKNOWN_RANGE_NAME_PREFIX = '__unknown_range_';
 
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             tagName: 'ul',
             className: 'dmc-status-filters',
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
 
                 this.clickHandler = this.options.clickHandler || this._defaultClickHandler;
                 this.sortKey = this.options.sortKey;
@@ -36,7 +38,7 @@ define(
                     if (!_.isUndefined(this.model.fetchState)) {
                         throw Error('cannot add both model.fetchState and sortKey');
                     }
-                    this.model.fetchState = new SwcMC.BaseModel({
+                    this.model.fetchState = new BaseModel({
                         ranges: [],
                         sortKey: this.sortKey,
                         fetching: false

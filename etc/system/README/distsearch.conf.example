@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # These are example configurations for distsearch.conf. Use this file to
 # configure distributed search.  For all available attribute/value pairs, see
@@ -29,7 +29,7 @@ sendRcvTimeout = 60
 
 # this stanza controls what files are replicated to the other peer each is a
 # regex
-[replicationAllowlist]
+[replicationWhitelist]
 allConf = *.conf
 
 # Mounted bundles example.

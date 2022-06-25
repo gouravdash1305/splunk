@@ -31,7 +31,7 @@ from rapid_diag.collector.trigger.monitored_file import MonitoredFile
 from rapid_diag.collector.collector import Collector
 from rapid_diag.collector.threadpool import ThreadPool
 from rapid_diag.collector.collector_result import CollectorResult, AggregatedCollectorResult
-from rapid_diag.util import get_splunkhome_path, build_rapid_diag_timestamp, get_platform_maxint
+from rapid_diag.util import get_splunkhome_path, build_rapid_diag_timestamp
 from rapid_diag.serializable import Serializable
 from rapid_diag.session_globals import SessionGlobals
 from rapid_diag.process_abstraction import ProcessLister, ProcessNotFound
@@ -109,8 +109,6 @@ class SearchDebug(Trigger):
                     info_file = os.path.join(dispatch_dir, 'info.csv')
                     search_string = ""
                     try:
-                        # Set the field size limit to the size of the maxint
-                        csv.field_size_limit(get_platform_maxint())
                         with open(info_file, "r") as f:
                             reader = csv.DictReader(f)
                             search_string = next(reader)["_search"]

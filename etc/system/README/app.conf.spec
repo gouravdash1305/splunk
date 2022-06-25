@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 ############################################################################
 # OVERVIEW
@@ -176,7 +176,7 @@ python.version = {default|python|python2|python3}
 [triggers]
 * This stanza controls reloading of custom configuration files included in
   the app (4.2+ versions only).
-* Include this stanza if your app includes custom configuration files.
+* Incude this stanza if your app inculdes custom configuration files.
 
 # Conf-level reload triggers
 reload.<conf_file_name> = [ simple | never | rest_endpoints | access_endpoints <handler_url> | http_get <handler_url> | http_post <handler_url> ]
@@ -205,7 +205,7 @@ reload.<conf_file_name> = [ simple | never | rest_endpoints | access_endpoints <
 
 # Stanza-level reload triggers
 reload.<conf_file_name>.<conf_stanza_prefix> = [ simple | never | access_endpoints <handler_url> | http_get <handler_url> | http_post <handler_url> ]
-* Stanza-level reload triggers for indexer-cluster peers to reload only the
+* Stanza level reload triggers for indexer-cluster slaves to reload only the
   config file stanzas that are changed in the newly pushed cluster bundle.
 * With the stanza level reload triggers, we can have more granular control over
   which subset of existing reload handlers to invoke depending on which stanzas
@@ -213,12 +213,12 @@ reload.<conf_file_name>.<conf_stanza_prefix> = [ simple | never | access_endpoin
   example below for more information.
 * Stanza level reload trigger values operate identically to conf-level reload
   trigger values, i.e. "simple", "never","access_endpoints", "http_get", "http_post".
-* For any stanza of <conf_file_name> that does NOT have a corresponding stanza-level
-  reload trigger listed under the [triggers] section of app.conf, the cluster peer
+* For any stanza of <conf_file_name> that do NOT have a correponding stanza-level
+  reload trigger listed under the [triggers] section of app.conf, cluster slave
   will fallback to the "rolling restart behavior" upon detecting changes of those
   "missing" stanzas in the newly pushed cluster bundle.
-* NOTE: This setting is ONLY used by indexer-cluster peers and ONLY supported
-  by inputs.conf and server.conf.
+* NOTE: This setting is ONLY used by cluster slave indexers and ONLY supported
+  by inputs.conf.
 
 [shclustering]
 deployer_lookups_push_mode = preserve_lookups | always_preserve | always_overwrite
@@ -314,11 +314,7 @@ attribution_link = <string>
 setup_view = <string>
 * Optional.
 * Defines custom setup view found within the /data/ui/views REST endpoint.
-
-supported_themes = <string>
-* Optional.
-* Comma-separated list of supported themes by the app.
-* Supported values are "enterprise" and "dark".
+* Default: setup.xml
 
 [credentials_settings]
 * This stanza controls credential-verification scripting (4.2+ versions only).
@@ -401,8 +397,8 @@ default_gather_lookups = <filename> [, <filename> ...]
 * This does not override the size-ceiling on files in etc. Large lookups are
   still excluded unless the etc-filesize-limit is raised or disabled.
 * This only controls files in the same app directory as this conf file.  For
-  example, if you have an app directory in etc/peer-apps (index clustering),
-  this setting must appear in etc/peer-apps/appname/default/app.conf or
+  example, if you have an app directory in etc/slave-apps (index clustering),
+  this setting must appear in etc/slave-apps/appname/default/app.conf or
   local/app.conf
 * Additional lists can be created with default_gather_lookups-classname = ...
 * Default: not set

@@ -1,13 +1,11 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module providing client for making asynchronous requests to Splunk Core
 """
 import json
 from http import HTTPStatus
 from spacebridgeapp.rest.clients.async_non_ssl_client import AsyncNonSslClient
-from spacebridgeapp.rest.registration.util import AuthMethod
-from spacebridgeapp.request.request_processor import JWTAuthHeader
 from spacebridgeapp.util import constants
 from spacebridgeapp.util.string_utils import append_path_to_uri
 
@@ -33,28 +31,24 @@ class AsyncSplunkClient(AsyncNonSslClient):
         self.uri = uri
         super(AsyncSplunkClient, self).__init__()
 
-    def async_get_app_list_request(self, auth_header, params=None, app_id=None):
+    def async_get_app_list_request(self, auth_header, params=None):
         """
         Make async request to Splunk /apps/local api
 
         :param auth_header: Value for the Authorization header
         :param params: [tuples]
-        :param app_id: specify this if you would like to get the details for a specific app
         :return: async request object
         """
-        uri = self.get_app_list_uri(app_id)
+        uri = self.get_app_list_uri()
         return self.async_get_request(uri=uri, params=params, auth_header=auth_header)
 
-    def get_app_list_uri(self, app_id=None):
+    def get_app_list_uri(self):
         """
         Construct Splunk /apps/local api to retrieve app list
         https://docs.splunk.com/Documentation/Splunk/7.2.5/RESTREF/RESTapps#apps.2Flocal
 
         :return:
         """
-        if app_id:
-            return self.get_rest_endpoint_uri(f'apps/local/{app_id}')
-
         return self.get_rest_endpoint_uri('apps/local')
 
     def async_get_dashboard_list_request(self, auth_header, owner="-", app_name="-", params=None):
@@ -431,21 +425,12 @@ class AsyncSplunkClient(AsyncNonSslClient):
         Makes a call to the handler which is called by the registration page when the user completes the confirmation
         code/login modal
         """
-
-        params = {'auth_code': auth_code, 'self_register': 'false'}
         uri = self.get_rest_endpoint_uri('ssg/registration/confirmation')
-        if isinstance(auth_header, JWTAuthHeader):
-            params['auth_method'] = AuthMethod.SAML.value
-            data = json.dumps({'temp_key': temp_key})
-        elif all(hasattr(auth_header, attr) for attr in ('username', 'password')):
-            # TODO: Unclear if device_name is actualy used
-            params['auth_method'] = AuthMethod.LOCAL_LDAP.value
-            data = json.dumps({'username': auth_header.username,
-                               'password': auth_header.password,
-                               'temp_key': temp_key,
-                               'device_name': device_name})
-        else:
-            raise TypeError('Unsupported auth header type')
+        params = {'auth_code': auth_code}
+        data = json.dumps({'username': auth_header.username,
+                           'password': auth_header.password,
+                           'temp_key': temp_key,
+                           'device_name': device_name})
 
         return self.async_post_request(uri=uri, params=params, data=data, auth_header=auth_header)
 
@@ -499,42 +484,3 @@ class AsyncSplunkClient(AsyncNonSslClient):
     def async_get_server_settings(self, auth_header):
         uri = self.get_server_settings_uri()
         return self.async_get_request(uri=uri, auth_header=auth_header, params={'output_mode': 'json'})
-
-    def async_get_server_info(self, auth_header):
-        """
-        Async api call to get /server/info
-        :param auth_header:
-        :return:
-        """
-        uri = '{}/services/server/info'.format(self.uri)
-        return self.async_get_request(uri=uri, auth_header=auth_header, params={'output_mode': 'json'})
-
-    async def async_get_splunk_version(self, auth_header):
-        """
-        Helper method in Splunk service to get the Splunk Version
-        :param auth_header:
-        :return:
-        """
-        response = await self.async_get_server_info(auth_header)
-
-        if response.code == HTTPStatus.OK:
-            response_json = await response.json()
-
-            generator = response_json.get('generator')
-            if generator:
-                return generator.get('version')
-        return None
-
-    def get_search_ast_url(self):
-        return "{}servicesNS/admin/search/search/ast".format(self.uri)
-
-    def async_post_search_ast(self, auth_header, search_query):
-        uri = self.get_search_ast_url()
-
-        form_data = {
-            'spl': search_query
-        }
-        form_data_jsn = json.dumps(form_data)
-
-        params = {'output_mode': 'json'}
-        return self.async_post_request(uri=uri, auth_header=auth_header, data=form_data_jsn, params=params)

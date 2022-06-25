@@ -3,23 +3,23 @@ define(
         'underscore',
         'jquery',
         'backbone',
-        '@splunk/swc-mc',
+        'routers/Base',
         'splunk_monitoring_console/views/settings/overview_preferences/PageController'
     ],
     function(
         _,
         $,
         Backbone,
-        SwcMC,
+        BaseRouter,
         PageController
     ) {
-        return SwcMC.BaseRouter.extend({
+        return BaseRouter.extend({
             page: function(locale, app, page) {
-                SwcMC.BaseRouter.prototype.page.apply(this, arguments);
+                BaseRouter.prototype.page.apply(this, arguments);
 
                 this.setPageTitle(_('Overview Preferences').t());
                 
-                this.deferreds.pageViewRendered.then(function() {
+                $.when(this.deferreds.pageViewRendered).done(function() {
                    $('.preload').replaceWith(this.pageView.el);
 
                     if (this.pageController) {

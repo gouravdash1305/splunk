@@ -3,15 +3,18 @@ import os
 import sys
 import json
 from typing import Optional, Union
+
 # Reloading the rapid_diag bin path
 sys.path.insert(0, os.path.dirname(os.path.realpath(__file__)))
 
 # splunk imports
+import splunk
 from splunk.persistconn.application import PersistentServerConnectionApplication
+import splunklib.client as client
 
 # local imports
 import logger_manager as log
-from rapid_diag_handler_utils import persistent_handler_wrap_handle, create_rapiddiag_payload, get_data_from_payload
+from rapid_diag_handler_utils import persistent_handler_wrap_handle, create_rapiddiag_payload, get_rest_search
 from rapid_diag.task_handler import TaskHandler
 from rapid_diag.util import get_server_name
 from rapid_diag.serializable import JsonObject
@@ -31,7 +34,7 @@ class TaskDeleteEndpoint(PersistentServerConnectionApplication):
     def handle(self, args : Union[str, bytes]) -> JsonObject:
         """ Main handler body
         """
-        return persistent_handler_wrap_handle(self._handle, args, ['POST'])
+        return persistent_handler_wrap_handle(self._handle, args)
 
     def _handle(self, args : JsonObject) -> JsonObject:
         def delete_local(host_del : str) -> bool:
@@ -41,13 +44,32 @@ class TaskDeleteEndpoint(PersistentServerConnectionApplication):
                     task_handler.delete(json.dumps(task))
                     return True
             return False
-
-        task_id, _, _, _ = get_data_from_payload(args)
+        task_id = next((arg[1] for arg in args['query'] if arg[0]=='task_id'), '')
+        local = next((arg[1] for arg in args['query'] if arg[0]=='local'), False)
         current_host = get_server_name(args['system_authtoken'])
         success = create_rapiddiag_payload(data="Started deleting the Task with ID: " + str(task_id) + ".")
         handler = TaskHandler()
         tasks = handler.list(current_host)
-        _LOGGER.debug("current host had tasks: %s current host %s", str(len(tasks)), str(current_host))
-        if delete_local(current_host):
-            return success
-        return create_rapiddiag_payload(error='Task task_id="{}" not found.'.format(task_id))
+
+        if not local:
+            if delete_local(current_host):
+                return success
+            return create_rapiddiag_payload(error='Task task_id="{}" not found.'.format(task_id))
+
+        host = next((arg[1] for arg in args['query'] if arg[0]=='host'), 'local')
+        service = client.connect(host=splunk.getDefault('host'),
+                                port=splunk.getDefault('port'),
+                                scheme=splunk.getDefault('protocol'),
+                                token=args['system_authtoken'])
+        kwargs_normalsearch = {"exec_mode": "normal"}
+        rest_search = '| rest /services/rapid_diag/task_delete count=0 task_id="' + task_id + '"'
+        params = 'task_id="' + task_id + '"'
+
+        if host != current_host:
+            rest_search = get_rest_search("rapid_diag/task_delete", host, params)
+            delete_local(host)
+        elif local:
+            delete_local(host)
+
+        service.jobs.create(rest_search, **kwargs_normalsearch)
+        return success

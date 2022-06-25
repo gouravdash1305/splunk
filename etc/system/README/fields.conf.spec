@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 ############################################################################
 # OVERVIEW
@@ -87,8 +87,8 @@ TOKENIZER = <regular expression>
 * No default.
 
 INDEXED = <boolean>
-* Indicates whether a field is created at index time or search time.
-* Set to "true" if the field is created at index time.
+* Indicates whether a field is indexed.
+* Set to "true" if the field is indexed.
 * Set to "false" for fields extracted at search time. This accounts for the
   majority of fields.
 * Default: false

@@ -13,7 +13,6 @@
           <view name="list"/>
           <view name="create"/>
           <key name="exampleText">Specify the search peer as servername:mgmt_port or URI:mgmt_port. You must prefix the URI with its scheme. For example: 'https://sp1.example.com:8089'.</key>
-          <key name="processValueList">value.trim()</key>
         </element>
       </elements>
       <key name="helpText">Use this page to explicitly add distributed search peers. Enable distributed search through the Distributed search setup page in Splunk Settings.</key>

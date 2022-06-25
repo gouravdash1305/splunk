@@ -7,29 +7,42 @@
  define([
  	'underscore',
  	'module',
-    '@splunk/swc-mc',
+ 	'views/Base',
+ 	'views/shared/CollectionPaginator',
+    'views/shared/dataenrichment/preview/components/SelectPageCount',
+    'views/shared/CollectionCount',
+    'views/shared/controls/SyntheticSelectControl',
+    'views/shared/controls/TextControl',
     'contrib/text!splunk_monitoring_console/views/settings/dmc_alerts_setup/enterprise/Master.html',
-    'splunk_monitoring_console/views/settings/dmc_alerts_setup/enterprise/Grid'
+    'splunk_monitoring_console/views/settings/dmc_alerts_setup/enterprise/Grid',
+    'uri/route'
+
  ], function(
  	_,
  	module,
- 	SwcMC,
+ 	BaseView,
+ 	CollectionPaginatorView,
+ 	SelectPageCountView,
+ 	CollectionCountView,
+ 	SyntheticSelectControlView,
+ 	TextControlView,
  	template,
- 	GridView
+ 	GridView,
+ 	route
  ){
- 	return SwcMC.BaseView.extend({
+ 	return BaseView.extend({
  		moduleId: module.id,
  		template: template,
 
  		initialize: function(options) {
-			SwcMC.BaseView.prototype.initialize.call(this, options);
+ 			BaseView.prototype.initialize.call(this, options);
 
  			this.children.gridView = new GridView({
  				model: {serverInfo: this.model.serverInfo},
                 collection: { alerts: this.collection.alerts, alertConfigs: this.collection.alertConfigs }
  			});
 
-			this.children.textNameFilter = new SwcMC.TextControlView({
+			this.children.textNameFilter = new TextControlView({
 				model: this.collection.alerts.fetchData,
 				modelAttribute: 'searchFilter', 
 				inputClassName: 'search-query',
@@ -37,12 +50,12 @@
 				placeholder: _('filter').t()
 			});
 
-			this.children.collectionPaginatorView = new SwcMC.CollectionPaginatorView({
+			this.children.collectionPaginatorView = new CollectionPaginatorView({
 				collection: this.collection.alerts,
 				model: this.collection.alerts.fetchData
 			});
 
-			this.children.selectPageCountView = new SwcMC.SyntheticSelectControlView({
+			this.children.selectPageCountView = new SyntheticSelectControlView({
                 modelAttribute: 'count',
                 model: this.collection.alerts.fetchData,
                 items: [
@@ -58,7 +71,7 @@
                 toggleClassName: 'btn-pill'
             });
 
-			this.children.collectionCountView = new SwcMC.CollectionCountView({
+			this.children.collectionCountView = new CollectionCountView({
 				collection: this.collection.alerts,
 				countLabel: _('Alerts').t()
 			});
@@ -66,7 +79,7 @@
  		},
 
  		render: function() {
- 			var docUrl = SwcMC.URIRoute.docHelp(
+ 			var docUrl = route.docHelp(
  				this.model.application.get('root'),
  				this.model.application.get('locale'),
  				'app.splunk_monitoring_console.enable_alerts');

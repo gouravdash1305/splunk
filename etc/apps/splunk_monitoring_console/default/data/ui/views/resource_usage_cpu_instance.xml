@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" script="common_control.js">
+<form hideEdit="True" script="common_control.js">
   <label>CPU Usage: Instance</label>
   <description>
     This dashboard consolidates panels from other Monitoring Console dashboards to help you assess the CPU usage of a Splunk instance.
@@ -81,8 +81,6 @@
       | `dmc_classify_processes`
       | `dmc_resource_usage_by_processes_timechart(normalized_pct_cpu, $funcPerpCPU$)`
     </query>
-    <earliest>$time.earliest$</earliest>
-    <latest>$time.latest$</latest>
   </search>
   <row>
     <panel>
@@ -234,7 +232,10 @@
         <choice>Show as bar chart</choice>
       </input>
       <chart rejects="$stacked_bar$">
-        <search base="cpu_by_process_class"></search>
+        <search base="cpu_by_process_class">
+          <earliestTime>$time.earliest$</earliestTime>
+          <latestTime>$time.latest$</latestTime>
+        </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
         <option name="charting.axisTitleX.visibility">visible</option>
@@ -257,7 +258,10 @@
         <option name="charting.axisTitleY.text">CPU Usage (%)</option>
       </chart>
       <chart depends="$stacked_bar$">
-        <search base="cpu_by_process_class"></search>
+        <search base="cpu_by_process_class">
+          <earliestTime>$time.earliest$</earliestTime>
+          <latestTime>$time.latest$</latestTime>
+        </search>
         <option name="charting.axisLabelsX.majorLabelStyle.overflowMode">ellipsisNone</option>
         <option name="charting.axisLabelsX.majorLabelStyle.rotation">0</option>
         <option name="charting.axisTitleX.visibility">visible</option>

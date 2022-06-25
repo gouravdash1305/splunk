@@ -3,15 +3,17 @@ define(
         'underscore',
         'jquery',
         'module',
-        '@splunk/swc-mc'
+        'views/shared/PopTart',
+        'views/shared/controls/colors/ColorPicker',
+        'util/color_utils'
     ],
-    function(_, $, module, SwcMC){
+    function(_, $, module, PopTart, ColorPicker, colorUtil){
 
-        return SwcMC.PopTartView.extend({
+        return PopTart.extend({
             moduleId: module.id,
             className: 'popdown-dialog gradient-color-range-dialog',
             initialize: function() {
-                SwcMC.PopTartView.prototype.initialize.apply(this, arguments);
+                PopTart.prototype.initialize.apply(this, arguments);
                 this.rangeColors = this.options.rangeColors;
                 var baseColor = this.rangeColors.get("thresholds")['defaultRange'];
 
@@ -29,7 +31,7 @@ define(
                     e.preventDefault();
                     var $target = $(e.currentTarget),
                         color = $target.css('background-color');
-                    this.children.colorPicker = new SwcMC.ColorPickerView({
+                    this.children.colorPicker = new ColorPicker({
                         model: this.baseColorModel,
                         onHiddenRemove: true,
                         paletteColors: this.options.paletteColors
@@ -66,14 +68,14 @@ define(
 
                 for(var key in thresholds) {
                     var percent = (1 / numColors) * counter;
-                    var newColorAsInt = SwcMC.ColorUtils.interpolateColors(minColorAsInt, maxColorAsInt, percent);
+                    var newColorAsInt = colorUtil.interpolateColors(minColorAsInt, maxColorAsInt, percent);
                     thresholds[key].color = "0x" + newColorAsInt.toString(16);
                     counter++;
                 }
                 this.render();
             },
             render: function() {
-                this.$el.html(SwcMC.PopTartView.prototype.template);
+                this.$el.html(PopTart.prototype.template);
                 this.$el.append(this._buttonTemplate);
                 this.$('.popdown-dialog-body').addClass('color-picker-content');
                 var $rangePickerContent = $('<div class="clearfix"></div>').appendTo(this.$('.popdown-dialog-body'));
@@ -81,7 +83,7 @@ define(
                     rangeColors: this.rangeColors.get('thresholds'),
                     baseColorModel: this.baseColorModel,
                     model: this.model,
-                    colorUtil: SwcMC.ColorUtils
+                    colorUtil: colorUtil
                 }));
             },
             template: '\

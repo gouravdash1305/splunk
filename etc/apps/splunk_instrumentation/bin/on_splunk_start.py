@@ -122,8 +122,8 @@ class OnSplunkStart(object):
         settings.update({
             'optInVersionAcknowledged': current_opt_in_version,
             'sendAnonymizedWebAnalytics': True,
-            'sendAnonymizedUsage': True,
-            'sendLicenseUsage': True,
+            'sendAnonymizedUsage': False,
+            'sendLicenseUsage': False,
             'onCloudInstance': True,
             'swaEndpoint': swa_endpoint_url
         })

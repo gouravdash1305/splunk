@@ -2,32 +2,46 @@
  * Created by ykou on 12/23/14.
  */
 define([
+    'jquery',
     'underscore',
     'backbone',
     'module',
     'splunk_monitoring_console/collections/Instances',
+    'models/Base',
     'splunk_monitoring_console/models/ThresholdConfig',
     'splunk_monitoring_console/models/TopologyInfo',
-    '@splunk/swc-mc',
+    'views/Base',
+    'views/shared/controls/SyntheticRadioControl',
+    'views/shared/controls/SyntheticSelectControl',
+    'views/shared/controls/ControlGroup',
     'splunk_monitoring_console/views/overview/distributed_mode/Classic',
     'splunk_monitoring_console/views/overview/Alerts',
     'splunk_monitoring_console/views/overview/distributed_mode/topology/Master',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/Master.html',
+    'uri/route',
+    'splunk.config',
     '../Master.pcss',
     '../classic-distributed.pcss',
     '../topology.pcss'
 ], function(
+    $,
     _,
     Backbone,
     module,
     InstancesCollection,
+    BaseModel,
     ThresholdConfigModel,
     TopologyInfoModel,
-    SwcMC,
+    BaseView,
+    SyntheticRadioControl,
+    SyntheticSelectControl,
+    ControlGroup,
     ClassicView,
     AlertsView,
     TopologyView,
     Template,
+    route,
+    config,
     css,
     classicDistributedCss,
     topologyCss
@@ -42,12 +56,12 @@ define([
         DEFAULT_OFFSET = 0, // duh
         SYNC_RELATED_TO = ['state', 'indexerFetchState', 'searchHeadFetchState'];
 
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         template: Template,
         className: 'dmc-distributed-mode-view',
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.collection = this.collection || {};
             this.model = this.model || {};
@@ -65,9 +79,9 @@ define([
             this.collection.deploymentServers = new InstancesCollection();
 
             this.model.thresholdConfig = new ThresholdConfigModel();
-            this.model.indexerFetchState = new SwcMC.BaseModel();
-            this.model.searchHeadFetchState = new SwcMC.BaseModel();
-            this.model.auxiliaryFetchState = new SwcMC.BaseModel();
+            this.model.indexerFetchState = new BaseModel();
+            this.model.searchHeadFetchState = new BaseModel();
+            this.model.auxiliaryFetchState = new BaseModel();
 
             this.model.state = new Backbone.Model({
                 showTopology: false,
@@ -132,7 +146,7 @@ define([
                 }
             });
 
-            this.children.topologySwitcher = new SwcMC.SyntheticRadioControlView({
+            this.children.topologySwitcher = new SyntheticRadioControl({
                 model: this.model.state,
                 modelAttribute: 'showTopology',
                 items: [
@@ -140,7 +154,7 @@ define([
                     {label: _('Topology').t(), value: true}
                 ]
             });
-            this.children.viewGroupDropdown = new SwcMC.SyntheticSelectControlView({
+            this.children.viewGroupDropdown = new SyntheticSelectControl({
                 label: _('Group:').t(),
                 model: this.model.state,
                 modelAttribute: 'selectedGroup',
@@ -184,18 +198,18 @@ define([
             this.listenTo(this.model.state, 'change:showTopology', this.switchVizMode);
             this.listenTo(this.model.topologyInfo.entry.content, 'change sync', this._updateGroupDropdown);
             this.listenTo(
-                this.model.indexerFetchState,
-                'change:count change:offset change:serverNameSearch change:ranges change:groupSearch change:sortKey change:sortDir change:relatedTo change:managementRoles',
+                this.model.indexerFetchState, 
+                'change:count change:offset change:serverNameSearch change:ranges change:groupSearch change:sortKey change:sortDir change:relatedTo change:managementRoles', 
                 this._fetchIndexerCollection
-            );
+            ); 
             this.listenTo(
-                this.model.searchHeadFetchState,
-                'change:count change:offset change:serverNameSearch change:ranges change:groupSearch change:sortKey change:sortDir change:relatedTo change:managementRoles',
+                this.model.searchHeadFetchState, 
+                'change:count change:offset change:serverNameSearch change:ranges change:groupSearch change:sortKey change:sortDir change:relatedTo change:managementRoles', 
                 this._fetchSearchHeadCollection
             );
             this.listenTo(
-                this.model.auxiliaryFetchState,
-                'change:count change:offset change:serverNameSearch change:ranges change:groupSearch change:sortKey change:sortDir change:relatedTo change:managementRoles',
+                this.model.auxiliaryFetchState, 
+                'change:count change:offset change:serverNameSearch change:ranges change:groupSearch change:sortKey change:sortDir change:relatedTo change:managementRoles', 
                 this._fetchAuxiliariesCollection
             );
             this.listenTo(this.model.topologyInfo.entry.content, 'change', this._fetchCollections);
@@ -210,19 +224,19 @@ define([
             // Ensure whenever a filter is altered, the page goes back to the beginning
             _.each(['indexerFetchState', 'searchHeadFetchState', 'auxiliaryFetchState'], function(fetchStateModel) {
                 this.listenTo(
-                    this.model[fetchStateModel],
-                    'change:serverNameSearch change:groupSearch change:managementRoles change:relatedTo change:ranges change:count',
+                    this.model[fetchStateModel], 
+                    'change:serverNameSearch change:groupSearch change:managementRoles change:relatedTo change:ranges change:count', 
                     this._resetPaging
                 );
             }, this);
         },
         render: function() {
-            var root = (SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.indexOf("/") === 0 ?
-                SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.substring(1) :
-                SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH
+            var root = (config.MRSPARKLE_ROOT_PATH.indexOf("/") === 0 ?
+                config.MRSPARKLE_ROOT_PATH.substring(1) :
+                config.MRSPARKLE_ROOT_PATH
             );
 
-            this.$el.html(this.compiledTemplate({helpLink: SwcMC.URIRoute.docHelp(root, SwcMC.SplunkConfig.LOCALE, "app.splunk_monitoring_console.monitoringconsole_configure")}));
+            this.$el.html(this.compiledTemplate({helpLink: route.docHelp(root, config.LOCALE, "app.splunk_monitoring_console.monitoringconsole_configure")}));
             this.$('.section-header').append(this.children.topologySwitcher.render().$el);
             this.$('.section-header').append(this.children.viewGroupDropdown.render().$el);
             this.$el.append(this.children.topology.render().$el);
@@ -398,7 +412,7 @@ define([
                     break;
                 case 'searchHeadClusters':
                     search = 'searchHeadClusters="' + groupName + '"';
-                    break;
+                    break;  
                 case 'customGroups':
                     search = 'customGroups="' + groupName + '"';
                     break;
@@ -443,7 +457,7 @@ define([
 
             if (activeSearches.length === 0) {
                 return '';
-            }
+            } 
             if (activeSearches.length === 1) {
                 return activeSearches[0];
             }

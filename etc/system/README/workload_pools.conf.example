@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 # CAUTION: Do not alter the settings in workload_pools.conf unless you know what you are doing.
 # Improperly configured workloads may result in splunkd crashes and/or memory overuse.
 

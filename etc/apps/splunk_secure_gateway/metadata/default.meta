@@ -1,5 +1,5 @@
 []
-access = read : [ * ], write : [ admin, sc_admin ]
+access = read : [ * ], write : [securegateway]
 
 [alert_actions/ssg_mobile_alert]
 export = system
@@ -15,25 +15,29 @@ export = system
 
 [views/secure_gateway_status_dashboard]
 access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
-
-[views/recent_ssg_dashboard_activity]
-access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
+export = system
 
 [views/test_dashboard_single_value]
+access = read : [ * ], write : [ admin, sc_admin ]
+export = system
 
 [views/request_tracing_dashboard]
-access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
+access = read : [ securegateway ], write : [ admin, sc_admin ]
+export = system
 
 [views/ssg_e2e_wss_test]
-access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
+access = read : [ securegateway ], write : [ admin, sc_admin ]
+export = system
 
-[views/kvstore_dashboard_client]
-access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
+[views/kvstore_dashboard_client.xml]
+access = read : [ securegateway ], write : [ admin, sc_admin ]
+export = system
 
 [views/subscription_tracing_dashboard]
-access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
+access = read : [ securegateway ], write : [ admin, sc_admin ]
+export = system
 
-[views/administration]
+[views/configure]
 access = read : [ admin, sc_admin ], write : [ admin, sc_admin ]
 
 [views/app_selection]
@@ -45,36 +49,22 @@ access = read : [ * ], write : [ * ]
 [collections/subscriptions]
 access = read : [ * ], write : [ * ]
 
-[collections/subscription_credentials]
-access = read : [ * ], write : [ * ]
-
-[collections/search_updates]
-access = read : [ * ], write : [ * ]
-
-[collections/user_meta]
-access = read : [ * ], write : [ * ]
-
-[collections/dashboard_meta]
-access = read : [ * ], write : [ * ]
-
-[collections/mobile_alerts]
-access = read : [ * ], write : [ * ]
-
-[collections/alert_recipient_devices]
-access = read : [ * ], write : [ * ]
-
 [commands/checkssgmobilehttps]
+access = read : [ securegateway ], write : [ securegateway ]
 export = system
 owner = nobody
 
 [commands/checkssgmobilewss]
+access = read : [ securegateway ], write : [ securegateway ]
 export = system
 owner = nobody
 
 [commands/checkssgmobileasync]
+access = read : [ securegateway ], write : [ securegateway ]
 export = system
 owner = nobody
 
 [commands/ssgpstree]
+access = read : [ securegateway ], write : [ securegateway ]
 export = system
 owner = nobody

@@ -1,5 +1,4 @@
-<form hideEdit="True" version="1.1" theme="dark">
-  <tags>mobile,tv</tags>
+<form hideEdit="True">
   <label>Request Tracing</label>
   <description>Troubleshoot and trace a particular request. Select a time range and a request ID to get troubleshooting logs and a stack trace. </description>
   <search id="base">

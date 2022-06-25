@@ -2,18 +2,18 @@ define(
 	[
 		'underscore',
 		'splunk_monitoring_console/models/Bookmark',
-		'@splunk/swc-mc'
+		'collections/SplunkDsBase'
 	],
 	function(
 		_,
 		Model,
-		SwcMC
+		SplunkDsBaseCollection
 	) {
-        return SwcMC.SplunkDsBaseCollection.extend({
+        return SplunkDsBaseCollection.extend({
             url: 'saved/bookmarks/monitoring_console',
             model: Model,
             initialize: function() {
-                SwcMC.SplunkDsBaseCollection.prototype.initialize.apply(this, arguments);
+                SplunkDsBaseCollection.prototype.initialize.apply(this, arguments);
             },
             fetch: function(options) {
                 options = _.defaults(options || {}, { count: 0 });
@@ -23,7 +23,7 @@ define(
                     count: -1,
                 });
 
-                return SwcMC.SplunkDsBaseCollection.prototype.fetch.call(this, options);
+                return SplunkDsBaseCollection.prototype.fetch.call(this, options);
             },
             getBookmarks: function() {
                 var bookmarkArray = [];

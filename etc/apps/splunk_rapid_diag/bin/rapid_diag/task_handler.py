@@ -19,7 +19,7 @@ from rapid_diag.task import Task, DEFAULT_OUTPUT_ROOT
 from rapid_diag.serializable import Serializable
 from rapid_diag.serializable import JsonObject
 from rapid_diag.util import build_rapid_diag_timestamp, remove_empty_directories, get_splunkhome_path, bytes_to_str
-from rapid_diag.process_abstraction import ProcessLister, ProcessNotFound, InfoCsvError
+from rapid_diag.process_abstraction import ProcessLister, ProcessNotFound
 from rapid_diag.detach_process import DetachProcess
 from rapid_diag.collector.trigger.trigger import Trigger
 from rapid_diag.collector.collector import CollectorList
@@ -94,9 +94,6 @@ class TaskHandler:
                 ProcessLister.build_process_from_pid(pid)
             except ProcessNotFound:
                 child_alive = False
-            except InfoCsvError as e:
-                _LOGGER.exception("Error loading info: %s.", str(e), exc_info=e)
-                break
             found = Task.RunInfo.load(run_info_path)
             if found is not None:
                 return found
@@ -150,7 +147,7 @@ class TaskHandler:
         sysproc = None
         try:
             sysproc = ProcessLister.build_process_from_pid(run_info.process.get_pid())
-        except (ProcessNotFound, InfoCsvError):
+        except ProcessNotFound:
             pass
 
         if sysproc is not None and run_info.process.get_process_name() == sysproc.get_process_name() and \
@@ -192,25 +189,25 @@ class TaskHandler:
             # running the `netsh trace stop` command in case of netsh, otherwise it won't startup next time
 
             # if diag is aborted, data generated for it will be zero kb(in case of windows only)
-            with subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(pid)], stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE) as process:
-                _, err = process.communicate()  # returns bytes strings
-                # if process does not exist, then 128 is the return code for it
-                if process.poll() == 128:
-                    _LOGGER.error('Unable to abort the task with pid=%u. No such process.', pid)
-                    Task.RunInfo.cleanup(run_info.get_run_info_running_path(), Task.RunInfo.State.FAILURE,
-                                         'Task process missing when attempting to abort')
-                    return True
+            process = subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(pid)], stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
+            _, err = process.communicate()  # returns bytes strings
+            # if process does not exist, then 128 is the return code for it
+            if process.poll() == 128:
+                _LOGGER.error('Unable to abort the task with pid=%u. No such process.', pid)
+                Task.RunInfo.cleanup(run_info.get_run_info_running_path(), Task.RunInfo.State.FAILURE,
+                                     'Task process missing when attempting to abort')
+                return True
 
-                # in case access is denied to kill the process or any other errors
-                if err:
-                    _LOGGER.error('Unable to abort the task with pid=%u.\nstderr=%s', pid, bytes_to_str(err))
-                    return False
+            # in case access is denied to kill the process or any other errors
+            if err:
+                _LOGGER.error('Unable to abort the task with pid=%u.\nstderr=%s', pid, bytes_to_str(err))
+                return False
 
-                Task.RunInfo.cleanup(run_info.get_run_info_running_path(), Task.RunInfo.State.ABORTED, 'Aborted by user')
-                for collector in run_info.task.collectors.flatten():
-                    collector.cleanup(output_directory=run_info.get_running_output_dir(),
-                                      suffix='_' + build_rapid_diag_timestamp())
+            Task.RunInfo.cleanup(run_info.get_run_info_running_path(), Task.RunInfo.State.ABORTED, 'Aborted by user')
+            for collector in run_info.task.collectors.flatten():
+                collector.cleanup(output_directory=run_info.get_running_output_dir(),
+                                  suffix='_' + build_rapid_diag_timestamp())
         except Exception as e: # pylint: disable=broad-except
             _LOGGER.exception('Unable to abort the task with pid=%u', pid, exc_info=e)
             return False

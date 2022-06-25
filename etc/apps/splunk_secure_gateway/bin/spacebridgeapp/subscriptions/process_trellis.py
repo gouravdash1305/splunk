@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module to process Trellis VisualizationData Transforms
 """
@@ -25,9 +25,13 @@ def process_trellis_format(search, visualization_data):
     :return: List of VisualizationData
     """
     trellis_split_by = search.trellis_split_by
+    default_split_by = get_default_split_by(search)
 
-    if not visualization_data.field_names or not trellis_split_by:
+    if not default_split_by or not visualization_data.field_names:
         return TrellisVisualizationData()
+
+    if not trellis_split_by:
+        trellis_split_by = default_split_by
 
     if trellis_split_by == "_aggregation":
         return process_aggregation_group_by(visualization_data)
@@ -358,33 +362,18 @@ def process_aggregation_group_by(visualization_data):
     return trellis_visualization_data
 
 
-def get_default_split_by(ast):
+def get_default_split_by(search):
     """
-    Gets default split by field given a search AST
-    :param ast:
+    Gets default split by field given a search
+    :param search:
     :return: string
     """
-    command = ast
-    while command is not None:
-        if constants.BY_CLAUSE in command:
-            by_fields = [field for field in map(parse_by_clause, command.get(constants.BY_CLAUSE))
-                         if field is not None and field != constants.TIME_FIELD]
-            if len(by_fields) > 0:
-                return by_fields[0]
-
-        if command.get(constants.SOURCES) and len(command[constants.SOURCES]) > 0:
-            command = command[constants.SOURCES][0]
-        else:
-            command = None
-
-    return constants.AGGREGATION
-
-
-def parse_by_clause(by_clause):
-    if "args" in by_clause and "field" in by_clause.get("args"):
-        return by_clause.get("args").get("field")
-
-    if "name" in by_clause and "function" not in by_clause:
-        return by_clause.get("name")
+    query = search.query
+    split_query = query.split('by')
+    if len(split_query) > 1:
+        by_query = re.split("[ ,]+", split_query[-1])
+        split_by_fields = [q for q in by_query if q]
+        if split_by_fields:
+            return split_by_fields[0].strip().split(' ')[0]
 
     return None

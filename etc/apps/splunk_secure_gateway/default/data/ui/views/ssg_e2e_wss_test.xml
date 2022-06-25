@@ -1,5 +1,4 @@
-<form hideEdit="True" theme="dark" version="1.1">
-  <tags>mobile,tv</tags>
+<form theme="dark">
   <label>End-to-End Websocket Test</label>
   <description>Initiate a sample request to run an end-to-end websocket test for Splunk Secure Gateway, device authentication, and Spacebridge messaging. This dashboard requires JSON Web Tokens (JWT) to be enabled.</description>
   <search id="e2e_test">

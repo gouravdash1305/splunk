@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for testing websocket connectivity
 """
@@ -89,10 +89,10 @@ class TestWebsocketHandler(BaseRestHandler, PersistentServerConnectionApplicatio
             client_device = create_client_device(client_encryption_ctx)
             auth_code = request_code(client_device, client_encryption_ctx)
 
-            r1 = requests.get(f"{self.base_uri}services/ssg/registration/query",
+            r1 = requests.get("{}services/ssg/registration/query".format(self.base_uri),
                               params={"auth_code": auth_code, "device_name": TEST_DEVICE_NAME},
                               verify=False,
-                              headers={'Authorization': f'Splunk {user_token}'})
+                              headers={'Authorization': 'Splunk {}'.format(user_token)})
 
             response[AUTH_CODE_STATUS] = r1.status_code
 
@@ -103,13 +103,11 @@ class TestWebsocketHandler(BaseRestHandler, PersistentServerConnectionApplicatio
             response_jsn = json.loads(r1.text)
             temp_key = response_jsn['temp_key']
 
-            r2 = requests.post(
-                f"{self.base_uri}services/ssg/registration/confirmation?&auth_code={auth_code}"\
-                    "&self_register=False&auth_method=saml",
-                json={'temp_key': temp_key},
-                verify=False,
-                headers={'Authorization': f'Splunk {user_token}',
-                        'Content-Type': 'application/json'})
+            r2 = requests.post("{}services/ssg/registration/saml?auth_code={}".format(self.base_uri, auth_code),
+                               json={'temp_key': temp_key},
+                               verify=False,
+                               headers={'Authorization': 'Splunk {}'.format(user_token),
+                                        'Content-Type': 'application/json'})
 
             response['server_registration_status'] = r2.status_code
             LOGGER.info("completed registration with response={}".format(r2.text))
@@ -158,15 +156,15 @@ class TestWebsocketHandler(BaseRestHandler, PersistentServerConnectionApplicatio
 
     def delete_device(self, user, device_name, user_token):
         """ delete our fake device once we are done with the test"""
-        r = requests.get(f"{self.base_uri}services/ssg/kvstore/user_devices",
-                         headers={'Authorization': f'Splunk {user_token}'},
+        r = requests.get("{}services/ssg/kvstore/user_devices".format(self.base_uri),
+                         headers={'Authorization': 'Splunk {}'.format(user_token)},
                          verify=False)
 
         devices = [d for d in r.json() if d['device_name'] == device_name]
         device_id = devices[0]['_key'] if devices else ""
 
         if device_id:
-            r = requests.post(f"{self.base_uri}services/ssg/kvstore/delete_device", verify=False,
+            r = requests.post("{}services/ssg/kvstore/delete_device".format(self.base_uri), verify=False,
                                params={'device_owner': user, 'device_key': device_id},
                                headers={'Authorization': 'Splunk {}'.format(user_token)})
             LOGGER.info("deleting device with response={}, code={}".format(r.text, r.status_code))
@@ -175,10 +173,10 @@ class TestWebsocketHandler(BaseRestHandler, PersistentServerConnectionApplicatio
 
     def delete_token(self, system_token, token_id, user):
         """ Delete JWT token with given id """
-        r = requests.delete(f'{rest.makeSplunkdUri()}services/authorization/tokens/{user}',
+        r = requests.delete('{}services/authorization/tokens/{}'.format(rest.makeSplunkdUri(), user),
                             verify=False,
                             data={'id': token_id},
-                            headers={'Authorization': f'Splunk {system_token}'})
+                            headers={'Authorization': 'Splunk {}'.format(system_token)})
 
         LOGGER.info("deleted token={} with response={}".format(token_id, r.text))
 

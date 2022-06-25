@@ -19,8 +19,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='nlp_ims_request.proto',
   package='Application',
   syntax='proto3',
-  serialized_options=_b('\n$com.splunk.mobile.nlp.service.iframeP\001Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssg'),
-  serialized_pb=_b('\n\x15nlp_ims_request.proto\x12\x0b\x41pplication\"X\n\x19ImsSingleUseTokenEnvelope\x12\x12\n\nserialized\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x12\x14\n\x0c\x64\x65ploymentId\x18\x03 \x01(\x0c\"M\n\x1bImsSingleUseTokenGetRequest\x12\x18\n\x10\x63\x61nManageIntents\x18\x01 \x01(\x08\x12\x14\n\x0cmappedUserId\x18\x02 \x01(\tBh\n$com.splunk.mobile.nlp.service.iframeP\x01Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssgb\x06proto3')
+  serialized_options=_b('\n$com.splunk.mobile.nlp.service.iframeP\001'),
+  serialized_pb=_b('\n\x15nlp_ims_request.proto\x12\x0b\x41pplication\"X\n\x19ImsSingleUseTokenEnvelope\x12\x12\n\nserialized\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x12\x14\n\x0c\x64\x65ploymentId\x18\x03 \x01(\x0c\"M\n\x1bImsSingleUseTokenGetRequest\x12\x18\n\x10\x63\x61nManageIntents\x18\x01 \x01(\x08\x12\x14\n\x0cmappedUserId\x18\x02 \x01(\tB(\n$com.splunk.mobile.nlp.service.iframeP\x01\x62\x06proto3')
 )
 
 

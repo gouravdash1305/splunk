@@ -1,4 +1,4 @@
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 import random
 
 from spacebridgeapp.logging import setup_logging
@@ -8,6 +8,7 @@ from spacebridgeapp.subscriptions.subscription_processor import process_pubsub_s
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
 from spacebridgeapp.util.mtls import build_mtls_spacebridge_client
 from spacebridgeapp.util.config import secure_gateway_config as config
+from multiprocessing import Pool
 import asyncio
 
 LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + '_process_manager.log', 'process_manager')
@@ -27,6 +28,7 @@ class JobContext(object):
     def with_search(self, search_context, subscription_updates):
         return JobContext(self.auth_header, self.splunk_uri, self.encryption_context, search_context,
                           subscription_updates)
+
 
 async def subprocess_subscription(job_context, mtls_enabled):
     mtls_spacebridge_client = None
@@ -48,8 +50,29 @@ async def subprocess_subscription(job_context, mtls_enabled):
 
     return result
 
+
 def _run(job_context):
     return asyncio.run(subprocess_subscription(job_context, config.get_mtls_enabled()))
+
+
+class ProcessManager(object):
+    def __init__(self, num_processes):
+        self.num_processes = num_processes
+
+    def delegate(self, tag, job_contexts):
+        with Pool(self.num_processes) as pool:
+            LOGGER.debug("Delegating to processses, tag=%s", tag)
+            results = pool.map(_run, job_contexts)
+        return results
+
+
+
+
+
+
+
+
+
 
 
 

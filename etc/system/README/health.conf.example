@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This file contains an example health.conf.  Use this file to configure thresholds
 # for Splunk Enterprise's built in Health Report.
@@ -146,6 +146,3 @@ alert.threshold_color = red
 # 'alert:<indicator name>.min_duration_sec'.
 # Indicator level setting overrides feature level min_duration_sec setting.
 alert.min_duration_sec = 30
-
-# Suppresses color changes for this feature until March 25, 2021 8:00:00 PM GMT.
-snooze_end_time = 1616702400

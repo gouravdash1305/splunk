@@ -2,4 +2,4 @@
 Cloud Gateway App SDK
 """
 
-__version__ = '1.6.29'
+__version__ = '1.5.11'

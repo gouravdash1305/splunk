@@ -1,4 +1,4 @@
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 from splapp_protocol import envelope_pb2
 from spacebridgeapp.messages.util import fetch_device_info as device_info_helper
 from spacebridgeapp.messages.message_processor import process_message, post_process_message, handle_spacebridge_message

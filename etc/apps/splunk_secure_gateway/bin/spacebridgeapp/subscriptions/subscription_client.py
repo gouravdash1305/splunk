@@ -1,4 +1,4 @@
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 import asyncio
 import time
 from collections import defaultdict
@@ -116,7 +116,7 @@ class SubscriptionClient(object):
 
         response = await self.kvstore_client.async_kvstore_get_request(
             collection=constants.SUBSCRIPTIONS_COLLECTION_NAME,
-            params=params,
+            params=json.dumps(params),
             auth_header=auth_header
         )
 

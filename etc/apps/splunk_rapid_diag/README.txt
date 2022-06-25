@@ -1,4 +1,4 @@
-Splunk RapidDiag version 1.6.0 (e2f89c5b)
+Splunk RapidDiag version 1.4.0 (fad2adae)
 Copyright (C) 2021 Splunk Inc. All Rights Reserved.
 
 For documentation, see: http://docs.splunk.com/Documentation/SplunkRapidDiag/latest

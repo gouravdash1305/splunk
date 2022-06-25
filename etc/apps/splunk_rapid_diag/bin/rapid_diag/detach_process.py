@@ -97,8 +97,7 @@ class DetachProcess:
         """ Same as os.spawnv(), except we don't take a mode: it's always os.P_DETACH, meaning that the subprocess is
         detached from the parent.
         """
-
-        _LOGGER.info("spawnv_detached: '%s'" , "' '".join(a for a in args if not 'auth' in a))
+        _LOGGER.info("spawnv_detached: `%s`" , "' '".join(args))
         pid = DetachProcess._create_independent_process(stdin)
         if pid == 0:
             sys.stdout.flush()

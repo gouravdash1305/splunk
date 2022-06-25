@@ -1,0 +1,4 @@
+<?xml version="1.0"?>
+<view template="splunk_secure_gateway:/templates/configure.html" type="html">
+	<label>Configure</label>
+</view>

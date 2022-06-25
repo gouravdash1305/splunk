@@ -1,17 +1,17 @@
 define(
 [
-    '@splunk/swc-mc/dist/test-dependencies',
+    'mocks/models/MockSplunkD',
     'splunk_monitoring_console/views/settings/forwarder_setup/enterprise/Master'
 ], function(
-    SwcMcTest,
+    MockSplunkDModel,
     MasterView
 ) {
     suite('Master View:', function() {
         setup(function() {
             this.masterView = new MasterView({
                 model: {
-                    application: new SwcMcTest.MockSplunkDModel(),
-                    savedSearch: new SwcMcTest.MockSplunkDModel()
+                    application: new MockSplunkDModel(),
+                    savedSearch: new MockSplunkDModel()
                 }
             });
             this.masterView.render();

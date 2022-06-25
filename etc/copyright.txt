@@ -1,1 +1,1 @@
-Copyright (C) 2005-2022 Splunk Inc. All Rights Reserved.
+Copyright (C) 2005-2021 Splunk Inc. All Rights Reserved.

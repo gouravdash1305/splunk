@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Constants file for constants referenced throughout project
 """
@@ -9,14 +9,11 @@ SPACEBRIDGE_APP_NAME = "splunk_secure_gateway"
 CLOUDGATEWAY_APP_NAME = "splunk_app_cloudgateway"
 SPLAPP_APP_ID = "com.splunk.app.securegateway"
 CLOUDGATEWAY = "cloudgateway"
-SECUREGATEWAY = "securegateway"
 
 # Other Apps
-SPLUNK_DASHBOARD_STUDIO = "splunk-dashboard-studio"
 SPLUNK_DASHBOARD_APP = "splunk-dashboard-app"
 UDF_IMAGE_RESOURCE_COLLECTION = "splunk-dashboard-images"
 UDF_ICON_RESOURCE_COLLECTION = "splunk-dashboard-icons"
-SSG_ENABLE_MODULAR_INPUT = "ssg_enable_modular_input"
 
 # Splunk
 NOBODY = "nobody"
@@ -39,14 +36,10 @@ SPLUNK_SESSION_TOKEN_TYPE = 'splunk.session.token'
 COOKIES = 'cookies'
 HTTP_PORT = 'httpport'
 CONTENT = 'content'
-BODY = 'body'
 ENTRY = 'entry'
 SAML = 'SAML'
-JWT = 'JWT'
 TRUE = "true"
 FALSE = "false"
-DISABLED = 'disabled'
-PROTOCOL_ENDPOINTS = 'protocol_endpoints'
 
 # spacebridge message events
 UNREGISTER_EVENT = "unregisterEvent"
@@ -55,20 +48,12 @@ MDM_REGISTRATION_REQUEST = "mdmRegistrationRequest"
 # conf file constants
 KVSTORE = 'kvstore'
 MAX_DOCUMENTS_PER_BATCH_SAVE = 'max_documents_per_batch_save'
-SPACEBRIDGE_SERVER = 'spacebridge_server'
-HTTP_DOMAIN = 'http_domain'
-GRPC_DOMAIN = 'grpc_domain'
-INSTANCE_ID = 'instance_id'
-REGION = 'region'
-REGION_DESCRIPTION = 'description'
-ID = 'id'
 
 MTLS_CERT = 'mtls_cert'
 MTLS_KEY = 'mtls_key'
 
 # KV Store Constants
 REGISTERED_DEVICES_COLLECTION_NAME = "registered_devices"
-REGISTERED_DEVICES_META_COLLECTION_NAME = "registered_devices_meta"
 UNCONFIRMED_DEVICES_COLLECTION_NAME = "unconfirmed_devices"
 APPLICATION_TYPES_COLLECTION_NAME = "application_types"
 FEATURES_COLLECTION_NAME = "features"
@@ -97,8 +82,6 @@ GROUPS_COLLECTION_NAME = "groups"
 DRONE_MODE_TVS_COLLECTION_NAME = "drone_mode_tvs"
 DRONE_MODE_IPADS_COLLECTION_NAME = "drone_mode_ipads"
 TV_BOOKMARK_COLLECTION_NAME = "tv_bookmark"
-INSTANCE_CONFIG_COLLECTION_NAME = "instance_config"
-TAGGING_CONFIG_COLLECTION_NAME = "tagging_config"
 DASHBOARD_APP_LIST = "dashboard_app_list"
 ORIGINAL_WORKSPACE_FIELD = "original_workspace"
 LAST_MODIFIED = "last_modified"
@@ -106,7 +89,6 @@ WORKSPACE_DATA = "workspace_data"
 USER_KEY = "_user"
 TIMESTAMP = "timestamp"
 ROLE = "role"
-CAPABILITIES = "capabilities"
 SEARCH_KEY = "search_key"
 SUBSCRIPTION_KEY = "subscription_key"
 SUBSCRIPTION_TYPE = "subscription_type"
@@ -138,10 +120,6 @@ SUBSCRIPTION_CREDENTIAL_GLOBAL = "*"
 MIGRATION_DONE = 'migration_done'
 PLATFORM = 'platform'
 APP_ID = 'app_id'
-AUTHOR = 'author'
-DASHBOARDS_VISIBLE = 'dashboards_visible'
-REGISTRATION_V1 = "registration_v1"
-REGISTRATION_V2 = "registration_v2"
 
 # Form inputs constants
 TIMEPICKER = 'timepicker'
@@ -158,6 +136,10 @@ INPUT_TOKENS = 'input_tokens'
 
 # Splunk roles
 ADMIN_ALL_OBJECTS = 'admin_all_objects'
+
+# Registered Devices KV STORE Field Names
+REGISTERED_DEVICES_DEVICE_ID = "device_id"
+REGISTERED_DEVICES_DEVICE_TYPE = "device_type"
 
 # Module Level Constants
 CLIENT_SINGLE_REQUEST = "clientSingleRequest"
@@ -198,26 +180,11 @@ ROOT = 'root'
 SAVED_SEARCH_ARGS_PREFIX = "args."
 SUBSCRIPTION_VERSION_2 = 2
 
-# Deployment Info Constants
+#
 DEPLOYMENT_INFO = "deployment_info"
 DEPLOYMENT_FRIENDLY_NAME = "friendly_name"
 DEPLOYMENT_ID = "deployment_id"
-INSTANCEID = "instanceId"
-ENFORCE_MDM = "enforce_mdm"
-AUTH_TYPE = "auth_type"
-IS_CLOUD_INSTANCE = "is_cloud_instance"
-
-# Registered Devices KV STORE Field Names
-DEVICE_NAME = "device_name"
-DEVICE_ID = "device_id"
-DEVICE_TYPE = "device_type"
-APP_ID = "app_id"
-APP_NAME = "app_name"
-PLATFORM = "platform"
-DEVICE_REGISTERED_TIMESTAMP = "device_registered_timestamp"
-REGISTRATION_METHOD = "registration_method"
-AUTH_METHOD = "auth_method"
-DEVICE_MANAGEMENT_METHOD = "device_management_method"
+INSTANCE_ID = "instanceId"
 
 # Registration Constants
 ENCRYPTION_KEYS = "encryption_keys"
@@ -230,23 +197,7 @@ ENCRYPT_PUBLIC_KEY = "encrypt_public_key"
 ENCRYPT_PRIVATE_KEY = "encrypt_private_key"
 SERVER_VERSION = "server_version"
 MDM_KEYPAIR_GENERATION_TIME = "mdm_keypair_generation_time"
-LAST_SEEN_TIMESTAMP = "last_seen_timestamp"
-MDM_SIGNATURE = "mdm_signature"
-CUSTOM_ENDPOINT_ID = "custom_endpoint_id"
-CUSTOM_ENDPOINT_HOSTNAME = "custom_endpoint_hostname"
-CUSTOM_ENDPOINT_GRPC_HOSTNAME = "custom_endpoint_grpc_hostname"
-CLIENT_CERT_REQUIRED = "client_cert_required"
 CREATED = "created"
-REGISTRATION_VERSION = "registration_version"
-REGISTRATION_TYPE = "registraton_type"
-SELF_REGISTER = "self_register"
-AUTH_CODE = "auth_code"
-TEMP_KEY = "temp_key"
-MESSAGES = "messages"
-TYPE = "type"
-TEXT = "text"
-ERROR = "ERROR"
-CODE = "code"
 
 # KV STORE OPERATORS
 AND_OPERATOR = "$and"
@@ -265,9 +216,9 @@ SKIP = 'skip'
 
 # TELEMETRY
 TELEMETRY_INSTANCE_ID = "telemetry_instance_id"
-SPLUNK_VERSION = "serverVersion"
+SPLUNK_VERSION = "server_version"
 ON_CLOUD_INSTANCE = "on_cloud_instance"
-INSTALLATION_ENVIRONMENT = "installationEnvironment"
+INSTALLATION_ENVIRONMENT = "installation_environment"
 ENTERPRISE = "enterprise"
 CLOUD = "cloud"
 
@@ -281,16 +232,12 @@ SPLUNK_VR = "Splunk VR"
 VR = "VR"
 DRONE_MODE = "Drone Mode"
 DRONE_IPAD = "Drone Mode iPad"
-SPLUNK_TV_COMPANION = "Splunk TV Companion"
-SPLUNK_IPAD = "Splunk iPad"
-SPLUNK_IPAD_DEV = "Splunk iPad Dev"
 
 # Device Platform
 IOS = "iOS"
 ANDROID = "Android"
 ANDROID_TV = "Android TV"
 FIRE_TV = "Fire TV"
-IPAD_OS = 'iPadOS'
 
 # Environment Variables
 ENV_E2E_ENCRYPTION = "MOBILE_E2E_ENCRYPTION"
@@ -299,9 +246,6 @@ ENV_OPTION_ON = "1"
 # Performance Constants
 MAX_PAYLOAD_SIZE_BYTES = 1000000.0  # 1mb
 TIMEOUT_SECONDS = 10
-SPACEBRIDGE_SERVER_UPDATE_INTERVAL = 7
-SERVER = 'server'
-RT = 'response_time'
 
 HEADERS = 'headers'
 HEADER_AUTHORIZATION = 'Authorization'
@@ -342,7 +286,7 @@ SESSION_KEY = "session_key"
 RESULTS_LINK = "results_link"
 SEARCH_ID = "sid"
 OWNER = "owner"
-APP = "app"
+APP_NAME = "app"
 SEARCH_NAME = "search_name"
 ATTACH_DASHBOARD_TOGGLE = "1"
 ATTACH_TABLE_TOGGLE = "2"
@@ -383,18 +327,3 @@ SNOOZED_SCOPES_COLLECTION_NAME = 'snoozed_scopes'
 SCOPE = 'scope'
 START_TIME = 'start_time'
 END_TIME = 'end_time'
-
-# TRELLIS constants
-SOURCES = "sources"
-AGGREGATION = "_aggregation"
-TIME_FIELD = "_time"
-BY_CLAUSE = "by"
-
-# ITSI constants
-ITSI_GLASS_TABLE = 'itsi_glass_table'
-ITSI_GLASS_TABLES_DISPLAY_APP_NAME = 'ITSI Glass Tables'
-ITSI_DISPLAY_APP_NAME = 'ITSI Dashboards'
-ITSI = 'itsi'
-SA_ITOA = 'SA-ITOA'
-ITSI_FILES_COLLECTION = 'SA-ITOA_files'
-ITSI_ICON_COLLECTION = 'SA-ITOA_icon_collection'

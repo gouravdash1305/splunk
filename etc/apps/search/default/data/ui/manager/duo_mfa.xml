@@ -41,13 +41,6 @@
       <key name="format">list</key>
       <key name="processValueAdd">0</key>
     </element>
-    <element name="enableMfaAuthRest" type="checkbox" label="Enable 2FA for REST endpoints">
-      <view name="edit"/>
-      <view name="create"/>
-      <key name="processValueAdd">0</key>
-      <key name="submitValueEdit">value</key>
-      <key name="submitValueAdd">value</key>
-    </element>
     <element name="timeout" type="textfield" label="Connection Timeout">
       <view name="edit"/>
       <view name="create"/>

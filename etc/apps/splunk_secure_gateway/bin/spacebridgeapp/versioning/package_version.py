@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 """
 
 import os
@@ -42,7 +42,7 @@ def _cache_version_info():
         prerelease_str = ''
 
         build_str = int(build_str)
-        LOGGER.info("Release build %s %s", semver_str, build_str)
+        LOGGER.info("Release build")
     except (KeyError, ValueError) as e:
         LOGGER.info("Local build: {}".format(e))
         # running locally

@@ -285,12 +285,12 @@
                   <view name="create"/>
                   <key name="exampleText">If checked, monitoring begins at the end of the file (like tail -f). This only applies to the file the first time Splunk sees it. After that, Splunk's internal file position records keep track of it.</key>
                 </element>
-                <element name="whitelist" type="textfield" label="Allowrule">
+                <element name="whitelist" type="textfield" label="Whitelist">
                   <view name="create"/>
                   <view name="edit"/>
                   <key name="exampleText">Specify a regex that files from this source must match to be monitored by Splunk.</key>
                 </element>
-                <element name="blacklist" type="textfield" label="Denyrule">
+                <element name="blacklist" type="textfield" label="Blacklist">
                   <view name="create"/>
                   <view name="edit"/>
                   <key name="exampleText">Specify a regex that files from this source must NOT match to be monitored by Splunk.</key>

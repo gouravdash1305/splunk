@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Parse a Dashboard content data field formatted in simple xml
 
@@ -22,7 +22,6 @@ from spacebridgeapp.dashboard.parse_helpers import to_str, get_text, to_token_li
 from spacebridgeapp.dashboard.input_token_set import InputTokenSet
 from spacebridgeapp.dashboard.search_mapper import SearchMapper
 from spacebridgeapp.data.visualization_type import VisualizationType
-from spacebridgeapp.data.form_input_data import FormListInput
 from spacebridgeapp.search.saved_search_requests import fetch_saved_search
 from spacebridgeapp.exceptions.spacebridge_exceptions import SpacebridgeApiRequestError
 from spacebridgeapp.util.constants import VALID_CHART_TYPES, SPACEBRIDGE_APP_NAME
@@ -94,14 +93,6 @@ async def to_dashboard_definition(request_context=None,
 
         submit_button = True if fieldset.get('submitButton', "").lower().strip() == "true" else False
         auto_run = True if fieldset.get('autoRun', "").lower().strip() == "true" else False
-
-        # Append any InputToken search objects to search_mapper
-        if search_mapper:
-            for input_token in input_token_set.get_input_tokens():
-                input_type = input_token.input_type
-                if isinstance(input_type, FormListInput) \
-                        and input_type.dynamic_options and input_type.dynamic_options.search:
-                    search_mapper.add_search_object(input_type.dynamic_options.search)
 
     # Create DashboardRow List from child element 'row'
     row_elements = root.findall('row')
@@ -346,8 +337,8 @@ async def to_dashboard_visualization(request_context,
         try:
             saved_search = await fetch_saved_search(auth_header=request_context.auth_header,
                                                     owner=request_context.current_user,
+                                                    app_name=app_name,
                                                     ref=search.ref,
-                                                    app=search.app,
                                                     async_splunk_client=async_splunk_client)
             if saved_search and saved_search.name:
                 # This will override values from saved_search options_map with those defined in options_map

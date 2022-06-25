@@ -3,13 +3,15 @@ define(
         'jquery',
         'underscore',
         'module',
-        '@splunk/swc-mc'
+        'views/shared/PopTart',
+        'splunk.util'
     ],
     function(
         $,
         _,
         module,
-        SwcMC
+        PopTartView,
+        util
     ) {
         var roleDrilldowns = {
                 indexer: 'indexing_performance_instance',
@@ -21,18 +23,18 @@ define(
                 auxiliary: _('Other').t()
             };
 
-        return SwcMC.PopTartView.extend({
+        return PopTartView.extend({
             moduleId: module.id,
             className: 'dropdown-menu dmc-dropdown-menu',
             initialize: function(options) {
                 options = _.defaults(options, { 
                     mode: 'dialog'
                 });
-                SwcMC.PopTartView.prototype.initialize.call(this, options);
+                PopTartView.prototype.initialize.call(this, options);
 
                 this.listenTo(this.model.fetchState, 'change:role', this.render);
             },
-            events: $.extend(SwcMC.PopTartView.prototype.events, {
+            events: $.extend(PopTartView.prototype.events, {
                 'click input[type="checkbox"]': function(e) {
                     var $el = $(e.target);
                     if ($el.prop('checked')) {
@@ -52,19 +54,19 @@ define(
                 var role = this.model.fetchState.get('role'), // Even though the instance may have many roles, this is its acting role
                     roleDrilldown = roleDrilldowns[role];
 
-                this.el.innerHTML = SwcMC.PopTartView.prototype.template_menu;
+                this.el.innerHTML = PopTartView.prototype.template_menu;
                 this.$el.append(this.compiledTemplate({
                     _: _,
                     title: roleLabels[role],
                     instanceData: this.model.instance.entry.content.toJSON(),
                     instanceModel: this.model.instance,
-                    resourceUsageUrl: SwcMC.SplunkUtil.make_full_url(
+                    resourceUsageUrl: util.make_full_url(
                         '/app/splunk_monitoring_console/resource_usage_machine',
                         {
                             'form.machine': this.model.instance.entry.content.get('machine')
                         }
                     ),
-                    instanceDetailsUrl: roleDrilldown && SwcMC.SplunkUtil.make_full_url(
+                    instanceDetailsUrl: roleDrilldown && util.make_full_url(
                         '/app/splunk_monitoring_console/' + roleDrilldown,
                         {
                             'form.splunk_server': this.model.instance.entry.content.get('serverName')

@@ -1,13 +1,19 @@
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
-        '@splunk/swc-mc'
+        'models/Base',
+        'views/Base',
+        'util/svg'
     ],
     function(
+        $,
         _,
         Backbone,
-        SwcMC
+        BaseModel,
+        BaseView,
+        svgUtil
     ) {
         var TRIANGLE_SIZE = 10,
             TRIANGLE_LINE_THICKNESS = 2,
@@ -15,15 +21,15 @@ define(
             ACTIVE_COLOR = '#666', 
             INACTIVE_COLOR = '#AAAAAA'; 
 
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
-                this.setElement(SwcMC.UtilSVG.createElement('g'));
+                BaseView.prototype.initialize.apply(this, arguments);
+                this.setElement(svgUtil.createElement('g'));
                 this._height = null;
                 this.model = this.model || {};
                 this.listViewId = this.options.listViewId || null;
 
-                this.model.drawContext = this.model.drawContext || new SwcMC.BaseModel({
+                this.model.drawContext = this.model.drawContext || new BaseModel({
                     x: 0,
                     y: 0
                 });
@@ -66,10 +72,10 @@ define(
                         point.x + TRIANGLE_SIZE,
                         isUp ? lower : upper
                     ],
-                    $container = SwcMC.UtilSVG.createElement('g'),
+                    $container = svgUtil.createElement('g'),
                     color = active ? ACTIVE_COLOR : INACTIVE_COLOR;
 
-                SwcMC.UtilSVG.createElement('polygon')
+                svgUtil.createElement('polygon')
                     .attr({
                         points: _.map(
                             [left, middle, right], 
@@ -79,7 +85,7 @@ define(
                     .appendTo($container);
 
                 if (hasLine) {
-                    SwcMC.UtilSVG.createElement('line')
+                    svgUtil.createElement('line')
                         .attr({
                             x1: point.x,
                             y1: isUp ? upper : lower,

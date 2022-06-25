@@ -62,3 +62,16 @@ def get_conf_stanza_single_entry(session_key, conf_name, stanza_name, entry_name
         )
     return {'response': response, 'content': content}
 
+def get_current_context(auth, timeout=TIMEOUT_SECONDS):
+    """
+    Function to return the current context given an auth header
+    :param auth: the value for the authorization header in the request
+    """
+    headers = {}
+    headers['Content-Type'] = 'application/x-www-form-urlencoded'
+    headers['Authorization'] = auth.__repr__()
+    request_url = '{splunk_uri}/services/authentication/current-context?output_mode=json'.format(splunk_uri=rest.makeSplunkdUri())
+    response = requests.get(request_url, headers=headers, timeout=timeout, verify=False)
+    if response.status_code == HTTPStatus.UNAUTHORIZED:
+        raise SpacebridgePermissionsError(message='Invalid credentials', status=response.status_code)
+    return response.json()

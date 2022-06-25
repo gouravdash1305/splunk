@@ -1,19 +1,23 @@
 define([
+        'jquery',
         'underscore',
         'module',
         'backbone',
-        '@splunk/swc-mc',
-        'bootstrap'
+        'views/shared/controls/Control',
+        'views/shared/controls/colors/ColorRangeLabelControl',
+        'bootstrap.tooltip'
     ],
     function(
+        $,
         _,
         module,
         Backbone,
-        SwcMC,
+        Control,
+        LabelControl,
         undefined
         ) {
 
-        return SwcMC.ColorRangeLabelControlView.extend({
+        return LabelControl.extend({
 
             render: function() {
                 this.$('.text-value').tooltip('destroy');

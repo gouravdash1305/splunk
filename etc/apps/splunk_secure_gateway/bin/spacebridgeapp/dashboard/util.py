@@ -1,10 +1,11 @@
-"""Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved."""
+"""Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved."""
 from spacebridgeapp.dashboard.dashboard_helpers import generate_visualization_id
 from spacebridgeapp.dashboard.parse_event_handler import build_search_handler
 from spacebridgeapp.dashboard.parse_helpers import get_text, get_int, to_token_list
 from spacebridgeapp.data.dashboard_data import Search
 from splapp_protocol import common_pb2, event_handler_pb2
 
+from spacebridgeapp.search.input_token_support import get_tokens_for_search
 
 def string_to_refresh_type(refresh_type_string):
     """
@@ -57,7 +58,6 @@ def build_dashboard_visualization_search(search_element=None, row_index=0, panel
         post_search = get_text(search_element.find('postSearch'))
         query = dashboard_query_to_spl(get_text(search_element.find('query')))
         ref = search_element.attrib.get('ref', '')
-        app = search_element.attrib.get('app', '')
         base = search_element.attrib.get('base', '')
         id = search_element.attrib.get('id', '')
         depends = to_token_list(search_element.attrib.get('depends', ''))
@@ -71,20 +71,19 @@ def build_dashboard_visualization_search(search_element=None, row_index=0, panel
                                                 search_state=event_handler_pb2.SearchHandler.STATE_DONE)
             search_handlers.append(done_handler)
 
-        refresh = None
-        refresh_type = common_pb2.DashboardVisualization.Search.REFRESH_TYPE_UNKNOWN
-
         # Only store values if show_refresh
         if show_refresh:
-            # [MSB-1950] Use dashboard refresh but search refresh should be used if available
             if dashboard_refresh:
                 refresh = dashboard_refresh
                 refresh_type = common_pb2.DashboardVisualization.Search.REFRESH_TYPE_DELAY
-
-            search_refresh = get_text(search_element.find('refresh'))
-            if search_refresh:
-                refresh = search_refresh
+            else:
+                refresh = get_text(search_element.find('refresh'))
                 refresh_type = string_to_refresh_type(get_text(search_element.find('refreshType')))
+        else:
+            refresh = ''
+            refresh_type = common_pb2.DashboardVisualization.Search.REFRESH_TYPE_UNKNOWN
+
+        search_token_names = get_tokens_for_search(query)
 
         # Populate Search object
         search = Search(earliest=earliest,
@@ -95,12 +94,12 @@ def build_dashboard_visualization_search(search_element=None, row_index=0, panel
                         post_search=post_search,
                         query=query,
                         ref=ref,
-                        app=app,
                         base=base,
                         id=id,
                         depends=depends,
                         rejects=rejects,
-                        search_handlers=search_handlers)
+                        search_handlers=search_handlers,
+                        search_token_names=search_token_names)
 
     return generate_visualization_id(earliest=earliest, latest=latest, query=query, refresh=refresh,
                                      refresh_type=refresh_type, sample_ratio=sample_ratio,

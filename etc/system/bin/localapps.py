@@ -5,8 +5,8 @@ import splunk.appbuilder as appbuilder
 import re
 import os
 import json
+import splunk.bundle as bundle
 from splunk.clilib.bundle_paths import make_splunkhome_path
-import splunk.clilib.cli_common as cli_common
 
 HTTP_POST_TEMPLATE   = "template"
 HTTP_POST_LABEL      = "label"
@@ -33,23 +33,14 @@ class LocalAppsHandler(admin.MConfigHandler):
     Set up supported arguments
     '''
     def setup(self):
-        enableInstallApps = cli_common.getConfKeyValue("limits", "auth", "enable_install_apps")
-
+            
         if self.requestedAction == admin.ACTION_CREATE:
             # Let the C++ handler do all the validation work.
             self.supportedArgs.addOptArg('*')
-            # SPL-207748: implementing auth for localapps-python endpoint
-            if (splunk.util.normalizeBoolean(enableInstallApps)):
-                self.setWriteCapability(EDIT_LOCAL_APPS_CAP_EXPR)
-            else:
-                # default
-                self.setWriteCapability(AAO_OR_EDIT_LOCAL_APPS_CAP_EXPR)
 
         if self.customAction == ACTION_PACKAGE:
-            # SPL-158999: to support merge-local-meta and exclude-local-meta parameters
-            self.supportedArgs.addOptArg('merge-local-meta')
-            self.supportedArgs.addOptArg('exclude-local-meta')
-
+            limits_conf = bundle.getConf('limits', sessionKey=self.getSessionKey())
+            enableInstallApps = limits_conf['auth'].get("enable_install_apps", False)
             if (splunk.util.normalizeBoolean(enableInstallApps)):
                 self.customActionCap = EDIT_LOCAL_APPS_CAP_EXPR
                 return
@@ -118,27 +109,13 @@ class LocalAppsHandler(admin.MConfigHandler):
             # Create a package of an application
             confInfo.addWarnMsg('The package action has been deprecated.')
             appName = self.callerArgs.id
-            # obtain merge-local-meta and exclude-local-meta parameters
-            # if the respective arguments are not passed, we want to package local.meta and default.meta as is
-            mergeLocalMeta = self.callerArgs.get('merge-local-meta', ['f'])[0]
-            excludeLocalMeta = self.callerArgs.get('exclude-local-meta', ['f'])[0]
             try:
-                mergeLocalMeta = splunk.util.normalizeBoolean(mergeLocalMeta, enableStrictMode=True)
-                excludeLocalMeta = splunk.util.normalizeBoolean(excludeLocalMeta, enableStrictMode=True)
-            except ValueError as e:
-                raise admin.ArgValidationException("Incorrect parameter value. Please specify one of the following: "
-                                                    "true/false, t/f, or 0/1.")
-            if (mergeLocalMeta and excludeLocalMeta):
-                raise admin.ArgValidationException("Invalid parameter specification. Both -merge-local-meta and "
-                                                    "-exclude-local-meta cannot be \"true\" at the same time.")
-
-            try:
-                url, path = appbuilder.packageApp(appName, excludeLocalMeta=excludeLocalMeta, mergeLocalMeta=mergeLocalMeta)
-
+                url, path = appbuilder.packageApp(appName)
+                
                 confInfo['Package'].append('name', appName)
                 confInfo['Package'].append('url', url)
                 confInfo['Package'].append('path', path)
-
+                
             except splunk.RESTException as e:
                 raise admin.ArgValidationException(e.msg)
         elif self.customAction == ACTION_DEPENDENCIES:
@@ -187,8 +164,7 @@ def _getFieldValue(args, fieldName, defaultVal=None, maxLen=None):
     if value and maxLen and len(value) > maxLen:
         raise admin.ArgValidationException('App %(fieldName)s cannot be longer than %(maxLen)s characters.'
                 % {'fieldName' : fieldName, 'maxLen' : maxLen} )
-    return value
-
+    return value 
+        
 # initialize the handler, and add the actions it supports.    
 admin.init(LocalAppsHandler, admin.CONTEXT_NONE)
-

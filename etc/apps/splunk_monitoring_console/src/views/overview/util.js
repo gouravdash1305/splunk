@@ -1,13 +1,13 @@
 define(
     [
-        "@splunk/swc-mc"
+        "splunkjs/mvc/utils"
     ],
-    function(SwcMC) {
+    function(utils) {
 
         return {
             getFullPath: function(path) {
-                var root = SwcMC.Utils.getPageInfo().root;
-                var locale = SwcMC.Utils.getPageInfo().locale;
+                var root = utils.getPageInfo().root;
+                var locale = utils.getPageInfo().locale;
                 return (root ? '/'+root : '') + '/' + locale + path;
             }
         };

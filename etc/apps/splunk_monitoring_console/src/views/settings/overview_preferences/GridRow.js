@@ -6,7 +6,8 @@ define([
     'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
+    'models/Base',
     'contrib/text!./GridRow.html',
     'splunk_monitoring_console/views/settings/overview_preferences/EditThresholdConfigDialog',
     'splunk_monitoring_console/helpers/ThresholdConfigsClient'
@@ -14,7 +15,8 @@ define([
     $,
     _,
     module,
-    SwcMC,
+    BaseView,
+    BaseModel,
     template,
     EditThresholdConfigDialog,
     ThresholdConfigsClientHelper
@@ -37,7 +39,7 @@ define([
      *            color: green
      *        }
      */ 
-    var ColorRangesModel = SwcMC.BaseModel.extend({
+    var ColorRangesModel = BaseModel.extend({
         // checks that the threshold ranges set are 
         // 1) in ascending order
         // 2) not overlapping
@@ -156,7 +158,7 @@ define([
 
     });
 
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         tagName: 'tr',
         className: 'list-item',
@@ -164,7 +166,7 @@ define([
 
         initialize: function (options) {
             this.model.colorRanges = new ColorRangesModel();
-            SwcMC.BaseView.prototype.initialize.call(this, options);
+            BaseView.prototype.initialize.call(this, options);
 
             this.originalColorRanges = this.model.colorRanges.clone();  
         },

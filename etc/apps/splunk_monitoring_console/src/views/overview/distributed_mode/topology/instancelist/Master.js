@@ -3,21 +3,23 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        '@splunk/swc-mc',
+        'views/Base',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Pagination',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Sorter',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/GroupedInstance',
-        'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Instance'
+        'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Instance',
+        'util/svg'
     ],
     function(
         $,
         _,
         Backbone,
-        SwcMC,
+        BaseView,
         PaginationElementView,
         SorterElementView,
         GroupedInstanceElementView,
-        InstanceElementView
+        InstanceElementView,
+        svgUtil
     ) {
         // CONSTANTS
         var MIN_Y = 25;
@@ -27,12 +29,12 @@ define(
          * Renders a list view of splunk instances to
          * an SVG. 
          */
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             _height: 0,
 
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
-                this.setElement(SwcMC.UtilSVG.createElement('g'));
+                BaseView.prototype.initialize.apply(this, arguments);
+                this.setElement(svgUtil.createElement('g'));
                 this._elements = {};
 
                 this.listViewId = _.isNumber(this.options.listViewId) ?
@@ -217,7 +219,7 @@ define(
             },
 
             _renderNoResultsFound: function(drawCursor) {
-                var $noResults = SwcMC.UtilSVG.createElement('text').attr({
+                var $noResults = svgUtil.createElement('text').attr({
                     x: drawCursor.x,
                     y: drawCursor.y,
                     'font-size': NO_RESULTS_FOUND_FONT_SIZE
@@ -229,7 +231,7 @@ define(
             },
 
             _renderLoading: function(drawCursor) {
-                var $loading = SwcMC.UtilSVG.createElement('text').attr({
+                var $loading = svgUtil.createElement('text').attr({
                     x: drawCursor.x,
                     y: drawCursor.y,
                     'font-size': NO_RESULTS_FOUND_FONT_SIZE

@@ -5,7 +5,7 @@ define(
         'backbone',
         'module',
         'splunk_monitoring_console/views/table/controls/SimpleDialog',
-        '@splunk/swc-mc'
+        'uri/route'
     ],
     function(
         $,
@@ -13,7 +13,7 @@ define(
         Backbone,
         module,
         SimpleDialog,
-        SwcMC
+        route
     ) {
         var TEXT = {
             TITLE: _('Switch to Distributed Mode').t(),
@@ -32,7 +32,7 @@ define(
                 var defaults = {
                     title: TEXT.TITLE,
                     message: this.compiledMessageTemplate({
-                        helpLink: SwcMC.URIRoute.docHelp(
+                        helpLink: route.docHelp(
                             this.model.application.get('root'),
                             this.model.application.get('locale'),
                             'app.splunk_monitoring_console.monitoringconsole_configure'

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 Module to handle transformation of legacy protobuf requests to and from generic messages
 """
 from spacebridgeapp.util import constants

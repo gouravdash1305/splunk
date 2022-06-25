@@ -2,25 +2,35 @@
  * Created by vroy on 8/20/15.
  */
 define([
+    'jquery',
     'underscore',
     'backbone',
     'module',
-    '@splunk/swc-mc',
+    'views/shared/Modal',
+    'views/shared/controls/ControlGroup',
+    'views/shared/controls/SyntheticCheckboxControl',
+    'splunkjs/mvc/savedsearchmanager',
+    'uri/route',
     'contrib/text!splunk_monitoring_console/views/settings/forwarder_setup/lite/Master.html'
 ], function(
+    $,
     _,
     Backbone,
     module,
-    SwcMC,
+    Modal,
+    ControlGroup,
+    SyntheticCheckboxControl,
+    SavedSearchManager,
+    route,
     Template
 ) {
-    return SwcMC.ModalView.extend({
+    return Modal.extend({
         moduleId: module.id,
         template: Template,
         initialize: function() {
-            SwcMC.ModalView.prototype.initialize.apply(this, arguments);
+            Modal.prototype.initialize.apply(this, arguments);
         },
-        events: $.extend({}, SwcMC.ModalView.prototype.events,
+        events: $.extend({}, Modal.prototype.events,
         {
             'click .btn-apply-setup': '_applySetup',
             'click .checkbox-enable-or-disable-forwarder-monitoring': '_enableOrDisableMonitoring'
@@ -56,7 +66,7 @@ define([
                 this.model.savedSearch.entry.content.set('disabled', 1);
                 this.model.savedSearch.save({}, {
                     success: function() {
-                        document.location.href = SwcMC.URIRoute.page(
+                        document.location.href = route.page(
                             this.model.application.get('root'),
                             this.model.application.get('locale'),
                             this.model.application.get('app'),
@@ -68,7 +78,7 @@ define([
                 this.model.savedSearch.save({}, {
                     success: function() {
 
-                        this.searchManager = new SwcMC.SavedSearchManager({
+                        this.searchManager = new SavedSearchManager({
                             searchname: 'DMC Forwarder - Build Asset Table'
                         });
                         this.searchManager.on({
@@ -76,7 +86,7 @@ define([
                                 //?
                             },
                             'search:done': function() {
-                                document.location.href = SwcMC.URIRoute.page(
+                                document.location.href = route.page(
                                     this.model.application.get('root'),
                                     this.model.application.get('locale'),
                                     this.model.application.get('app'),
@@ -93,19 +103,19 @@ define([
             }
         },
         render: function() {
-            this.$el.html(SwcMC.ModalView.TEMPLATE);
-            this.$(SwcMC.ModalView.BODY_SELECTOR).html(this.compiledTemplate({
+            this.$el.html(Modal.TEMPLATE);
+            this.$(Modal.BODY_SELECTOR).html(this.compiledTemplate({
                 serverInfo: this.model.serverInfo,
                 isModal: true
             }));
 
-            this.children.enableForwarderMonitoringCheckbox = new SwcMC.SyntheticCheckboxControlView(
+            this.children.enableForwarderMonitoringCheckbox = new SyntheticCheckboxControl(
             {
                 label:_("Enable Forwarder Monitoring").t(),
                 defaultValue: !this.model.savedSearch.entry.content.get('disabled') ? true : false
             });
 
-            this.children.toggleSavedSearch = new SwcMC.ControlGroupView({
+            this.children.toggleSavedSearch = new ControlGroup({
                 label: _('Forwarder Monitoring').t(),
                 controlType: 'SyntheticRadio',
                 controlOptions: {
@@ -117,7 +127,7 @@ define([
                     ]
                 }
             });
-            this.children.dataCollectionInterval = new SwcMC.ControlGroupView({
+            this.children.dataCollectionInterval = new ControlGroup({
                 label: _('Fetch data every').t(),
                 controlType: 'SyntheticSelect',
                 controlOptions: {
@@ -138,16 +148,16 @@ define([
                 }
             });
 
-            this.$(SwcMC.ModalView.BODY_SELECTOR).find('.section-description').prepend(this.children.enableForwarderMonitoringCheckbox.render().$el);
+            this.$(Modal.BODY_SELECTOR).find('.section-description').prepend(this.children.enableForwarderMonitoringCheckbox.render().$el);
             this.children.enableForwarderMonitoringCheckbox.$el.addClass('checkbox-enable-or-disable-forwarder-monitoring');
             this.children.dataCollectionInterval.$el.addClass('data-collection-interval');
-            this.$(SwcMC.ModalView.BODY_SELECTOR).find('.forwarder-monitoring-settings').append(this.children.dataCollectionInterval.render().$el);
+            this.$(Modal.BODY_SELECTOR).find('.forwarder-monitoring-settings').append(this.children.dataCollectionInterval.render().$el);
 
-            this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html(_("Forwarder Monitoring Setup").t());
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).html('<a href="#" class="btn btn-primary modal-btn-primary btn-apply-setup pull-right">' + _('Apply').t() + '</a>');
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).prepend(SwcMC.ModalView.BUTTON_CANCEL);
-            this.$(SwcMC.ModalView.BUTTON_CLOSE_SELECTOR).remove();
-            this.$(SwcMC.ModalView.BODY_SELECTOR).removeClass(); //avoid double padding and overflow-y
+            this.$(Modal.HEADER_TITLE_SELECTOR).html(_("Forwarder Monitoring Setup").t());
+            this.$(Modal.FOOTER_SELECTOR).html('<a href="#" class="btn btn-primary modal-btn-primary btn-apply-setup pull-right">' + _('Apply').t() + '</a>');
+            this.$(Modal.FOOTER_SELECTOR).prepend(Modal.BUTTON_CANCEL);
+            this.$(Modal.BUTTON_CLOSE_SELECTOR).remove();
+            this.$(Modal.BODY_SELECTOR).removeClass(); //avoid double padding and overflow-y
 
             this._updateFormStyle();
 

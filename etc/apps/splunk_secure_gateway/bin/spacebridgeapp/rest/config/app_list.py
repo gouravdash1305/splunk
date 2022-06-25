@@ -1,10 +1,9 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for accessing and setting app_list kvstore records
 """
 
-import json
 import sys
 
 from splunk.clilib.bundle_paths import make_splunkhome_path
@@ -18,12 +17,13 @@ from spacebridgeapp.rest import async_base_endpoint
 from spacebridgeapp.messages.request_context import RequestContext
 from spacebridgeapp.request.app_list_request_processor import fetch_dashboard_app_list_with_default, fetch_app_names, \
     set_dashboard_app_list
+
 from spacebridgeapp.exceptions.spacebridge_exceptions import SpacebridgeApiRequestError
-
 from spacebridgeapp.request.splunk_auth_header import SplunkAuthHeader
+from spacebridgeapp.rest.util.utils import get_app_dict, validate_write_request
 
-from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, AUTHTOKEN, SESSION, USER, APP, DISPLAY_APP_NAME, \
-    PAYLOAD, AUTHOR, DASHBOARDS_VISIBLE
+from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, AUTHTOKEN, SESSION, USER, APP_NAME, DISPLAY_APP_NAME, \
+                                          PAYLOAD, STATUS
 
 LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + ".log", "rest_app_list")
 
@@ -35,61 +35,41 @@ class AppList(async_base_endpoint.AsyncBaseRestHandler):
 
     """
 
-    @staticmethod
-    def render_error(err, status_code=None):
-        if hasattr(err, 'status_code'):
-            status_code = err.status_code
-
-        if not status_code:
-            status_code = HTTPStatus.INTERNAL_SERVER_ERROR
-
-        return AppList.render(status_code, {'result': 'error', 'message': str(err)})
-
-
-    @staticmethod
-    def _is_enabled(selected_apps, app_id):
-        global_enabled = len(selected_apps) == 0
-
-        if global_enabled:
-            return True
-
-        return app_id in selected_apps
-
     async def get(self, request):
         """
-          This method will process a DashboardAppListGetRequest.  This will return the list of app_names found under the
-          dashboard_app_list key in the user_meta KVStore collection.
+        This method will process a DashboardAppListGetRequest.  This will return the list of app_names found under the
+        dashboard_app_list key in the user_meta KVStore collection.
 
-          :param request_context:
-          :param client_single_request:
-          :param single_server_response:
-          :param async_client_factory:
-          :return:
-          """
+        :param request_context:
+        :param client_single_request:
+        :param single_server_response:
+        :param async_client_factory:
+        :return:
+        """
         authtoken = request[SESSION][AUTHTOKEN]
         user = request[SESSION][USER]
         auth_header = SplunkAuthHeader(authtoken)
         request_context = RequestContext(auth_header, current_user=user, system_auth_header=auth_header)
 
-        async_splunk_client = self.async_client_factory.splunk_client()
+        # async clients
         async_kvstore_client = self.async_client_factory.kvstore_client()
+        async_splunk_client = self.async_client_factory.splunk_client()
 
         # Get dashboard_meta collection if key exists
-        try:
-            selected_apps = await fetch_dashboard_app_list_with_default(request_context=request_context,
-                                                                        async_kvstore_client=async_kvstore_client,
-                                                                        async_splunk_client=async_splunk_client)
-            app_list = await fetch_app_names(request_context, async_splunk_client)
-        except SpacebridgeApiRequestError as e:
-            LOGGER.warn("Failed to fetch app list, error=%s", e)
-            return self.render_error(e)
+        selected_apps = await fetch_dashboard_app_list_with_default(request_context=request_context,
+                                                                    async_kvstore_client=async_kvstore_client,
+                                                                    async_splunk_client=async_splunk_client)
 
-        payload = [{APP: app.app_name,
-                    DISPLAY_APP_NAME: app.display_app_name,
-                    AUTHOR: app.author,
-                    DASHBOARDS_VISIBLE: self._is_enabled(selected_apps, app.app_name)} for app in app_list]
+        app_list = await fetch_app_names(request_context, async_splunk_client)
+        app_dict = get_app_dict(app_list)
+        # This filters out apps that are invalid from displaying in the app selection tab
+        payload = [{APP_NAME: app, DISPLAY_APP_NAME: app_dict[app]} for app in selected_apps if app in app_dict]
 
-        return self.render(HTTPStatus.OK, payload)
+        return {
+            PAYLOAD: payload,
+            STATUS: HTTPStatus.OK,
+        }
+
 
     async def post(self, request):
         """
@@ -104,36 +84,23 @@ class AppList(async_base_endpoint.AsyncBaseRestHandler):
         async_splunk_client = self.async_client_factory.splunk_client()
         async_kvstore_client = self.async_client_factory.kvstore_client()
 
-        try:
-            total_app_list = await fetch_app_names(request_context, async_splunk_client)
-            total_app_name_list = [app.app_name for app in total_app_list]
+        total_app_list = await fetch_app_names(request_context, async_splunk_client)
+        total_app_name_list = [app.app_name for app in total_app_list]
 
-            selected_apps = json.loads(request[PAYLOAD])
+        selected_app_names = validate_write_request(request, total_app_list)
+        # validate all app names
+        for app_name in selected_app_names:
+            if app_name not in total_app_name_list:
+                error_message = f"The appName={app_name} is invalid.  Unable to set appName list."
+                return {'error': error_message}
 
-            if selected_apps == total_app_name_list:
-                selected_apps = []
-
-            # # validate all app names
-            for app_name in selected_apps:
-                if app_name not in total_app_name_list:
-                    error_message = f"id={app_name} is invalid."
-                    return self.render_error(SpacebridgeApiRequestError(message=error_message,
-                                                                        status_code=HTTPStatus.BAD_REQUEST))
-
-            # Store names in kvstore
-            dashboard_app_list = await set_dashboard_app_list(request_context=request_context,
-                                                              app_names=selected_apps,
-                                                              async_kvstore_client=async_kvstore_client,
-                                                              async_splunk_client=async_splunk_client)
-
-            result_app_names = [name for name in dashboard_app_list.app_names]
-
-            payload = [{APP: app.app_name,
-                        DISPLAY_APP_NAME: app.display_app_name,
-                        AUTHOR: app.author,
-                        DASHBOARDS_VISIBLE: self._is_enabled(result_app_names, app.app_name)} for app in total_app_list]
-
-            return self.render(HTTPStatus.OK, {'result': 'ok', 'payload': payload})
-        except SpacebridgeApiRequestError as e:
-            return self.render_error(e)
+        # Store names in kvstore
+        dashboard_app_list = await set_dashboard_app_list(request_context=request_context,
+                                                          app_names=selected_app_names,
+                                                          async_kvstore_client=async_kvstore_client,
+                                                          async_splunk_client=async_splunk_client)
+        return {
+            PAYLOAD: dashboard_app_list.app_names,
+            STATUS: HTTPStatus.OK,
+        }
 

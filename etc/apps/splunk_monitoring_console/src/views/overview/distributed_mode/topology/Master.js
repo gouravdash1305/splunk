@@ -1,26 +1,36 @@
 define(
 	[
+		'jquery',
 		'underscore',
 		'backbone',
 		'module',
+		'models/Base',
 		'splunk_monitoring_console/collections/Instances',
-		'@splunk/swc-mc',
+		'views/Base',
+		'views/shared/controls/TextControl',
+		'views/shared/controls/SyntheticSelectControl',
 		'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/Master',
 		'splunk_monitoring_console/views/overview/distributed_mode/topology/InstanceLinks',
 		'splunk_monitoring_console/views/overview/distributed_mode/topology/StatusFilter',
 		'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/topology/Master.html',
+		'util/svg',
 		'splunk_monitoring_console/helpers/ThresholdConfigsClient'
 	],
 	function(
+		$,
 		_,
 		Backbone,
 		module,
+		BaseModel,
 		InstancesCollection,
-		SwcMC,
+		BaseView,
+		TextControl,
+		SyntheticSelectControl,
 		InstanceListView,
 		InstanceLinksView,
 		StatusFilterView,
 		Template,
+		svgUtil,
 		ThresholdConfigsClientHelper
 	) {
 		var SVG_DEFAULT_WIDTH = 750,
@@ -51,8 +61,8 @@ define(
 	      		}
       		});
       	};
-      	var RerenderableTextControl = createRerenderableControl(SwcMC.TextControlView);
-      	var RerenderableSyntheticSelectControl = createRerenderableControl(SwcMC.SyntheticSelectControlView);
+      	var RerenderableTextControl = createRerenderableControl(TextControl);
+      	var RerenderableSyntheticSelectControl = createRerenderableControl(SyntheticSelectControl);
 
 		/*
 		/*
@@ -60,13 +70,13 @@ define(
 		 * Coordinates interactions between various SVG components
 		 * in a single SVG container.
 		 */
-		return SwcMC.BaseView.extend({
+		return BaseView.extend({
 			className: 'dmc-topology',
 			moduleId: module.id,
 
 			initialize: function() {
-				SwcMC.BaseView.prototype.initialize.apply(this, arguments);
-				this.model.textFilter = new SwcMC.BaseModel({
+				BaseView.prototype.initialize.apply(this, arguments);
+				this.model.textFilter = new BaseModel({
 					indexers: '',
 					searchHeads: ''
 				});
@@ -207,8 +217,8 @@ define(
 				this.children.auxiliaryTypeSelect = new RerenderableSyntheticSelectControl({
 					items: [
 						{ value: 'shc_deployer,cluster_master,license_master,deployment_server', label: _('All types').t() },
-						{ value: 'license_master', label: _('License managers').t() },
-						{ value: 'cluster_master', label: _('Cluster managers').t() },
+						{ value: 'license_master', label: _('License masters').t() },
+						{ value: 'cluster_master', label: _('Cluster masters').t() },
 						{ value: 'shc_deployer', label: _('Search head deployers').t() },
 						{ value: 'deployment_server', label: _('Deployment servers').t() }
 					],
@@ -267,10 +277,10 @@ define(
 					this.$('.dmc-topology-auxiliaries-type-filter').append(this.children.auxiliaryTypeSelect.render().$el);
 
 					// Create a fresh SVG before continuing
-					this.$svg = SwcMC.UtilSVG.createElement('svg').attr({
+					this.$svg = svgUtil.createElement('svg').attr({
 						width: SVG_DEFAULT_WIDTH
 					}).appendTo(this.$('.dmc-topology-svg'));
-					this.$auxiliarySvg = SwcMC.UtilSVG.createElement('svg').attr({
+					this.$auxiliarySvg = svgUtil.createElement('svg').attr({
 						width: AUXILIARY_SVG_DEFAULT_WIDTH
 					}).appendTo(this.$('.dmc-topology-auxiliaries-svg'));
 

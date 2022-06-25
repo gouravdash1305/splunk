@@ -8,12 +8,11 @@ import sys
 import time
 import json
 import threading
-import argparse
 from typing import Dict, Any, Optional, List
 from splunklib import six
 
 # local imports
-from rapid_diag.util import get_splunkhome_path, get_platform_maxint
+from rapid_diag.util import get_splunkhome_path
 from rapid_diag.serializable import Serializable
 from rapid_diag.serializable import JsonObject
 from rapid_diag.process_match import ProcessMatch
@@ -25,9 +24,6 @@ SID_REX = re.compile(r"\s--id=(\S+)")
 
 IS_LINUX = sys.platform.startswith('linux')
 
-class InfoCsvError(Exception):
-    """Raised when reading info.csv"""
-    pass
 
 class ProcessNotFound(Exception):
     """Raised when PID is not found in the system"""
@@ -155,14 +151,8 @@ class SearchProcess(ProcessMatch, Serializable):
     def load_from_disk(process : Process, sid : str) -> 'SearchProcess':
         search_path : str = get_splunkhome_path(['var', 'run', 'splunk', 'dispatch', sid, 'info.csv'])
         with open(search_path, 'r') as info_csv:
-            try:
-                # Set the field size limit to the size of the maxint
-                csv.field_size_limit(get_platform_maxint())
-                dict_reader = csv.DictReader(info_csv)
-                search_info = next(dict_reader)
-            except (csv.Error) as ex:
-                raise InfoCsvError('Unable to read from ' + str(search_path) + ': ' + str(ex)) from ex
-
+            dict_reader = csv.DictReader(info_csv)
+            search_info = next(dict_reader)
         try:
             saved_search_info = json.loads(search_info["savedsearch_label"])
             return SearchProcess(process, search_info["_root_sid"], search_info["label"],\
@@ -228,12 +218,6 @@ class ProcessLister:
         self.refreshing : bool = False
 
     @staticmethod
-    def build_process_from_args(args : argparse.Namespace) -> Process:
-        if args.pid != 0:
-            return ProcessLister.build_process_from_pid(args.pid)
-        return ProcessLister.build_process(args.name, args.pid, args.ppid, [args.args])
-
-    @staticmethod
     def build_process(name : str, pid : int, ppid : int, args_l : List[str]) -> Process: # pylint: disable=too-many-branches
         args : str = ' '.join(args_l)
         process_type = 'other'
@@ -255,7 +239,7 @@ class ProcessLister:
             elif name.startswith('python'):
                 if ('appserver' in args and 'mrsparkle' in args and 'root.py' in args) or args.startswith('splunkweb'):
                     process_type = 'splunk web'
-            elif name.startswith('mongod'):
+            elif name == 'mongod':
                 if os.path.join('var', 'lib', 'splunk', 'kvstore', 'mongo') in args:
                     process_type = 'splunk kvstore'
         return Process(name, pid, ppid, args, process_type)

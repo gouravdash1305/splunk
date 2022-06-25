@@ -15,11 +15,9 @@ from cloudgateway.private.encryption.encryption_handler import sign_verify, decr
 from cloudgateway.mdm import MDM_REGISTRATION_VERSION, CloudgatewayMdmRegistrationError
 from twisted.internet import defer
 from spacebridge_protocol import http_pb2, sb_common_pb2
-from splapp_protocol import request_pb2
 from cloudgateway.private.twisted.clients.async_spacebridge_client import AsyncSpacebridgeClient
 from cloudgateway.private.util.twisted_utils import add_error_back
 from cloudgateway.private.util import constants
-from cloudgateway.private.util.time_utils import get_current_timestamp
 
 
 @defer.inlineCallbacks
@@ -74,7 +72,6 @@ def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_context
         user_session_token = credentials_bundle.sessionToken # JWT session token sent by the client after MDM SAML
         friendly_name = credentials_bundle.registeringAppFriendlyName
         platform = credentials_bundle.registeringAppPlatform
-        device_registered_timestamp = get_current_timestamp()
 
         logger.debug("Validating publicKey signature of MDM request message, request_id={}".format(request_id))
 
@@ -85,16 +82,9 @@ def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_context
 
         device_info = DeviceInfo(encrypt_public_key, sign_public_key,
                                  device_id=make_device_id(encryption_context, sign_public_key),
-                                 app_id=client_id, client_version="", app_name=friendly_name, platform=platform,
-                                 registration_method=constants.MDM, device_management_method=constants.MDM,
-                                 device_registered_timestamp=device_registered_timestamp)
-
-        registration_info = {
-            "registration_method": request_pb2.VersionGetResponse.MDM
-        }
+                                 app_id=client_id, client_version="", app_name=friendly_name, platform=platform)
 
         if login_type == constants.SAML:
-            device_info.auth_method = constants.SAML
             encrypted_session_token = user_session_token
             raw_token = base64.b64decode(encrypted_session_token)
             decrypted_session_token = decrypt_session_token(encryption_context.sodium_client,
@@ -104,10 +94,7 @@ def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_context
             session_jsn = json.loads(decrypted_session_token)
             token_type = http_pb2.TokenType.Value('JWT')
             token_expires_at = calculate_token_info(session_jsn['token'])['exp']
-
-            registration_info["registration_type"] = request_pb2.VersionGetResponse.SAML
         else:
-            device_info.auth_method = constants.LOCAL_LDAP
             yield add_error_back(defer.maybeDeferred(server_context.validate, username, password, device_info),
                                  logger=logger)
 
@@ -120,8 +107,6 @@ def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_context
             encrypted_session_token = encryption_context.secure_session_token(session_token)
             token_type = http_pb2.TokenType.Value('SESSION')
             token_expires_at = 0
-
-            registration_info["registration_type"] = request_pb2.VersionGetResponse.LOCAL_LDAP
 
         server_version = yield add_error_back(defer.maybeDeferred(server_context.get_server_version),
                                               logger=logger)
@@ -136,7 +121,7 @@ def handle_mdm_authentication_request(mdm_auth_request_proto, encryption_context
         server_type_id = yield add_error_back(defer.maybeDeferred(server_context.get_server_type),
                                               logger=logger)
         env_metadata = yield add_error_back(defer.maybeDeferred(server_context.get_environment_meta, device_info,
-                                                                username, registration_info),
+                                                                username),
                                               logger=logger)
 
         pairing_info = mdm.build_pairing_info(encrypted_session_token, credentials_bundle.username, server_version,

@@ -11,17 +11,8 @@
 
 .. warning::
 
-   The jsonpickle module **is not secure**.  Only unpickle data you trust.
-
-   It is possible to construct malicious pickle data which will **execute
-   arbitrary code during unpickling**.  Never unpickle data that could have come
-   from an untrusted source, or that could have been tampered with.
-
-   Consider signing data with an HMAC if you need to ensure that it has not
-   been tampered with.
-
-   Safer deserialization approaches, such as reading the raw JSON
-   directly, may be more appropriate if you are processing untrusted data.
+    jsonpickle can execute arbitrary Python code. Do not load jsonpickles from
+    untrusted / unauthenticated sources.
 
 jsonpickle can take almost any Python object and turn the object into JSON.
 Additionally, it can reconstitute the object back into Python.
@@ -60,11 +51,6 @@ added to JSON::
     oneway = jsonpickle.encode(obj, unpicklable=False)
     result = jsonpickle.decode(oneway)
     assert obj.name == result['name'] == 'Awesome'
-
-.. note::
-
-   Please see the note in the :ref:`api-docs` when serializing dictionaries
-   that contain non-string dictionary keys.
 
 """
 from __future__ import absolute_import, division, unicode_literals

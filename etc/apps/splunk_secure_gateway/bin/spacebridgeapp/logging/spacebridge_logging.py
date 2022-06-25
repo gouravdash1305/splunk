@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Logging helper module
 """
@@ -19,7 +19,7 @@ def get_log_level():
     Helper method to get log_level from config and validate value or else return default
     :return:
     """
-    log_level = config.get_log_level()
+    log_level = config.get_config(stanza=config.SETUP, key=config.LOG_LEVEL)
     if log_level is not None:
         log_level = log_level.strip().upper()
         if log_level == 'CRITICAL':

@@ -1,4 +1,4 @@
-<dashboard version="1.1" hideEdit="True">
+<dashboard hideEdit="True">
   <label>Orphaned Scheduled Searches, Reports, and Alerts</label>
   <row>
     <panel>

@@ -4,16 +4,20 @@ define(
         'underscore',
         'module',
         'backbone',
+        'collections/shared/FlashMessages',
         'splunk_monitoring_console/views/table/controls/SimpleDialog',
-        '@splunk/swc-mc'
+        'views/shared/FlashMessagesLegacy',
+        'splunk.util'
     ],
     function(
         $,
         _,
         module,
         Backbone,
+        FlashMessagesCollection,
         SimpleDialog,
-        SwcMC
+        FlashMessagesView,
+        util
     ) {
     var BUTTON_OVERVIEW = '<a href="#" class="btn btn-primary modal-btn-primary overview pull-left" data-dismiss="modal">' + _('Go to Overview').t() + '</a>';
     var BUTTON_REFRESH = '<a href="#" class="btn btn-primary modal-btn-primary refresh pull-right" data-dismiss="modal">' + _('Refresh').t() + '</a>';
@@ -23,7 +27,7 @@ define(
                 var defaults = {title: _("Success!").t()};
                 this.options = _.extend({}, defaults, this.options);
                 SimpleDialog.prototype.initialize.apply(this, arguments);
-
+               
                 this.application = this.options.application;
             },
             events: $.extend({}, SimpleDialog.prototype.events, {
@@ -33,7 +37,7 @@ define(
                 },
                 'click .btn.overview': function(e) {
                     this.hide();
-                    SwcMC.SplunkUtil.redirect_to([
+                    util.redirect_to([
                         'app',
                         this.application.get('app'),
                         //'Overview'

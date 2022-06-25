@@ -3,16 +3,24 @@ define(
     'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'collections/shared/ModAlertActions',
+    'views/shared/Modal',
+    'views/shared/documentcontrols/triggeractions/table/Master',
+    'views/shared/documentcontrols/triggeractions/AddActionDropDown',
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/shared/EditAlertDialog',
+    'util/general_utils',
     './EditAlertDialog.pcss'
 ],
 function(
     $,
     _,
     module,
-    SwcMC,
+    ModAlertActionsCollection,
+    Modal,
+    TableView,
+    AddActionDropDownView,
     EditAlertDialogShared,
+    Util,
     css
 ){
 
@@ -30,7 +38,7 @@ function(
             this.alertModel = this.model.alertModel;
             this.populateAlertActionCollections();
 
-            this.children.addAction = new SwcMC.AddActionDropDownView({
+            this.children.addAction = new AddActionDropDownView({
                 model: {
                     application: this.model.application
                 },
@@ -41,7 +49,7 @@ function(
                 ignoreToggleMouseDown: true
             });
 
-            this.children.triggerActions = new SwcMC.TriggerActionsTableMasterView({
+            this.children.triggerActions = new TableView({
                 documentType: 'alert',
                 pdfAvailable: this.options.pdfAvailable,
                 model: {
@@ -67,7 +75,7 @@ function(
             this.listenTo(this.collection.unSelectedAlertActions, 'add remove reset', _.debounce(this.toggleAddAction));
         },
 
-        events: $.extend({}, SwcMC.ModalView.prototype.events, {
+        events: $.extend({}, Modal.prototype.events, {
             'click .modal-btn-save': function (e) {
                 e.preventDefault();
                 if (this._allInputsValid) {
@@ -117,7 +125,7 @@ function(
                                         attribute = 'action.' + alertActionName;
                                     }
 
-                                    if (SwcMC.GeneralUtils.normalizeBoolean(this.alertModel.entry.content.get(attribute))) {
+                                    if (Util.normalizeBoolean(this.alertModel.entry.content.get(attribute))) {
                                         return true;
                                     }
                                 }
@@ -168,8 +176,8 @@ function(
 
         populateAlertActionCollections: function() {
             //alerts/alert_actions
-            this.collection.selectedAlertActions = new SwcMC.ModAlertActionsCollection();
-            this.collection.unSelectedAlertActions = new SwcMC.ModAlertActionsCollection();
+            this.collection.selectedAlertActions = new ModAlertActionsCollection();
+            this.collection.unSelectedAlertActions = new ModAlertActionsCollection();
             this.collection.unSelectedAlertActions.comparator = function(unSelectedAlertAction) {
                 return unSelectedAlertAction.entry.content.get('label');
             };
@@ -185,7 +193,7 @@ function(
                     attribute = 'action.' + name;
                 }
 
-                if (SwcMC.GeneralUtils.normalizeBoolean(this.model.alert.entry.content.get(attribute))) {
+                if (Util.normalizeBoolean(this.model.alert.entry.content.get(attribute))) {
                     return true;
                 }
                 else {
@@ -222,10 +230,10 @@ function(
             if (this.$addActionActivator) {
                 if (this.collection.unSelectedAlertActions.length) {
                     this.$addActionActivator.show();
-                    this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).find('.trigger-actions-control-heading').show();
+                    this.$(Modal.BODY_FORM_SELECTOR).find('.trigger-actions-control-heading').show();
                 } else {
                     this.$addActionActivator.hide();
-                    this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).find('.trigger-actions-control-heading').hide();
+                    this.$(Modal.BODY_FORM_SELECTOR).find('.trigger-actions-control-heading').hide();
                 }
             }
         },
@@ -241,38 +249,38 @@ function(
         render: function () {
             var BUTTON_SAVE = '<a href="#" id="save-edit-btn" class="btn btn-primary modal-btn-save modal-btn-primary">' + _('Save').t() + '</a>';
 
-            this.$el.html(SwcMC.ModalView.TEMPLATE);
-            this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html( _('Edit Alert: ').t() + this.alertName);
-            this.$(SwcMC.ModalView.BODY_SELECTOR).show();
-            this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
+            this.$el.html(Modal.TEMPLATE);
+            this.$(Modal.HEADER_TITLE_SELECTOR).html( _('Edit Alert: ').t() + this.alertName);
+            this.$(Modal.BODY_SELECTOR).show();
+            this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
 
             if (this.alertName != 'DMC Alert - Missing forwarders') {
                 this._renderContent();
             }
             else {
-                this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({
+                this.$(Modal.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({
                     name: this.alertName,
                     parameterLabels: [],
                     parameterVals: [],
                     parameterRanges: []
                 }));
-                this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).find('.header-text').remove();
+                this.$(Modal.BODY_FORM_SELECTOR).find('.header-text').remove();
             }
             this.children.flashMessagesView.render().appendTo(this.$('.flash-messages-view-placeholder'));
 
             //add trigger actions button and table
             this.$addActionActivator = $('<div class="controls trigger-actions-controls add-action-btn"><a class="dropdown-toggle btn" href="#">' + _('+ Add New Action').t() + '<span class="caret"></span></a></div>');
-            this.$actionsDropdown = this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).find('.alert-edit-trigger-actions-dropdown');
+            this.$actionsDropdown = this.$(Modal.BODY_FORM_SELECTOR).find('.alert-edit-trigger-actions-dropdown');
             this.$addActionActivator.appendTo(this.$actionsDropdown);
             if (this.collection.unSelectedAlertActions.length == 0) {
                 this.$addActionActivator.hide();
             }
 
-            this.$actionsTable = this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).find('.trigger-actions');
+            this.$actionsTable = this.$(Modal.BODY_FORM_SELECTOR).find('.trigger-actions');
             this.children.triggerActions.render().appendTo(this.$actionsTable);
 
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(BUTTON_SAVE);
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
+            this.$(Modal.FOOTER_SELECTOR).append(BUTTON_SAVE);
+            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
 
             return this;
         },

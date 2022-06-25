@@ -4,6 +4,8 @@ define(
         'underscore',
         'module',
         'backbone',
+        'collections/shared/FlashMessages',
+        'views/shared/FlashMessagesLegacy',
         'splunk_monitoring_console/views/table/controls/SimpleDialog',
         'splunk_monitoring_console/views/table/controls/EditAllSuccessFailureDialog'
     ],
@@ -12,6 +14,8 @@ define(
         _,
         module,
         Backbone,
+        FlashMessagesCollection,
+        FlashMessagesView,
         SimpleDialog,
         EditAllSuccessFailureDialog
     ) {
@@ -59,7 +63,7 @@ define(
                     settingsAsset.entry.content.set('blackList', blackList.join(','));
                     var deferred = [settingsAsset.save(), this.collection.peers.saveSelected()];
                     $(e.target).prop('disabled', true);
-                    Promise.all(deferred).done(function () {
+                    $.when.apply($, deferred).done(function () {
                         _(selectedPeers).each(function(peer) {
                             peer.entry.content.set("errorMessages", []);
                             peer.entry.content.set("warningMessages", []);
@@ -75,7 +79,7 @@ define(
                         });
                         $('body').append(dialog.render().el);
                         dialog.show();
-                    }.bind(this)).catch(function() {
+                    }.bind(this)).fail(function() {
                         this.hide();
                         var dialog = new EditAllSuccessFailureDialog({
                             title: _("Disable Selected Instances").t(),

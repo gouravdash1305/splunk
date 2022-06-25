@@ -8,23 +8,26 @@
  	'underscore',
  	'jquery',
  	'module',
- 	'@splunk/swc-mc',
+ 	'views/Base',
     'contrib/text!splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/Master.html',
-    'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/Grid'
+    'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/Grid',
+    'uri/route'
+
  ], function(
  	_,
  	$,
  	module,
- 	SwcMC,
+ 	BaseView,
  	template,
- 	GridView
+ 	GridView,
+ 	route
  ){
- 	return SwcMC.BaseView.extend({
+ 	return BaseView.extend({
  		moduleId: module.id,
  		template: template,
 
  		initialize: function(options) {
-			SwcMC.BaseView.prototype.initialize.call(this, options);
+ 			BaseView.prototype.initialize.call(this, options);
 
  			this.children.gridView = new GridView({
  				model: { 

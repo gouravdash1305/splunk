@@ -1,22 +1,24 @@
 define([
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/shared/controls/ControlGroup',
+    'views/shared/controls/Control',
     'splunk_monitoring_console/views/settings/overview_preferences/components/ColorRangeControlMaster',
-    '@splunk/swc-mc'
+    'views/shared/vizcontrols/custom_controls/ColorRangesControlGroup'
 ], function(
     _,
     module,
-    SwcMC,
+    ControlGroup,
+    Control,
     ColorRangeControlMaster,
-    SwcMC
+    ColorRangesControlGroup
 ) {
 
-    return SwcMC.ColorRangesControlGroupView.extend({
+    return ColorRangesControlGroup.extend({
         moduleId: module.id,
         initialize: function() {
             var colorRangesControl = new ColorRangeControlMaster({
-                className: SwcMC.ControlView.prototype.className,
+                className: Control.prototype.className,
                 model: this.model,
                 modelAttribute: this.options.modelAttribute,
                 rangeColorsName: this.options.rangeColorsName,
@@ -33,7 +35,7 @@ define([
             this.options.label = _('Mappings').t();
             this.options.controlClass = 'controls-block';
             this.options.controls = [ colorRangesControl ];
-            SwcMC.ControlGroupView.prototype.initialize.call(this, this.options);
+            ControlGroup.prototype.initialize.call(this, this.options);
         }
     });
 

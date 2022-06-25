@@ -1,26 +1,28 @@
 import React from 'react';
 import Bookmarks from 'splunk_monitoring_console/collections/Bookmarks';
 import Metrics from 'splunk_monitoring_console/collections/Metrics';
+import AppLocal from 'models/services/AppLocal';
+import ServerInfo from 'models/services/server/ServerInfo';
+import HealthDetailsModel from 'models/services/server/HealthDetails';
+import ClusterConfigModel from 'models/services/cluster/Config';
 import { configure, shallow } from 'enzyme';
 import Landing from 'splunk_monitoring_console/views/landing/Landing';
 import EnzymeAdapterReact16 from 'enzyme-adapter-react-16';
-import { SplunkUtil, AppLocalModel, ClusterConfigModel, HealthDetailsModel, ServerInfoModel }from '@splunk/swc-mc'
 
 suite('Monitoring Console Landing Page', function () {
     setup(function () {
         configure({ adapter: new EnzymeAdapterReact16() });
         this.props = {
-            appLocal: new AppLocalModel(),
+            appLocal: new AppLocal(),
             application: {
                 get: () => {},
             },
-            serverInfo: new ServerInfoModel(),
+            serverInfo: new ServerInfo(),
             healthDetails: new HealthDetailsModel(),
             indexerClustering: new ClusterConfigModel(),
             bookmarks: new Bookmarks(),
             metrics: new Metrics(),
             indexes: 11,
-            isDistributed: false
         };
         this.wrapper = shallow(<Landing {...this.props} />);
         this.inst = this.wrapper.instance();
@@ -38,7 +40,7 @@ suite('Monitoring Console Landing Page', function () {
             1, 'Landing page rendered');
         assert.equal(
             this.wrapper.find('Heading').length,
-            6, 'All Headings rendered');
+            5, 'All Headings rendered');
         assert.equal(
             this.wrapper.find('div[data-test-name="deployment-topology"]').length,
             1, 'Deployment topology section rendered');

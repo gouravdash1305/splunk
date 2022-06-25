@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This is an example web.conf.  Use this file to configure data web
 # settings.
@@ -33,9 +33,3 @@ splunk_dashboard_app_name = splunk-dashboard-app
 # Embed tags will appear as is in the dashboard source
 dashboard_html_allow_embeddable_content = true
 dashboard_html_wrap_embed = false
-
-# Allowing remote images from trusted hosts in simple XML dashboards
-pdfgen_trusted_hosts = *.splunk.com, 192.0.2.0/24
-
-# Allowing images to load from trusted domains in Dashboard Studio 
-dashboards_csp_allowed_domains = *.splunk.com, *

@@ -1,15 +1,17 @@
 define(
     [
         'backbone',
-        '@splunk/swc-mc',
-        '@splunk/swc-mc/dist/test-dependencies',
-        'splunk_monitoring_console/views/instances/Master'
+        'models/classicurl',
+        'splunkjs/mvc',
+        'splunk_monitoring_console/views/instances/Master',
+        'mocks/collections/services/configs/MockCoreVisualizations'
     ],
     function(
           Backbone,
-          SwcMC,
-          SwcMCTest,
-          MasterView
+          classicurl,
+          mvc,
+          MasterView,
+          MockCoreVisualizations
         ) {
       var mockModel = {
         classicurlDfd: new Backbone.Model(),
@@ -28,18 +30,18 @@ define(
               this.requests.push(xhr);
           }.bind(this);
 
-          SwcMCTest.MockCoreVisualizations.loadMockCoreVisualizations();
+          MockCoreVisualizations.loadMockCoreVisualizations();
         });
         teardown(function() {
           delete this.masterView;
           this.xhr.restore();
-          SwcMC.Mvc.Components.revokeInstance('groupDropdown');
-          SwcMC.Mvc.Components.revokeInstance('smcGetGroups');
-          SwcMC.Mvc.Components.revokeInstance('instanceSearchManager');
-          SwcMC.Mvc.Components.revokeInstance('instancesTable');
-          SwcMC.ClassicURLModel.off();
-          SwcMC.ClassicURLModel.clear();
-          SwcMCTest.MockCoreVisualizations.reset();
+          mvc.Components.revokeInstance('groupDropdown');
+          mvc.Components.revokeInstance('smcGetGroups');
+          mvc.Components.revokeInstance('instanceSearchManager');
+          mvc.Components.revokeInstance('instancesTable');
+          classicurl.off();
+          classicurl.clear();
+          MockCoreVisualizations.reset();
         });
 
         test('no url parameter', function() {
@@ -48,9 +50,9 @@ define(
           });
           assert.equal(this.masterView.groupDropdownDefault, '*', 'this.groupDropdownDefault');
 
-          SwcMC.ClassicURLModel.on('change', function() {
-            if (SwcMC.ClassicURLModel.get('group') == undefined) { return; }
-            assert.equal(SwcMC.ClassicURLModel.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(SwcMC.ClassicURLModel.attributes));
+          classicurl.on('change', function() {
+            if (classicurl.get('group') == undefined) { return; }
+            assert.equal(classicurl.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(classicurl.attributes));
             assert.equal(this.description, undefined, 'this.description');
           }.bind(this));
           this.masterView.groupDropdownView.val('dmc_group_indexer');
@@ -60,7 +62,7 @@ define(
         });
 
         test('Test only group parameter presents', function() {
-          SwcMC.ClassicURLModel.set({
+          classicurl.set({
             group: 'dmc_group_indexer'
           });
           this.masterView = new MasterView({
@@ -68,9 +70,9 @@ define(
           });
           assert.equal(this.masterView.groupDropdownDefault, 'dmc_group_indexer', 'this.groupDropdownDefault');
 
-          SwcMC.ClassicURLModel.on('change', function() {
-            if (SwcMC.ClassicURLModel.get('group') == undefined) { return; }
-            assert.equal(SwcMC.ClassicURLModel.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(SwcMC.ClassicURLModel.attributes));
+          classicurl.on('change', function() {
+            if (classicurl.get('group') == undefined) { return; }
+            assert.equal(classicurl.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(classicurl.attributes));
             assert.equal(this.description, undefined, 'this.description');
           }.bind(this));
           this.masterView.groupDropdownView.val('dmc_group_indexer');
@@ -80,7 +82,7 @@ define(
         });
 
         test('Test only search parameters present', function() {
-          SwcMC.ClassicURLModel.set({
+          classicurl.set({
             earliest: '500',
             latest: '0',
             search: 'index=_internal'
@@ -90,10 +92,10 @@ define(
           });
           assert.equal(this.masterView.groupDropdownDefault, '-----', 'this.groupDropdownDefault');
 
-          SwcMC.ClassicURLModel.on('change', function() {
-            if (SwcMC.ClassicURLModel.get('group') == undefined) { return; }
-            assert.equal(SwcMC.ClassicURLModel.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(SwcMC.ClassicURLModel.attributes));
-            assert.equal(this.description, SwcMC.ClassicURLModel.get('description'), 'this.description');
+          classicurl.on('change', function() {
+            if (classicurl.get('group') == undefined) { return; }
+            assert.equal(classicurl.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(classicurl.attributes));
+            assert.equal(this.description, classicurl.get('description'), 'this.description');
           }.bind(this));
           this.masterView.groupDropdownView.val('dmc_group_indexer');
           this.masterView.groupDropdownView.val('dmc_search_head');
@@ -102,7 +104,7 @@ define(
         });
 
         test('Test both group and search parameters present', function() {
-          SwcMC.ClassicURLModel.set({
+          classicurl.set({
             group: 'dmc_group_indexer',
             earliest: '500',
             latest: '0',
@@ -112,10 +114,10 @@ define(
             model: mockModel
           });
           assert.equal(this.masterView.groupDropdownDefault, 'dmc_group_indexer', 'this.groupDropdownDefault');
-          SwcMC.ClassicURLModel.on('change', function() {
-            if (SwcMC.ClassicURLModel.get('group') == undefined) { return; }
-            assert.equal(SwcMC.ClassicURLModel.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(SwcMC.ClassicURLModel.attributes));
-            assert.equal(this.description, SwcMC.ClassicURLModel.get('description'), 'this.description');
+          classicurl.on('change', function() {
+            if (classicurl.get('group') == undefined) { return; }
+            assert.equal(classicurl.get('group'), this.masterView.groupDropdownView.val(), 'select an option: ' + JSON.stringify(classicurl.attributes));
+            assert.equal(this.description, classicurl.get('description'), 'this.description');
           }.bind(this));
           this.masterView.groupDropdownView.val('dmc_group_indexer');
           this.masterView.groupDropdownView.val('dmc_search_head');
@@ -124,37 +126,37 @@ define(
         });
 
         test('Test user selection when no url parameter but has search parameter', function() {
-          SwcMC.ClassicURLModel.set({
+          classicurl.set({
             earliest: '500',
             latest: '0',
             search: 'index=_internal'
           });
           this.masterView = new MasterView({model: mockModel});
           assert.equal(this.masterView.groupDropdownDefault, '-----', 'this.groupDropdownDefault before selecting');
-          assert.equal(SwcMC.ClassicURLModel.get('group'), undefined, 'classicurl before selecting');
-          assert.notEqual(SwcMC.ClassicURLModel.get('search'), undefined, 'classicurl before selecting');
+          assert.equal(classicurl.get('group'), undefined, 'classicurl before selecting');
+          assert.notEqual(classicurl.get('search'), undefined, 'classicurl before selecting');
 
-          SwcMC.ClassicURLModel.on('change:group', function(val) {
-            assert.equal(SwcMC.ClassicURLModel.get('group'), 'dmc_group_indexer', 'classicurl after selecting Indexer option');
-            SwcMC.ClassicURLModel.off();
+          classicurl.on('change:group', function(val) {
+            assert.equal(classicurl.get('group'), 'dmc_group_indexer', 'classicurl after selecting Indexer option');
+            classicurl.off();
           });
           this.masterView.groupDropdownView.val('dmc_group_indexer');
 
-          SwcMC.ClassicURLModel.on('change', function() {
-            assert.equal(SwcMC.ClassicURLModel.get('group'), undefined, 'classicurl after selecting DRILLDOWN option');
-            SwcMC.ClassicURLModel.off();
+          classicurl.on('change', function() {
+            assert.equal(classicurl.get('group'), undefined, 'classicurl after selecting DRILLDOWN option');
+            classicurl.off();
           })
           this.masterView.groupDropdownView.val('-----');
 
-          SwcMC.ClassicURLModel.on('change:group', function() {
-            assert.equal(SwcMC.ClassicURLModel.get('group'), 'dmc_group_search_head', 'classicurl after selecting Search Head option');
-            SwcMC.ClassicURLModel.off();
+          classicurl.on('change:group', function() {
+            assert.equal(classicurl.get('group'), 'dmc_group_search_head', 'classicurl after selecting Search Head option');
+            classicurl.off();
           })
           this.masterView.groupDropdownView.val('dmc_group_search_head');
 
-          SwcMC.ClassicURLModel.on('change:group', function() {
-            assert.equal(SwcMC.ClassicURLModel.get('group'), '*', 'classicurl after selecting All option');
-            SwcMC.ClassicURLModel.off();
+          classicurl.on('change:group', function() {
+            assert.equal(classicurl.get('group'), '*', 'classicurl after selecting All option');
+            classicurl.off();
           })
           this.masterView.groupDropdownView.val('*');
         });

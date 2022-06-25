@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="true">
+<form hideEdit="true">
   <label>Historic License Usage</label>
   <search>
     <query>
@@ -10,7 +10,7 @@
   </search>
 	<fieldset autoRun="true" submitButton="false">
 		<input type="dropdown" searchWhenChanged="true" token="splunk_server">
-			<label>License Managers</label>
+			<label>License Masters</label>
 			<showClearButton>false</showClearButton>
 			<fieldForLabel>serverName</fieldForLabel>
 			<fieldForValue>serverName</fieldForValue>
@@ -46,7 +46,7 @@
           <set token="size_search">dmc_licensing_pool_size_srch</set>
           <set token="sz_clause">poolsz</set>
         </condition>
-      </change>
+      </change> 
     </input>
     <input type="dropdown" searchWhenChanged="true" token="split_by">
       <label>Split By</label>
@@ -148,7 +148,7 @@
       <span class="info-message alert alert-info"><i class="icon-alert"></i>You have selected "host" or "source" from the "Split By" menu. You might see usage reported for a "SQUASHED" series. This is expected behavior if you have many unique hosts or sources. <a href="/help?location=learnmore.license.usage_squashing" target="_blank" title="Splunk help">Learn More <i class="icon-external"></i></a></span>
     </html>
     <html depends="$split_by_index_info_msg$">
-      <span class="info-message alert alert-info"><i class="icon-alert"></i>You have selected "index" from the "Split By" menu. If your license peers are running a version of Splunk lower than 6.0, they will not report per index usage and you will see their usage labeled as "UNKNOWN".</span>
+      <span class="info-message alert alert-info"><i class="icon-alert"></i>You have selected "index" from the "Split By" menu. If your license slaves are running a version of Splunk lower than 6.0, they will not report per index usage and you will see their usage labeled as "UNKNOWN".</span>
     </html>
   </fieldset>
   <row>
@@ -169,7 +169,7 @@
         </change>
         <selectFirstChoice>true</selectFirstChoice>
       </input>
-      <chart>
+      <chart>        
         <search>
           <query>`$base_search$($host$,"$pool$")` | `$daily_usage_search$($splunk_server$, $size_search$, $host$, "$pool$", "$split_by_field_name$")` $overlay_remove$</query>
         </search>
@@ -215,3 +215,4 @@
     </panel>
   </row>
 </form>
+

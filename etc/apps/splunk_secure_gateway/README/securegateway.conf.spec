@@ -1,11 +1,7 @@
 [setup]
 spacebridge_server = <ASCII string>
 * Set the address of the Spacebridge Service
-* Default: http.us-east-1.spacebridge.splunkcx.com
-
-spacebridge_discovery_server = <ASCII string>
-* Set the address of the Spacebridge Discovery Service
-* Default: http.us-east-1.spacebridge.splunkcx.com
+* Default: prod.spacebridge.spl.mobi
 
 log_level = ERROR|WARN|INFO|DEBUG
 * This controls the log_level for application logs
@@ -15,6 +11,18 @@ log_level = ERROR|WARN|INFO|DEBUG
 async_timeout = <positive_integer>
 * Set the request timeout in seconds seen at the async request level
 * Default: 15
+
+cluster_monitor_interval = <positive_integer>
+* This setting controls the interval in which the Search Head will query if it is the Captain in a SHC
+* The Splunk Secure Gateway currently processes all requests through the Captain in a SHC
+* Default: 300
+* Remove?
+
+cluster_mode_enabled = <boolean>
+* Enable cluster mode.  If enabled, the modular inputs will run on every member of the SHC.
+  Disabled, it will only run on the captain.
+* Default: false
+* Is this used?
 
 mtls = <boolean>
 * Enable Mutual TLS mode.  This is an advanced experimental feature and should not be adjusted without explicit
@@ -63,9 +71,9 @@ http_proxy = <string>
 https_proxy = <string>
 * If set, Splunk Secure Gateway App sends all HTTPS requests through the proxy server that you specify.
 * No default.  Example formats:
-* https_proxy = http://user:password@proxyIP:proxyPort
+* https_proxy = https://user:password@proxyIP:proxyPort
 * https_proxy = user:password@proxyIp:proxyPort,
-* https_proxy = http://proxyIp:proxyPort
+* https_proxy = https://proxyIp:proxyPort
 * https_proxy = proxyIp:proxyPort
 
 [registration]

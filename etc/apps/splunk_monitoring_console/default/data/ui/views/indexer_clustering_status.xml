@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" onUnloadCancelJobs="true" script="common_control.js, indexer_clustering_status_extension.js" stylesheet="indexer_clustering_status_extension.css, shared.css">
+<form hideEdit="True" onUnloadCancelJobs="true" script="common_control.js, indexer_clustering_status_extension.js" stylesheet="indexer_clustering_status_extension.css, shared.css">
   <label>Indexer Clustering: Status</label>
   <fieldset autoRun="true" submitButton="false">
     <input type="dropdown" searchWhenChanged="true" token="group">
@@ -43,7 +43,7 @@
       | rest splunk_server_group=dmc_group_cluster_master splunk_server_group="$group$" /services/server/info
       | stats count
       | eval cluster_master_icon = if(count==1, "icon-check", "icon-alert")
-      | eval cluster_master_indicator = if(count==1, "Cluster Manager Reachable", "Cluster Manager Not Reachable")
+      | eval cluster_master_indicator = if(count==1, "Cluster Master Reachable", "Cluster Master Not Reachable")
     </query>
     <finalized>
       <set token="cluster_master_icon">$result.cluster_master_icon$</set>

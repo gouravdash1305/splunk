@@ -1,11 +1,13 @@
 # pylint: disable=missing-function-docstring,missing-class-docstring
 # python imports
 import json
-from typing import List, Optional, Callable, Union, Tuple, Any
-from json import JSONDecodeError
+from typing import List, Optional, Callable, Union
+
 # splunk imports
 import splunk
 
+import splunklib.client as client
+import splunklib.results as results
 from splunklib.binding import HTTPError
 import logger_manager as log
 from rapid_diag.session_globals import SessionGlobals
@@ -20,6 +22,40 @@ import rapid_diag.trace # pylint: disable=unused-import
 API_VERSION = 1
 
 _LOGGER = log.setup_logging("rapid_diag_handler_utils")
+
+def get_endpoint(endpoint : str,
+                 session_key : str,
+                 peer : Optional[str] = None,
+                 filter_errors : bool = True) -> List[JsonObject]:
+    service = client.connect(host=splunk.getDefault('host'),
+                             port=splunk.getDefault('port'),
+                             scheme=splunk.getDefault('protocol'),
+                             token=session_key)
+
+    rest_search = get_rest_search(endpoint, peer)
+
+    # we only ignore errors from RD endpoints
+    if filter_errors:
+        rest_search += ' | eval error=json_extract(value, "error") | search NOT error=*'
+
+    data = service.jobs.oneshot(rest_search)
+    reader = results.ResultsReader(data)
+
+    def _handle_info() -> List[JsonObject]:
+        data : List[JsonObject] = []
+        current_host = get_server_name(session_key)
+        for item in reader:
+            # always keeping originating SH value first
+            idx = 0 if item.get("splunk_server","") == current_host else len(data)
+            data.insert(idx, {"value": item.get("value", {}), "splunk_server": item.get("splunk_server","")})
+        return data
+
+    if endpoint.startswith("rapid_diag"):
+        return _handle_info()
+    # pylint: disable=not-callable
+    return reader.next().get('value') # type: ignore
+    # pylint: enable=not-callable
+
 
 def create_rapiddiag_payload(data : Optional[Union[JsonObject, List[JsonObject], List[Serializable], str]] = None,
         error : Optional[str] = None,
@@ -46,6 +82,14 @@ def create_rapiddiag_payload(data : Optional[Union[JsonObject, List[JsonObject],
                 'Content-Type': 'text/plain' # for now we use text content type for all payloads
                 }
             }
+
+def get_rest_search(endpoint: str, peer : Optional[str] = None, params : str = '') -> str:
+    rest_search = '| rest /services/' + endpoint + ' count=0 max_api_version=' + str(API_VERSION)  + ' ' + params
+    if peer:
+        rest_search += ' splunk_server="' + peer + '"'
+    else:
+        rest_search += ' splunk_server=*'
+    return rest_search
 
 def persistent_handler_wrap_handle(handler : Callable[[JsonObject], JsonObject], # pylint: disable=too-many-return-statements
                     args : Union[str, bytes],
@@ -95,16 +139,3 @@ def persistent_handler_wrap_handle(handler : Callable[[JsonObject], JsonObject],
             msg = build_error_message('Error processing request to ', str(e))
             _LOGGER.exception(msg, exc_info=e)
             return create_rapiddiag_payload(error=msg)
-
-def get_data_from_payload(args: JsonObject) -> Tuple[str, str, Any, str]:
-    data = {}
-    current_host = get_server_name(args['system_authtoken'])
-    try:
-        data = json.loads(args['payload'])
-    except (JSONDecodeError, KeyError) as e:
-        _LOGGER.exception("Failed to parse 'payload'.", exc_info=e)
-    task_id = data['task_id'] if 'task_id' in data else ''
-    new_task_id = data['new_task_id'] if 'new_task_id' in data else ''
-    task_body = data if 'collectors' in data else ''
-    host = data['host'] if 'host' in data else current_host
-    return str(task_id), str(new_task_id), task_body, str(host)

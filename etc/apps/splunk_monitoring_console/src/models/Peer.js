@@ -6,22 +6,22 @@ define(
 		'jquery',
 		'underscore',
 		'backbone',
-		'@splunk/swc-mc',
+		'models/SplunkDBase',
 		'splunk_monitoring_console/models/Asset',
-		'splunk_monitoring_console/models/DistsearchGroup',
+		'models/monitoringconsole/DistsearchGroup',
 		'splunk_monitoring_console/mixins/DistributedSearchGroup'
 	],
 	function(
 		$$$, // Mo' money mo' problems
 		_, 
 		Backbone,
-		SwcMC,
+		SplunkDBaseModel,
 		AssetModel,
 		DistsearchGroupModel,
 		DistributedSearchGroupMixin
 	) {
 
-		var PeerModel = SwcMC.SplunkDBaseModel.extend(
+		var PeerModel = SplunkDBaseModel.extend(
 			{
 				url: 'search/distributed/peers',
 				// If host or host_fqdn are overridden
@@ -31,7 +31,7 @@ define(
 				_searchHeadClusterOverrides: false,
 
 				initialize: function() {
-					SwcMC.SplunkDBaseModel.prototype.initialize.apply(this, arguments);
+					SplunkDBaseModel.prototype.initialize.apply(this, arguments);
 
 					// check instance against configured list to determine whether instance is 'configured'
                     this.entry.content.set('configured', (function() {
@@ -150,9 +150,9 @@ define(
 						deferred.push(model.destroy());
 					});
 
-					return Promise.all(deferred);
+					return $$$.when.apply($$$, deferred);
 				},
-
+                
                 hasHostOverrides: function(value) {
                 	if (!_.isUndefined(value)) {
                 		this._hasHostOverrides = !!value;

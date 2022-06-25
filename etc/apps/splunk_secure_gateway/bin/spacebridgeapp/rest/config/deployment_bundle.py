@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for creating and accessing an MDM deployment bundle
 """
@@ -144,7 +144,7 @@ class DeploymentBundle(BaseRestHandler, PersistentServerConnectionApplication):
         except Exception as e:
             status = HTTPStatus.INTERNAL_SERVER_ERROR
             response['failed_timesave'] = True
-            response['message'].append(str(e))
+            response['message'].append(e.message)
 
         # store to storage/passwords
         try:

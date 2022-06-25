@@ -2,12 +2,12 @@ define([
     'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc'
+    'views/shared/Modal'
 ], function(
     $,
     _,
     module,
-    SwcMC
+    Modal
 ) {
     var DMC_ALERT_PATTERN = /^DMC Alert/;
     var DMC_FORWARDER_PATTERN = /^DMC Forwarder/;
@@ -18,7 +18,7 @@ define([
 
     var CONTINUE_BUTTON = '<a class="btn modal-btn-continue" data-dismiss="modal">' + _('Continue').t() + '</a>';
 
-    return SwcMC.ModalView.extend({
+    return Modal.extend({
         moduleId: module.id,
         initialize: function(options) {
             options || (options = {});
@@ -28,9 +28,9 @@ define([
                 keyboard: false,
                 backdrop: 'static'
             });
-            SwcMC.ModalView.prototype.initialize.call(this, options);
+            Modal.prototype.initialize.call(this, options);
         },
-        events: $.extend({}, SwcMC.ModalView.prototype.events, {
+        events: $.extend({}, Modal.prototype.events, {
             'click .modal-btn-primary-confirm-reset': '_resetToFactoryMode',
             'click .modal-btn-primary-refresh-page': function() {
                 location.reload();
@@ -39,8 +39,8 @@ define([
         _resetToFactoryMode: function(e) {
             e.preventDefault();
 
-            this.$(SwcMC.ModalView.BODY_SELECTOR).html(this._progressBarTemplate);
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).empty();
+            this.$(Modal.BODY_SELECTOR).html(this._progressBarTemplate);
+            this.$(Modal.FOOTER_SELECTOR).empty();
             this.$('button.close').remove();
 
             var dfds = [];
@@ -57,15 +57,6 @@ define([
             // reset app.conf is_configured = false
             this.model.appLocal.entry.content.set('configured', false);
             dfds.push(this.model.appLocal.save());
-            
-            /* 
-			 * SPL-177995:
-			 * Adding Health Config model to control whether we need to turn on the distributed_health_reporter feature
-			 * It should map to whether MC is on distributed mode: (distributed_health_reporter = On) or standalone mode:
-			 * (distributed_health_reporter = Off)
-			 */
-            this.model.healthConfig.entry.content.set('disabled', true);
-            dfds.push(this.model.healthConfig.save());
 
             // disable all dmc alerts and forwarder scheduled searches
             // enable [DMC Asset - Build Standalone Asset Table]
@@ -104,24 +95,24 @@ define([
                 this.model.state.set('changesMade', false);
             }.bind(this));
 
-            Promise.all(dfds).then(function() {
-                this.$(SwcMC.ModalView.BODY_SELECTOR).find('.progress-bar').removeClass('progress-striped active').text(_('done').t());
-                this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(REFRESH_BUTTON);
-            }.bind(this)).catch(function() {
-                this.$(SwcMC.ModalView.BODY_SELECTOR).find('.progress-bar').removeClass('progress-striped active').text(_('error!').t());
-                this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(CONTINUE_BUTTON);
+            $.when.apply($, dfds).done(function() {
+                this.$(Modal.BODY_SELECTOR).find('.progress-bar').removeClass('progress-striped active').text(_('done').t());
+                this.$(Modal.FOOTER_SELECTOR).append(REFRESH_BUTTON);
+            }.bind(this)).fail(function() {
+                this.$(Modal.BODY_SELECTOR).find('.progress-bar').removeClass('progress-striped active').text(_('error!').t());
+                this.$(Modal.FOOTER_SELECTOR).append(CONTINUE_BUTTON);
             }.bind(this));
         },
         render: function() {
-            this.$el.html(SwcMC.ModalView.TEMPLATE);
-            this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html(_('Reset to Default Settings').t());
-            this.$(SwcMC.ModalView.BODY_SELECTOR).html(this._explanationDocTemplate);
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(CONFIRM_BUTTON);
-            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
+            this.$el.html(Modal.TEMPLATE);
+            this.$(Modal.HEADER_TITLE_SELECTOR).html(_('Reset to Default Settings').t());
+            this.$(Modal.BODY_SELECTOR).html(this._explanationDocTemplate);
+            this.$(Modal.FOOTER_SELECTOR).append(CONFIRM_BUTTON);
+            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
 
             return this;
         },
-        _explanationDocTemplate: '<div class="alert alert-warning modal-txt-reset-warning-message"><i class="icon-alert"></i>' + _('Warning: This operation deletes and resets data and cannot be undone.').t() + '</div>' +
+        _explanationDocTemplate: '<div class="alert alert-warning modal-txt-reset-warning-message"><i class="icon-alert" />' + _('Warning: This operation deletes and resets data and cannot be undone.').t() + '</div>' +
             '<div><p>' + _('This operation will do the following:').t() + '</p>' +
             '<ul>' +
                 '<li>' + _('Delete all distributed groups created by Monitoring Console.').t() + '</li>' +

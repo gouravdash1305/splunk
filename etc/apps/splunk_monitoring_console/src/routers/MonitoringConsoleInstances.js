@@ -3,19 +3,23 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        '@splunk/swc-mc',
+        'routers/Base',
+        'models/classicurl',
+        'models/services/search/TimeParser',
         'splunk_monitoring_console/views/instances/Master'
     ],
     function(
         $,
         _,
         Backbone,
-        SwcMC,
+        BaseRouter,
+        classicurl,
+        TimeParser,
         InstancesView
     ) {
-        return SwcMC.BaseRouter.extend({
+        return BaseRouter.extend({
             initialize: function() {
-                SwcMC.BaseRouter.prototype.initialize.apply(this, arguments);
+                BaseRouter.prototype.initialize.apply(this, arguments);
                 this.fetchAppLocals = true;
                 this.fetchVisualizations = true;
                 this.fetchVisualizationFormatters = false;
@@ -30,8 +34,8 @@ define(
                 }.bind(this));
             },
             page: function(locale, app, page) {
-                SwcMC.BaseRouter.prototype.page.apply(this, arguments);
-                SwcMC.ClassicURLModel.fetch().done(function() {
+                BaseRouter.prototype.page.apply(this, arguments);
+                classicurl.fetch().done(function() {
                     this.classicurlDfd.resolve();
                 }.bind(this));
 
@@ -42,15 +46,15 @@ define(
 
                         if (this.model.appLocal.entry.content.get('configured')) {
                             // Distributed Mode
-                            this.classicurlDfd.then(function() {
+                            $.when(this.classicurlDfd).done(function() {
                                 // NOTE: here we need to convert from epoch to user's local time, thus we need to fetch TimeParser
                                 // TODO: re-visit this logic in Ember
-                                var earliest = SwcMC.ClassicURLModel.get('earliest');
-                                var latest = SwcMC.ClassicURLModel.get('latest');
+                                var earliest = classicurl.get('earliest');
+                                var latest = classicurl.get('latest');
                                 var earliestDfd = $.Deferred();
                                 var latestDfd = $.Deferred();
-                                var earliestModel = new SwcMC.TimeParserModel();
-                                var latestModel = new SwcMC.TimeParserModel();
+                                var earliestModel = new TimeParser();
+                                var latestModel = new TimeParser();
 
                                 if (earliest && latest) {
                                     earliestModel.fetch({

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular Input for processing publish and subscription process
 """
@@ -19,12 +19,11 @@ import asyncio
 from spacebridgeapp.rest.clients.async_kvstore_client import AsyncKvStoreClient
 from cloudgateway.splunk.auth import SplunkAuthHeader
 from spacebridgeapp.subscriptions import loader
-from spacebridgeapp.subscriptions.process_manager import JobContext
+from spacebridgeapp.subscriptions.process_manager import ProcessManager, JobContext
 from spacebridgeapp.util.shard import default_shard_id
 from cloudgateway.private.sodium_client.sharedlib_sodium_client import SodiumClient
 from cloudgateway.splunk.encryption import SplunkEncryptionContext
 from solnlib import modular_input
-from spacebridgeapp.util.base_modular_input import BaseModularInput
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
 from spacebridgeapp.subscriptions.subscription_manager import SubscriptionManager
@@ -32,7 +31,7 @@ from spacebridgeapp.rest.load_balancer_verification import get_uri
 from cloudgateway.private.websocket.parent_process_monitor import ParentProcessMonitor
 
 
-class SubscriptionModularInput(BaseModularInput):
+class SubscriptionModularInput(modular_input.ModularInput):
     """
     Main entry for processing Search Subscriptions
     """
@@ -47,6 +46,9 @@ class SubscriptionModularInput(BaseModularInput):
     input_config_key = "ssg_subscription_modular_input://default"
     minimum_iteration_time_seconds = "minimum_iteration_time_seconds"
     warn_threshold_seconds = "maximum_iteration_time_warn_threshold_seconds"
+    subscription_processor_parallelism = 'subscription_processor_parallelism'
+
+    CONFIG_VALUE_NCPU = 'N_CPU'
 
     def extra_arguments(self):
         """
@@ -67,17 +69,23 @@ class SubscriptionModularInput(BaseModularInput):
                 'description': 'If processing jobs takes longer than this value, a warning will be logged',
                 'data_type': modular_input.Argument.data_type_number
             },
+            {
+                'name': 'subscription_processor_parallelism',
+                'title': 'Subscription Processor Parallelism',
+                'description': 'Define the parallelism for processing subscriptions, the special value N_CPU means the '
+                               'number of available cores. Otherwise it should be an integer.'
+            },
         ]
 
-    def do_run(self, input_config):
-        """
-        Execute the modular_input
-        :param input_config:
-        :return:
-        """
-        if not super(SubscriptionModularInput, self).do_run(input_config):
-            return
+    def _resolve_parallelism(self, config_value):
+        if config_value == self.CONFIG_VALUE_NCPU:
+            return multiprocessing.cpu_count()
+        else:
+            parallelism = int(config_value)
+            if parallelism <= 0:
+                raise ValueError('Parallelism must be > 0, found {}'.format(parallelism))
 
+    def do_run(self, input_config):
         shard_id = default_shard_id()
 
         self.logger.info("Starting libsodium child process")
@@ -102,13 +110,17 @@ class SubscriptionModularInput(BaseModularInput):
         try:
             minimum_iteration_time_seconds = float(input_config[self.input_config_key][self.minimum_iteration_time_seconds])
             warn_threshold_seconds = float(input_config[self.input_config_key][self.warn_threshold_seconds])
+            subscription_processor_parallelism_str = input_config[self.input_config_key][self.subscription_processor_parallelism]
+            subscription_parallelism = self._resolve_parallelism(subscription_processor_parallelism_str)
         except:
             self.logger.exception("Failed to load required configuration values")
             return
 
         try:
+            self.logger.info("Processing subscriptions with parallelism=%s", subscription_parallelism)
             auth_header = SplunkAuthHeader(self.session_key)
 
+            process_manager = ProcessManager(subscription_parallelism)
             job_context = JobContext(auth_header,
                                      uri,
                                      encryption_context)
@@ -125,9 +137,11 @@ class SubscriptionModularInput(BaseModularInput):
                                                        search_loader=loader.load_search_bundle,
                                                        minimum_iteration_time_seconds=minimum_iteration_time_seconds,
                                                        warn_threshold_seconds=warn_threshold_seconds,
+                                                       process_manager=process_manager,
                                                        async_kvstore_client=kvstore_client,
                                                        parent_process_monitor=parent_process_monitor
                                                        )
+
 
             asyncio.run(subscription_manager.run())
         except:

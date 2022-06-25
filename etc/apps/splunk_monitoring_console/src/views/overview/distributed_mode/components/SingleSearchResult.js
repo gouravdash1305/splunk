@@ -9,12 +9,14 @@ define([
     'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc'
+    'views/Base',
+    'util/console'
 ], function(
     $,
     _,
     module,
-    SwcMC
+    BaseView,
+    console
 ) {
     /**
      * This view is specifically designed for Monitoring Console Overview page. This is a basic view for
@@ -25,10 +27,10 @@ define([
      *
      * NOTE: this view doesn't include beforeLabel or afterLabel, which should be handled by SPL.
      */
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.searchManager = this.options.searchManager;
             this.searchResultFieldName = this.options.searchResultFieldName;
@@ -56,19 +58,19 @@ define([
                     this.searchResultDfd.resolve();
                 });
                 this.listenTo(resultModel, 'error', function() {
-                    SwcMC.Console.log('search result model error:', resultModel, this.searchManager);
+                    console.log('search result model error:', resultModel, this.searchManager);
                 });
             });
             this.listenTo(this.searchManager, 'search:cancelled search:error search:failed', function() {
-                SwcMC.Console.log('search not finished! ', this.searchManager);
+                console.log('search not finished! ', this.searchManager);
             });
 
             // TODO: tooltip
         },
         render: function() {
-            this.searchManagerDfd.then(function() {
+            $.when(this.searchManagerDfd).done(function() {
                 this.$el.html(this.compiledTemplate(this.dataToRender));
-                this.searchResultDfd.then(function() {
+                $.when(this.searchResultDfd).done(function() {
                     this.$el.html(this.compiledTemplate(this.dataToRender));
                 }.bind(this));
             }.bind(this));

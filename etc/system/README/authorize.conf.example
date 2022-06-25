@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This is an example authorize.conf.  Use this file to configure roles and
 # capabilities.
@@ -20,8 +20,6 @@ srchIndexesDefault = mail;main
 srchJobsQuota   = 8
 rtSrchJobsQuota = 8
 srchDiskQuota   = 500
-srchTimeWin = 86400
-srchTimeEarliest = 2592000
 
 # This creates the role 'ninja', which inherits capabilities from the 'user'
 # role.  ninja has almost the same capabilities as power, except cannot
@@ -37,7 +35,3 @@ srchTimeEarliest = 2592000
 # concurrently (these counts are independent).
 #
 # ninja is allowed to take up 500 megabytes total on disk for all their jobs.
-#
-# ninja is allowed to run searches that span a maximum of one day
-#
-# ninja is allowed to run searches on data that is newer than 30 days ago

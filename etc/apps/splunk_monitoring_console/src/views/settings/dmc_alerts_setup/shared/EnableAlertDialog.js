@@ -10,31 +10,37 @@ define([
 	'underscore',
 	'backbone',
 	'module',
-	'@splunk/swc-mc'
+	'models/shared/LinkAction',
+	'views/shared/FlashMessages',
+	'views/shared/Modal',
+    'util/splunkd_utils'
 ], function (
 	$,
 	_,
 	Backbone,
 	module,
-	SwcMC
+	LinkAction,
+	FlashMessages,
+	Modal,
+    splunkDUtils
 ) {
 
-      var licenseUsageSearchStringForCloud = '| rest splunk_server_group=dmc_group_license_master services/licenser/usage/license_usage | \
+    var licenseUsageSearchStringForCloud = '| rest splunk_server_group=dmc_group_license_master services/licenser/usage/license_usage | \
         fields slaves_usage_bytes, quota | eval usedGB=round(slaves_usage_bytes/1024/1024/1024,3) | \
         eval totalGB=round(quota/1024/1024/1024,3) | eval percentage=round(usedGB / totalGB, 3)*100 | \
         fields percentage, usedGB, totalGB | where percentage > 90';
 
-	return SwcMC.ModalView.extend({
+	return Modal.extend({
 		moduleId: module.id,
-		className: SwcMC.ModalView.CLASS_NAME,
+		className: Modal.CLASS_NAME,
 
 		initialize: function (options) {
-			SwcMC.ModalView.prototype.initialize.apply(this, arguments);
-			this.children.flashMessagesView = new SwcMC.FlashMessagesView({ model: { alert: this.model.alert } });
+			Modal.prototype.initialize.apply(this, arguments);
+			this.children.flashMessagesView = new FlashMessages({ model: { alert: this.model.alert } });
 			this.alertName = this.model.alert.entry.get('name');
 		},
 
-		events: $.extend({}, SwcMC.ModalView.prototype.events, {
+		events: $.extend({}, Modal.prototype.events, {
 			'click .modal-btn-enable': function(e) {
 				e.preventDefault();
 
@@ -59,7 +65,7 @@ define([
 	            var errMessage = _('Failed to enable alert.').t();
 	            this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('enable_failed',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -69,14 +75,14 @@ define([
 
 		render: function () {
             var BUTTON_ENABLE = '<a href="#" class="btn btn-primary modal-btn-enable modal-btn-primary">' + _('Enable').t() + '</a>';
-			this.$el.html(SwcMC.ModalView.TEMPLATE);
-			this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html( _('Enable Alert').t());
-			this.$(SwcMC.ModalView.BODY_SELECTOR).show();
-			this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
-			this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({alertName: this.alertName}));
+			this.$el.html(Modal.TEMPLATE);
+			this.$(Modal.HEADER_TITLE_SELECTOR).html( _('Enable Alert').t());
+			this.$(Modal.BODY_SELECTOR).show();
+			this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
+			this.$(Modal.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({alertName: this.alertName}));
 			this.children.flashMessagesView.render().appendTo(this.$('.flash-messages-view-placeholder'));
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(BUTTON_ENABLE);
+			this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
+			this.$(Modal.FOOTER_SELECTOR).append(BUTTON_ENABLE);
 			return this;
 		},
 

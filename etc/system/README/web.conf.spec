@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This file contains possible attributes and values you can use to configure
 # the Splunk Web interface.
@@ -32,14 +32,11 @@ httpport = <positive integer>
 * If using SSL, set to the HTTPS port number.
 * Default: 8000
 
-mgmtHostPort = <string>
-* The host port of the splunkd process.
-* The IP address and host port where Splunk Web looks for the splunkd process.
-* The port listens on all avalible host IP addresses (0.0.0.0)
+mgmtHostPort = <IP address:port>
+* The IP address and host port of the splunkd process.
 * Don't include "http[s]://" when specifying this setting. Only
   include the IP address and port.
-* Default (on universal forwarders): localhost:8089
-* Default (on all other Splunk platform instance types): 0.0.0.0:8089 
+* Default: 0.0.0.0:8089
 
 appServerPorts = <positive integer>[, <positive integer>, <positive integer> ...]
 * Port number(s) for the python-based application server to listen on.
@@ -105,47 +102,14 @@ caCertPath = <path>
   outside of $SPLUNK_HOME (e.g., no ../somewhere).
 * No default.
 
-sslRootCAPath = <path>
-* The path to a root certificate authority (CA) certificate, in privacy-enhanced
-  mail (PEM) format, that splunkd is to use to authenticate client certificates
-  under certain specific conditions.
-* Splunkd uses the certificate specified at the path defined in this setting only
-  when both 'requireClientCert' and 'enableCertBasedUserAuth' have a value of "true".
-* If this setting has no value, splunkd falls back to the value of the 'sslRootCAPath'
-  setting in server.conf.
-* If you have already configured 'sslRootCAPath' in server.conf, the value of this
-  setting does not override the setting of the same name in server.conf.
-* No default.
-
-enableCertBasedUserAuth = <boolean>
-* Whether or not user authentication with certificates is enabled.
-* When certificate-based authentication is enabled, splunkd uses a digital certificate
-  to identify and grant a user access to a Splunk platform instance resource.
-* A value of "true" means that splunkd uses certificates for authentication.
-  * When this setting has a value of "true", 'requireClientCert' must *also* have a value of "true".
-* A value of "false" means that splunkd does not use certificates for authentication.
-* NOTE: Splunkd disables the check to determine if Splunk Web is serving web
-  requests after it completes startup when this setting has a value of "true".
-  If you need this check to happen, then this setting *must* have a
-  value of "false".
-* Default: false
-
 requireClientCert = <boolean>
-* Whether or not an HTTPS client that connects to the Splunk Web HTTPS server
-  must present a certificate that was signed by the same certificate authority (CA)
-  that signed the certificate that was installed on this instance.
-* A value of "true" means the following:
-  * A client can connect *only* if it presents a certificate that was created
-    and signed by the same CA that created the certificate that the instance uses
-  * You must configure splunkd with the same root CA in the server.conf file.
-    This requirement ensures proper communication between splunkd and Splunk Web.
-* If you give 'enableCertBasedUserAuth' a value of "true", then the previous
-  statements do not apply. Instead, the instance uses the root CA certificate
-  defined in the 'sslRootCAPath' setting in web.conf, and if no
-  certificate path is defined in that file, it then uses the certificate
-  defined in the 'sslRootCAPath' setting in server.conf.
-* A value of "false" means that clients do not need to present a certificate
-  to connect to the instance.
+* Requires that any HTTPS client that connects to the Splunk Web HTTPS
+  server has a certificate that was signed by the CA cert installed
+  on this server.
+* If "true", a client can connect ONLY if a certificate created by our
+  certificate authority was used on that client.
+* If "true", it is mandatory to configure splunkd with same root CA in server.conf.
+  This is needed for internal communication between splunkd and splunkweb.
 * Default: false
 
 sslCommonNameToCheck = <commonName1>, <commonName2>, ...
@@ -332,11 +296,8 @@ use_future_expires = <boolean>
 * Default: true
 
 flash_major_version = <integer>
-* DEPRECATED.
 flash_minor_version = <integer>
-* DEPRECATED.
 flash_revision_version = <integer>
-* DEPRECATED.
 * Specifies the minimum Flash plugin version requirements
 * Flash support, broken into three parts.
 * We currently require a min baseline of Shockwave Flash 9.0 r124
@@ -553,18 +514,18 @@ dashboard_html_allow_iframes = <boolean>
   potential attacks.
 * Default: true
 
-dashboard_html_allowed_domains = <comma-separated list>
-* A list of allowed domains for inline iframe element
+dashboard_html_allowed_domains = <string> [, <string>]
+* A comma-separated list of allowed domains for inline iframe element 
   source ('<iframe src="<URL>">') attributes in dashboards.
-* If the domain for an <iframe> src attribute is not an allowed
-  domain, the Simple XML dashboard adds the 'sandbox' attribute to
-  the <iframe>, which further restricts the content within the <iframe>
-  by treating it as coming from a unique origin. Simple XML dashboards
-  will allow <iframe> src attributes by default if the src is the same
+* If the domain for an <iframe> src attribute is not an allowed 
+  domain, the Simple XML dashboard adds the 'sandbox' attribute to 
+  the <iframe>, which further restricts the content within the <iframe> 
+  by treating it as coming from a unique origin. Simple XML dashboards 
+  will allow <iframe> src attributes by default if the src is the same 
   hostname and port number as the Splunk Web server's hostname and port number.
 * You can specify these domains as a hostname or an IPV4 address or an IPV6 address.
-* You can configure a hostname as a full name or with a wildcard
-  to allow for any subdomains. For example, *.example.com would
+* You can configure a hostname as a full name or with a wildcard 
+  to allow for any subdomains. For example, *.example.com would 
   allow for any subdomain of example.com as well as example.com itself.
 * You can specify an IPV4 address as an exact address or:
   * You can use an asterisk to specify a wildcard (Example: 192.168.1.*).
@@ -580,66 +541,12 @@ dashboard_html_allowed_domains = <comma-separated list>
   * Hostname: docs.splunk.com, *.splunk.com
   * IPV4: 127.0.0.1, 127.0.0.*, 127.0-10.0.*, 127.0.0.1:8000
   * IPV6: ::1, [::1]:8000, 2001:db8:abcd:12::, 2001:db8::/32
-* Default: not set
-
-dashboards_csp_allowed_domains = <comma-separated list>
-* A list of domains to be included in the Content-Security-Policy (CSP) page
-  header in Dashboard Studio dashboards.
-* The CSP header determines the domains from which images can be loaded in Studio dashboards.
-* If web.conf:'enforce_dashboards_csp' has a value of "true", then the browser
-  displays a warning message to the dashboard user about domains it encountered that were
-  not in the list. It still loads images from those external domains.
-* If web.conf:'enforce_dashboards_csp' has a value of "false" then this list has no effect.
-* Examples:
-  * Only allow images from splunk.com and mozilla.org: *.splunk.com, *.mozilla.org
-  * Allow images from all external domains: *
-* Further documentation can be found by:
-  * searching for "Content Security Policy" on the Mozilla Developer Network Docs website.
-  * searching for and reading the Content Security Policy Quick Reference Guide.
-* Default: Not set
-
-enforce_dashboards_csp = <boolean>
-* Whether or not the Content-Security-Policy-Report-Only header is set in Dashboard Studio
-  dashboards.
-* A value of "true" means that the Content-Security-Policy-Report-Only header will be set
-  in all Studio dashboards. This causes the browser to display warnings for images it loads
-  from external domains that are not included in the web.conf:'dashboards_csp_allowed_domains'
-  setting. These images will still load in the dashboard.
-* A value of "false" means that no Content-Security-Policy header will be set for Studio
-  dashboards. All external images will load as usual and the browser will not show warnings.
-* Default: true
-
-pdfgen_trusted_hosts = <string> [, <string>]
-* A list of trusted hosts for inline image element source ('<image src="<URL>">')
-  links used during a pdf export.
-* If the domain for an <image> src attribute is not in the list of trusted hosts,
-  the image will not download during PDF export.
-* Separate multiple rules with commas.
-* Each rule can be in one of the following formats:
-    1. A single IPv4 or IPv6 address (examples: "203.0.113.2", "2001:db8:3c4d")
-    2. A Classless Inter-Domain Routing (CIDR) block of addresses
-       (examples: "192.0.2.0/24", "2001:DB8::/32")
-    3. A DNS name. Use "*" as a wildcard
-       (examples: "myhost.example.com", "*.splunk.com")
-    4. "*", which matches anything
-* Any link which resolves to a loopback address will not download, unless the "*"
-  rule is used.
-* You can prefix an entry with '!' to cause the rule to reject the
-  connection. The input applies rules in order, and uses the first one that
-  matches.
-  For example, "!192.0.2.0/24, *" allows connections from everywhere except
-  the 192.0.2.* network.
-* Default: not set. All links will fail by default.
+* Default: not set 
 
 splunk_dashboard_app_name = <string>
 * Please do not change.
 * Set the name for the Splunk Dashboard App.
-* Default: splunk-dashboard-studio
-
-enable_splunk_dashboard_app_feature = <boolean>
-* Whether or not splunk dashboard app integrated features are available.
-* If set to "true", then splunk dashboard app integrated features will be available.
-* Default: true
+* Default: splunk-dashboard-app
 
 max_view_cache_size = <integer>
 * The maximum number of views to cache in the appserver.
@@ -664,12 +571,6 @@ auto_refresh_views = [0 | 1]
   * Switching apps
   * Clicking the Splunk logo
 * Default: 0
-
-show_app_context = <boolean>
-* Whether or not Splunk Web will show app context in certain locations.
-* You can set this to "false" in situations where you do not want to display app contexts,
-  for example, when apps are under cluster management.
-* Default: true
 
 #
 # Splunk bar options
@@ -1052,10 +953,6 @@ simple_xml_perf_debug = <boolean>
   the browser console.
 * Default: false
 
-job_default_auto_cancel = <integer>
-* The amount of time, in seconds, of inactivity in Splunk Web, after which the search job automatically cancels.
-* Default: 62
-
 job_min_polling_interval = <integer>
 * The minimum polling interval, in milliseconds, for search jobs.
 * This is the intial wait time for fetching results.
@@ -1185,14 +1082,6 @@ allowSslRenegotiation = <boolean>
   can cause connectivity problems especially for long-lived connections.
 * Default: true
 
-sslServerHandshakeTimeout = <integer>
-* The timeout, in seconds, for an SSL handshake to complete between an
-  SSL client and the Splunk SSL server.
-* If the SSL server does not receive a "Client Hello" from the SSL client within
-  'sslServerHandshakeTimeout' seconds, the server terminates
-  the connection.
-* Default: 60
-
 sendStrictTransportSecurityHeader = <boolean>
 * Whether or not the REST interface sends a "Strict-Transport-Security"
   header with all responses to requests made over SSL.
@@ -1207,10 +1096,10 @@ sendStrictTransportSecurityHeader = <boolean>
 * Default: false
 
 includeSubDomains = <boolean>
-* Whether or not the REST interface includes the "includeSubDomains"
+* Whether or not the REST interface includes the "includeSubDomains" 
   directive in the "Strict-Transport-Security" header with all responses
   to requests made over SSL.
-* If set to "true", all subdomains of the current domain name will be
+* If set to "true", all subdomains of the current domain name will be 
   enforced with the same HTTP Strict-Transport-Security (HSTS) policy.
 * Can only be enabled if 'sendStrictTransportSecurityHeader' is set
   to "true".
@@ -1299,11 +1188,7 @@ allowableTemplatePaths =  <directory> [, <directory>]...
 
 enable_risky_command_check = <boolean>
 * Whether or not checks for data-exfiltrating search commands are enabled.
-* Default: true
-
-enable_risky_command_check_dashboard = <boolean>
-* Whether or not checks for data-exfiltrating search commands within a dashboard are enabled.
-* Default: true
+* default true
 
 enableSearchJobXslt = <boolean>
 * Whether or not the search job request accepts XML stylesheet language (XSL)
@@ -1403,7 +1288,7 @@ loginDocumentTitleText = <document_title_text>
 firstTimeLoginMessageOption = [default | custom | none]
 * Controls display of the first time login message of the login page.
 * "default" displays: "If you installed this instance, use the username and password you created at installation.
-   Otherwise, use the username and password that your Splunk administrator gave you. If you've forgotten your
+   Otherwise, use the username and password that your Splunk administrator gave you. If you've forgotten your 
    credentials, contact your Splunk administrator."
 * "none" removes the branding on the first time message of the login page: "".
 * "custom" uses the document title text defined by the firstTimeLoginMessage setting.
@@ -1435,34 +1320,9 @@ appNavReportsLimit = <integer>
   available reports in the drop-down menu.
 * Default: 500
 
-simplexml_dashboard_create_version = <string>
-* DEPRECATED. The dashboard framework uses the latest Simple XML dashboard version for newly created dashboards.
-* CAUTION: Do not change this setting without contacting Splunk Support.
-* The Simple XML dashboard version used for newly created Simple XML dashboards.
-* Version must be a valid Simple XML dashboard version of the form 1.x (for example, 1.1).
-* Default: 1.1
-
-allow_insecure_libraries_toggle = <boolean>
-* Determines whether or not Splunk Web can use insecure libraries which Splunk will deprecate.
-* A value of "false" means Splunk Web cannot use insecure libraries.
-* CAUTION: Do not change this setting.
-* Default: true
-
 # The Django bindings component and all associated [framework] settings have been
 # removed. Configuring these settings no longer has any effect, and Splunk Enterprise
 # ignores any existing settings that are related to the component.
-
-
-
-# Monitoring Console config
-[smc]
-remoteRoot = <string>
-* The URL of the content delivery network that hosts the remote UI assets for Splunk Assist.
-* If this setting has no value, the client uses a URL that points to an API that
-  the Teleport Supervisor that runs on the local node exposes. This API
-  serves the remote UI assets for Splunk Assist.
-* Optional.
-* Default: Not set.
 
 #
 # custom cherrypy endpoints
@@ -1518,13 +1378,3 @@ skipCSRFProtection = [0 | 1]
 * This should only be set on the login endpoint (which already contains
   sufficient auth credentials to avoid CSRF problems).
 * Default: 0
-
-allowRemoteProxy = <boolean>
-* Determines whether or not splunkd lets the exposed REST endpoint be proxied
-  to remote nodes using the "remote-proxy" REST endpoint.
-* If set to "true", splunkd will let requests be proxied to remote nodes
-  through the "remote-proxy".
-* If set to "false", splunkd will not let requests be proxied to remote nodes
-  through the "remote-proxy".
-* This setting only works for full URIs without wildcards.
-* Default: false

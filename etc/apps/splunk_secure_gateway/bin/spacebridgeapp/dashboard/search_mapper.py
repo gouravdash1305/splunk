@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 This module helps resolve search object by id and base
 """
@@ -54,8 +54,6 @@ class SearchMapper(object):
                     search.refresh = base_search.refresh if base_search.refresh else search.refresh
                     search.refresh_type = base_search.refresh_type if base_search.refresh_type else search.refresh_type
                     search.sample_ratio = base_search.sample_ratio if base_search.sample_ratio else search.sample_ratio
-                    search.search_token_names.extend(
-                        [token for token in base_search.search_token_names if token not in search.search_token_names])
 
                 # Need to recalculate the visualization_id for DashboardVisualization objects
                 if isinstance(search_object, DashboardVisualization):

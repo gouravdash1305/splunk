@@ -1,23 +1,35 @@
 define([
+    'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/shared/controls/Control',
+    'views/shared/controls/colors/ColorRangeLabelControl',
     'splunk_monitoring_console/views/settings/overview_preferences/components/ColorRangeFromLabelControl',
-    'splunk_monitoring_console/views/settings/overview_preferences/components/GradientColorRangeColorControl'
+    'views/shared/controls/colors/ColorRangeInputControl',
+    'views/shared/controls/colors/ColorRangeColorControl',
+    'splunk_monitoring_console/views/settings/overview_preferences/components/GradientColorRangeColorControl',
+    'models/Base',
+    'views/shared/controls/colors/ColorRangeControlRow'
 ], function(
+    $,
     _,
     module,
-    SwcMC,
+    Control,
+    LabelControl,
     FromLabelControl,
-    GradientColorControl
+    InputControl,
+    ColorControl,
+    GradientColorControl,
+    BaseModel,
+    ColorRangeControlRow
     ) {
 
-    return SwcMC.ColorRangeControlRowView.extend({
+    return ColorRangeControlRow.extend({
         moduleId: module.id,
         className: 'color-range-control-row',
 
         initialize: function() {
-            SwcMC.ControlView.prototype.initialize.apply(this, arguments);
+            Control.prototype.initialize.apply(this, arguments);
             this.model.to = this.model;
             this.model.from = this.options.fromModel;
             this.displayMinMaxLabels = this.options.displayMinMaxLabels;
@@ -60,7 +72,7 @@ define([
             if (model.get('value') === 'more') {
                 model.set('value', _('more').t());
             }
-            this.children[id + 'View'] = new SwcMC.ColorRangeLabelControlView({
+            this.children[id + 'View'] = new LabelControl({
                 model: model,
                 label: _(label).t(),
                 customClass: customClass
@@ -85,7 +97,7 @@ define([
                         className: 'color-range-color-control'
                     });
                 } else {
-                    this.children.colorView = new SwcMC.ColorRangeColorControlView({
+                    this.children.colorView = new ColorControl({
                         model: model,
                         paletteColors: this.options.paletteColors,
                         className: 'color-range-color-control'

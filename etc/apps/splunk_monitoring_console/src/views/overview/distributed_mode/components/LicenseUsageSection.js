@@ -2,15 +2,17 @@
  * Created by ykou on 1/22/15.
  */
 define([
+    'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
     'splunk_monitoring_console/views/overview/distributed_mode/components/ProgressBar',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/components/LicenseUsageSection.html'
 ], function(
+    $,
     _,
     module,
-    SwcMC,
+    BaseView,
     ProgressBarView,
     Template
 ) {
@@ -23,11 +25,11 @@ define([
      *                                                              second is for the afterLabel
      * @param {string}          TOOLTIP (optional)
      */
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         className: 'dmc-single-values-section',
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.children.usage = new ProgressBarView({
                 searchManager: this.options.searchManager,

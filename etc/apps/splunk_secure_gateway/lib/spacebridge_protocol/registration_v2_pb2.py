@@ -21,8 +21,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='registration_v2.proto',
   package='Spacebridge',
   syntax='proto3',
-  serialized_options=_b('\n5com.splunk.mobile.spacebridge.messages.registrationV2P\001ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridge'),
-  serialized_pb=_b('\n\x15registration_v2.proto\x12\x0bSpacebridge\x1a\nhttp.proto\"\x1a\n\x18\x45ntropyGenerationRequest\"a\n\x19\x45ntropyGenerationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x11\n\x07\x65ntropy\x18\x02 \x01(\x0cH\x00\x42\x08\n\x06Result\"\x7f\n\tKeyBundle\x12\x35\n\x0f\x63lientIdVersion\x18\x01 \x01(\x0e\x32\x1c.Spacebridge.ClientIdVersion\x12\x1b\n\x13publicKeyForSigning\x18\x02 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x03 \x01(\x0c\"K\n\x19RegisterPublicKeysRequest\x12\x1b\n\x13serializedKeyBundle\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"O\n\x1aRegisterPublicKeysResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result\"\xdb\x04\n\x12\x43lientRegistration\x12)\n\tkeyBundle\x18\x01 \x01(\x0b\x32\x16.Spacebridge.KeyBundle\x12>\n\nclientInfo\x18\x02 \x01(\x0b\x32*.Spacebridge.ClientRegistration.ClientInfo\x12@\n\x0b\x63redentials\x18\x03 \x01(\x0b\x32+.Spacebridge.ClientRegistration.Credentials\x1a\xcd\x01\n\nClientInfo\x12\x1b\n\x13operatingSystemName\x18\x01 \x01(\t\x12\r\n\x05\x61ppId\x18\x02 \x01(\t\x12\x12\n\nappVersion\x18\x03 \x01(\t\x12\x17\n\x0f\x61ppFriendlyName\x18\x04 \x01(\t\x12=\n\x13\x65nvironmentMetadata\x18\x05 \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\x12\x16\n\x0etokenTimestamp\x18\x06 \x01(\t\x12\x0f\n\x07\x63\x63\x66Sign\x18\x07 \x01(\x08\x1a\xc7\x01\n\x0b\x43redentials\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x10\n\x08userName\x18\x02 \x01(\t\x12H\n\ttokenType\x18\x03 \x01(\x0e\x32\x35.Spacebridge.ClientRegistration.Credentials.TokenType\x12\x16\n\x0etokenExpiresAt\x18\x04 \x01(\x03\".\n\tTokenType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SESSION\x10\x01\x12\x07\n\x03JWT\x10\x02\"\x82\x02\n\x19\x43lientRegistrationRequest\x12\x19\n\x11serializedPayload\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x1a\xb6\x01\n\x07Payload\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\x12\r\n\x05nonce\x18\x02 \x01(\x0c\x12#\n\x1b\x65ncryptedClientRegistration\x18\x04 \x01(\x0c\x12\'\n\x1fserializedMdmVerificationBundle\x18\x05 \x01(\x0c\x12&\n\x1emdmVerificationBundleSignature\x18\x06 \x01(\x0c\x12\x16\n\x0eserviceIdToken\x18\x07 \x01(\x0c\"\xc1\x01\n\x1a\x43lientRegistrationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x42\n\x07payload\x18\x02 \x01(\x0b\x32/.Spacebridge.ClientRegistrationResponse.PayloadH\x00\x1a,\n\x07Payload\x12!\n\x19\x61uthIdExpirationTimestamp\x18\x01 \x01(\x03\x42\x08\n\x06Result\"J\n\x1f\x44\x65leteClientRegistrationRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\x12\x17\n\x0f\x61uthIdSignature\x18\x02 \x01(\x0c\"U\n DeleteClientRegistrationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result\"\'\n\x15RegistrarQueryRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\"\x91\x01\n\x16RegistrarQueryResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x44\n\x12\x63lientRegistration\x18\x02 \x01(\x0b\x32&.Spacebridge.ClientRegistrationRequestH\x00\x42\x08\n\x06Result\"\xa8\x06\n\x0fRegistrarResult\x12\x33\n\x05\x65rror\x18\x01 \x01(\x0e\x32\".Spacebridge.RegistrarResult.ErrorH\x00\x12\x41\n\x0c\x63onfirmation\x18\x02 \x01(\x0b\x32).Spacebridge.RegistrarResult.ConfirmationH\x00\x1a}\n\rRegistrarInfo\x12\x0e\n\x06typeId\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12=\n\x13\x65nvironmentMetadata\x18\x04 \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\x1a\xc4\x01\n\x0b\x43redentials\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x10\n\x08userName\x18\x02 \x01(\t\x12\x45\n\ttokenType\x18\x03 \x01(\x0e\x32\x32.Spacebridge.RegistrarResult.Credentials.TokenType\x12\x16\n\x0etokenExpiresAt\x18\x04 \x01(\x03\".\n\tTokenType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SESSION\x10\x01\x12\x07\n\x03JWT\x10\x02\x1a\xbb\x01\n\x0c\x43onfirmation\x12)\n\tkeyBundle\x18\x01 \x01(\x0b\x32\x16.Spacebridge.KeyBundle\x12\x41\n\rregistrarInfo\x18\x02 \x01(\x0b\x32*.Spacebridge.RegistrarResult.RegistrarInfo\x12=\n\x0b\x63redentials\x18\x03 \x01(\x0b\x32(.Spacebridge.RegistrarResult.Credentials\"\x8e\x01\n\x05\x45rror\x12\x11\n\rERROR_INVALID\x10\x00\x12$\n ERROR_CLIENT_VERSION_UNSUPPORTED\x10\x01\x12#\n\x1f\x45RROR_CLIENT_APP_ID_UNSUPPORTED\x10\x02\x12\'\n#ERROR_CLIENT_ID_VERSION_UNSUPPORTED\x10\x03\x42\x08\n\x06result\"]\n\x16RegistrarResultRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\x12 \n\x18\x65ncryptedRegistrarResult\x18\x02 \x01(\x0c\x12\x11\n\tsignature\x18\x03 \x01(\x0c\"L\n\x17RegistrarResultResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result\"%\n\x13\x43lientResultRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\"\x8a\x01\n\x14\x43lientResultResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12>\n\x0fregistrarResult\x18\x02 \x01(\x0b\x32#.Spacebridge.RegistrarResultRequestH\x00\x42\t\n\x07Payload\"A\n\x14RoutingEnableRequest\x12\x16\n\x0esenderClientId\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"J\n\x15RoutingEnableResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result*L\n\x0f\x43lientIdVersion\x12\x15\n\x11\x43LIENT_ID_INVALID\x10\x00\x12\x10\n\x0c\x43LIENT_ID_V1\x10\x01\x12\x10\n\x0c\x43LIENT_ID_V2\x10\x02\x42\x81\x01\n5com.splunk.mobile.spacebridge.messages.registrationV2P\x01ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridgeb\x06proto3')
+  serialized_options=_b('\n5com.splunk.mobile.spacebridge.messages.registrationV2P\001'),
+  serialized_pb=_b('\n\x15registration_v2.proto\x12\x0bSpacebridge\x1a\nhttp.proto\"\x1a\n\x18\x45ntropyGenerationRequest\"a\n\x19\x45ntropyGenerationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x11\n\x07\x65ntropy\x18\x02 \x01(\x0cH\x00\x42\x08\n\x06Result\"\x7f\n\tKeyBundle\x12\x35\n\x0f\x63lientIdVersion\x18\x01 \x01(\x0e\x32\x1c.Spacebridge.ClientIdVersion\x12\x1b\n\x13publicKeyForSigning\x18\x02 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x03 \x01(\x0c\"K\n\x19RegisterPublicKeysRequest\x12\x1b\n\x13serializedKeyBundle\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"O\n\x1aRegisterPublicKeysResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result\"\x8d\x03\n\x12\x43lientRegistration\x12)\n\tkeyBundle\x18\x01 \x01(\x0b\x32\x16.Spacebridge.KeyBundle\x12>\n\nclientInfo\x18\x02 \x01(\x0b\x32*.Spacebridge.ClientRegistration.ClientInfo\x12@\n\x0b\x63redentials\x18\x03 \x01(\x0b\x32+.Spacebridge.ClientRegistration.Credentials\x1a\xa4\x01\n\nClientInfo\x12\x1b\n\x13operatingSystemName\x18\x01 \x01(\t\x12\r\n\x05\x61ppId\x18\x02 \x01(\t\x12\x12\n\nappVersion\x18\x03 \x01(\t\x12\x17\n\x0f\x61ppFriendlyName\x18\x04 \x01(\t\x12=\n\x13\x65nvironmentMetadata\x18\x05 \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\x1a#\n\x0b\x43redentials\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\"\x98\x01\n\x19\x43lientRegistrationRequest\x12\x19\n\x11serializedPayload\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\x1aM\n\x07Payload\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\x12\r\n\x05nonce\x18\x02 \x01(\x0c\x12#\n\x1b\x65ncryptedClientRegistration\x18\x04 \x01(\x0c\"O\n\x1a\x43lientRegistrationResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result\"\'\n\x15RegistrarQueryRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\"\x91\x01\n\x16RegistrarQueryResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12\x44\n\x12\x63lientRegistration\x18\x02 \x01(\x0b\x32&.Spacebridge.ClientRegistrationRequestH\x00\x42\x08\n\x06Result\"\x98\x05\n\x0fRegistrarResult\x12\x33\n\x05\x65rror\x18\x01 \x01(\x0e\x32\".Spacebridge.RegistrarResult.ErrorH\x00\x12\x41\n\x0c\x63onfirmation\x18\x02 \x01(\x0b\x32).Spacebridge.RegistrarResult.ConfirmationH\x00\x1a}\n\rRegistrarInfo\x12\x0e\n\x06typeId\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\x0c\n\x04name\x18\x03 \x01(\t\x12=\n\x13\x65nvironmentMetadata\x18\x04 \x01(\x0b\x32 .Spacebridge.EnvironmentMetadata\x1a\x35\n\x0b\x43redentials\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x10\n\x08userName\x18\x02 \x01(\t\x1a\xbb\x01\n\x0c\x43onfirmation\x12)\n\tkeyBundle\x18\x01 \x01(\x0b\x32\x16.Spacebridge.KeyBundle\x12\x41\n\rregistrarInfo\x18\x02 \x01(\x0b\x32*.Spacebridge.RegistrarResult.RegistrarInfo\x12=\n\x0b\x63redentials\x18\x03 \x01(\x0b\x32(.Spacebridge.RegistrarResult.Credentials\"\x8e\x01\n\x05\x45rror\x12\x11\n\rERROR_INVALID\x10\x00\x12$\n ERROR_CLIENT_VERSION_UNSUPPORTED\x10\x01\x12#\n\x1f\x45RROR_CLIENT_APP_ID_UNSUPPORTED\x10\x02\x12\'\n#ERROR_CLIENT_ID_VERSION_UNSUPPORTED\x10\x03\x42\x08\n\x06result\"]\n\x16RegistrarResultRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\x12 \n\x18\x65ncryptedRegistrarResult\x18\x02 \x01(\x0c\x12\x11\n\tsignature\x18\x03 \x01(\x0c\"L\n\x17RegistrarResultResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result\"%\n\x13\x43lientResultRequest\x12\x0e\n\x06\x61uthId\x18\x01 \x01(\x0c\"\x8a\x01\n\x14\x43lientResultResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x12>\n\x0fregistrarResult\x18\x02 \x01(\x0b\x32#.Spacebridge.RegistrarResultRequestH\x00\x42\t\n\x07Payload\"A\n\x14RoutingEnableRequest\x12\x16\n\x0esenderClientId\x18\x01 \x01(\x0c\x12\x11\n\tsignature\x18\x02 \x01(\x0c\"J\n\x15RoutingEnableResponse\x12\'\n\x05\x65rror\x18\x01 \x01(\x0b\x32\x16.Spacebridge.HttpErrorH\x00\x42\x08\n\x06Result*L\n\x0f\x43lientIdVersion\x12\x15\n\x11\x43LIENT_ID_INVALID\x10\x00\x12\x10\n\x0c\x43LIENT_ID_V1\x10\x01\x12\x10\n\x0c\x43LIENT_ID_V2\x10\x02\x42\x39\n5com.splunk.mobile.spacebridge.messages.registrationV2P\x01\x62\x06proto3')
   ,
   dependencies=[http__pb2.DESCRIPTOR,])
 
@@ -47,8 +47,8 @@ _CLIENTIDVERSION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3186,
-  serialized_end=3262,
+  serialized_start=2452,
+  serialized_end=2528,
 )
 _sym_db.RegisterEnumDescriptor(_CLIENTIDVERSION)
 
@@ -57,58 +57,6 @@ CLIENT_ID_INVALID = 0
 CLIENT_ID_V1 = 1
 CLIENT_ID_V2 = 2
 
-
-_CLIENTREGISTRATION_CREDENTIALS_TOKENTYPE = _descriptor.EnumDescriptor(
-  name='TokenType',
-  full_name='Spacebridge.ClientRegistration.Credentials.TokenType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNKNOWN', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SESSION', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='JWT', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=1022,
-  serialized_end=1068,
-)
-_sym_db.RegisterEnumDescriptor(_CLIENTREGISTRATION_CREDENTIALS_TOKENTYPE)
-
-_REGISTRARRESULT_CREDENTIALS_TOKENTYPE = _descriptor.EnumDescriptor(
-  name='TokenType',
-  full_name='Spacebridge.RegistrarResult.Credentials.TokenType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='UNKNOWN', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SESSION', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='JWT', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=1022,
-  serialized_end=1068,
-)
-_sym_db.RegisterEnumDescriptor(_REGISTRARRESULT_CREDENTIALS_TOKENTYPE)
 
 _REGISTRARRESULT_ERROR = _descriptor.EnumDescriptor(
   name='Error',
@@ -135,8 +83,8 @@ _REGISTRARRESULT_ERROR = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2536,
-  serialized_end=2678,
+  serialized_start=1802,
+  serialized_end=1944,
 )
 _sym_db.RegisterEnumDescriptor(_REGISTRARRESULT_ERROR)
 
@@ -365,20 +313,6 @@ _CLIENTREGISTRATION_CLIENTINFO = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokenTimestamp', full_name='Spacebridge.ClientRegistration.ClientInfo.tokenTimestamp', index=5,
-      number=6, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='ccfSign', full_name='Spacebridge.ClientRegistration.ClientInfo.ccfSign', index=6,
-      number=7, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -392,7 +326,7 @@ _CLIENTREGISTRATION_CLIENTINFO = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=661,
-  serialized_end=866,
+  serialized_end=825,
 )
 
 _CLIENTREGISTRATION_CREDENTIALS = _descriptor.Descriptor(
@@ -409,33 +343,11 @@ _CLIENTREGISTRATION_CREDENTIALS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='userName', full_name='Spacebridge.ClientRegistration.Credentials.userName', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokenType', full_name='Spacebridge.ClientRegistration.Credentials.tokenType', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokenExpiresAt', full_name='Spacebridge.ClientRegistration.Credentials.tokenExpiresAt', index=3,
-      number=4, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
-    _CLIENTREGISTRATION_CREDENTIALS_TOKENTYPE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -443,8 +355,8 @@ _CLIENTREGISTRATION_CREDENTIALS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=869,
-  serialized_end=1068,
+  serialized_start=827,
+  serialized_end=862,
 )
 
 _CLIENTREGISTRATION = _descriptor.Descriptor(
@@ -488,7 +400,7 @@ _CLIENTREGISTRATION = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=465,
-  serialized_end=1068,
+  serialized_end=862,
 )
 
 
@@ -520,27 +432,6 @@ _CLIENTREGISTRATIONREQUEST_PAYLOAD = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='serializedMdmVerificationBundle', full_name='Spacebridge.ClientRegistrationRequest.Payload.serializedMdmVerificationBundle', index=3,
-      number=5, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mdmVerificationBundleSignature', full_name='Spacebridge.ClientRegistrationRequest.Payload.mdmVerificationBundleSignature', index=4,
-      number=6, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='serviceIdToken', full_name='Spacebridge.ClientRegistrationRequest.Payload.serviceIdToken', index=5,
-      number=7, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -553,8 +444,8 @@ _CLIENTREGISTRATIONREQUEST_PAYLOAD = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1147,
-  serialized_end=1329,
+  serialized_start=940,
+  serialized_end=1017,
 )
 
 _CLIENTREGISTRATIONREQUEST = _descriptor.Descriptor(
@@ -590,40 +481,10 @@ _CLIENTREGISTRATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1071,
-  serialized_end=1329,
+  serialized_start=865,
+  serialized_end=1017,
 )
 
-
-_CLIENTREGISTRATIONRESPONSE_PAYLOAD = _descriptor.Descriptor(
-  name='Payload',
-  full_name='Spacebridge.ClientRegistrationResponse.Payload',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='authIdExpirationTimestamp', full_name='Spacebridge.ClientRegistrationResponse.Payload.authIdExpirationTimestamp', index=0,
-      number=1, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1471,
-  serialized_end=1515,
-)
 
 _CLIENTREGISTRATIONRESPONSE = _descriptor.Descriptor(
   name='ClientRegistrationResponse',
@@ -639,17 +500,10 @@ _CLIENTREGISTRATIONRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='Spacebridge.ClientRegistrationResponse.payload', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
-  nested_types=[_CLIENTREGISTRATIONRESPONSE_PAYLOAD, ],
+  nested_types=[],
   enum_types=[
   ],
   serialized_options=None,
@@ -661,80 +515,8 @@ _CLIENTREGISTRATIONRESPONSE = _descriptor.Descriptor(
       name='Result', full_name='Spacebridge.ClientRegistrationResponse.Result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1332,
-  serialized_end=1525,
-)
-
-
-_DELETECLIENTREGISTRATIONREQUEST = _descriptor.Descriptor(
-  name='DeleteClientRegistrationRequest',
-  full_name='Spacebridge.DeleteClientRegistrationRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='authId', full_name='Spacebridge.DeleteClientRegistrationRequest.authId', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='authIdSignature', full_name='Spacebridge.DeleteClientRegistrationRequest.authIdSignature', index=1,
-      number=2, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=1527,
-  serialized_end=1601,
-)
-
-
-_DELETECLIENTREGISTRATIONRESPONSE = _descriptor.Descriptor(
-  name='DeleteClientRegistrationResponse',
-  full_name='Spacebridge.DeleteClientRegistrationResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='error', full_name='Spacebridge.DeleteClientRegistrationResponse.error', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='Result', full_name='Spacebridge.DeleteClientRegistrationResponse.Result',
-      index=0, containing_type=None, fields=[]),
-  ],
-  serialized_start=1603,
-  serialized_end=1688,
+  serialized_start=1019,
+  serialized_end=1098,
 )
 
 
@@ -764,8 +546,8 @@ _REGISTRARQUERYREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1690,
-  serialized_end=1729,
+  serialized_start=1100,
+  serialized_end=1139,
 )
 
 
@@ -805,8 +587,8 @@ _REGISTRARQUERYRESPONSE = _descriptor.Descriptor(
       name='Result', full_name='Spacebridge.RegistrarQueryResponse.Result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1732,
-  serialized_end=1877,
+  serialized_start=1142,
+  serialized_end=1287,
 )
 
 
@@ -857,8 +639,8 @@ _REGISTRARRESULT_REGISTRARINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2019,
-  serialized_end=2144,
+  serialized_start=1429,
+  serialized_end=1554,
 )
 
 _REGISTRARRESULT_CREDENTIALS = _descriptor.Descriptor(
@@ -882,26 +664,11 @@ _REGISTRARRESULT_CREDENTIALS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokenType', full_name='Spacebridge.RegistrarResult.Credentials.tokenType', index=2,
-      number=3, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='tokenExpiresAt', full_name='Spacebridge.RegistrarResult.Credentials.tokenExpiresAt', index=3,
-      number=4, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[],
   enum_types=[
-    _REGISTRARRESULT_CREDENTIALS_TOKENTYPE,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -909,8 +676,8 @@ _REGISTRARRESULT_CREDENTIALS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2147,
-  serialized_end=2343,
+  serialized_start=1556,
+  serialized_end=1609,
 )
 
 _REGISTRARRESULT_CONFIRMATION = _descriptor.Descriptor(
@@ -953,8 +720,8 @@ _REGISTRARRESULT_CONFIRMATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2346,
-  serialized_end=2533,
+  serialized_start=1612,
+  serialized_end=1799,
 )
 
 _REGISTRARRESULT = _descriptor.Descriptor(
@@ -994,8 +761,8 @@ _REGISTRARRESULT = _descriptor.Descriptor(
       name='result', full_name='Spacebridge.RegistrarResult.result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=1880,
-  serialized_end=2688,
+  serialized_start=1290,
+  serialized_end=1954,
 )
 
 
@@ -1039,8 +806,8 @@ _REGISTRARRESULTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2690,
-  serialized_end=2783,
+  serialized_start=1956,
+  serialized_end=2049,
 )
 
 
@@ -1073,8 +840,8 @@ _REGISTRARRESULTRESPONSE = _descriptor.Descriptor(
       name='Result', full_name='Spacebridge.RegistrarResultResponse.Result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2785,
-  serialized_end=2861,
+  serialized_start=2051,
+  serialized_end=2127,
 )
 
 
@@ -1104,8 +871,8 @@ _CLIENTRESULTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2863,
-  serialized_end=2900,
+  serialized_start=2129,
+  serialized_end=2166,
 )
 
 
@@ -1145,8 +912,8 @@ _CLIENTRESULTRESPONSE = _descriptor.Descriptor(
       name='Payload', full_name='Spacebridge.ClientResultResponse.Payload',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=2903,
-  serialized_end=3041,
+  serialized_start=2169,
+  serialized_end=2307,
 )
 
 
@@ -1183,8 +950,8 @@ _ROUTINGENABLEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3043,
-  serialized_end=3108,
+  serialized_start=2309,
+  serialized_end=2374,
 )
 
 
@@ -1217,8 +984,8 @@ _ROUTINGENABLERESPONSE = _descriptor.Descriptor(
       name='Result', full_name='Spacebridge.RoutingEnableResponse.Result',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=3110,
-  serialized_end=3184,
+  serialized_start=2376,
+  serialized_end=2450,
 )
 
 _ENTROPYGENERATIONRESPONSE.fields_by_name['error'].message_type = http__pb2._HTTPERROR
@@ -1235,26 +1002,15 @@ _REGISTERPUBLICKEYSRESPONSE.oneofs_by_name['Result'].fields.append(
 _REGISTERPUBLICKEYSRESPONSE.fields_by_name['error'].containing_oneof = _REGISTERPUBLICKEYSRESPONSE.oneofs_by_name['Result']
 _CLIENTREGISTRATION_CLIENTINFO.fields_by_name['environmentMetadata'].message_type = http__pb2._ENVIRONMENTMETADATA
 _CLIENTREGISTRATION_CLIENTINFO.containing_type = _CLIENTREGISTRATION
-_CLIENTREGISTRATION_CREDENTIALS.fields_by_name['tokenType'].enum_type = _CLIENTREGISTRATION_CREDENTIALS_TOKENTYPE
 _CLIENTREGISTRATION_CREDENTIALS.containing_type = _CLIENTREGISTRATION
-_CLIENTREGISTRATION_CREDENTIALS_TOKENTYPE.containing_type = _CLIENTREGISTRATION_CREDENTIALS
 _CLIENTREGISTRATION.fields_by_name['keyBundle'].message_type = _KEYBUNDLE
 _CLIENTREGISTRATION.fields_by_name['clientInfo'].message_type = _CLIENTREGISTRATION_CLIENTINFO
 _CLIENTREGISTRATION.fields_by_name['credentials'].message_type = _CLIENTREGISTRATION_CREDENTIALS
 _CLIENTREGISTRATIONREQUEST_PAYLOAD.containing_type = _CLIENTREGISTRATIONREQUEST
-_CLIENTREGISTRATIONRESPONSE_PAYLOAD.containing_type = _CLIENTREGISTRATIONRESPONSE
 _CLIENTREGISTRATIONRESPONSE.fields_by_name['error'].message_type = http__pb2._HTTPERROR
-_CLIENTREGISTRATIONRESPONSE.fields_by_name['payload'].message_type = _CLIENTREGISTRATIONRESPONSE_PAYLOAD
 _CLIENTREGISTRATIONRESPONSE.oneofs_by_name['Result'].fields.append(
   _CLIENTREGISTRATIONRESPONSE.fields_by_name['error'])
 _CLIENTREGISTRATIONRESPONSE.fields_by_name['error'].containing_oneof = _CLIENTREGISTRATIONRESPONSE.oneofs_by_name['Result']
-_CLIENTREGISTRATIONRESPONSE.oneofs_by_name['Result'].fields.append(
-  _CLIENTREGISTRATIONRESPONSE.fields_by_name['payload'])
-_CLIENTREGISTRATIONRESPONSE.fields_by_name['payload'].containing_oneof = _CLIENTREGISTRATIONRESPONSE.oneofs_by_name['Result']
-_DELETECLIENTREGISTRATIONRESPONSE.fields_by_name['error'].message_type = http__pb2._HTTPERROR
-_DELETECLIENTREGISTRATIONRESPONSE.oneofs_by_name['Result'].fields.append(
-  _DELETECLIENTREGISTRATIONRESPONSE.fields_by_name['error'])
-_DELETECLIENTREGISTRATIONRESPONSE.fields_by_name['error'].containing_oneof = _DELETECLIENTREGISTRATIONRESPONSE.oneofs_by_name['Result']
 _REGISTRARQUERYRESPONSE.fields_by_name['error'].message_type = http__pb2._HTTPERROR
 _REGISTRARQUERYRESPONSE.fields_by_name['clientRegistration'].message_type = _CLIENTREGISTRATIONREQUEST
 _REGISTRARQUERYRESPONSE.oneofs_by_name['Result'].fields.append(
@@ -1265,9 +1021,7 @@ _REGISTRARQUERYRESPONSE.oneofs_by_name['Result'].fields.append(
 _REGISTRARQUERYRESPONSE.fields_by_name['clientRegistration'].containing_oneof = _REGISTRARQUERYRESPONSE.oneofs_by_name['Result']
 _REGISTRARRESULT_REGISTRARINFO.fields_by_name['environmentMetadata'].message_type = http__pb2._ENVIRONMENTMETADATA
 _REGISTRARRESULT_REGISTRARINFO.containing_type = _REGISTRARRESULT
-_REGISTRARRESULT_CREDENTIALS.fields_by_name['tokenType'].enum_type = _REGISTRARRESULT_CREDENTIALS_TOKENTYPE
 _REGISTRARRESULT_CREDENTIALS.containing_type = _REGISTRARRESULT
-_REGISTRARRESULT_CREDENTIALS_TOKENTYPE.containing_type = _REGISTRARRESULT_CREDENTIALS
 _REGISTRARRESULT_CONFIRMATION.fields_by_name['keyBundle'].message_type = _KEYBUNDLE
 _REGISTRARRESULT_CONFIRMATION.fields_by_name['registrarInfo'].message_type = _REGISTRARRESULT_REGISTRARINFO
 _REGISTRARRESULT_CONFIRMATION.fields_by_name['credentials'].message_type = _REGISTRARRESULT_CREDENTIALS
@@ -1305,8 +1059,6 @@ DESCRIPTOR.message_types_by_name['RegisterPublicKeysResponse'] = _REGISTERPUBLIC
 DESCRIPTOR.message_types_by_name['ClientRegistration'] = _CLIENTREGISTRATION
 DESCRIPTOR.message_types_by_name['ClientRegistrationRequest'] = _CLIENTREGISTRATIONREQUEST
 DESCRIPTOR.message_types_by_name['ClientRegistrationResponse'] = _CLIENTREGISTRATIONRESPONSE
-DESCRIPTOR.message_types_by_name['DeleteClientRegistrationRequest'] = _DELETECLIENTREGISTRATIONREQUEST
-DESCRIPTOR.message_types_by_name['DeleteClientRegistrationResponse'] = _DELETECLIENTREGISTRATIONRESPONSE
 DESCRIPTOR.message_types_by_name['RegistrarQueryRequest'] = _REGISTRARQUERYREQUEST
 DESCRIPTOR.message_types_by_name['RegistrarQueryResponse'] = _REGISTRARQUERYRESPONSE
 DESCRIPTOR.message_types_by_name['RegistrarResult'] = _REGISTRARRESULT
@@ -1393,33 +1145,11 @@ _sym_db.RegisterMessage(ClientRegistrationRequest)
 _sym_db.RegisterMessage(ClientRegistrationRequest.Payload)
 
 ClientRegistrationResponse = _reflection.GeneratedProtocolMessageType('ClientRegistrationResponse', (_message.Message,), dict(
-
-  Payload = _reflection.GeneratedProtocolMessageType('Payload', (_message.Message,), dict(
-    DESCRIPTOR = _CLIENTREGISTRATIONRESPONSE_PAYLOAD,
-    __module__ = 'registration_v2_pb2'
-    # @@protoc_insertion_point(class_scope:Spacebridge.ClientRegistrationResponse.Payload)
-    ))
-  ,
   DESCRIPTOR = _CLIENTREGISTRATIONRESPONSE,
   __module__ = 'registration_v2_pb2'
   # @@protoc_insertion_point(class_scope:Spacebridge.ClientRegistrationResponse)
   ))
 _sym_db.RegisterMessage(ClientRegistrationResponse)
-_sym_db.RegisterMessage(ClientRegistrationResponse.Payload)
-
-DeleteClientRegistrationRequest = _reflection.GeneratedProtocolMessageType('DeleteClientRegistrationRequest', (_message.Message,), dict(
-  DESCRIPTOR = _DELETECLIENTREGISTRATIONREQUEST,
-  __module__ = 'registration_v2_pb2'
-  # @@protoc_insertion_point(class_scope:Spacebridge.DeleteClientRegistrationRequest)
-  ))
-_sym_db.RegisterMessage(DeleteClientRegistrationRequest)
-
-DeleteClientRegistrationResponse = _reflection.GeneratedProtocolMessageType('DeleteClientRegistrationResponse', (_message.Message,), dict(
-  DESCRIPTOR = _DELETECLIENTREGISTRATIONRESPONSE,
-  __module__ = 'registration_v2_pb2'
-  # @@protoc_insertion_point(class_scope:Spacebridge.DeleteClientRegistrationResponse)
-  ))
-_sym_db.RegisterMessage(DeleteClientRegistrationResponse)
 
 RegistrarQueryRequest = _reflection.GeneratedProtocolMessageType('RegistrarQueryRequest', (_message.Message,), dict(
   DESCRIPTOR = _REGISTRARQUERYREQUEST,

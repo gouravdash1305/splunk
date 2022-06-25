@@ -5,7 +5,7 @@ define([
     'splunkjs/mvc/utils',
     'splunkjs/mvc/sharedmodels',
     'collections/services/saved/Searches',
-    'splunk_monitoring_console/views/settings/forwarder_setup/lite/dialogs/Master_old',
+    'splunk_monitoring_console/views/settings/forwarder_setup/lite/dialogs/Master',
     'splunkjs/mvc/simplexml/ready!'
 ], function($, _, mvc, utils, SharedModels, SavedSearchesCollection, SetupModal) {
 
@@ -34,7 +34,7 @@ define([
         e.preventDefault();
         fetchSavedSearch(function(collection) {
             savedSearchesCollection.add([collection.models[0]]);
-            Promise.all([serverInfo.dfd, application.dfd]).then(function() {
+            $.when(serverInfo.dfd, application.dfd).then(function() {
                 //when all models are fetched and ready:
                 if (setupModal) {
                     setupModal.hide();
@@ -54,7 +54,7 @@ define([
 
                 $('body').append(setupModal.render().el);
                 setupModal.show();
-            });
+            });           
         });
     });
 });

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 """
 
 import base64
@@ -21,7 +21,6 @@ from spacebridgeapp.rest.util import errors as Errors
 from spacebridge_protocol import http_pb2
 from spacebridgeapp.util.config import secure_gateway_config as config
 from cloudgateway.private.registration.util import requests_ssl_context
-from http import HTTPStatus
 
 APP_TYPE_LABEL = 'app_type'
 
@@ -90,7 +89,17 @@ def delete_device_from_spacebridge(device_id, system_authtoken, key_bundle=None)
     :param system_authtoken:
     :return: response from spacebridge
     """
-    headers, unregister_proto = _process_unregister_request(device_id, system_authtoken)
+    sodium_client = SodiumClient(LOGGER.getChild("sodium_client"))
+    encryption_context = SplunkEncryptionContext(system_authtoken,
+                                                 constants.SPACEBRIDGE_APP_NAME,
+                                                 sodium_client)
+    public_key_hash = encryption_context.sign_public_key(transform=encryption_context.generichash_hex)
+
+    unregister_proto = http_pb2.DeviceUnregistrationRequest()
+    unregister_proto.deviceId = b64decode(device_id)
+    unregister_proto.deploymentId = encryption_context.sign_public_key(transform=encryption_context.generichash_raw)
+
+    headers = {'Authorization': public_key_hash, 'Content-Type': 'application/x-protobuf'}
 
     with requests_ssl_context(key_bundle):
         try:
@@ -99,60 +108,20 @@ def delete_device_from_spacebridge(device_id, system_authtoken, key_bundle=None)
                                        data=unregister_proto.SerializeToString())
         except Exception:
             LOGGER.exception("Exception attempting sending delete device request to Spacebridge")
-            raise Errors.SpacebridgeServerError('Unable to reach Spacebridge', HTTPStatus.SERVICE_UNAVAILABLE)
+            raise Errors.SpacebridgeServerError('Unable to reach Spacebridge', 503)
 
     LOGGER.info("Received response=%s on delete device from Spacebridge request" % response.status_code)
 
-    _process_unregister_response(response.content)
-
-    return response
-
-
-async def async_delete_device_from_spacebridge(async_spacebridge_client, device_id, system_authtoken):
-    """
-    Async deletes device from spacebridge
-    :param async_spacebridge_client:
-    :param device_id:
-    :param system_authtoken:
-    :return: response from spacebridge
-    """
-    headers, unregister_proto = _process_unregister_request(device_id, system_authtoken)
-
-    response = await async_spacebridge_client.async_send_delete_request(
-        api="/api/session", auth_header=None, data=unregister_proto.SerializeToString(), headers=headers)
-
-    if response.code != HTTPStatus.OK:
-        response = await response.text()
-        LOGGER.exception("Exception attempting sending delete device request to Spacebridge, with code=%s, error_msg=%s"
-                         % (response.code, response))
-        raise Errors.SpacebridgeServerError('Unable to reach Spacebridge for device=%s'
-                                            % device_id, HTTPStatus.SERVICE_UNAVAILABLE)
-
-    LOGGER.info("Received response=%s on delete device from Spacebridge request" % response.code)
-
-    _process_unregister_response(response._body)
-
-    return response
-
-
-def _process_unregister_response(response):
     spacebridge_response = http_pb2.DeviceUnregistrationResponse()
-    spacebridge_response.ParseFromString(response)
+    spacebridge_response.ParseFromString(response.content)
+
     LOGGER.info('Spacebridge response: %s' % str(spacebridge_response))
+
     if spacebridge_response.HasField('error') and spacebridge_response.error.code != http_pb2.HttpError.Code.Value('ERROR_ROUTING_UNDELIVERABLE'):
         raise Errors.SpacebridgeServerError("Spacebridge error on delete device request=%s" %
                                             spacebridge_response.error.message)
 
-
-def _process_unregister_request(device_id, system_authtoken):
-    sodium_client = SodiumClient(LOGGER.getChild("sodium_client"))
-    encryption_context = SplunkEncryptionContext(system_authtoken, constants.SPACEBRIDGE_APP_NAME, sodium_client)
-    public_key_hash = encryption_context.sign_public_key(transform=encryption_context.generichash_hex)
-    unregister_proto = http_pb2.DeviceUnregistrationRequest()
-    unregister_proto.deviceId = b64decode(device_id)
-    unregister_proto.deploymentId = encryption_context.sign_public_key(transform=encryption_context.generichash_raw)
-    headers = {'Authorization': public_key_hash, 'Content-Type': 'application/x-protobuf'}
-    return headers, unregister_proto
+    return response
 
 
 def device_pairing_confirmation_request(auth_header, auth_code, username, device_id,

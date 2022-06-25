@@ -252,7 +252,7 @@
         </element>
         <element name="pdf.html_image_rendering" type="checkbox" label="Render HTML &amp;lt;/img&amp;gt; tagged images in PDF">
           <view name="edit"/>
-          <key name="submitValueEdit">0 if value in ('0', 'False', 'false') else 1</key>
+          <key name="submitValueEdit">value=value?"True":"False"</key>
         </element>
       </elements>
      </element>

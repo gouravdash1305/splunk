@@ -1,7 +1,7 @@
 import { _ } from '@splunk/ui-utils/i18n';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { SplunkUtil } from '@splunk/swc-mc';
+import splunkUtil from 'splunk.util';
 import Button from '@splunk/react-ui/Button';
 import ControlGroup from '@splunk/react-ui/ControlGroup';
 import Heading from '@splunk/react-ui/Heading';
@@ -31,7 +31,6 @@ class MetricsPanelModal extends Component {
             changed: false,
         };
         this.props.metrics.on('sync', this.updateMetrics);
-        this.editPanelButton = React.createRef();
     }
 
     updateMetrics = () => {
@@ -51,9 +50,6 @@ class MetricsPanelModal extends Component {
         });
         if (this.state.changed) {
             this.props.handleClose();
-        }
-        if (this.editPanelButton.current) {
-            this.editPanelButton.current.focus();
         }
     };
 
@@ -86,7 +82,7 @@ class MetricsPanelModal extends Component {
             let msg = _('Encountered errors while updating Metrics');
             if (response.responseJSON.messages && response.responseJSON.messages.length > 0) {
                 const messageObj = response.responseJSON.messages[0];
-                msg = SplunkUtil.sprintf(_('%s: %s'), messageObj.type, messageObj.text);
+                msg = splunkUtil.sprintf(_('%s: %s'), messageObj.type, messageObj.text);
             }
             this.props.metrics.fetch();
             this.setState({
@@ -105,10 +101,8 @@ class MetricsPanelModal extends Component {
                 <Button
                     data-test-name="edit-page-layout-btn"
                     label={_('Edit Panel')}
-                    aria-label={_('Deployment Metrics, Edit Panel')}
                     onClick={this.handleOpen}
                     className="metric-button"
-                    ref={this.editPanelButton}
                 />
                 <Modal
                     data-test-name="deployment-metrics-modal"

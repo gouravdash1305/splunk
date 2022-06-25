@@ -1,6 +1,6 @@
 
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Initiates websocket connection used for end to end test
 """
@@ -18,7 +18,7 @@ from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util import constants
 from cloudgateway.websocket import (AbstractMessageHandler, CloudGatewayWsClient, ServerResponse,
                                     AbstractWebsocketContext)
-from cloudgateway.private.asyncio.messages.send import send_response
+from cloudgateway.private.messages.send import send_response
 from splapp_protocol import envelope_pb2
 from spacebridgeapp.util.constants import CLIENT_SINGLE_REQUEST, CLIENT_SUBSCRIBE_REQUEST, CLIENT_SUBSCRIPTION_UPDATE, \
     CLIENT_SUBSCRIPTION_MESSAGE
@@ -75,10 +75,11 @@ class WebsocketContext(AbstractWebsocketContext):
 
     async def on_open(self, protocol):
         self.protocol = protocol
-        await send_response(ServerResponse(self.request), self.recipient_info, protocol, self.logger)
+        send_response(ServerResponse(self.request), self.recipient_info, protocol, self.logger)
 
-        await asyncio.sleep(5)
-        await self.protocol.close()
+        if self.is_subscription:
+            await asyncio.sleep(5)
+            self.protocol.sendClose()
 
     async def on_pong(self, payload, protocol):
         pass
@@ -107,7 +108,7 @@ class ClientMessageHandler(AbstractMessageHandler):
         self.responses.append(server_app_msg)
 
         if not self.is_subscription:
-            await self.websocket_ctx.protocol.close()
+            self.websocket_ctx.protocol.sendClose()
 
     async def handle_cloudgateway_message(self, msg):
         pass

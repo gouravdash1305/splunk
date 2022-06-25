@@ -46,18 +46,11 @@ class NodeList(object):
             server_conf_dict[stanza['name']] = stanza
 
         if 'clustering' in server_conf_dict:
-            # Bug SPL-203589, telemetry info is incorrect when search head has 2 indexer cluster connected
-            # /services/configs/conf-server changed, we need parse the CM info from the new field
-            key_in_content = 'master_uri'
-            if not key_in_content in server_conf_dict['clustering']['content'] or not server_conf_dict['clustering']['content'][key_in_content]:
-                key_in_content = 'manager_uri'
-            cm_stanza_names = server_conf_dict['clustering']['content'][key_in_content].split(',')
-
+            cm_stanza_names = server_conf_dict['clustering']['content']['master_uri'].split(',')
             if isinstance(cm_stanza_names, list) and len(cm_stanza_names) > 0:
                 for stanza_name in cm_stanza_names:
                     if stanza_name in server_conf_dict:
-                        cm_uris.append(server_conf_dict[stanza_name]['content'][key_in_content])
-
+                        cm_uris.append(server_conf_dict[stanza_name]['content']['master_uri'])
         return cm_uris
 
     def is_search_head(self):

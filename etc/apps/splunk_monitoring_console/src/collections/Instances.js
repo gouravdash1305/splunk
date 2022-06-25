@@ -4,7 +4,9 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        '@splunk/swc-mc',
+        'splunkjs/mvc',
+        'splunkjs/mvc/searchmanager',
+        'splunkjs/mvc/postprocessmanager',
         'splunk_monitoring_console/models/Peer', // I wish this file was the this module :(
         'splunk_monitoring_console/helpers/Formatters'
     ],
@@ -12,7 +14,9 @@ define(
         $,
         _,
         Backbone,
-        SwcMC,
+        mvc,
+        SearchManager,
+        PostProcessManager,
         PeerModel,
         Formatters
     ) {
@@ -31,17 +35,17 @@ define(
         var executeSearches = function() {
             if (!searchesExecuted) {
 
-                var inputlookupDMCAssetsSearch = new SwcMC.SearchManager({
+                var inputlookupDMCAssetsSearch = new SearchManager({
                     search: '| localop | inputlookup dmc_assets'
                 });
 
-                var instancesManager = new SwcMC.PostProcessManager({
+                var instancesManager = new PostProcessManager({
                     managerid: inputlookupDMCAssetsSearch.id,
                     search: '| eval is_local=if(peerURI=="localhost",1,0) | fields host machine serverName is_local search_group | search search_group=dmc_group_* | dedup serverName search_group | stats values(search_group) as search_groups first(is_local) as is_local first(host) as host first(machine) as machine by serverName'
                 });
                 results.instances = createDfd(instancesManager);
 
-                var relationshipsManager = new SwcMC.SearchManager({
+                var relationshipsManager = new SearchManager({
                     search: '| rest splunk_server_group=dmc_group_search_head /services/search/distributed/peers ' +
                         '| fields peerName splunk_server ' +
                         '| dedup peerName splunk_server ' +
@@ -49,7 +53,7 @@ define(
                 });
                 results.relationships = createDfd(relationshipsManager);
 
-                var customGroupManager = new SwcMC.PostProcessManager({
+                var customGroupManager = new PostProcessManager({
                     managerid: inputlookupDMCAssetsSearch.id,
                     search: '| stats values(search_group) as groups by serverName ' +
                     '| mvexpand groups ' +
@@ -59,7 +63,7 @@ define(
                 });
                 results.customGroup = createDfd(customGroupManager);
 
-                var clusterGroupManager = new SwcMC.PostProcessManager({
+                var clusterGroupManager = new PostProcessManager({
                     managerid: inputlookupDMCAssetsSearch.id,
                     search: '| stats values(search_group) as groups by serverName ' +
                     '| mvexpand groups ' +
@@ -69,7 +73,7 @@ define(
                 });
                 results.clusterGroup = createDfd(clusterGroupManager);
 
-                var shcGroupManager = new SwcMC.PostProcessManager({
+                var shcGroupManager = new PostProcessManager({
                     managerid: inputlookupDMCAssetsSearch.id,
                     search: '| stats values(search_group) as groups by serverName ' +
                     '| mvexpand groups ' +
@@ -79,28 +83,28 @@ define(
                 });
                 results.shcGroup = createDfd(shcGroupManager);
 
-                var hostwideResourceManager = new SwcMC.SearchManager({
+                var hostwideResourceManager = new SearchManager({
                 	search: '| rest splunk_server_group=dmc_group_* /services/server/status/resource-usage/hostwide | eval mem_used=round(mem_used/mem*100) | eval cpu_system_pct = cpu_system_pct + cpu_user_pct | fields splunk_server cpu_system_pct mem_used' // the true cpu_usage is the sum of the system_pct and user_pct
 
                 });
                 results.hostwideResource = createDfd(hostwideResourceManager);
 
-                var indexerIntrospectionManager = new SwcMC.SearchManager({
+                var indexerIntrospectionManager = new SearchManager({
                     search: '| rest splunk_server_group=dmc_group_indexer /services/server/introspection/indexer | fields splunk_server average_KBps  | eval indexing_rate=round(average_KBps) | fields splunk_server indexing_rate'
                 });
                 results.indexerIntrospection = createDfd(indexerIntrospectionManager);
 
-                var searchProcessesManager = new SwcMC.SearchManager({
+                var searchProcessesManager = new SearchManager({
                     search: '| rest splunk_server_group=dmc_group_search_head /services/server/status/resource-usage/splunk-processes | stats dc(search_props.sid) as search_concurrency by splunk_server | fields splunk_server search_concurrency'
                 });
                 results.searchProcesses = createDfd(searchProcessesManager);
 
-                var peersEndpointManager = new SwcMC.SearchManager({
+                var peersEndpointManager = new SearchManager({
                     search: '| rest splunk_server=local /services/search/distributed/peers | eval up_down_status=if(status=="Down",0,1) | rename peerName as splunk_server | fields cpu_arch os_name os_version numberOfCores numberOfVirtualCores physicalMemoryMB version splunk_server up_down_status'
                 });
                 results.peersEndpoint = createDfd(peersEndpointManager);
 
-                var localInstanceInfoManager = new SwcMC.SearchManager({
+                var localInstanceInfoManager = new SearchManager({
                     search: '| rest splunk_server=local /services/server/info | fields cpu_arch os_name os_version numberOfCores numberOfVirtualCores physicalMemoryMB version'
                 });
                 results.localInstanceInfo = createDfd(localInstanceInfoManager);
@@ -172,7 +176,7 @@ define(
 
                     var instanceModels = [];
 
-
+                    
                     if (results.instances.hasData()) {
                         var serverNameIndex = allInstances.fields.indexOf('serverName'),
                             roleIndex = allInstances.fields.indexOf('search_groups'),
@@ -232,7 +236,7 @@ define(
                             }
 
                             _.each(
-                                _.without(instanceGroups, ['dmc_group_search_head', 'dmc_group_indexer']),
+                                _.without(instanceGroups, ['dmc_group_search_head', 'dmc_group_indexer']), 
                                 function(group) {
                                     instanceModel.entry.content.get('management_roles').push(group.replace(/^dmc_group_/,''));
                                 },
@@ -468,7 +472,7 @@ define(
                     //     }));
                     // }
                     // instanceModels = instanceModels.concat(mockModels);
-
+                    
                     // // optional: make them all connected:
                     // var searchHeads = _.filter(instanceModels, function(m) { return m.entry.content.get('role') === 'search_head'; });
                     // var indexers = _.filter(instanceModels, function(m) { return m.entry.content.get('role') === 'indexer'; });
@@ -554,7 +558,7 @@ define(
                                             // Magical JS regex escape:
                                             valueEscaped = value.replace(/[\-\[\]\/\{\}\(\)\+\?\.\\\^\$\|]/g, "\\$&"),
                                             rex = new RegExp(
-                                                valueEscaped.replace(/\*/g,'.*'),
+                                                valueEscaped.replace(/\*/g,'.*'), 
                                                 _.contains(CASE_INSENSITIVE_PROPERTIES, key) ? 'i' : ''
                                             ),
                                             modelValue = model.entry.content.get(key),
@@ -583,7 +587,7 @@ define(
                                     }
                                 }
                             }, this);
-
+                            
                             if (!searchPassed) {
                                 return false;
                             }
@@ -620,7 +624,7 @@ define(
 
                                 return inRange;
                             }, this);
-                        }, this);
+                        }, this);   
                         this.meta.set('rangeCounts', rangeCounts);
                     }
 
@@ -717,7 +721,7 @@ define(
 
                                         if (orComponent.indexOf('<=') !== -1 ||
                                             orComponent.indexOf('>=') !== -1) {
-
+                                            
                                             // This really only supports a basic range...
                                             var commandParts = orComponent.split(/\s+/g),
                                                 lower = 0,
@@ -740,7 +744,7 @@ define(
                                             }, this);
 
                                             var rangeValue = model.entry.content.get(rangeKey);
-                                            searchPassed = searchPassed ||
+                                            searchPassed = searchPassed || 
                                                 (rangeValue !== null && rangeValue >= lower && rangeValue <= upper);
                                         } else if (orComponent.indexOf('>') !== -1) {
                                             var gtSplit = orComponent.split('>'),
@@ -751,13 +755,13 @@ define(
                                             searchPassed = searchPassed || (gtModelValue !== null && gtModelValue > gtValue);
                                         } else if (orComponent.indexOf(SPECIAL_UNKNOWN_RANGE_SEARCH_PREFIX) === 0) {
                                             var unknownMetric = orComponent.substr(SPECIAL_UNKNOWN_RANGE_SEARCH_PREFIX.length);
-
+                                            
                                             searchPassed = searchPassed || (model.entry.content.get(unknownMetric) === null);
                                         }
                                     }, this);
                                 }
                             }, this);
-
+                            
                             if (atLeastOneRange && (rangeBail || !searchPassed)) {
                                 return false;
                             }
@@ -765,7 +769,7 @@ define(
 
                         return true;
                     }, this);
-
+                    
                     if (_.isArray(options.sortKey) && options.sortKey.length > 0) {
                         // Only supporting one sort level for now
                         instanceModels = _.sortBy(instanceModels, function(model) {
@@ -779,7 +783,7 @@ define(
                     }
                     if (options.sortDir === 'desc') {
                         instanceModels.reverse();
-                    }
+                    }  
 
                     var totalCount = instanceModels.length,
                         previousInstanceModels = [],
@@ -838,7 +842,7 @@ define(
                     this.reset(instanceModels);
                     this.trigger('sync');
                 }.bind(this));
-            }
+            }           
         });
     }
 );

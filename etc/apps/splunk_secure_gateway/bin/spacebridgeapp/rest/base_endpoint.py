@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Generic base class from which all custom Splunk-facing rest endpoints inherit. Generalizes
 support for http methods, and abstracts out repetitive boilerplate and error-parsing logic
@@ -11,13 +11,11 @@ import splunk
 
 from spacebridgeapp.util import py23
 from cloudgateway.private.exceptions.rest import CloudgatewayServerError
-from cloudgateway.private.registration.registration_utils import RegistrationError
 from spacebridgeapp.exceptions import spacebridge_exceptions
 from spacebridgeapp.exceptions.spacebridge_exceptions import SpacebridgeApiRequestError
 from spacebridgeapp.rest.util import errors
 from spacebridgeapp.util import constants
 from spacebridgeapp.logging import setup_logging
-from spacebridgeapp.util.config import secure_gateway_config as config
 
 LOGGER = setup_logging(constants.SPACEBRIDGE_APP_NAME + ".log", "rest_base")
 MESSAGE = 'message'
@@ -52,8 +50,6 @@ class BaseRestHandler:
             if constants.HEADERS in request:
                 request[constants.HEADERS] = flatten_query_params(request[constants.HEADERS])
             request[constants.QUERY] = flatten_query_params(request[constants.QUERY])
-            # Check for stale config data and update if necessary
-            config.update_config()
             res = self.handle_request(request)
 
         # Handles errors and formats the response to the UI client
@@ -72,12 +68,9 @@ class BaseRestHandler:
         except splunk.RESTException as err:
             LOGGER.exception("Splunk rest error")
             res = {constants.PAYLOAD: {constants.MESSAGE: err.msg}, constants.STATUS: err.statusCode}
-        except RegistrationError as err:
-            LOGGER.exception("Splunk Secure Gateway Registration error")
-            res = {constants.PAYLOAD: {constants.MESSAGE: str(err)}, constants.STATUS: err.code}
         except Exception as err:
             LOGGER.exception("Unhandled error")
-            message = err.msg if hasattr(err, 'msg') else str(err)
+            message = err.msg if hasattr(err, 'msg') else ': {}'.format(err)
             res = {
                 constants.PAYLOAD: {constants.MESSAGE: message},
                 constants.STATUS: err.statusCode if hasattr(err, 'statusCode') else 500
@@ -147,16 +140,6 @@ class BaseRestHandler:
 
 def unsupported_method_response(method):
     return {constants.PAYLOAD: 'Error: Invalid method: %s' % method, constants.STATUS: 405}
-
-
-def build_error_payload(e):
-    return {
-        constants.PAYLOAD: {
-            'message': e.get_message_text(),
-            'description': e.get_extended_message_text()
-        },
-        constants.STATUS: e.statusCode
-    }
 
 
 def flatten_query_params(params):

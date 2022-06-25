@@ -4,23 +4,25 @@ define(
 	[
 		'jquery',
 		'underscore',
-		'@splunk/swc-mc',
+		'collections/SplunkDsBase',
 		'splunk_monitoring_console/collections/Assets',
-		'splunk_monitoring_console/collections/DistsearchGroups',
-		'splunk_monitoring_console/models/Peer'
+		'collections/monitoringconsole/DistsearchGroups',
+		'splunk_monitoring_console/models/Peer',
+		'splunkjs/mvc/savedsearchmanager'
 	],
 	function(
-		$,
-		_,
-		SwcMC,
-		AssetCollection,
+		$, 
+		_, 
+		SplunkDsBaseCollection, 
+		AssetCollection, 
 		DistsearchGroupCollection,
-		PeerModel
+		PeerModel,
+		SavedSearchManager
 	) {
 
-		return SwcMC.SplunkDsBaseCollection.extend({
+		return SplunkDsBaseCollection.extend({
 			initialize: function() {
-				SwcMC.SplunkDsBaseCollection.prototype.initialize.apply(this, arguments);
+				SplunkDsBaseCollection.prototype.initialize.apply(this, arguments);
 				this.assets = new AssetCollection();
 				this.distsearches = new DistsearchGroupCollection();
 			},
@@ -35,7 +37,7 @@ define(
 				var fetchArguments = _.toArray(arguments);
 
 				// we're only grabbing managementconsole groups
-				Promise.all([
+				$.when(
 					this.distsearches.fetch({
 						data: {
 							search: 'name=dmc_*',
@@ -43,8 +45,8 @@ define(
 						}
 					}),
 					this.assets.fetch()
-				]).then(function() {
-					SwcMC.SplunkDsBaseCollection.prototype.fetch.apply(this, fetchArguments).done(function() {
+				).done(function() {
+					SplunkDsBaseCollection.prototype.fetch.apply(this, fetchArguments).done(function() {
 						dfd.resolve();
 					}.bind(this));
 				}.bind(this));
@@ -72,17 +74,18 @@ define(
 				});
 				indexerGroup.entry.content.set('default', true);
 
-				Promise.all(
+				$.when.apply(
+					$,
 					// N.B. any changes to models in this collection are persisted automatically
-					// We just need to save the distributed search groups to save everything, essentially
+					// We just need to save the distributed search groups to save everything, essentially 
 					_.map([settingsAsset].concat(this.distsearches.models), function(model) {
 						return model.save();
 					})
-				).then(this._buildAssetCache('DMC Asset - Build Full').then(function(data) {
+				).done(this._buildAssetCache('DMC Asset - Build Full').done(function(data) {
 					dfd.resolve(data);
-				}).catch(function() {
+				}).fail(function() {
 					dfd.reject();
-				})).catch(function() {
+				})).fail(function() {
 					dfd.reject();
 				});
 
@@ -109,23 +112,25 @@ define(
 				});
 				indexerGroup.entry.content.set('default', true);
 
-				Promise.all(
+				$.when.apply(
+					$,
 					// N.B. any changes to models in this collection are persisted automatically
 					// We just need to save the distributed search groups to save everything, essentially
 					_.map([settingsAsset].concat(this.distsearches.models), function(model) {
 						return model.save();
 					})
-				).then(function() {
-					dfd.resolve();
-				}).catch(function() {
-					dfd.reject();
-				});
+				).done(function() {
+						dfd.resolve();
+					}).fail(function() {
+						dfd.reject();
+					});
 
 				return dfd;
 			},
 
 			disable: function() {
 				var dfd = $.Deferred();
+				var deferreds = [];
 
 				var settingsAsset = this.assets.find(function(asset) {
 					return asset.entry.get('name') === 'settings';
@@ -139,15 +144,16 @@ define(
 				});
 				indexerGroup && indexerGroup.entry.content.set('default', false);
 
-				Promise.all(
+				$.when.apply(
+					$,
 					_.map([settingsAsset].concat(this.distsearches.models), function(model) {
 						return model.save();
 					})
-				).then(this._buildAssetCache('DMC Asset - Build Standalone Computed Groups Only').then(function() {
+				).done(this._buildAssetCache('DMC Asset - Build Standalone Computed Groups Only').done(function() {
 					dfd.resolve();
-				}).catch(function() {
+				}).fail(function() {
 					dfd.reject();
-				})).catch(function() {
+				})).fail(function() {
 					dfd.reject();
 				});
 
@@ -176,9 +182,9 @@ define(
 
 			_buildAssetCache: function(cacheName) {
 				var dfd = $.Deferred();
-
+				
 				// Create the asset table cache
-				var cacheSm = new SwcMC.SavedSearchManager({
+				var cacheSm = new SavedSearchManager({
 					id: 'smc-create-cache-search',
 					searchname: cacheName,
 					cache: false,

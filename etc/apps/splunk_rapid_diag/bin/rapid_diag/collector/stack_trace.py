@@ -7,7 +7,6 @@ import sys
 import threading
 import tempfile
 import shutil
-import json
 
 # if collector is ran from CLI
 SPLUNK_HOME = os.environ.get('SPLUNK_HOME')
@@ -29,18 +28,12 @@ from rapid_diag.serializable import Serializable
 from rapid_diag.session_globals import SessionGlobals
 from rapid_diag.process_abstraction import Process, ProcessLister
 
-# splunk imports
-import splunk
-import splunklib.client as client
-from splunklib.client import AuthenticationError, HTTPError
-
 _LOGGER = log.setup_logging("stack_trace")
 IS_LINUX = sys.platform.startswith('linux')
 
 REX_STDERR_NOT_LOGGABLE_LINE = re.compile('no matching address range')
 REX_STDOUT_MAIN = re.compile('(?i)thread.*main')
 REX_SYS_PROC_NOT_SUPPORTED = re.compile('System process is not supported')
-REX_CALL_STACK_ADDRESS_SIGNATURE = re.compile(r'\[(?P<address>.*)\]  \"(?P<signature>.*)\"')
 
 
 class StackTrace(ToolsCollector):
@@ -134,103 +127,17 @@ class StackTrace(ToolsCollector):
         if not self.preflight_checks():
             tool_manager.set_available(self.tool_name, self.tool_manager_output.error_message)
             return CollectorResult.Failure()
-        using_watchdog = False
+
         if self.tool_manager_output.error_message is not None:
-            if self.process.process_type == 'splunkd server':
-                self.promote_state(Collector.State.COLLECTING, run_context.state_change_observers)
-                status = self._collect_watchdog(run_context)
-                using_watchdog = True
-            else:
-                status = CollectorResult.Failure(self.tool_manager_output.error_message,
-                        _LOGGER, self.tool_manager_output.log_level)
+            status = CollectorResult.Failure(self.tool_manager_output.error_message,
+                    _LOGGER, self.tool_manager_output.log_level)
         else:
             self.promote_state(Collector.State.COLLECTING, run_context.state_change_observers)
             collect_fun = self._collect_linux if IS_LINUX else self._collect_windows
             status = collect_fun(run_context.output_dir, run_context.suffix)
-        tool_worked = (status.isSuccess() or self.get_state() == Collector.State.ABORTING) and not using_watchdog
+        tool_worked = status.isSuccess() or self.get_state() == Collector.State.ABORTING
         tool_manager.set_available(self.tool_name, True if tool_worked else self.tool_manager_output.error_message)
         return status
-
-    def needs_auth(self) -> bool:
-        if self.tool_manager_output.error_message is not None and self.process.process_type == 'splunkd server':
-            return True
-        return False
-
-    @staticmethod
-    def format_watchdog_data(data, output_file) -> CollectorResult:
-        """
-        Format watchdog JSON content element into a file in a format compatible with flamegraph tools.
-
-        Example of input json format:
-        "AppLicenseThread [57538]":
-        [
-            "[0x00000000048C6CBB]  "_ZN16AppLicenseThread4mainEv + 465 (splunkd + 0x44C6CBB)"",
-            "[0x0000000004DAC395]  "_ZN6Thread37_callMainAndDiscardTerminateExceptionEv + 69 (splunkd + 0x49AC395)""
-        ]
-
-        Example of output format:
-        TID 57538:
-        #0 0x00000000048C6CBB _ZN16AppLicenseThread4mainEv + 465 (splunkd + 0x44C6CBB)
-        #1 0x0000000004DAC395 _ZN6Thread37_callMainAndDiscardTerminateExceptionEv + 69 (splunkd + 0x49AC395)
-        """
-        try:
-            content = json.loads(data)['entry'][0]['content']
-            for tid, calls in content.items():
-                if not tid or not calls:
-                    continue
-                matched_tid = re.match(r'.* \[(?P<tid>.*)\]', tid)
-                if not matched_tid:
-                    continue
-                output_file.write('TID ' + matched_tid.group('tid') + ':\n')
-                for counter, call in enumerate(calls):
-                    matched_call = REX_CALL_STACK_ADDRESS_SIGNATURE.match(call)
-                    if matched_call:
-                        output_file.write('#' + str(counter) + ' ' + matched_call.group('address') + ' ' +
-                                            matched_call.group('signature')+'\n')
-        except AttributeError as e:
-            return CollectorResult.Exception(e, 'Format watchdog data failed', _LOGGER)
-        return CollectorResult.Success()
-
-    def _collect_watchdog(self, run_context: Collector.RunContext) -> CollectorResult:
-        """Collects stack traces for a given process using watchdog utility."""
-        _LOGGER.info('Starting stack trace collector using watchdog: collect with process=%s output_dir=%s suffix=%s',
-                        str(self.process), run_context.output_dir, run_context.suffix)
-        _LOGGER.debug('Task assigned to thread: %s', str(threading.current_thread().name))
-        _LOGGER.debug('ID of process running task: %s', str(os.getpid()))
-
-        if IS_LINUX:
-            try:
-                self.collect_proc(run_context.output_dir, run_context.suffix)
-            except EnvironmentError as e:
-                _LOGGER.exception('Error collecting data from procfs, process=%s output_dir=%s suffix=%s : %s',
-                                str(self.process), run_context.output_dir, run_context.suffix, str(e))
-
-        try:
-            service = client.connect(host=splunk.getDefault('host'),
-                                     port=splunk.getDefault('port'),
-                                     scheme=splunk.getDefault('protocol'),
-                                     token=run_context.session_token,
-                                     autologin=True,
-                                     )
-        except AuthenticationError as e:
-            return CollectorResult.Exception(e, 'Authentication failed', _LOGGER)
-
-        try:
-            _LOGGER.debug('Collecting watchdog into %s with suffix %s', run_context.output_dir, run_context.suffix)
-            response = service.get('/services/server/pstacks', output_mode='json')
-        except HTTPError as e:
-            if e.status == 503 and e.reason == 'Service Unavailable':
-                return CollectorResult.Failure('Splunk Watchdog Service Unavailable.', _LOGGER)
-            return CollectorResult.Exception(e, 'Request failed', _LOGGER)
-
-        fname = os.path.join(run_context.output_dir, 'watchdog_' + str(self.pid) + run_context.suffix)
-
-        with open(fname + ".out", "a+") as output:
-            try:
-                watchdog_data = response['body'].read().decode('utf-8')
-                return self.format_watchdog_data(watchdog_data, output)
-            except UnicodeError as e:
-                return CollectorResult.Exception(e, 'Decode watchdog data failed', _LOGGER)
 
     def _collect_windows(self, output_dir, suffix):
         """For Windows, collects stack traces for a given process using procdump utility."""

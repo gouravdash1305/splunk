@@ -4,14 +4,18 @@
 
 
 define([
+    'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
+    'util/console',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/components/SingleValueWithResults.html'
 ], function(
+    $,
     _,
     module,
-    SwcMC,
+    BaseView,
+    console,
     Template
 ) {
     /**
@@ -23,7 +27,7 @@ define([
         delay: {"show": "750", "hide": "0"}
     };
     
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         tagName: function() {
             return this.options.drilldownHref ? 'a' : 'div';
@@ -37,7 +41,7 @@ define([
             };
         },
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.dataToRender = _.extend(this.dataToRender || {}, {
                 UNDER_LABEL: this.options.UNDER_LABEL,

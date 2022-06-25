@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" isVisible="true" script="common_control.js" >
+<form hideEdit="True" isVisible="true" script="common_control.js" >
   <label>Cascading Replication</label>
 
   <fieldset autoRun="true" submitButton="false">

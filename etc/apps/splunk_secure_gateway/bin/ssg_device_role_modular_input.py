@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular Input for updating the mapping of devices to roles used for sending push notifications by role
 """
@@ -18,7 +18,7 @@ from spacebridgeapp.util import py23
 
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 
-from spacebridgeapp.util.base_modular_input import BaseModularInput
+from solnlib import modular_input
 from spacebridgeapp.util.splunk_utils.common import modular_input_should_run
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
@@ -26,7 +26,7 @@ from spacebridgeapp.rest.clients.async_client_factory import AsyncClientFactory
 from spacebridgeapp.alerts.device_role_mapping import update
 
 
-class DeviceRolesMappingModularInput(BaseModularInput):
+class DeviceRolesMappingModularInput(modular_input.ModularInput):
     """
     """
     title = 'Splunk Secure Gateway Role Based Notification Manager'
@@ -56,9 +56,6 @@ class DeviceRolesMappingModularInput(BaseModularInput):
         :param input_config:
         :return:
         """
-        if not super(DeviceRolesMappingModularInput, self).do_run(input_config):
-            return
-
         if not modular_input_should_run(self.session_key, logger=self.logger):
             self.logger.debug("Modular input will not run on this node.")
             return

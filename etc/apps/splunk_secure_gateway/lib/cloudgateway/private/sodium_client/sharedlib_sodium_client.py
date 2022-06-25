@@ -5,12 +5,7 @@ import logging
 from . import pysodium
 from .errors import SodiumOperationError
 
-
 class SodiumClient(object):
-    __SUBKEY_ID = 1
-    __CRYPTO_CONTEXT_NAME = "CTX_CRPT".encode()
-    __AUTH_ID_CONTEXT_NAME = "CTX_AUTH".encode()
-
     def __init__(self, logger=None):
         if not logger:
             logger = logging.Logger("sodium_client", level=logging.ERROR)
@@ -75,25 +70,5 @@ class SodiumClient(object):
         try:
             hash = pysodium.crypto_generichash_final(state)
             return hash
-        except ValueError as v:
-            raise SodiumOperationError(str(v))
-
-    def pwhash_easy(self, plaintext):
-        try:
-            pwhash = pysodium.crypto_pwhash_easy(plaintext)
-            return pwhash
-        except ValueError as v:
-            raise SodiumOperationError(str(v))
-
-    def crypto_kdf_derive_authid(self, master_key):
-        return self.crypto_kdf_derive_from_key(master_key, self.__SUBKEY_ID, self.__AUTH_ID_CONTEXT_NAME)
-
-    def crypto_kdf_derive_encryption(self, master_key):
-        return self.crypto_kdf_derive_from_key(master_key, self.__SUBKEY_ID, self.__CRYPTO_CONTEXT_NAME)
-
-    def crypto_kdf_derive_from_key(self, master_key, subkey_id, context):
-        try:
-            subkey = pysodium.crypto_kdf_derive_from_key(subkey_id, context, master_key)
-            return subkey
         except ValueError as v:
             raise SodiumOperationError(str(v))

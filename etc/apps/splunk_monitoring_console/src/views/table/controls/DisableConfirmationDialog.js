@@ -4,6 +4,8 @@ define(
         'underscore',
         'module',
         'backbone',
+        'collections/shared/FlashMessages',
+        'views/shared/FlashMessagesLegacy',
         'splunk_monitoring_console/views/table/controls/SimpleDialog',
         'splunk_monitoring_console/views/table/controls/ConfirmationDialog',
         'splunk_monitoring_console/views/table/controls/FailureDialog'
@@ -14,6 +16,8 @@ define(
         _,
         module,
         Backbone,
+        FlashMessagesCollection,
+        FlashMessagesView,
         SimpleDialog,
         ConfirmationDialog,
         FailureDialog
@@ -24,7 +28,7 @@ define(
             initialize: function() {
                 var defaults = {
                     title: _("Disable Instance").t(),
-                    message: '<div class="alert alert-warning"><i class="icon-alert"></i>' + _("All your preconfigured roles will be lost.").t() + '</div>' + '<p>' + _("Are you sure you want to disable this instance?").t() + '</p>'
+                    message: '<div class="alert alert-warning"><i class="icon-alert" />' + _("All your preconfigured roles will be lost.").t() + '</div>' + '<p>' + _("Are you sure you want to disable this instance?").t() + '</p>'
                 };
                 this.options = _.extend({}, defaults, this.options);
                 SimpleDialog.prototype.initialize.apply(this, arguments);
@@ -44,11 +48,11 @@ define(
                     settingsAsset.entry.content.set('blackList', blackList.join(','));
 
                     // remove this instance from all distributed groups
-                    this.model.peer.removeAllServerRoles();
+                    this.model.peer.removeAllServerRoles(); 
 
                     var deferred = [settingsAsset.save(), this.model.peer.save()];
                     $(e.target).prop('disabled', true);
-                    Promise.all(deferred).then(function() {
+                    $.when.apply($, deferred).done(function() {
                         this.model.peer.entry.content.set("errorMessages", []);
                         this.model.peer.entry.content.set("warningMessages", []);
                         this.model.state.trigger("updateRows");
@@ -60,7 +64,7 @@ define(
                         });
                         $('body').append(dialog.render().el);
                         dialog.show();
-                    }.bind(this)).catch(function() {
+                    }.bind(this)).fail(function() {
                         this.hide();
                         var dialog = new FailureDialog().render();
                         $('body').append(dialog.el);

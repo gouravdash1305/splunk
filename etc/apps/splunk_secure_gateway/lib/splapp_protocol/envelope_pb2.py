@@ -22,8 +22,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='envelope.proto',
   package='Application',
   syntax='proto3',
-  serialized_options=_b('Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssg'),
-  serialized_pb=_b('\n\x0e\x65nvelope.proto\x12\x0b\x41pplication\x1a\rrequest.proto\x1a\x12subscription.proto\x1a\x0c\x63ommon.proto\"\xb7\x01\n\x18\x43lientApplicationMessage\x12?\n\x13\x63lientSingleRequest\x18\x01 \x01(\x0b\x32 .Application.ClientSingleRequestH\x00\x12K\n\x19\x63lientSubscriptionMessage\x18\x02 \x01(\x0b\x32&.Application.ClientSubscriptionMessageH\x00\x42\r\n\x0b\x61pp_message\"\xcd\x02\n\x18ServerApplicationMessage\x12\x41\n\x14serverSingleResponse\x18\x01 \x01(\x0b\x32!.Application.ServerSingleResponseH\x00\x12I\n\x18serverSubscriptionUpdate\x18\x02 \x01(\x0b\x32%.Application.ServerSubscriptionUpdateH\x00\x12M\n\x1aserverSubscriptionResponse\x18\x03 \x01(\x0b\x32\'.Application.ServerSubscriptionResponseH\x00\x12\x45\n\x16serverSubscriptionPing\x18\x04 \x01(\x0b\x32#.Application.ServerSubscriptionPingH\x00\x42\r\n\x0b\x61pp_message\"\x99\x01\n\x13NotificationMessage\x12<\n\x11\x61lertNotification\x18\x01 \x01(\x0b\x32\x1f.Application.Alert.NotificationH\x00\x12\x35\n\x0egenericMessage\x18\x02 \x01(\x0b\x32\x1b.Application.GenericMessageH\x00\x42\r\n\x0b\x61pp_messageB@Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssgb\x06proto3')
+  serialized_options=None,
+  serialized_pb=_b('\n\x0e\x65nvelope.proto\x12\x0b\x41pplication\x1a\rrequest.proto\x1a\x12subscription.proto\x1a\x0c\x63ommon.proto\"\xb7\x01\n\x18\x43lientApplicationMessage\x12?\n\x13\x63lientSingleRequest\x18\x01 \x01(\x0b\x32 .Application.ClientSingleRequestH\x00\x12K\n\x19\x63lientSubscriptionMessage\x18\x02 \x01(\x0b\x32&.Application.ClientSubscriptionMessageH\x00\x42\r\n\x0b\x61pp_message\"\xcd\x02\n\x18ServerApplicationMessage\x12\x41\n\x14serverSingleResponse\x18\x01 \x01(\x0b\x32!.Application.ServerSingleResponseH\x00\x12I\n\x18serverSubscriptionUpdate\x18\x02 \x01(\x0b\x32%.Application.ServerSubscriptionUpdateH\x00\x12M\n\x1aserverSubscriptionResponse\x18\x03 \x01(\x0b\x32\'.Application.ServerSubscriptionResponseH\x00\x12\x45\n\x16serverSubscriptionPing\x18\x04 \x01(\x0b\x32#.Application.ServerSubscriptionPingH\x00\x42\r\n\x0b\x61pp_message\"\x99\x01\n\x13NotificationMessage\x12<\n\x11\x61lertNotification\x18\x01 \x01(\x0b\x32\x1f.Application.Alert.NotificationH\x00\x12\x35\n\x0egenericMessage\x18\x02 \x01(\x0b\x32\x1b.Application.GenericMessageH\x00\x42\r\n\x0b\x61pp_messageb\x06proto3')
   ,
   dependencies=[request__pb2.DESCRIPTOR,subscription__pb2.DESCRIPTOR,common__pb2.DESCRIPTOR,])
 
@@ -225,5 +225,4 @@ NotificationMessage = _reflection.GeneratedProtocolMessageType('NotificationMess
 _sym_db.RegisterMessage(NotificationMessage)
 
 
-DESCRIPTOR._options = None
 # @@protoc_insertion_point(module_scope)

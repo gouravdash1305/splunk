@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for dashboard helper function
 """
@@ -7,10 +7,10 @@ Module for dashboard helper function
 import re
 import hashlib
 
-DASHBOARD_ID_URL_REGEX = r'^https?://.+/servicesNS/(?P<user>[a-zA-Z0-9-_.%]+)/' \
-                     r'(?P<app_name>[a-zA-Z0-9-_.%]+)/data/ui/views/(?P<dashboard_name>[a-zA-Z0-9-_.%]+)$'
+DASHBOARD_ID_URL_REGEX = r'^https?://.+/servicesNS/(?P<user>[a-zA-Z0-9-_.]+)/' \
+                     r'(?P<app_name>[a-zA-Z0-9-_.]+)/data/ui/views/(?P<dashboard_name>[a-zA-Z0-9-_.]+)$'
 DASHBOARD_ID_URL_MATCHER = re.compile(DASHBOARD_ID_URL_REGEX)
-FIELD_REGEX = r'[a-zA-Z0-9-_.%]+'
+FIELD_REGEX = r'[a-zA-Z0-9-_.]+'
 FIELD_MATCHER = re.compile(FIELD_REGEX)
 
 
@@ -106,34 +106,20 @@ def convert_id_to_query(dashboard_id):
     return '({})'.format(' AND '.join(values))
 
 
-def generate_search_str(app_names, dashboard_ids, dashboard_tags, tagging_config_map=None):
+def generate_search_str(app_names, dashboard_ids):
     """
-    Helper to generate search string for dashboard list request query
-    :param app_names:
-    :param dashboard_ids:
-    :param dashboard_tags:
-    :param tagging_config_map:
-    :return:
+        Helper to generate search string for dashboard list request query
+        :param app_names:
+        :param dashboard_ids:
+        :return:
     """
     dashboard_id_query = ''
     app_name_query = ''
-    dashboard_tags_query = ''
-    enable_tags = False
-
-    if not tagging_config_map:
-        tagging_config_map = {}
 
     if app_names:
-        query = []
-        enable_by_app = []
-        for app_name in app_names:
-            query.append(f'eai:acl.app="{app_name}"')
-            app_tag_enabled = app_name in tagging_config_map and tagging_config_map.get(app_name).get('enabled', False)
-            enable_by_app.append(app_tag_enabled)
         query = [f'eai:acl.app="{app_name}"' for app_name in app_names]
         or_join = ' OR '.join(query)
         app_name_query = f' AND ({or_join})'
-        enable_tags = all(enable_by_app)
 
     # If a set of dashboard_ids is given, add search logic to search_str
     if dashboard_ids:
@@ -141,14 +127,9 @@ def generate_search_str(app_names, dashboard_ids, dashboard_tags, tagging_config
         or_join = ' OR '.join(query)
         dashboard_id_query = f' AND ({or_join})'
 
-    if enable_tags and dashboard_tags:
-        query = [f'tags=*{dashboard_tag}*' for dashboard_tag in dashboard_tags]
-        or_join = ' OR '.join(query)
-        dashboard_tags_query = f' AND ({or_join})'
-
     # This is the current search string passed by API from search and reporting to fetch dashboards
     search_str = f'((isDashboard=1 AND isVisible=1 AND (rootNode="form" OR rootNode="dashboard"))' \
-                 f'{app_name_query}{dashboard_id_query}{dashboard_tags_query})'
+                 f'{app_name_query}{dashboard_id_query})'
     return search_str
 
 

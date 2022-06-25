@@ -1,13 +1,4 @@
-from builtins import range
 import copy
-import csv
-from functools import cmp_to_key
-import json
-import logging
-import os
-import re
-from smtplib import SMTPNotSupportedError 
-import socket
 import sys
 if sys.version_info >= (3, 0):
     from io import (BytesIO, TextIOWrapper)
@@ -16,18 +7,25 @@ else:
     from cStringIO import StringIO
     BytesIO = StringIO
     import urllib
-import time
-
+import logging
+from functools import cmp_to_key
 from email import encoders, utils
-from email.header import Header
+import csv
+import json
+import defusedxml.lxml as safe_lxml
+import re
+import socket
+import time
+from mako import template
+import mako.filters as filters
+from builtins import range
+
 from email.mime.application import MIMEApplication
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.header import Header
 
-import splunk.safe_lxml_etree as et
-from mako import template
-import mako.filters as filters
 import splunk.entity as entity
 import splunk.Intersplunk
 import splunk.mining.dcutils as dcu
@@ -38,6 +36,7 @@ import splunk.ssl_context as ssl_context
 from splunk.rest import simpleRequest
 from splunk.saved import savedSearchJSONIsAlert
 from splunk.util import normalizeBoolean, unicode, format_local_tzoffset
+import os
 
 PDF_REPORT_SERVER_TIMEOUT = 600
 PDFGEN_SIMPLE_REQUEST_TIMEOUT = 3600
@@ -80,13 +79,6 @@ def renderTime(results):
          except:
               pass
 
-# SPL-207377 - Normalize email address separators
-def normalizeEmail(email, field, recipients):
-    emailList = EMAIL_DELIM.split(email[field])
-    recipients.extend(emailList)
-    stripped = ','.join([str(elem) for elem in emailList])
-    email.replace_header(field, stripped)
-
 def mail(email, argvals, ssContent, sessionKey):
 
     sender     = email['From']
@@ -99,9 +91,9 @@ def mail(email, argvals, ssContent, sessionKey):
     recipients = []
 
     if email['To']:
-        normalizeEmail(email, 'To', recipients)
+        recipients.extend(EMAIL_DELIM.split(email['To']))
     if email['Cc']:
-        normalizeEmail(email, 'Cc', recipients)
+        recipients.extend(EMAIL_DELIM.split(email['Cc']))
     if email['Bcc']:
         recipients.extend(EMAIL_DELIM.split(email['Bcc']))
         del email['Bcc']    # delete bcc from header after adding to recipients
@@ -113,8 +105,6 @@ def mail(email, argvals, ssContent, sessionKey):
         domains = []
         domains.extend(EMAIL_DELIM.split(ssContent['action.email.allowedDomainList']))
         domains = [d.strip() for d in domains]
-        domains = [d.lower() for d in domains]
-        recipients = [r.lower() for r in recipients]
         for recipient in recipients:
             dom = recipient.partition("@")[2]
             if not dom in domains:
@@ -162,25 +152,8 @@ def mail(email, argvals, ssContent, sessionKey):
         if len(username) > 0 and password is not None and len(password) >0:
             smtp.login(username, password)
 
-        if ssContent.get('action.email.allowedDomainList') != "" and ssContent.get('action.email.allowedDomainList') != None:
-            if len(validRecipients) == 0:
-                raise Exception("The email domains of the recipients are not among those on the allowed domain list.")
-        
-        # Installed SMTP daemon may not support UTF8. 
-        # This can only be determined if SMTPNotSupportedError is raised. 
-        # Try without SMTPUTF8 option if raised.
-        try:
-            # mail_options SMTPUTF8 allows UTF8 message serialization
-            smtp.sendmail(sender, validRecipients, email.as_string(), mail_options=["SMTPUTF8"])
-        except SMTPNotSupportedError:
-            # sendmail is not configured to handle UTF8
-            smtp.sendmail(sender, validRecipients, email.as_string())
-        
+        smtp.sendmail(sender, validRecipients, email.as_string())
         smtp.quit()
-        if ssContent.get('action.email.allowedDomainList') != "" and ssContent.get('action.email.allowedDomainList') != None:
-            if validRecipients != recipients:
-                raise Exception("Not all of the recipient email domains are on the allowed domain list. Sending emails only to %s" % str(validRecipients))
-
         logger.info(mail_log_msg)
 
     except Exception as e:
@@ -402,7 +375,7 @@ def sendEmail(results, settings, keywords, argvals):
         if ssContent['type'] == 'searchCommand':
             # set default message for searchCommand emails
             if ssContent['action.email.sendresults'] or ssContent['action.email.sendpdf'] or ssContent['action.email.sendcsv']:
-                if ssContent.get('action.email.inline') and not(ssContent.get('action.email.sendpdf') or ssContent.get('action.email.sendcsv')):
+                if ssContent['action.email.inline'] and not(ssContent['action.email.sendpdf'] or ssContent['action.email.sendcsv']):
                     ssContent['action.email.message'] = 'Search results.'
                 else:
                     ssContent['action.email.message'] = 'Search results attached.'
@@ -494,12 +467,11 @@ def sendEmail(results, settings, keywords, argvals):
 
     viewContent = viewResponseBody['entry'][0]['content']
 
-    if ssContent.get('action.email.allowedDomainList'):
-        ssContent['action.email.allowedDomainList'] = ssContent['action.email.allowedDomainList'].strip()
-        if ssContent.get('action.email.allowedDomainList') != alertContent.get('allowedDomainList'):
-            ssContent['action.email.allowedDomainList'] = alertContent['allowedDomainList']
-            logger.warn("For alert=%s, the 'allowedDomainList' value is always obtained from alert_actions.conf."
-                        "The allowedDomainList=%s" % (ssname, alertContent.get('allowedDomainList')))
+    ssContent['action.email.allowedDomainList'] = ssContent['action.email.allowedDomainList'].strip()
+    if ssContent.get('action.email.allowedDomainList') != alertContent.get('allowedDomainList'):
+        ssContent['action.email.allowedDomainList'] = alertContent['allowedDomainList']
+        logger.warn("For alert=%s, the 'allowedDomainList' value is always obtained from alert_actions.conf."
+                    "The allowedDomainList=%s" % (ssname, alertContent.get('allowedDomainList')))
 
     if alertContent.get('allowedDomainList') != "":
         if ssContent.get('action.email.mailserver') != alertContent.get('mailserver'):
@@ -591,7 +563,7 @@ def buildSafeMergedValues(ssContent, results, serverInfoContent, jobContent, vie
 
 def getDescriptionFromXml(xmlString):
     if xmlString:
-        dashboardNode = et.fromstring(unicode(xmlString).encode('utf-8'))
+        dashboardNode = safe_lxml.fromstring(unicode(xmlString).encode('utf-8'))
         return dashboardNode.findtext('./description')
     else:
         return None
@@ -1308,13 +1280,9 @@ def buildAttachments(settings, ssContent, results, email, jobCount, argvals):
     
     paperSize        = ssContent.get('action.email.reportPaperSize', 'letter')
     paperOrientation = ssContent.get('action.email.reportPaperOrientation', 'portrait')
-    pdfLogoPath  = ssContent.get('action.email.pdf.logo_path')
+    pdfLogoPath  = ssContent.get('action.email.pdf.logo_path');
 
-    # Despite being generically called a "view", a pdfview is _always_ the ID of
-    # a splunk dashboard. Also see src/scheduler/SavedSearchAdminHandler.cpp's
-    # definition of getDefaultScheduledView()
-    isDashboard  = normalizeBoolean(pdfview)
-    pdf          = None
+    pdf         = None
     alertActions = getAlertActions(sessionKey)
     if alertActions:
         # Take ssContent first, then fallback to alertActions.
@@ -1329,9 +1297,9 @@ def buildAttachments(settings, ssContent, results, email, jobCount, argvals):
         fileName = None
 
     if sendpdf:
+
         sendtestemail = normalizeBoolean(argvals.get('sendtestemail', False))
-        # Dashboard PDF export *always* overrides allowEmpty (action.email.allow_empty_attachment)
-        if len(results) == 0 and not allowEmpty and not sendtestemail and not isDashboard:
+        if len(results) == 0 and not allowEmpty and not sendtestemail:
             logger.info("Not attaching pdf file due to no matching results and allow_empty_attachment=%s" % str(allowEmpty))
         else:
             import splunk.pdf.availability as pdf_availability
@@ -1341,9 +1309,7 @@ def buildAttachments(settings, ssContent, results, email, jobCount, argvals):
             try:
                 if pdfgen_available:
                     # will raise an Exception on error
-                    pdf = generatePDF(server, subject, searchid, settings, pdfview, ssName, paperSize,
-                                          paperOrientation, pdfLogoPath)
-
+                    pdf = generatePDF(server, subject, searchid, settings, pdfview, ssName, paperSize, paperOrientation, pdfLogoPath)
             except Exception as e:
                 logger.error("An error occurred while generating a PDF: %s" % e)
                 ssContent['errorArray'].append("An error occurred while generating the PDF. Please see python.log for details.")
@@ -1353,7 +1319,7 @@ def buildAttachments(settings, ssContent, results, email, jobCount, argvals):
                 props = {
                     "owner": owner or 'nobody',
                     "app": namespace,
-                    "type": "dashboard" if isDashboard else type or "report",
+                    "type": "dashboard" if pdfview else type or "report",
                     "name": pdfview or ssName
                 }
                 filename = pu.makeReportName(pattern=fileName, type="pdf", reportProps=props)
@@ -1489,7 +1455,7 @@ def generatePDF(serverURL, subject, sid, settings, pdfViewID, ssName, paperSize,
             parameters['paper-size'] = paperSize
 
     if pdfLogoPath:
-        parameters['pdf.logo_path'] = pdfLogoPath
+        parameters['pdf.logo_path'] = pdfLogoPath;
 
     # determine if we should set an effective dispatch "now" time for this job
     scheduledJobEffectiveTime = getEffectiveTimeOfScheduledJob(settings.get("sid", ""))
@@ -1622,33 +1588,22 @@ def sendHealthAlertEmail(results, settings):
     # For health report email alert, don't need return results.
     return None
 
-def createOrganizedResultBuffer(buffer):
-    # creates the readable buffer for reading search results into the send email script
-    return TextIOWrapper(buffer, encoding='utf-8', errors='backslashreplace')
+results, dummyresults, settings = splunk.Intersplunk.getOrganizedResults()
+try:
+    keywords, argvals = splunk.Intersplunk.getKeywordsAndOptions(CHARSET)
 
-if __name__ == '__main__':
-    if sys.version_info >= (3, 0):
-        # We need to support data of non utf-8 encodings coming into this script, to do that,
-        # we allow utf-8 errors 
-        input_buf = createOrganizedResultBuffer(sys.stdin.buffer)
+    logger.debug('SENDEMAIL keywords: %s, argvals: %s' % (keywords, argvals))
+
+    if 'is_health_alert' in argvals:
+        results = sendHealthAlertEmail(results, settings)
     else:
-        input_buf = sys.stdin
-    results, dummyresults, settings = splunk.Intersplunk.getOrganizedResults(input_buf)
-    try:
-        keywords, argvals = splunk.Intersplunk.getKeywordsAndOptions(CHARSET)
-
-        logger.debug('SENDEMAIL keywords: %s, argvals: %s' % (keywords, argvals))
-
-        if 'is_health_alert' in argvals:
-            results = sendHealthAlertEmail(results, settings)
-        else:
-            if results or 'ssname' in argvals:
+        if results or 'ssname' in argvals:
+            results = sendEmail(results, settings, keywords, argvals)
+        elif 'sendtestemail' in argvals:
+            if normalizeBoolean(argvals.get('sendtestemail')):
                 results = sendEmail(results, settings, keywords, argvals)
-            elif 'sendtestemail' in argvals:
-                if normalizeBoolean(argvals.get('sendtestemail')):
-                    results = sendEmail(results, settings, keywords, argvals)
-            else:
-                logger.warn("search results is empty, no email will be sent")
-    except Exception as e:
-        logger.exception(e)
-    splunk.Intersplunk.outputResults(results)
+        else:
+            logger.warn("search results is empty, no email will be sent")
+except Exception as e:
+    logger.exception(e)
+splunk.Intersplunk.outputResults(results)

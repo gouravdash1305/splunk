@@ -19,17 +19,16 @@ from . import augmented_reality_pb2 as augmented__reality__pb2
 from . import nlp_splapp_request_pb2 as nlp__splapp__request__pb2
 from . import drone_mode_pb2 as drone__mode__pb2
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
-from google.protobuf import struct_pb2 as google_dot_protobuf_dot_struct__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='request.proto',
   package='Application',
   syntax='proto3',
-  serialized_options=_b('\n!com.splunk.mobile.spacebridge.appP\001Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssg'),
-  serialized_pb=_b('\n\rrequest.proto\x12\x0b\x41pplication\x1a\x0c\x63ommon.proto\x1a\x17\x61ugmented-reality.proto\x1a\x18nlp_splapp_request.proto\x1a\x10\x64rone_mode.proto\x1a\x1egoogle/protobuf/wrappers.proto\x1a\x1cgoogle/protobuf/struct.proto\"\xf2$\n\x13\x43lientSingleRequest\x12\x11\n\trequestId\x18\x01 \x01(\t\x12\x14\n\x0csessionToken\x18\x02 \x01(\t\x12-\n\x05runAs\x18# \x01(\x0b\x32\x1e.Application.DeviceCredentials\x12\x11\n\tuserAgent\x18\x10 \x01(\t\x12\x15\n\rclientVersion\x18\x12 \x01(\t\x12\x41\n\x14\x64\x61shboardListRequest\x18\x03 \x01(\x0b\x32!.Application.DashboardListRequestH\x00\x12;\n\x11\x61lertsListRequest\x18\x04 \x01(\x0b\x32\x1e.Application.AlertsListRequestH\x00\x12?\n\x13\x64\x61shboardGetRequest\x18\x05 \x01(\x0b\x32 .Application.DashboardGetRequestH\x00\x12?\n\x13\x61lertsDeleteRequest\x18\x06 \x01(\x0b\x32 .Application.AlertsDeleteRequestH\x00\x12\x41\n\x14\x64\x61shboardDataRequest\x18\x07 \x01(\x0b\x32!.Application.DashboardDataRequestH\x00\x12\x43\n\x15\x61rWorkspaceSetRequest\x18\x08 \x01(\x0b\x32\".Application.ARWorkspaceSetRequestH\x00\x12\x43\n\x15\x61rWorkspaceGetRequest\x18\t \x01(\x0b\x32\".Application.ARWorkspaceGetRequestH\x00\x12\x37\n\x0f\x61lertGetRequest\x18\n \x01(\x0b\x32\x1c.Application.AlertGetRequestH\x00\x12Q\n\x1cjubileeConnectionInfoRequest\x18\x0b \x01(\x0b\x32).Application.JubileeConnectionInfoRequestH\x00\x12?\n\x13\x64\x61shboardSetRequest\x18\x0c \x01(\x0b\x32 .Application.DashboardSetRequestH\x00\x12=\n\x12\x61lertsClearRequest\x18\r \x01(\x0b\x32\x1f.Application.AlertsClearRequestH\x00\x12\x45\n\x16\x61rWorkspaceListRequest\x18\x0e \x01(\x0b\x32#.Application.ARWorkspaceListRequestH\x00\x12M\n\x1a\x61rWorkspaceImageSetRequest\x18\x0f \x01(\x0b\x32\'.Application.ARWorkspaceImageSetRequestH\x00\x12;\n\x11versionGetRequest\x18\x11 \x01(\x0b\x32\x1e.Application.VersionGetRequestH\x00\x12\x45\n\x16\x62\x65\x61\x63onRegionGetRequest\x18\x13 \x01(\x0b\x32#.Application.BeaconRegionGetRequestH\x00\x12K\n\x17\x62\x65\x61\x63onMappingGetRequest\x18\x14 \x01(\x0b\x32$.Application.BeaconMappingGetRequestB\x02\x18\x01H\x00\x12]\n\"geofenceDashboardMappingGetRequest\x18\x15 \x01(\x0b\x32/.Application.GeofenceDashboardMappingGetRequestH\x00\x12Y\n nearbyDashboardMappingGetRequest\x18\x16 \x01(\x0b\x32-.Application.NearbyDashboardMappingGetRequestH\x00\x12Y\n nearbyDashboardMappingSetRequest\x18\x17 \x01(\x0b\x32-.Application.NearbyDashboardMappingSetRequestH\x00\x12_\n#nearbyDashboardMappingDeleteRequest\x18\x18 \x01(\x0b\x32\x30.Application.NearbyDashboardMappingDeleteRequestH\x00\x12\x63\n%geofenceDashboardMappingGetAllRequest\x18\x19 \x01(\x0b\x32\x32.Application.GeofenceDashboardMappingGetAllRequestH\x00\x12\x45\n\x16\x62\x65\x61\x63onRegionSetRequest\x18\x1a \x01(\x0b\x32#.Application.BeaconRegionSetRequestH\x00\x12K\n\x19\x62\x65\x61\x63onRegionDeleteRequest\x18\x1b \x01(\x0b\x32&.Application.BeaconRegionDeleteRequestH\x00\x12\x37\n\x0f\x61ssetGetRequest\x18\x1c \x01(\x0b\x32\x1c.Application.AssetGetRequestH\x00\x12\x37\n\x0f\x61ssetSetRequest\x18\x1d \x01(\x0b\x32\x1c.Application.AssetSetRequestH\x00\x12=\n\x12\x61ssetDeleteRequest\x18\x1e \x01(\x0b\x32\x1f.Application.AssetDeleteRequestH\x00\x12G\n\x17\x61rWorkspaceSetRequestV2\x18\x1f \x01(\x0b\x32$.Application.ARWorkspaceSetRequestV2H\x00\x12G\n\x17\x61rWorkspaceGetRequestV2\x18  \x01(\x0b\x32$.Application.ARWorkspaceGetRequestV2H\x00\x12G\n\x17\x63onnectivityTestRequest\x18! \x01(\x0b\x32$.Application.ConnectivityTestRequestH\x00\x12M\n\x1a\x61rWorkspaceDeleteRequestV2\x18\" \x01(\x0b\x32\'.Application.ARWorkspaceDeleteRequestV2H\x00\x12I\n\x18savedSearchSPLGetRequest\x18$ \x01(\x0b\x32%.Application.SavedSearchSPLGetRequestH\x00\x12I\n\x18savedSearchesSyncRequest\x18% \x01(\x0b\x32%.Application.SavedSearchesSyncRequestH\x00\x12\x43\n\x15\x64\x61shboardsSyncRequest\x18& \x01(\x0b\x32\".Application.DashboardsSyncRequestH\x00\x12\x35\n\x0e\x61ppListRequest\x18\' \x01(\x0b\x32\x1b.Application.AppListRequestH\x00\x12M\n\x1a\x64\x61shboardAppListSetRequest\x18( \x01(\x0b\x32\'.Application.DashboardAppListSetRequestH\x00\x12M\n\x1a\x64\x61shboardAppListGetRequest\x18) \x01(\x0b\x32\'.Application.DashboardAppListGetRequestH\x00\x12\x37\n\x0fgroupGetRequest\x18* \x01(\x0b\x32\x1c.Application.GroupGetRequestH\x00\x12\x37\n\x0fgroupSetRequest\x18+ \x01(\x0b\x32\x1c.Application.GroupSetRequestH\x00\x12=\n\x12groupDeleteRequest\x18, \x01(\x0b\x32\x1f.Application.GroupDeleteRequestH\x00\x12?\n\x13\x63lientConfigRequest\x18- \x01(\x0b\x32 .Application.ClientConfigRequestH\x00\x12\x35\n\x0egenericMessage\x18. \x01(\x0b\x32\x1b.Application.GenericMessageH\x00\x12Y\n deviceCredentialsValidateRequest\x18/ \x01(\x0b\x32-.Application.DeviceCredentialsValidateRequestH\x00\x12I\n\x18udfHostedResourceRequest\x18\x30 \x01(\x0b\x32%.Application.UdfHostedResourceRequestH\x00\x12[\n!completeDeviceRegistrationRequest\x18\x31 \x01(\x0b\x32..Application.CompleteDeviceRegistrationRequestH\x00\x12I\n\x18\x61rWorkspaceFormatRequest\x18\x32 \x01(\x0b\x32%.Application.ARWorkspaceFormatRequestH\x00\x12\x31\n\x0ctvGetRequest\x18\x33 \x01(\x0b\x32\x19.Application.TVGetRequestH\x00\x12=\n\x12tvConfigSetRequest\x18\x34 \x01(\x0b\x32\x1f.Application.TVConfigSetRequestH\x00\x12\x43\n\x15tvConfigDeleteRequest\x18\x35 \x01(\x0b\x32\".Application.TVConfigDeleteRequestH\x00\x12\x41\n\x14tvBookmarkGetRequest\x18\x36 \x01(\x0b\x32!.Application.TVBookmarkGetRequestH\x00\x12\x41\n\x14tvBookmarkSetRequest\x18\x37 \x01(\x0b\x32!.Application.TVBookmarkSetRequestH\x00\x12G\n\x17tvBookmarkDeleteRequest\x18\x38 \x01(\x0b\x32$.Application.TVBookmarkDeleteRequestH\x00\x12K\n\x19tvBookmarkActivateRequest\x18\x39 \x01(\x0b\x32&.Application.TVBookmarkActivateRequestH\x00\x12?\n\x13tvCaptainUrlRequest\x18: \x01(\x0b\x32 .Application.TVCaptainUrlRequestH\x00\x12I\n\x18startMPCBroadcastRequest\x18; \x01(\x0b\x32%.Application.StartMPCBroadcastRequestH\x00\x12\x41\n\x14tvInteractionRequest\x18< \x01(\x0b\x32!.Application.TVInteractionRequestH\x00\x12Y\n createPhantomRegistrationRequest\x18= \x01(\x0b\x32-.Application.CreatePhantomRegistrationRequestH\x00\x12[\n!getPhantomRegistrationInfoRequest\x18> \x01(\x0b\x32..Application.GetPhantomRegistrationInfoRequestH\x00\x12\x45\n\x16tvConfigBulkSetRequest\x18? \x01(\x0b\x32#.Application.TVConfigBulkSetRequestH\x00\x12?\n\x13tokenRefreshRequest\x18@ \x01(\x0b\x32 .Application.TokenRefreshRequestH\x00\x12M\n\x1atvCaptainReelectionRequest\x18\x41 \x01(\x0b\x32\'.Application.TVCaptainReelectionRequestH\x00\x12\x33\n\rsnoozeRequest\x18\x42 \x01(\x0b\x32\x1a.Application.SnoozeRequestH\x00\x12\x37\n\x0funsnoozeRequest\x18\x43 \x01(\x0b\x32\x1c.Application.UnsnoozeRequestH\x00\x12\x39\n\x10getSnoozeRequest\x18\x44 \x01(\x0b\x32\x1d.Application.GetSnoozeRequestH\x00\x12\x39\n\x10splunkApiRequest\x18\x45 \x01(\x0b\x32\x1d.Application.SplunkApiRequestH\x00\x42\x11\n\x0frequest_message\"\xd9%\n\x14ServerSingleResponse\x12\x11\n\trequestId\x18\x01 \x01(\t\x12\x18\n\x10replyToMessageId\x18\x02 \x01(\t\x12\x15\n\rserverVersion\x18\x12 \x01(\t\x12#\n\x05\x65rror\x18\x03 \x01(\x0b\x32\x12.Application.ErrorH\x00\x12\x43\n\x15\x64\x61shboardListResponse\x18\x04 \x01(\x0b\x32\".Application.DashboardListResponseH\x00\x12=\n\x12\x61lertsListResponse\x18\x05 \x01(\x0b\x32\x1f.Application.AlertsListResponseH\x00\x12\x41\n\x14\x64\x61shboardGetResponse\x18\x06 \x01(\x0b\x32!.Application.DashboardGetResponseH\x00\x12\x41\n\x14\x61lertsDeleteResponse\x18\x07 \x01(\x0b\x32!.Application.AlertsDeleteResponseH\x00\x12\x43\n\x15\x64\x61shboardDataResponse\x18\x08 \x01(\x0b\x32\".Application.DashboardDataResponseH\x00\x12\x45\n\x16\x61rWorkspaceSetResponse\x18\t \x01(\x0b\x32#.Application.ARWorkspaceSetResponseH\x00\x12\x45\n\x16\x61rWorkspaceGetResponse\x18\n \x01(\x0b\x32#.Application.ARWorkspaceGetResponseH\x00\x12\x39\n\x10\x61lertGetResponse\x18\x0b \x01(\x0b\x32\x1d.Application.AlertGetResponseH\x00\x12S\n\x1djubileeConnectionInfoResponse\x18\x0c \x01(\x0b\x32*.Application.JubileeConnectionInfoResponseH\x00\x12\x41\n\x14\x64\x61shboardSetResponse\x18\r \x01(\x0b\x32!.Application.DashboardSetResponseH\x00\x12?\n\x13\x61lertsClearResponse\x18\x0e \x01(\x0b\x32 .Application.AlertsClearResponseH\x00\x12G\n\x17\x61rWorkspaceListResponse\x18\x0f \x01(\x0b\x32$.Application.ARWorkspaceListResponseH\x00\x12O\n\x1b\x61rWorkspaceImageSetResponse\x18\x10 \x01(\x0b\x32(.Application.ARWorkspaceImageSetResponseH\x00\x12=\n\x12versionGetResponse\x18\x11 \x01(\x0b\x32\x1f.Application.VersionGetResponseH\x00\x12G\n\x17\x62\x65\x61\x63onRegionGetResponse\x18\x13 \x01(\x0b\x32$.Application.BeaconRegionGetResponseH\x00\x12M\n\x18\x62\x65\x61\x63onMappingGetResponse\x18\x14 \x01(\x0b\x32%.Application.BeaconMappingGetResponseB\x02\x18\x01H\x00\x12[\n!nearbyDashboardMappingGetResponse\x18\x15 \x01(\x0b\x32..Application.NearbyDashboardMappingGetResponseH\x00\x12[\n!nearbyDashboardMappingSetResponse\x18\x16 \x01(\x0b\x32..Application.NearbyDashboardMappingSetResponseH\x00\x12\x61\n$nearbyDashboardMappingDeleteResponse\x18\x17 \x01(\x0b\x32\x31.Application.NearbyDashboardMappingDeleteResponseH\x00\x12_\n#geofenceDashboardMappingGetResponse\x18\x18 \x01(\x0b\x32\x30.Application.GeofenceDashboardMappingGetResponseH\x00\x12\x65\n&geofenceDashboardMappingGetAllResponse\x18\x19 \x01(\x0b\x32\x33.Application.GeofenceDashboardMappingGetAllResponseH\x00\x12G\n\x17\x62\x65\x61\x63onRegionSetResponse\x18\x1a \x01(\x0b\x32$.Application.BeaconRegionSetResponseH\x00\x12M\n\x1a\x62\x65\x61\x63onRegionDeleteResponse\x18\x1b \x01(\x0b\x32\'.Application.BeaconRegionDeleteResponseH\x00\x12\x39\n\x10\x61ssetGetResponse\x18\x1c \x01(\x0b\x32\x1d.Application.AssetGetResponseH\x00\x12\x39\n\x10\x61ssetSetResponse\x18\x1d \x01(\x0b\x32\x1d.Application.AssetSetResponseH\x00\x12?\n\x13\x61ssetDeleteResponse\x18\x1e \x01(\x0b\x32 .Application.AssetDeleteResponseH\x00\x12I\n\x18\x61rWorkspaceSetResponseV2\x18\x1f \x01(\x0b\x32%.Application.ARWorkspaceSetResponseV2H\x00\x12I\n\x18\x61rWorkspaceGetResponseV2\x18  \x01(\x0b\x32%.Application.ARWorkspaceGetResponseV2H\x00\x12I\n\x18\x63onnectivityTestResponse\x18! \x01(\x0b\x32%.Application.ConnectivityTestResponseH\x00\x12O\n\x1b\x61rWorkspaceDeleteResponseV2\x18\" \x01(\x0b\x32(.Application.ARWorkspaceDeleteResponseV2H\x00\x12K\n\x19savedSearchSPLGetResponse\x18# \x01(\x0b\x32&.Application.SavedSearchSPLGetResponseH\x00\x12K\n\x19savedSearchesSyncResponse\x18$ \x01(\x0b\x32&.Application.SavedSearchesSyncResponseH\x00\x12\x45\n\x16\x64\x61shboardsSyncResponse\x18% \x01(\x0b\x32#.Application.DashboardsSyncResponseH\x00\x12\x37\n\x0f\x61ppListResponse\x18& \x01(\x0b\x32\x1c.Application.AppListResponseH\x00\x12O\n\x1b\x64\x61shboardAppListSetResponse\x18\' \x01(\x0b\x32(.Application.DashboardAppListSetResponseH\x00\x12O\n\x1b\x64\x61shboardAppListGetResponse\x18( \x01(\x0b\x32(.Application.DashboardAppListGetResponseH\x00\x12\x39\n\x10groupGetResponse\x18) \x01(\x0b\x32\x1d.Application.GroupGetResponseH\x00\x12\x39\n\x10groupSetResponse\x18* \x01(\x0b\x32\x1d.Application.GroupSetResponseH\x00\x12?\n\x13groupDeleteResponse\x18+ \x01(\x0b\x32 .Application.GroupDeleteResponseH\x00\x12\x41\n\x14\x63lientConfigResponse\x18, \x01(\x0b\x32!.Application.ClientConfigResponseH\x00\x12\x35\n\x0egenericMessage\x18- \x01(\x0b\x32\x1b.Application.GenericMessageH\x00\x12[\n!deviceCredentialsValidateResponse\x18. \x01(\x0b\x32..Application.DeviceCredentialsValidateResponseH\x00\x12K\n\x19udfHostedResourceResponse\x18/ \x01(\x0b\x32&.Application.UdfHostedResourceResponseH\x00\x12]\n\"completeDeviceRegistrationResponse\x18\x30 \x01(\x0b\x32/.Application.CompleteDeviceRegistrationResponseH\x00\x12K\n\x19\x61rWorkspaceFormatResponse\x18\x31 \x01(\x0b\x32&.Application.ARWorkspaceFormatResponseH\x00\x12\x33\n\rtvGetResponse\x18\x32 \x01(\x0b\x32\x1a.Application.TVGetResponseH\x00\x12?\n\x13tvConfigSetResponse\x18\x33 \x01(\x0b\x32 .Application.TVConfigSetResponseH\x00\x12\x45\n\x16tvConfigDeleteResponse\x18\x34 \x01(\x0b\x32#.Application.TVConfigDeleteResponseH\x00\x12\x43\n\x15tvBookmarkGetResponse\x18\x35 \x01(\x0b\x32\".Application.TVBookmarkGetResponseH\x00\x12\x43\n\x15tvBookmarkSetResponse\x18\x36 \x01(\x0b\x32\".Application.TVBookmarkSetResponseH\x00\x12I\n\x18tvBookmarkDeleteResponse\x18\x37 \x01(\x0b\x32%.Application.TVBookmarkDeleteResponseH\x00\x12M\n\x1atvBookmarkActivateResponse\x18\x38 \x01(\x0b\x32\'.Application.TVBookmarkActivateResponseH\x00\x12\x41\n\x14tvCaptainUrlResponse\x18\x39 \x01(\x0b\x32!.Application.TVCaptainUrlResponseH\x00\x12K\n\x19startMPCBroadcastResponse\x18: \x01(\x0b\x32&.Application.StartMPCBroadcastResponseH\x00\x12\x43\n\x15tvInteractionResponse\x18; \x01(\x0b\x32\".Application.TVInteractionResponseH\x00\x12[\n!createPhantomRegistrationResponse\x18< \x01(\x0b\x32..Application.CreatePhantomRegistrationResponseH\x00\x12]\n\"getPhantomRegistrationInfoResponse\x18= \x01(\x0b\x32/.Application.GetPhantomRegistrationInfoResponseH\x00\x12G\n\x17tvConfigBulkSetResponse\x18> \x01(\x0b\x32$.Application.TVConfigBulkSetResponseH\x00\x12\x41\n\x14tokenRefreshResponse\x18? \x01(\x0b\x32!.Application.TokenRefreshResponseH\x00\x12O\n\x1btvCaptainReelectionResponse\x18@ \x01(\x0b\x32(.Application.TVCaptainReelectionResponseH\x00\x12\x35\n\x0esnoozeResponse\x18\x41 \x01(\x0b\x32\x1b.Application.SnoozeResponseH\x00\x12\x39\n\x10unsnoozeResponse\x18\x42 \x01(\x0b\x32\x1d.Application.UnsnoozeResponseH\x00\x12;\n\x11getSnoozeResponse\x18\x43 \x01(\x0b\x32\x1e.Application.GetSnoozeResponseH\x00\x12;\n\x11splunkApiResponse\x18\x44 \x01(\x0b\x32\x1e.Application.SplunkApiResponseH\x00\x42\x12\n\x10response_message\"\x15\n\x13\x43lientConfigRequest\"2\n\x14\x43lientConfigResponse\x12\x1a\n\x12requestTimeoutSecs\x18\x01 \x01(\x05\"\x13\n\x11VersionGetRequest\"\x9f\x06\n\x12VersionGetResponse\x12\x1c\n\x14minimumClientVersion\x18\x01 \x01(\t\x12\x1e\n\x16\x63loudgatewayAppVersion\x18\x02 \x01(\t\x12\x12\n\ndeviceName\x18\x03 \x01(\t\x12\x1e\n\x16\x64\x65ploymentFriendlyName\x18\x04 \x01(\t\x12\x12\n\ninstanceId\x18\x05 \x01(\t\x12X\n\x17installationEnvironment\x18\x06 \x01(\x0e\x32\x37.Application.VersionGetResponse.InstallationEnvironment\x12\x15\n\rsplunkVersion\x18\x07 \x01(\t\x12\x43\n\rcompanionApps\x18\x08 \x03(\x0b\x32,.Application.VersionGetResponse.CompanionApp\x12\x13\n\x0bmdmEnforced\x18\t \x01(\x08\x12J\n\x10registrationType\x18\n \x01(\x0e\x32\x30.Application.VersionGetResponse.RegistrationType\x12N\n\x12registrationMethod\x18\x0b \x01(\x0e\x32\x32.Application.VersionGetResponse.RegistrationMethod\x1a\x31\n\x0c\x43ompanionApp\x12\r\n\x05\x61ppId\x18\x01 \x01(\t\x12\x12\n\nappVersion\x18\x02 \x01(\t\"A\n\x17InstallationEnvironment\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0e\n\nENTERPRISE\x10\x01\x12\t\n\x05\x43LOUD\x10\x02\"K\n\x10RegistrationType\x12\x1d\n\x19REGISTRATION_TYPE_UNKNOWN\x10\x00\x12\x0e\n\nLOCAL_LDAP\x10\x01\x12\x08\n\x04SAML\x10\x02\"Y\n\x12RegistrationMethod\x12\x1f\n\x1bREGISTRATION_METHOD_UNKNOWN\x10\x00\x12\r\n\tAUTH_CODE\x10\x01\x12\x07\n\x03MDM\x10\x02\x12\n\n\x06IN_APP\x10\x03\"\x10\n\x0e\x41ppListRequest\"q\n\x0f\x41ppListResponse\x12.\n\x04\x61pps\x18\x01 \x03(\x0b\x32 .Application.AppListResponse.App\x1a.\n\x03\x41pp\x12\x0f\n\x07\x61ppName\x18\x01 \x01(\t\x12\x16\n\x0e\x64isplayAppName\x18\x02 \x01(\t\".\n\x1a\x44\x61shboardAppListSetRequest\x12\x10\n\x08\x61ppNames\x18\x01 \x03(\t\"\x1d\n\x1b\x44\x61shboardAppListSetResponse\"\x1c\n\x1a\x44\x61shboardAppListGetRequest\"/\n\x1b\x44\x61shboardAppListGetResponse\x12\x10\n\x08\x61ppNames\x18\x01 \x03(\t\"s\n\x14\x44\x61shboardListRequest\x12\x0e\n\x06offset\x18\x01 \x01(\x05\x12\x12\n\nmaxResults\x18\x02 \x01(\x05\x12\x14\n\x0c\x64\x61shboardIds\x18\x03 \x03(\t\x12\x13\n\x0bminimalList\x18\x04 \x01(\x08\x12\x0c\n\x04isAR\x18\x05 \x01(\x08\"\xc9\x02\n\x15\x44\x61shboardListResponse\x12\x35\n\ndashboards\x18\x01 \x03(\x0b\x32!.Application.DashboardDescription\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\x12\n\nmaxResults\x18\x03 \x01(\x05\x12\r\n\x05\x63ount\x18\x04 \x01(\x05\x12\x14\n\x0c\x64\x61shboardIds\x18\x05 \x03(\t\x12\r\n\x05total\x18\x06 \x01(\x05\x12\x13\n\x0bminimalList\x18\x07 \x01(\x08\x12\x0c\n\x04isAR\x18\x08 \x01(\x08\x12\x45\n\x0c\x63ontinuation\x18\t \x01(\x0b\x32/.Application.DashboardListResponse.Continuation\x1a\x37\n\x0c\x43ontinuation\x12\x13\n\x0bhasNextPage\x18\x01 \x01(\x08\x12\x12\n\nnextOffset\x18\x02 \x01(\x05\"*\n\x13\x44\x61shboardGetRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"L\n\x14\x44\x61shboardGetResponse\x12\x34\n\tdashboard\x18\x01 \x01(\x0b\x32!.Application.DashboardDescription\">\n\x13\x44\x61shboardSetRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\x12\n\nisFavorite\x18\x02 \x01(\x08\"+\n\x14\x44\x61shboardSetResponse\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"b\n\x11\x41lertsListRequest\x12\x16\n\x0e\x63ontinuationId\x18\x01 \x01(\t\x12\x12\n\nmaxResults\x18\x02 \x01(\x05\x12!\n\x05order\x18\x03 \x01(\x0e\x32\x12.Application.Order\"\x8f\x01\n\x12\x41lertsListResponse\x12\x16\n\x0e\x63ontinuationId\x18\x01 \x01(\t\x12\x1a\n\x12nextContinuationId\x18\x02 \x01(\t\x12!\n\x05order\x18\x03 \x01(\x0e\x32\x12.Application.Order\x12\"\n\x06\x61lerts\x18\x04 \x03(\x0b\x32\x12.Application.Alert\"\'\n\x13\x41lertsDeleteRequest\x12\x10\n\x08\x61lertIds\x18\x01 \x03(\t\"(\n\x14\x41lertsDeleteResponse\x12\x10\n\x08\x61lertIds\x18\x01 \x03(\t\"\x14\n\x12\x41lertsClearRequest\"\x15\n\x13\x41lertsClearResponse\"\xdc\x01\n\x14\x44\x61shboardDataRequest\x12G\n\x18\x64\x61shboardVisualizationId\x18\x01 \x01(\x0b\x32%.Application.DashboardVisualizationId\x12G\n\x0binputTokens\x18\x02 \x03(\x0b\x32\x32.Application.DashboardDataRequest.InputTokensEntry\x1a\x32\n\x10InputTokensEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"J\n\x15\x44\x61shboardDataResponse\x12\x31\n\rdashboardData\x18\x01 \x01(\x0b\x32\x1a.Application.DashboardData\"\"\n\x0f\x41lertGetRequest\x12\x0f\n\x07\x61lertId\x18\x01 \x01(\t\"5\n\x10\x41lertGetResponse\x12!\n\x05\x61lert\x18\x01 \x01(\x0b\x32\x12.Application.Alert\"D\n\x15\x41RWorkspaceSetRequest\x12+\n\tworkspace\x18\x01 \x01(\x0b\x32\x18.Application.ARWorkspace\"-\n\x16\x41RWorkspaceSetResponse\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\",\n\x15\x41RWorkspaceGetRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"E\n\x16\x41RWorkspaceGetResponse\x12+\n\tworkspace\x18\x01 \x01(\x0b\x32\x18.Application.ARWorkspace\"K\n\x18\x41RWorkspaceFormatRequest\x12/\n\tworkspace\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceData\"L\n\x19\x41RWorkspaceFormatResponse\x12/\n\tworkspace\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceData\"-\n\x16\x41RWorkspaceListRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"N\n\x17\x41RWorkspaceListResponse\x12\x33\n\rworkspaceList\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceList\"[\n\x1a\x41RWorkspaceImageSetRequest\x12=\n\x13\x61rWorkspaceAnchored\x18\x01 \x01(\x0b\x32 .Application.ARWorkspaceAnchored\"O\n\x1b\x41RWorkspaceImageSetResponse\x12\x30\n\x0b\x64\x61shboardId\x18\x01 \x01(\x0b\x32\x1b.Application.ARWorkspaceKey\"J\n\x17\x41RWorkspaceSetRequestV2\x12/\n\tworkspace\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceData\"1\n\x18\x41RWorkspaceSetResponseV2\x12\x15\n\rarWorkspaceId\x18\x01 \x01(\t\"0\n\x17\x41RWorkspaceGetRequestV2\x12\x15\n\rarWorkspaceId\x18\x01 \x03(\t\"K\n\x18\x41RWorkspaceGetResponseV2\x12/\n\tworkspace\x18\x01 \x03(\x0b\x32\x1c.Application.ARWorkspaceData\"3\n\x1a\x41RWorkspaceDeleteRequestV2\x12\x15\n\rarWorkspaceId\x18\x01 \x03(\t\"\x1d\n\x1b\x41RWorkspaceDeleteResponseV2\"#\n\x0f\x41ssetGetRequest\x12\x10\n\x08\x61ssetIds\x18\x01 \x03(\t\":\n\x10\x41ssetGetResponse\x12&\n\x06\x61ssets\x18\x01 \x03(\x0b\x32\x16.Application.AssetData\"E\n\x0f\x41ssetSetRequest\x12\x32\n\x06params\x18\x01 \x03(\x0b\x32\".Application.AssetSetRequestParams\"L\n\x10\x41ssetSetResponse\x12\x38\n\x0c\x66\x61iledAssets\x18\x01 \x03(\x0b\x32\".Application.AssetSetRequestParams\"&\n\x12\x41ssetDeleteRequest\x12\x10\n\x08\x61ssetIds\x18\x01 \x03(\t\"\x15\n\x13\x41ssetDeleteResponse\"\x1e\n\x1cJubileeConnectionInfoRequest\"W\n\x1dJubileeConnectionInfoResponse\x12\x0e\n\x06\x61piKey\x18\x01 \x01(\t\x12\x10\n\x08hostname\x18\x02 \x01(\t\x12\x14\n\x0csplunkCookie\x18\x03 \x01(\t\"Y\n\x0fGroupGetRequest\x12\x0f\n\x07groupId\x18\x01 \x01(\t\x12\x35\n\x0cresourceType\x18\x02 \x01(\x0e\x32\x1f.Application.Group.ResourceType\"6\n\x10GroupGetResponse\x12\"\n\x06groups\x18\x01 \x03(\x0b\x32\x12.Application.Group\"F\n\x0fGroupSetRequest\x12!\n\x05group\x18\x01 \x01(\x0b\x32\x12.Application.Group\x12\x10\n\x08isPublic\x18\x02 \x01(\x08\"#\n\x10GroupSetResponse\x12\x0f\n\x07groupId\x18\x01 \x01(\t\"8\n\x12GroupDeleteRequest\x12\x10\n\x08groupIds\x18\x01 \x03(\t\x12\x10\n\x08isPublic\x18\x02 \x01(\x08\"\x15\n\x13GroupDeleteResponse\"\x18\n\x16\x42\x65\x61\x63onRegionGetRequest\"K\n\x17\x42\x65\x61\x63onRegionGetResponse\x12\x30\n\rbeaconRegions\x18\x01 \x03(\x0b\x32\x19.Application.BeaconRegion\"I\n\x16\x42\x65\x61\x63onRegionSetRequest\x12/\n\x0c\x62\x65\x61\x63onRegion\x18\x01 \x01(\x0b\x32\x19.Application.BeaconRegion\"\x19\n\x17\x42\x65\x61\x63onRegionSetResponse\"6\n\x19\x42\x65\x61\x63onRegionDeleteRequest\x12\x19\n\x11\x62\x65\x61\x63onRegionUUIDs\x18\x01 \x03(\t\"=\n\x1a\x42\x65\x61\x63onRegionDeleteResponse\x12\x1f\n\x17\x66\x61iledBeaconRegionUUIDs\x18\x01 \x03(\t\"v\n\"GeofenceDashboardMappingGetRequest\x12\x31\n\x0fuserCoordinates\x18\x01 \x01(\x0b\x32\x18.Application.Coordinates\x12\x0e\n\x06radius\x18\x02 \x01(\x02\x12\r\n\x05limit\x18\x03 \x01(\x05\"\\\n#GeofenceDashboardMappingGetResponse\x12\x35\n\x08mappings\x18\x01 \x03(\x0b\x32#.Application.NearbyDashboardMapping\"\'\n%GeofenceDashboardMappingGetAllRequest\"_\n&GeofenceDashboardMappingGetAllResponse\x12\x35\n\x08mappings\x18\x01 \x03(\x0b\x32#.Application.NearbyDashboardMapping\"Z\n NearbyDashboardMappingGetRequest\x12\x36\n\x10nearbyEntityKeys\x18\x01 \x03(\x0b\x32\x1c.Application.NearbyEntityKey\"Z\n!NearbyDashboardMappingGetResponse\x12\x35\n\x08mappings\x18\x01 \x03(\x0b\x32#.Application.NearbyDashboardMapping\"X\n NearbyDashboardMappingSetRequest\x12\x34\n\x07mapping\x18\x01 \x01(\x0b\x32#.Application.NearbyDashboardMapping\"#\n!NearbyDashboardMappingSetResponse\"]\n#NearbyDashboardMappingDeleteRequest\x12\x36\n\x10nearbyEntityKeys\x18\x01 \x03(\x0b\x32\x1c.Application.NearbyEntityKey\"^\n$NearbyDashboardMappingDeleteResponse\x12\x36\n\x10\x66\x61iledEntityKeys\x18\x01 \x03(\x0b\x32\x1c.Application.NearbyEntityKey\"\xeb\x01\n CreatePhantomRegistrationRequest\x12\x11\n\tauth_code\x18\x01 \x01(\t\x12\x18\n\x10\x64\x65vice_client_id\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_name\x18\x03 \x01(\t\x12Q\n\rphantom_creds\x18\x04 \x01(\x0b\x32:.Application.CreatePhantomRegistrationRequest.PhantomCreds\x1a\x32\n\x0cPhantomCreds\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\">\n!CreatePhantomRegistrationResponse\x12\x19\n\x11phantom_client_id\x18\x01 \x01(\t\"#\n!GetPhantomRegistrationInfoRequest\"O\n\"GetPhantomRegistrationInfoResponse\x12\x17\n\x0f\x64\x65ployment_name\x18\x01 \x01(\t\x12\x10\n\x08hostname\x18\x02 \x01(\t\",\n\x17\x43onnectivityTestRequest\x12\x11\n\trequestId\x18\x01 \x01(\t\"-\n\x18\x43onnectivityTestResponse\x12\x11\n\trequestId\x18\x01 \x01(\t\"m\n!CompleteDeviceRegistrationRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\x12\x18\n\x10\x63onfirmationCode\x18\x02 \x01(\t\x12\x12\n\ndeviceName\x18\x03 \x01(\t\"\xb0\x02\n\"CompleteDeviceRegistrationResponse\x12\x42\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x34.Application.CompleteDeviceRegistrationResponse.Code\"\xc5\x01\n\x04\x43ode\x12\x0b\n\x07SUCCESS\x10\x00\x12\x1b\n\x17\x45RROR_VALIDATION_FAILED\x10\x01\x12\x1b\n\x17\x45RROR_AUTH_CODE_INVALID\x10\x02\x12\x1d\n\x19\x45RROR_CREDENTIALS_INVALID\x10\x03\x12\x1e\n\x1a\x45RROR_CONFIRMATION_INVALID\x10\x04\x12\x19\n\x15\x45RROR_APP_NOT_ENABLED\x10\x05\x12\x1c\n\x18\x45RROR_ALREADY_REGISTERED\x10\x06\" \n\x0cTVGetRequest\x12\x10\n\x08\x64\x65viceId\x18\x01 \x01(\t\"4\n\rTVGetResponse\x12#\n\x06tvData\x18\x01 \x03(\x0b\x32\x13.Application.TVData\"=\n\x12TVConfigSetRequest\x12\'\n\x08tvConfig\x18\x01 \x01(\x0b\x32\x15.Application.TVConfig\"\x15\n\x13TVConfigSetResponse\"X\n\x16TVConfigBulkSetRequest\x12\'\n\x08tvConfig\x18\x01 \x03(\x0b\x32\x15.Application.TVConfig\x12\x15\n\risTokenUpdate\x18\x02 \x01(\x08\"+\n\x17TVConfigBulkSetResponse\x12\x10\n\x08warnings\x18\x01 \x03(\t\")\n\x15TVConfigDeleteRequest\x12\x10\n\x08\x64\x65viceId\x18\x01 \x03(\t\",\n\x16TVConfigDeleteResponse\x12\x12\n\ndeletedIds\x18\x01 \x03(\t\",\n\x14TVBookmarkGetRequest\x12\x14\n\x0c\x62ookmarkName\x18\x01 \x01(\t\"D\n\x15TVBookmarkGetResponse\x12+\n\ntvBookmark\x18\x01 \x03(\x0b\x32\x17.Application.TVBookmark\"e\n\x14TVBookmarkSetRequest\x12\x11\n\toverwrite\x18\x02 \x01(\x08\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x11\n\tdeviceIds\x18\x05 \x03(\tJ\x04\x08\x01\x10\x02\"\x17\n\x15TVBookmarkSetResponse\"/\n\x17TVBookmarkDeleteRequest\x12\x14\n\x0c\x62ookmarkName\x18\x01 \x01(\t\"\x1a\n\x18TVBookmarkDeleteResponse\"1\n\x19TVBookmarkActivateRequest\x12\x14\n\x0c\x62ookmarkName\x18\x01 \x01(\t\".\n\x1aTVBookmarkActivateResponse\x12\x10\n\x08warnings\x18\x01 \x03(\t\"i\n\x13TVCaptainUrlRequest\x12\x11\n\tcaptainId\x18\x01 \x01(\t\x12\x12\n\ncaptainUrl\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\x12\x12\n\nupdateFlag\x18\x05 \x01(\x08J\x04\x08\x03\x10\x04\"\x16\n\x14TVCaptainUrlResponse\",\n\x18StartMPCBroadcastRequest\x12\x10\n\x08\x64\x65viceId\x18\x01 \x01(\t\"\x1b\n\x19StartMPCBroadcastResponse\"I\n\x14TVInteractionRequest\x12\x31\n\rtvInteraction\x18\x01 \x01(\x0b\x32\x1a.Application.TVInteraction\"\x17\n\x15TVInteractionResponse\"\x1c\n\x1aTVCaptainReelectionRequest\"\x1d\n\x1bTVCaptainReelectionResponse\"Z\n\x17\x42\x65\x61\x63onMappingGetRequest\x12;\n\x07\x62\x65\x61\x63ons\x18\x01 \x03(\x0b\x32*.Application.NearbyEntity.BeaconDefinition:\x02\x18\x01\"k\n\x18\x42\x65\x61\x63onMappingGetResponse\x12K\n\x14\x61ssociatedDashboards\x18\x01 \x03(\x0b\x32-.Application.NearbyEntity.BeaconDashboardPair:\x02\x18\x01\"\"\n DeviceCredentialsValidateRequest\"F\n!DeviceCredentialsValidateResponse\x12!\n\x19\x61reDeviceCredentialsValid\x18\x01 \x01(\x08\"E\n\x18UdfHostedResourceRequest\x12\x13\n\x0bresourceUrl\x18\x01 \x01(\t\x12\x14\n\x0cresourceType\x18\x02 \x01(\t\"W\n\x19UdfHostedResourceResponse\x12\x1c\n\x14\x65ncryptedResourceUrl\x18\x01 \x01(\t\x12\x1c\n\x14resourceUrlExpiresAt\x18\x02 \x01(\t\"\x15\n\x13TokenRefreshRequest\"\xe9\x01\n\x14TokenRefreshResponse\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x16\n\x0etokenExpiresAt\x18\x02 \x01(\x03\x12\x34\n\x04\x63ode\x18\x03 \x01(\x0e\x32&.Application.TokenRefreshResponse.Code\"m\n\x04\x43ode\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\x17\n\x13\x45RROR_TOKEN_INVALID\x10\x02\x12\x18\n\x14\x45RROR_CREATING_TOKEN\x10\x03\x12\x18\n\x14\x45RROR_DELETING_TOKEN\x10\x04\"\x13\n\x11SnoozeAllResponse\"\\\n\rSnoozeRequest\x12\x0f\n\x07\x65ndTime\x18\x01 \x01(\x03\x12+\n\tsnoozeAll\x18\x02 \x01(\x0b\x32\x16.Application.SnoozeAllH\x00\x42\r\n\x0brequestType\"o\n\x0eSnoozeResponse\x12\x10\n\x08snoozeID\x18\x01 \x01(\t\x12;\n\x11snoozeAllResponse\x18\x02 \x01(\x0b\x32\x1e.Application.SnoozeAllResponseH\x00\x42\x0e\n\x0cresponseType\",\n\x10GetSnoozeRequest\x12\x18\n\x10includeSnoozeAll\x18\x01 \x01(\x08\"9\n\x11GetSnoozeResponse\x12$\n\x07snoozes\x18\x01 \x03(\x0b\x32\x13.Application.Snooze\"L\n\x0fUnsnoozeRequest\x12+\n\tsnoozeAll\x18\x01 \x01(\x0b\x32\x16.Application.SnoozeAllH\x00\x42\x0c\n\nsnoozeType\"%\n\x10UnsnoozeResponse\x12\x11\n\tsnoozeIDs\x18\x01 \x03(\t\"\xf2\x01\n\x10SplunkApiRequest\x12>\n\x0brequestType\x18\x01 \x01(\x0e\x32).Application.SplunkApiRequest.RequestType\x12\x12\n\nrequestApi\x18\x02 \x01(\t\x12\x39\n\x06params\x18\x03 \x03(\x0b\x32).Application.SplunkApiRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\" \n\x0bRequestType\x12\x07\n\x03GET\x10\x00\x12\x08\n\x04POST\x10\x01\"N\n\x11SplunkApiResponse\x12%\n\x04json\x18\x01 \x01(\x0b\x32\x17.google.protobuf.Struct\x12\x12\n\nstatusCode\x18\x02 \x01(\x05*5\n\x05Order\x12\r\n\tUNDEFINED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02\x42\x65\n!com.splunk.mobile.spacebridge.appP\x01Z>cd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/ssgb\x06proto3')
+  serialized_options=_b('\n!com.splunk.mobile.spacebridge.appP\001'),
+  serialized_pb=_b('\n\rrequest.proto\x12\x0b\x41pplication\x1a\x0c\x63ommon.proto\x1a\x17\x61ugmented-reality.proto\x1a\x18nlp_splapp_request.proto\x1a\x10\x64rone_mode.proto\x1a\x1egoogle/protobuf/wrappers.proto\"\xb7$\n\x13\x43lientSingleRequest\x12\x11\n\trequestId\x18\x01 \x01(\t\x12\x14\n\x0csessionToken\x18\x02 \x01(\t\x12-\n\x05runAs\x18# \x01(\x0b\x32\x1e.Application.DeviceCredentials\x12\x11\n\tuserAgent\x18\x10 \x01(\t\x12\x15\n\rclientVersion\x18\x12 \x01(\t\x12\x41\n\x14\x64\x61shboardListRequest\x18\x03 \x01(\x0b\x32!.Application.DashboardListRequestH\x00\x12;\n\x11\x61lertsListRequest\x18\x04 \x01(\x0b\x32\x1e.Application.AlertsListRequestH\x00\x12?\n\x13\x64\x61shboardGetRequest\x18\x05 \x01(\x0b\x32 .Application.DashboardGetRequestH\x00\x12?\n\x13\x61lertsDeleteRequest\x18\x06 \x01(\x0b\x32 .Application.AlertsDeleteRequestH\x00\x12\x41\n\x14\x64\x61shboardDataRequest\x18\x07 \x01(\x0b\x32!.Application.DashboardDataRequestH\x00\x12\x43\n\x15\x61rWorkspaceSetRequest\x18\x08 \x01(\x0b\x32\".Application.ARWorkspaceSetRequestH\x00\x12\x43\n\x15\x61rWorkspaceGetRequest\x18\t \x01(\x0b\x32\".Application.ARWorkspaceGetRequestH\x00\x12\x37\n\x0f\x61lertGetRequest\x18\n \x01(\x0b\x32\x1c.Application.AlertGetRequestH\x00\x12Q\n\x1cjubileeConnectionInfoRequest\x18\x0b \x01(\x0b\x32).Application.JubileeConnectionInfoRequestH\x00\x12?\n\x13\x64\x61shboardSetRequest\x18\x0c \x01(\x0b\x32 .Application.DashboardSetRequestH\x00\x12=\n\x12\x61lertsClearRequest\x18\r \x01(\x0b\x32\x1f.Application.AlertsClearRequestH\x00\x12\x45\n\x16\x61rWorkspaceListRequest\x18\x0e \x01(\x0b\x32#.Application.ARWorkspaceListRequestH\x00\x12M\n\x1a\x61rWorkspaceImageSetRequest\x18\x0f \x01(\x0b\x32\'.Application.ARWorkspaceImageSetRequestH\x00\x12;\n\x11versionGetRequest\x18\x11 \x01(\x0b\x32\x1e.Application.VersionGetRequestH\x00\x12\x45\n\x16\x62\x65\x61\x63onRegionGetRequest\x18\x13 \x01(\x0b\x32#.Application.BeaconRegionGetRequestH\x00\x12K\n\x17\x62\x65\x61\x63onMappingGetRequest\x18\x14 \x01(\x0b\x32$.Application.BeaconMappingGetRequestB\x02\x18\x01H\x00\x12]\n\"geofenceDashboardMappingGetRequest\x18\x15 \x01(\x0b\x32/.Application.GeofenceDashboardMappingGetRequestH\x00\x12Y\n nearbyDashboardMappingGetRequest\x18\x16 \x01(\x0b\x32-.Application.NearbyDashboardMappingGetRequestH\x00\x12Y\n nearbyDashboardMappingSetRequest\x18\x17 \x01(\x0b\x32-.Application.NearbyDashboardMappingSetRequestH\x00\x12_\n#nearbyDashboardMappingDeleteRequest\x18\x18 \x01(\x0b\x32\x30.Application.NearbyDashboardMappingDeleteRequestH\x00\x12\x63\n%geofenceDashboardMappingGetAllRequest\x18\x19 \x01(\x0b\x32\x32.Application.GeofenceDashboardMappingGetAllRequestH\x00\x12\x45\n\x16\x62\x65\x61\x63onRegionSetRequest\x18\x1a \x01(\x0b\x32#.Application.BeaconRegionSetRequestH\x00\x12K\n\x19\x62\x65\x61\x63onRegionDeleteRequest\x18\x1b \x01(\x0b\x32&.Application.BeaconRegionDeleteRequestH\x00\x12\x37\n\x0f\x61ssetGetRequest\x18\x1c \x01(\x0b\x32\x1c.Application.AssetGetRequestH\x00\x12\x37\n\x0f\x61ssetSetRequest\x18\x1d \x01(\x0b\x32\x1c.Application.AssetSetRequestH\x00\x12=\n\x12\x61ssetDeleteRequest\x18\x1e \x01(\x0b\x32\x1f.Application.AssetDeleteRequestH\x00\x12G\n\x17\x61rWorkspaceSetRequestV2\x18\x1f \x01(\x0b\x32$.Application.ARWorkspaceSetRequestV2H\x00\x12G\n\x17\x61rWorkspaceGetRequestV2\x18  \x01(\x0b\x32$.Application.ARWorkspaceGetRequestV2H\x00\x12G\n\x17\x63onnectivityTestRequest\x18! \x01(\x0b\x32$.Application.ConnectivityTestRequestH\x00\x12M\n\x1a\x61rWorkspaceDeleteRequestV2\x18\" \x01(\x0b\x32\'.Application.ARWorkspaceDeleteRequestV2H\x00\x12I\n\x18savedSearchSPLGetRequest\x18$ \x01(\x0b\x32%.Application.SavedSearchSPLGetRequestH\x00\x12I\n\x18savedSearchesSyncRequest\x18% \x01(\x0b\x32%.Application.SavedSearchesSyncRequestH\x00\x12\x43\n\x15\x64\x61shboardsSyncRequest\x18& \x01(\x0b\x32\".Application.DashboardsSyncRequestH\x00\x12\x35\n\x0e\x61ppListRequest\x18\' \x01(\x0b\x32\x1b.Application.AppListRequestH\x00\x12M\n\x1a\x64\x61shboardAppListSetRequest\x18( \x01(\x0b\x32\'.Application.DashboardAppListSetRequestH\x00\x12M\n\x1a\x64\x61shboardAppListGetRequest\x18) \x01(\x0b\x32\'.Application.DashboardAppListGetRequestH\x00\x12\x37\n\x0fgroupGetRequest\x18* \x01(\x0b\x32\x1c.Application.GroupGetRequestH\x00\x12\x37\n\x0fgroupSetRequest\x18+ \x01(\x0b\x32\x1c.Application.GroupSetRequestH\x00\x12=\n\x12groupDeleteRequest\x18, \x01(\x0b\x32\x1f.Application.GroupDeleteRequestH\x00\x12?\n\x13\x63lientConfigRequest\x18- \x01(\x0b\x32 .Application.ClientConfigRequestH\x00\x12\x35\n\x0egenericMessage\x18. \x01(\x0b\x32\x1b.Application.GenericMessageH\x00\x12Y\n deviceCredentialsValidateRequest\x18/ \x01(\x0b\x32-.Application.DeviceCredentialsValidateRequestH\x00\x12I\n\x18udfHostedResourceRequest\x18\x30 \x01(\x0b\x32%.Application.UdfHostedResourceRequestH\x00\x12[\n!completeDeviceRegistrationRequest\x18\x31 \x01(\x0b\x32..Application.CompleteDeviceRegistrationRequestH\x00\x12I\n\x18\x61rWorkspaceFormatRequest\x18\x32 \x01(\x0b\x32%.Application.ARWorkspaceFormatRequestH\x00\x12\x31\n\x0ctvGetRequest\x18\x33 \x01(\x0b\x32\x19.Application.TVGetRequestH\x00\x12=\n\x12tvConfigSetRequest\x18\x34 \x01(\x0b\x32\x1f.Application.TVConfigSetRequestH\x00\x12\x43\n\x15tvConfigDeleteRequest\x18\x35 \x01(\x0b\x32\".Application.TVConfigDeleteRequestH\x00\x12\x41\n\x14tvBookmarkGetRequest\x18\x36 \x01(\x0b\x32!.Application.TVBookmarkGetRequestH\x00\x12\x41\n\x14tvBookmarkSetRequest\x18\x37 \x01(\x0b\x32!.Application.TVBookmarkSetRequestH\x00\x12G\n\x17tvBookmarkDeleteRequest\x18\x38 \x01(\x0b\x32$.Application.TVBookmarkDeleteRequestH\x00\x12K\n\x19tvBookmarkActivateRequest\x18\x39 \x01(\x0b\x32&.Application.TVBookmarkActivateRequestH\x00\x12?\n\x13tvCaptainUrlRequest\x18: \x01(\x0b\x32 .Application.TVCaptainUrlRequestH\x00\x12I\n\x18startMPCBroadcastRequest\x18; \x01(\x0b\x32%.Application.StartMPCBroadcastRequestH\x00\x12\x41\n\x14tvInteractionRequest\x18< \x01(\x0b\x32!.Application.TVInteractionRequestH\x00\x12Y\n createPhantomRegistrationRequest\x18= \x01(\x0b\x32-.Application.CreatePhantomRegistrationRequestH\x00\x12[\n!getPhantomRegistrationInfoRequest\x18> \x01(\x0b\x32..Application.GetPhantomRegistrationInfoRequestH\x00\x12\x45\n\x16tvConfigBulkSetRequest\x18? \x01(\x0b\x32#.Application.TVConfigBulkSetRequestH\x00\x12?\n\x13tokenRefreshRequest\x18@ \x01(\x0b\x32 .Application.TokenRefreshRequestH\x00\x12M\n\x1atvCaptainReelectionRequest\x18\x41 \x01(\x0b\x32\'.Application.TVCaptainReelectionRequestH\x00\x12\x33\n\rsnoozeRequest\x18\x42 \x01(\x0b\x32\x1a.Application.SnoozeRequestH\x00\x12\x37\n\x0funsnoozeRequest\x18\x43 \x01(\x0b\x32\x1c.Application.UnsnoozeRequestH\x00\x12\x39\n\x10getSnoozeRequest\x18\x44 \x01(\x0b\x32\x1d.Application.GetSnoozeRequestH\x00\x42\x11\n\x0frequest_message\"\x9c%\n\x14ServerSingleResponse\x12\x11\n\trequestId\x18\x01 \x01(\t\x12\x18\n\x10replyToMessageId\x18\x02 \x01(\t\x12\x15\n\rserverVersion\x18\x12 \x01(\t\x12#\n\x05\x65rror\x18\x03 \x01(\x0b\x32\x12.Application.ErrorH\x00\x12\x43\n\x15\x64\x61shboardListResponse\x18\x04 \x01(\x0b\x32\".Application.DashboardListResponseH\x00\x12=\n\x12\x61lertsListResponse\x18\x05 \x01(\x0b\x32\x1f.Application.AlertsListResponseH\x00\x12\x41\n\x14\x64\x61shboardGetResponse\x18\x06 \x01(\x0b\x32!.Application.DashboardGetResponseH\x00\x12\x41\n\x14\x61lertsDeleteResponse\x18\x07 \x01(\x0b\x32!.Application.AlertsDeleteResponseH\x00\x12\x43\n\x15\x64\x61shboardDataResponse\x18\x08 \x01(\x0b\x32\".Application.DashboardDataResponseH\x00\x12\x45\n\x16\x61rWorkspaceSetResponse\x18\t \x01(\x0b\x32#.Application.ARWorkspaceSetResponseH\x00\x12\x45\n\x16\x61rWorkspaceGetResponse\x18\n \x01(\x0b\x32#.Application.ARWorkspaceGetResponseH\x00\x12\x39\n\x10\x61lertGetResponse\x18\x0b \x01(\x0b\x32\x1d.Application.AlertGetResponseH\x00\x12S\n\x1djubileeConnectionInfoResponse\x18\x0c \x01(\x0b\x32*.Application.JubileeConnectionInfoResponseH\x00\x12\x41\n\x14\x64\x61shboardSetResponse\x18\r \x01(\x0b\x32!.Application.DashboardSetResponseH\x00\x12?\n\x13\x61lertsClearResponse\x18\x0e \x01(\x0b\x32 .Application.AlertsClearResponseH\x00\x12G\n\x17\x61rWorkspaceListResponse\x18\x0f \x01(\x0b\x32$.Application.ARWorkspaceListResponseH\x00\x12O\n\x1b\x61rWorkspaceImageSetResponse\x18\x10 \x01(\x0b\x32(.Application.ARWorkspaceImageSetResponseH\x00\x12=\n\x12versionGetResponse\x18\x11 \x01(\x0b\x32\x1f.Application.VersionGetResponseH\x00\x12G\n\x17\x62\x65\x61\x63onRegionGetResponse\x18\x13 \x01(\x0b\x32$.Application.BeaconRegionGetResponseH\x00\x12M\n\x18\x62\x65\x61\x63onMappingGetResponse\x18\x14 \x01(\x0b\x32%.Application.BeaconMappingGetResponseB\x02\x18\x01H\x00\x12[\n!nearbyDashboardMappingGetResponse\x18\x15 \x01(\x0b\x32..Application.NearbyDashboardMappingGetResponseH\x00\x12[\n!nearbyDashboardMappingSetResponse\x18\x16 \x01(\x0b\x32..Application.NearbyDashboardMappingSetResponseH\x00\x12\x61\n$nearbyDashboardMappingDeleteResponse\x18\x17 \x01(\x0b\x32\x31.Application.NearbyDashboardMappingDeleteResponseH\x00\x12_\n#geofenceDashboardMappingGetResponse\x18\x18 \x01(\x0b\x32\x30.Application.GeofenceDashboardMappingGetResponseH\x00\x12\x65\n&geofenceDashboardMappingGetAllResponse\x18\x19 \x01(\x0b\x32\x33.Application.GeofenceDashboardMappingGetAllResponseH\x00\x12G\n\x17\x62\x65\x61\x63onRegionSetResponse\x18\x1a \x01(\x0b\x32$.Application.BeaconRegionSetResponseH\x00\x12M\n\x1a\x62\x65\x61\x63onRegionDeleteResponse\x18\x1b \x01(\x0b\x32\'.Application.BeaconRegionDeleteResponseH\x00\x12\x39\n\x10\x61ssetGetResponse\x18\x1c \x01(\x0b\x32\x1d.Application.AssetGetResponseH\x00\x12\x39\n\x10\x61ssetSetResponse\x18\x1d \x01(\x0b\x32\x1d.Application.AssetSetResponseH\x00\x12?\n\x13\x61ssetDeleteResponse\x18\x1e \x01(\x0b\x32 .Application.AssetDeleteResponseH\x00\x12I\n\x18\x61rWorkspaceSetResponseV2\x18\x1f \x01(\x0b\x32%.Application.ARWorkspaceSetResponseV2H\x00\x12I\n\x18\x61rWorkspaceGetResponseV2\x18  \x01(\x0b\x32%.Application.ARWorkspaceGetResponseV2H\x00\x12I\n\x18\x63onnectivityTestResponse\x18! \x01(\x0b\x32%.Application.ConnectivityTestResponseH\x00\x12O\n\x1b\x61rWorkspaceDeleteResponseV2\x18\" \x01(\x0b\x32(.Application.ARWorkspaceDeleteResponseV2H\x00\x12K\n\x19savedSearchSPLGetResponse\x18# \x01(\x0b\x32&.Application.SavedSearchSPLGetResponseH\x00\x12K\n\x19savedSearchesSyncResponse\x18$ \x01(\x0b\x32&.Application.SavedSearchesSyncResponseH\x00\x12\x45\n\x16\x64\x61shboardsSyncResponse\x18% \x01(\x0b\x32#.Application.DashboardsSyncResponseH\x00\x12\x37\n\x0f\x61ppListResponse\x18& \x01(\x0b\x32\x1c.Application.AppListResponseH\x00\x12O\n\x1b\x64\x61shboardAppListSetResponse\x18\' \x01(\x0b\x32(.Application.DashboardAppListSetResponseH\x00\x12O\n\x1b\x64\x61shboardAppListGetResponse\x18( \x01(\x0b\x32(.Application.DashboardAppListGetResponseH\x00\x12\x39\n\x10groupGetResponse\x18) \x01(\x0b\x32\x1d.Application.GroupGetResponseH\x00\x12\x39\n\x10groupSetResponse\x18* \x01(\x0b\x32\x1d.Application.GroupSetResponseH\x00\x12?\n\x13groupDeleteResponse\x18+ \x01(\x0b\x32 .Application.GroupDeleteResponseH\x00\x12\x41\n\x14\x63lientConfigResponse\x18, \x01(\x0b\x32!.Application.ClientConfigResponseH\x00\x12\x35\n\x0egenericMessage\x18- \x01(\x0b\x32\x1b.Application.GenericMessageH\x00\x12[\n!deviceCredentialsValidateResponse\x18. \x01(\x0b\x32..Application.DeviceCredentialsValidateResponseH\x00\x12K\n\x19udfHostedResourceResponse\x18/ \x01(\x0b\x32&.Application.UdfHostedResourceResponseH\x00\x12]\n\"completeDeviceRegistrationResponse\x18\x30 \x01(\x0b\x32/.Application.CompleteDeviceRegistrationResponseH\x00\x12K\n\x19\x61rWorkspaceFormatResponse\x18\x31 \x01(\x0b\x32&.Application.ARWorkspaceFormatResponseH\x00\x12\x33\n\rtvGetResponse\x18\x32 \x01(\x0b\x32\x1a.Application.TVGetResponseH\x00\x12?\n\x13tvConfigSetResponse\x18\x33 \x01(\x0b\x32 .Application.TVConfigSetResponseH\x00\x12\x45\n\x16tvConfigDeleteResponse\x18\x34 \x01(\x0b\x32#.Application.TVConfigDeleteResponseH\x00\x12\x43\n\x15tvBookmarkGetResponse\x18\x35 \x01(\x0b\x32\".Application.TVBookmarkGetResponseH\x00\x12\x43\n\x15tvBookmarkSetResponse\x18\x36 \x01(\x0b\x32\".Application.TVBookmarkSetResponseH\x00\x12I\n\x18tvBookmarkDeleteResponse\x18\x37 \x01(\x0b\x32%.Application.TVBookmarkDeleteResponseH\x00\x12M\n\x1atvBookmarkActivateResponse\x18\x38 \x01(\x0b\x32\'.Application.TVBookmarkActivateResponseH\x00\x12\x41\n\x14tvCaptainUrlResponse\x18\x39 \x01(\x0b\x32!.Application.TVCaptainUrlResponseH\x00\x12K\n\x19startMPCBroadcastResponse\x18: \x01(\x0b\x32&.Application.StartMPCBroadcastResponseH\x00\x12\x43\n\x15tvInteractionResponse\x18; \x01(\x0b\x32\".Application.TVInteractionResponseH\x00\x12[\n!createPhantomRegistrationResponse\x18< \x01(\x0b\x32..Application.CreatePhantomRegistrationResponseH\x00\x12]\n\"getPhantomRegistrationInfoResponse\x18= \x01(\x0b\x32/.Application.GetPhantomRegistrationInfoResponseH\x00\x12G\n\x17tvConfigBulkSetResponse\x18> \x01(\x0b\x32$.Application.TVConfigBulkSetResponseH\x00\x12\x41\n\x14tokenRefreshResponse\x18? \x01(\x0b\x32!.Application.TokenRefreshResponseH\x00\x12O\n\x1btvCaptainReelectionResponse\x18@ \x01(\x0b\x32(.Application.TVCaptainReelectionResponseH\x00\x12\x35\n\x0esnoozeResponse\x18\x41 \x01(\x0b\x32\x1b.Application.SnoozeResponseH\x00\x12\x39\n\x10unsnoozeResponse\x18\x42 \x01(\x0b\x32\x1d.Application.UnsnoozeResponseH\x00\x12;\n\x11getSnoozeResponse\x18\x43 \x01(\x0b\x32\x1e.Application.GetSnoozeResponseH\x00\x42\x12\n\x10response_message\"\x15\n\x13\x43lientConfigRequest\"2\n\x14\x43lientConfigResponse\x12\x1a\n\x12requestTimeoutSecs\x18\x01 \x01(\x05\"\x13\n\x11VersionGetRequest\"\xc6\x03\n\x12VersionGetResponse\x12\x1c\n\x14minimumClientVersion\x18\x01 \x01(\t\x12\x1e\n\x16\x63loudgatewayAppVersion\x18\x02 \x01(\t\x12\x12\n\ndeviceName\x18\x03 \x01(\t\x12\x1e\n\x16\x64\x65ploymentFriendlyName\x18\x04 \x01(\t\x12\x12\n\ninstanceId\x18\x05 \x01(\t\x12X\n\x17installationEnvironment\x18\x06 \x01(\x0e\x32\x37.Application.VersionGetResponse.InstallationEnvironment\x12\x15\n\rsplunkVersion\x18\x07 \x01(\t\x12\x43\n\rcompanionApps\x18\x08 \x03(\x0b\x32,.Application.VersionGetResponse.CompanionApp\x1a\x31\n\x0c\x43ompanionApp\x12\r\n\x05\x61ppId\x18\x01 \x01(\t\x12\x12\n\nappVersion\x18\x02 \x01(\t\"A\n\x17InstallationEnvironment\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0e\n\nENTERPRISE\x10\x01\x12\t\n\x05\x43LOUD\x10\x02\"\x10\n\x0e\x41ppListRequest\"q\n\x0f\x41ppListResponse\x12.\n\x04\x61pps\x18\x01 \x03(\x0b\x32 .Application.AppListResponse.App\x1a.\n\x03\x41pp\x12\x0f\n\x07\x61ppName\x18\x01 \x01(\t\x12\x16\n\x0e\x64isplayAppName\x18\x02 \x01(\t\".\n\x1a\x44\x61shboardAppListSetRequest\x12\x10\n\x08\x61ppNames\x18\x01 \x03(\t\"\x1d\n\x1b\x44\x61shboardAppListSetResponse\"\x1c\n\x1a\x44\x61shboardAppListGetRequest\"/\n\x1b\x44\x61shboardAppListGetResponse\x12\x10\n\x08\x61ppNames\x18\x01 \x03(\t\"s\n\x14\x44\x61shboardListRequest\x12\x0e\n\x06offset\x18\x01 \x01(\x05\x12\x12\n\nmaxResults\x18\x02 \x01(\x05\x12\x14\n\x0c\x64\x61shboardIds\x18\x03 \x03(\t\x12\x13\n\x0bminimalList\x18\x04 \x01(\x08\x12\x0c\n\x04isAR\x18\x05 \x01(\x08\"\xc9\x02\n\x15\x44\x61shboardListResponse\x12\x35\n\ndashboards\x18\x01 \x03(\x0b\x32!.Application.DashboardDescription\x12\x0e\n\x06offset\x18\x02 \x01(\x05\x12\x12\n\nmaxResults\x18\x03 \x01(\x05\x12\r\n\x05\x63ount\x18\x04 \x01(\x05\x12\x14\n\x0c\x64\x61shboardIds\x18\x05 \x03(\t\x12\r\n\x05total\x18\x06 \x01(\x05\x12\x13\n\x0bminimalList\x18\x07 \x01(\x08\x12\x0c\n\x04isAR\x18\x08 \x01(\x08\x12\x45\n\x0c\x63ontinuation\x18\t \x01(\x0b\x32/.Application.DashboardListResponse.Continuation\x1a\x37\n\x0c\x43ontinuation\x12\x13\n\x0bhasNextPage\x18\x01 \x01(\x08\x12\x12\n\nnextOffset\x18\x02 \x01(\x05\"*\n\x13\x44\x61shboardGetRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"L\n\x14\x44\x61shboardGetResponse\x12\x34\n\tdashboard\x18\x01 \x01(\x0b\x32!.Application.DashboardDescription\">\n\x13\x44\x61shboardSetRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\x12\x12\n\nisFavorite\x18\x02 \x01(\x08\"+\n\x14\x44\x61shboardSetResponse\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"b\n\x11\x41lertsListRequest\x12\x16\n\x0e\x63ontinuationId\x18\x01 \x01(\t\x12\x12\n\nmaxResults\x18\x02 \x01(\x05\x12!\n\x05order\x18\x03 \x01(\x0e\x32\x12.Application.Order\"\x8f\x01\n\x12\x41lertsListResponse\x12\x16\n\x0e\x63ontinuationId\x18\x01 \x01(\t\x12\x1a\n\x12nextContinuationId\x18\x02 \x01(\t\x12!\n\x05order\x18\x03 \x01(\x0e\x32\x12.Application.Order\x12\"\n\x06\x61lerts\x18\x04 \x03(\x0b\x32\x12.Application.Alert\"\'\n\x13\x41lertsDeleteRequest\x12\x10\n\x08\x61lertIds\x18\x01 \x03(\t\"(\n\x14\x41lertsDeleteResponse\x12\x10\n\x08\x61lertIds\x18\x01 \x03(\t\"\x14\n\x12\x41lertsClearRequest\"\x15\n\x13\x41lertsClearResponse\"\xdc\x01\n\x14\x44\x61shboardDataRequest\x12G\n\x18\x64\x61shboardVisualizationId\x18\x01 \x01(\x0b\x32%.Application.DashboardVisualizationId\x12G\n\x0binputTokens\x18\x02 \x03(\x0b\x32\x32.Application.DashboardDataRequest.InputTokensEntry\x1a\x32\n\x10InputTokensEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"J\n\x15\x44\x61shboardDataResponse\x12\x31\n\rdashboardData\x18\x01 \x01(\x0b\x32\x1a.Application.DashboardData\"\"\n\x0f\x41lertGetRequest\x12\x0f\n\x07\x61lertId\x18\x01 \x01(\t\"5\n\x10\x41lertGetResponse\x12!\n\x05\x61lert\x18\x01 \x01(\x0b\x32\x12.Application.Alert\"D\n\x15\x41RWorkspaceSetRequest\x12+\n\tworkspace\x18\x01 \x01(\x0b\x32\x18.Application.ARWorkspace\"-\n\x16\x41RWorkspaceSetResponse\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\",\n\x15\x41RWorkspaceGetRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"E\n\x16\x41RWorkspaceGetResponse\x12+\n\tworkspace\x18\x01 \x01(\x0b\x32\x18.Application.ARWorkspace\"K\n\x18\x41RWorkspaceFormatRequest\x12/\n\tworkspace\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceData\"L\n\x19\x41RWorkspaceFormatResponse\x12/\n\tworkspace\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceData\"-\n\x16\x41RWorkspaceListRequest\x12\x13\n\x0b\x64\x61shboardId\x18\x01 \x01(\t\"N\n\x17\x41RWorkspaceListResponse\x12\x33\n\rworkspaceList\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceList\"[\n\x1a\x41RWorkspaceImageSetRequest\x12=\n\x13\x61rWorkspaceAnchored\x18\x01 \x01(\x0b\x32 .Application.ARWorkspaceAnchored\"O\n\x1b\x41RWorkspaceImageSetResponse\x12\x30\n\x0b\x64\x61shboardId\x18\x01 \x01(\x0b\x32\x1b.Application.ARWorkspaceKey\"J\n\x17\x41RWorkspaceSetRequestV2\x12/\n\tworkspace\x18\x01 \x01(\x0b\x32\x1c.Application.ARWorkspaceData\"1\n\x18\x41RWorkspaceSetResponseV2\x12\x15\n\rarWorkspaceId\x18\x01 \x01(\t\"0\n\x17\x41RWorkspaceGetRequestV2\x12\x15\n\rarWorkspaceId\x18\x01 \x03(\t\"K\n\x18\x41RWorkspaceGetResponseV2\x12/\n\tworkspace\x18\x01 \x03(\x0b\x32\x1c.Application.ARWorkspaceData\"3\n\x1a\x41RWorkspaceDeleteRequestV2\x12\x15\n\rarWorkspaceId\x18\x01 \x03(\t\"\x1d\n\x1b\x41RWorkspaceDeleteResponseV2\"#\n\x0f\x41ssetGetRequest\x12\x10\n\x08\x61ssetIds\x18\x01 \x03(\t\":\n\x10\x41ssetGetResponse\x12&\n\x06\x61ssets\x18\x01 \x03(\x0b\x32\x16.Application.AssetData\"E\n\x0f\x41ssetSetRequest\x12\x32\n\x06params\x18\x01 \x03(\x0b\x32\".Application.AssetSetRequestParams\"L\n\x10\x41ssetSetResponse\x12\x38\n\x0c\x66\x61iledAssets\x18\x01 \x03(\x0b\x32\".Application.AssetSetRequestParams\"&\n\x12\x41ssetDeleteRequest\x12\x10\n\x08\x61ssetIds\x18\x01 \x03(\t\"\x15\n\x13\x41ssetDeleteResponse\"\x1e\n\x1cJubileeConnectionInfoRequest\"W\n\x1dJubileeConnectionInfoResponse\x12\x0e\n\x06\x61piKey\x18\x01 \x01(\t\x12\x10\n\x08hostname\x18\x02 \x01(\t\x12\x14\n\x0csplunkCookie\x18\x03 \x01(\t\"Y\n\x0fGroupGetRequest\x12\x0f\n\x07groupId\x18\x01 \x01(\t\x12\x35\n\x0cresourceType\x18\x02 \x01(\x0e\x32\x1f.Application.Group.ResourceType\"6\n\x10GroupGetResponse\x12\"\n\x06groups\x18\x01 \x03(\x0b\x32\x12.Application.Group\"F\n\x0fGroupSetRequest\x12!\n\x05group\x18\x01 \x01(\x0b\x32\x12.Application.Group\x12\x10\n\x08isPublic\x18\x02 \x01(\x08\"#\n\x10GroupSetResponse\x12\x0f\n\x07groupId\x18\x01 \x01(\t\"8\n\x12GroupDeleteRequest\x12\x10\n\x08groupIds\x18\x01 \x03(\t\x12\x10\n\x08isPublic\x18\x02 \x01(\x08\"\x15\n\x13GroupDeleteResponse\"\x18\n\x16\x42\x65\x61\x63onRegionGetRequest\"K\n\x17\x42\x65\x61\x63onRegionGetResponse\x12\x30\n\rbeaconRegions\x18\x01 \x03(\x0b\x32\x19.Application.BeaconRegion\"I\n\x16\x42\x65\x61\x63onRegionSetRequest\x12/\n\x0c\x62\x65\x61\x63onRegion\x18\x01 \x01(\x0b\x32\x19.Application.BeaconRegion\"\x19\n\x17\x42\x65\x61\x63onRegionSetResponse\"6\n\x19\x42\x65\x61\x63onRegionDeleteRequest\x12\x19\n\x11\x62\x65\x61\x63onRegionUUIDs\x18\x01 \x03(\t\"=\n\x1a\x42\x65\x61\x63onRegionDeleteResponse\x12\x1f\n\x17\x66\x61iledBeaconRegionUUIDs\x18\x01 \x03(\t\"v\n\"GeofenceDashboardMappingGetRequest\x12\x31\n\x0fuserCoordinates\x18\x01 \x01(\x0b\x32\x18.Application.Coordinates\x12\x0e\n\x06radius\x18\x02 \x01(\x02\x12\r\n\x05limit\x18\x03 \x01(\x05\"\\\n#GeofenceDashboardMappingGetResponse\x12\x35\n\x08mappings\x18\x01 \x03(\x0b\x32#.Application.NearbyDashboardMapping\"\'\n%GeofenceDashboardMappingGetAllRequest\"_\n&GeofenceDashboardMappingGetAllResponse\x12\x35\n\x08mappings\x18\x01 \x03(\x0b\x32#.Application.NearbyDashboardMapping\"Z\n NearbyDashboardMappingGetRequest\x12\x36\n\x10nearbyEntityKeys\x18\x01 \x03(\x0b\x32\x1c.Application.NearbyEntityKey\"Z\n!NearbyDashboardMappingGetResponse\x12\x35\n\x08mappings\x18\x01 \x03(\x0b\x32#.Application.NearbyDashboardMapping\"X\n NearbyDashboardMappingSetRequest\x12\x34\n\x07mapping\x18\x01 \x01(\x0b\x32#.Application.NearbyDashboardMapping\"#\n!NearbyDashboardMappingSetResponse\"]\n#NearbyDashboardMappingDeleteRequest\x12\x36\n\x10nearbyEntityKeys\x18\x01 \x03(\x0b\x32\x1c.Application.NearbyEntityKey\"^\n$NearbyDashboardMappingDeleteResponse\x12\x36\n\x10\x66\x61iledEntityKeys\x18\x01 \x03(\x0b\x32\x1c.Application.NearbyEntityKey\"\xeb\x01\n CreatePhantomRegistrationRequest\x12\x11\n\tauth_code\x18\x01 \x01(\t\x12\x18\n\x10\x64\x65vice_client_id\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65vice_name\x18\x03 \x01(\t\x12Q\n\rphantom_creds\x18\x04 \x01(\x0b\x32:.Application.CreatePhantomRegistrationRequest.PhantomCreds\x1a\x32\n\x0cPhantomCreds\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\">\n!CreatePhantomRegistrationResponse\x12\x19\n\x11phantom_client_id\x18\x01 \x01(\t\"#\n!GetPhantomRegistrationInfoRequest\"O\n\"GetPhantomRegistrationInfoResponse\x12\x17\n\x0f\x64\x65ployment_name\x18\x01 \x01(\t\x12\x10\n\x08hostname\x18\x02 \x01(\t\",\n\x17\x43onnectivityTestRequest\x12\x11\n\trequestId\x18\x01 \x01(\t\"-\n\x18\x43onnectivityTestResponse\x12\x11\n\trequestId\x18\x01 \x01(\t\"m\n!CompleteDeviceRegistrationRequest\x12\x1a\n\x12\x61uthenticationCode\x18\x01 \x01(\t\x12\x18\n\x10\x63onfirmationCode\x18\x02 \x01(\t\x12\x12\n\ndeviceName\x18\x03 \x01(\t\"\xb0\x02\n\"CompleteDeviceRegistrationResponse\x12\x42\n\x04\x63ode\x18\x01 \x01(\x0e\x32\x34.Application.CompleteDeviceRegistrationResponse.Code\"\xc5\x01\n\x04\x43ode\x12\x0b\n\x07SUCCESS\x10\x00\x12\x1b\n\x17\x45RROR_VALIDATION_FAILED\x10\x01\x12\x1b\n\x17\x45RROR_AUTH_CODE_INVALID\x10\x02\x12\x1d\n\x19\x45RROR_CREDENTIALS_INVALID\x10\x03\x12\x1e\n\x1a\x45RROR_CONFIRMATION_INVALID\x10\x04\x12\x19\n\x15\x45RROR_APP_NOT_ENABLED\x10\x05\x12\x1c\n\x18\x45RROR_ALREADY_REGISTERED\x10\x06\" \n\x0cTVGetRequest\x12\x10\n\x08\x64\x65viceId\x18\x01 \x01(\t\"4\n\rTVGetResponse\x12#\n\x06tvData\x18\x01 \x03(\x0b\x32\x13.Application.TVData\"=\n\x12TVConfigSetRequest\x12\'\n\x08tvConfig\x18\x01 \x01(\x0b\x32\x15.Application.TVConfig\"\x15\n\x13TVConfigSetResponse\"X\n\x16TVConfigBulkSetRequest\x12\'\n\x08tvConfig\x18\x01 \x03(\x0b\x32\x15.Application.TVConfig\x12\x15\n\risTokenUpdate\x18\x02 \x01(\x08\"+\n\x17TVConfigBulkSetResponse\x12\x10\n\x08warnings\x18\x01 \x03(\t\")\n\x15TVConfigDeleteRequest\x12\x10\n\x08\x64\x65viceId\x18\x01 \x03(\t\",\n\x16TVConfigDeleteResponse\x12\x12\n\ndeletedIds\x18\x01 \x03(\t\",\n\x14TVBookmarkGetRequest\x12\x14\n\x0c\x62ookmarkName\x18\x01 \x01(\t\"D\n\x15TVBookmarkGetResponse\x12+\n\ntvBookmark\x18\x01 \x03(\x0b\x32\x17.Application.TVBookmark\"e\n\x14TVBookmarkSetRequest\x12\x11\n\toverwrite\x18\x02 \x01(\x08\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x11\n\tdeviceIds\x18\x05 \x03(\tJ\x04\x08\x01\x10\x02\"\x17\n\x15TVBookmarkSetResponse\"/\n\x17TVBookmarkDeleteRequest\x12\x14\n\x0c\x62ookmarkName\x18\x01 \x01(\t\"\x1a\n\x18TVBookmarkDeleteResponse\"1\n\x19TVBookmarkActivateRequest\x12\x14\n\x0c\x62ookmarkName\x18\x01 \x01(\t\".\n\x1aTVBookmarkActivateResponse\x12\x10\n\x08warnings\x18\x01 \x03(\t\"i\n\x13TVCaptainUrlRequest\x12\x11\n\tcaptainId\x18\x01 \x01(\t\x12\x12\n\ncaptainUrl\x18\x02 \x01(\t\x12\x11\n\ttimestamp\x18\x04 \x01(\x03\x12\x12\n\nupdateFlag\x18\x05 \x01(\x08J\x04\x08\x03\x10\x04\"\x16\n\x14TVCaptainUrlResponse\",\n\x18StartMPCBroadcastRequest\x12\x10\n\x08\x64\x65viceId\x18\x01 \x01(\t\"\x1b\n\x19StartMPCBroadcastResponse\"I\n\x14TVInteractionRequest\x12\x31\n\rtvInteraction\x18\x01 \x01(\x0b\x32\x1a.Application.TVInteraction\"\x17\n\x15TVInteractionResponse\"\x1c\n\x1aTVCaptainReelectionRequest\"\x1d\n\x1bTVCaptainReelectionResponse\"Z\n\x17\x42\x65\x61\x63onMappingGetRequest\x12;\n\x07\x62\x65\x61\x63ons\x18\x01 \x03(\x0b\x32*.Application.NearbyEntity.BeaconDefinition:\x02\x18\x01\"k\n\x18\x42\x65\x61\x63onMappingGetResponse\x12K\n\x14\x61ssociatedDashboards\x18\x01 \x03(\x0b\x32-.Application.NearbyEntity.BeaconDashboardPair:\x02\x18\x01\"\"\n DeviceCredentialsValidateRequest\"F\n!DeviceCredentialsValidateResponse\x12!\n\x19\x61reDeviceCredentialsValid\x18\x01 \x01(\x08\"E\n\x18UdfHostedResourceRequest\x12\x13\n\x0bresourceUrl\x18\x01 \x01(\t\x12\x14\n\x0cresourceType\x18\x02 \x01(\t\"9\n\x19UdfHostedResourceResponse\x12\x1c\n\x14\x65ncryptedResourceUrl\x18\x01 \x01(\t\"\x15\n\x13TokenRefreshRequest\"\xe9\x01\n\x14TokenRefreshResponse\x12\x14\n\x0csessionToken\x18\x01 \x01(\t\x12\x16\n\x0etokenExpiresAt\x18\x02 \x01(\x03\x12\x34\n\x04\x63ode\x18\x03 \x01(\x0e\x32&.Application.TokenRefreshResponse.Code\"m\n\x04\x43ode\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SUCCESS\x10\x01\x12\x17\n\x13\x45RROR_TOKEN_INVALID\x10\x02\x12\x18\n\x14\x45RROR_CREATING_TOKEN\x10\x03\x12\x18\n\x14\x45RROR_DELETING_TOKEN\x10\x04\"\x13\n\x11SnoozeAllResponse\"\\\n\rSnoozeRequest\x12\x0f\n\x07\x65ndTime\x18\x01 \x01(\x03\x12+\n\tsnoozeAll\x18\x02 \x01(\x0b\x32\x16.Application.SnoozeAllH\x00\x42\r\n\x0brequestType\"o\n\x0eSnoozeResponse\x12\x10\n\x08snoozeID\x18\x01 \x01(\t\x12;\n\x11snoozeAllResponse\x18\x02 \x01(\x0b\x32\x1e.Application.SnoozeAllResponseH\x00\x42\x0e\n\x0cresponseType\",\n\x10GetSnoozeRequest\x12\x18\n\x10includeSnoozeAll\x18\x01 \x01(\x08\"9\n\x11GetSnoozeResponse\x12$\n\x07snoozes\x18\x01 \x03(\x0b\x32\x13.Application.Snooze\"L\n\x0fUnsnoozeRequest\x12+\n\tsnoozeAll\x18\x01 \x01(\x0b\x32\x16.Application.SnoozeAllH\x00\x42\x0c\n\nsnoozeType\"%\n\x10UnsnoozeResponse\x12\x11\n\tsnoozeIDs\x18\x01 \x03(\t*5\n\x05Order\x12\r\n\tUNDEFINED\x10\x00\x12\r\n\tASCENDING\x10\x01\x12\x0e\n\nDESCENDING\x10\x02\x42%\n!com.splunk.mobile.spacebridge.appP\x01\x62\x06proto3')
   ,
-  dependencies=[common__pb2.DESCRIPTOR,augmented__reality__pb2.DESCRIPTOR,nlp__splapp__request__pb2.DESCRIPTOR,drone__mode__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,google_dot_protobuf_dot_struct__pb2.DESCRIPTOR,])
+  dependencies=[common__pb2.DESCRIPTOR,augmented__reality__pb2.DESCRIPTOR,nlp__splapp__request__pb2.DESCRIPTOR,drone__mode__pb2.DESCRIPTOR,google_dot_protobuf_dot_wrappers__pb2.DESCRIPTOR,])
 
 _ORDER = _descriptor.EnumDescriptor(
   name='Order',
@@ -52,8 +51,8 @@ _ORDER = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=18953,
-  serialized_end=19006,
+  serialized_start=18103,
+  serialized_end=18156,
 )
 _sym_db.RegisterEnumDescriptor(_ORDER)
 
@@ -84,66 +83,10 @@ _VERSIONGETRESPONSE_INSTALLATIONENVIRONMENT = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=10391,
-  serialized_end=10456,
+  serialized_start=10064,
+  serialized_end=10129,
 )
 _sym_db.RegisterEnumDescriptor(_VERSIONGETRESPONSE_INSTALLATIONENVIRONMENT)
-
-_VERSIONGETRESPONSE_REGISTRATIONTYPE = _descriptor.EnumDescriptor(
-  name='RegistrationType',
-  full_name='Application.VersionGetResponse.RegistrationType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='REGISTRATION_TYPE_UNKNOWN', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='LOCAL_LDAP', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='SAML', index=2, number=2,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=10458,
-  serialized_end=10533,
-)
-_sym_db.RegisterEnumDescriptor(_VERSIONGETRESPONSE_REGISTRATIONTYPE)
-
-_VERSIONGETRESPONSE_REGISTRATIONMETHOD = _descriptor.EnumDescriptor(
-  name='RegistrationMethod',
-  full_name='Application.VersionGetResponse.RegistrationMethod',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='REGISTRATION_METHOD_UNKNOWN', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='AUTH_CODE', index=1, number=1,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MDM', index=2, number=2,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='IN_APP', index=3, number=3,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=10535,
-  serialized_end=10624,
-)
-_sym_db.RegisterEnumDescriptor(_VERSIONGETRESPONSE_REGISTRATIONMETHOD)
 
 _COMPLETEDEVICEREGISTRATIONRESPONSE_CODE = _descriptor.EnumDescriptor(
   name='Code',
@@ -182,8 +125,8 @@ _COMPLETEDEVICEREGISTRATIONRESPONSE_CODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=16066,
-  serialized_end=16263,
+  serialized_start=15571,
+  serialized_end=15768,
 )
 _sym_db.RegisterEnumDescriptor(_COMPLETEDEVICEREGISTRATIONRESPONSE_CODE)
 
@@ -216,32 +159,10 @@ _TOKENREFRESHRESPONSE_CODE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=18067,
-  serialized_end=18176,
+  serialized_start=17542,
+  serialized_end=17651,
 )
 _sym_db.RegisterEnumDescriptor(_TOKENREFRESHRESPONSE_CODE)
-
-_SPLUNKAPIREQUEST_REQUESTTYPE = _descriptor.EnumDescriptor(
-  name='RequestType',
-  full_name='Application.SplunkApiRequest.RequestType',
-  filename=None,
-  file=DESCRIPTOR,
-  values=[
-    _descriptor.EnumValueDescriptor(
-      name='GET', index=0, number=0,
-      serialized_options=None,
-      type=None),
-    _descriptor.EnumValueDescriptor(
-      name='POST', index=1, number=1,
-      serialized_options=None,
-      type=None),
-  ],
-  containing_type=None,
-  serialized_options=None,
-  serialized_start=18839,
-  serialized_end=18871,
-)
-_sym_db.RegisterEnumDescriptor(_SPLUNKAPIREQUEST_REQUESTTYPE)
 
 
 _CLIENTSINGLEREQUEST = _descriptor.Descriptor(
@@ -727,13 +648,6 @@ _CLIENTSINGLEREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='splunkApiRequest', full_name='Application.ClientSingleRequest.splunkApiRequest', index=68,
-      number=69, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -749,8 +663,8 @@ _CLIENTSINGLEREQUEST = _descriptor.Descriptor(
       name='request_message', full_name='Application.ClientSingleRequest.request_message',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=176,
-  serialized_end=4898,
+  serialized_start=146,
+  serialized_end=4809,
 )
 
 
@@ -1230,13 +1144,6 @@ _SERVERSINGLERESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='splunkApiResponse', full_name='Application.ServerSingleResponse.splunkApiResponse', index=67,
-      number=68, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -1252,8 +1159,8 @@ _SERVERSINGLERESPONSE = _descriptor.Descriptor(
       name='response_message', full_name='Application.ServerSingleResponse.response_message',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=4901,
-  serialized_end=9726,
+  serialized_start=4812,
+  serialized_end=9576,
 )
 
 
@@ -1276,8 +1183,8 @@ _CLIENTCONFIGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9728,
-  serialized_end=9749,
+  serialized_start=9578,
+  serialized_end=9599,
 )
 
 
@@ -1307,8 +1214,8 @@ _CLIENTCONFIGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9751,
-  serialized_end=9801,
+  serialized_start=9601,
+  serialized_end=9651,
 )
 
 
@@ -1331,8 +1238,8 @@ _VERSIONGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9803,
-  serialized_end=9822,
+  serialized_start=9653,
+  serialized_end=9672,
 )
 
 
@@ -1369,8 +1276,8 @@ _VERSIONGETRESPONSE_COMPANIONAPP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10340,
-  serialized_end=10389,
+  serialized_start=10013,
+  serialized_end=10062,
 )
 
 _VERSIONGETRESPONSE = _descriptor.Descriptor(
@@ -1436,35 +1343,12 @@ _VERSIONGETRESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='mdmEnforced', full_name='Application.VersionGetResponse.mdmEnforced', index=8,
-      number=9, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='registrationType', full_name='Application.VersionGetResponse.registrationType', index=9,
-      number=10, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='registrationMethod', full_name='Application.VersionGetResponse.registrationMethod', index=10,
-      number=11, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
   nested_types=[_VERSIONGETRESPONSE_COMPANIONAPP, ],
   enum_types=[
     _VERSIONGETRESPONSE_INSTALLATIONENVIRONMENT,
-    _VERSIONGETRESPONSE_REGISTRATIONTYPE,
-    _VERSIONGETRESPONSE_REGISTRATIONMETHOD,
   ],
   serialized_options=None,
   is_extendable=False,
@@ -1472,8 +1356,8 @@ _VERSIONGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=9825,
-  serialized_end=10624,
+  serialized_start=9675,
+  serialized_end=10129,
 )
 
 
@@ -1496,8 +1380,8 @@ _APPLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10626,
-  serialized_end=10642,
+  serialized_start=10131,
+  serialized_end=10147,
 )
 
 
@@ -1534,8 +1418,8 @@ _APPLISTRESPONSE_APP = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10711,
-  serialized_end=10757,
+  serialized_start=10216,
+  serialized_end=10262,
 )
 
 _APPLISTRESPONSE = _descriptor.Descriptor(
@@ -1564,8 +1448,8 @@ _APPLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10644,
-  serialized_end=10757,
+  serialized_start=10149,
+  serialized_end=10262,
 )
 
 
@@ -1595,8 +1479,8 @@ _DASHBOARDAPPLISTSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10759,
-  serialized_end=10805,
+  serialized_start=10264,
+  serialized_end=10310,
 )
 
 
@@ -1619,8 +1503,8 @@ _DASHBOARDAPPLISTSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10807,
-  serialized_end=10836,
+  serialized_start=10312,
+  serialized_end=10341,
 )
 
 
@@ -1643,8 +1527,8 @@ _DASHBOARDAPPLISTGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10838,
-  serialized_end=10866,
+  serialized_start=10343,
+  serialized_end=10371,
 )
 
 
@@ -1674,8 +1558,8 @@ _DASHBOARDAPPLISTGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10868,
-  serialized_end=10915,
+  serialized_start=10373,
+  serialized_end=10420,
 )
 
 
@@ -1733,8 +1617,8 @@ _DASHBOARDLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=10917,
-  serialized_end=11032,
+  serialized_start=10422,
+  serialized_end=10537,
 )
 
 
@@ -1771,8 +1655,8 @@ _DASHBOARDLISTRESPONSE_CONTINUATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11309,
-  serialized_end=11364,
+  serialized_start=10814,
+  serialized_end=10869,
 )
 
 _DASHBOARDLISTRESPONSE = _descriptor.Descriptor(
@@ -1857,8 +1741,8 @@ _DASHBOARDLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11035,
-  serialized_end=11364,
+  serialized_start=10540,
+  serialized_end=10869,
 )
 
 
@@ -1888,8 +1772,8 @@ _DASHBOARDGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11366,
-  serialized_end=11408,
+  serialized_start=10871,
+  serialized_end=10913,
 )
 
 
@@ -1919,8 +1803,8 @@ _DASHBOARDGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11410,
-  serialized_end=11486,
+  serialized_start=10915,
+  serialized_end=10991,
 )
 
 
@@ -1957,8 +1841,8 @@ _DASHBOARDSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11488,
-  serialized_end=11550,
+  serialized_start=10993,
+  serialized_end=11055,
 )
 
 
@@ -1988,8 +1872,8 @@ _DASHBOARDSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11552,
-  serialized_end=11595,
+  serialized_start=11057,
+  serialized_end=11100,
 )
 
 
@@ -2033,8 +1917,8 @@ _ALERTSLISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11597,
-  serialized_end=11695,
+  serialized_start=11102,
+  serialized_end=11200,
 )
 
 
@@ -2085,8 +1969,8 @@ _ALERTSLISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11698,
-  serialized_end=11841,
+  serialized_start=11203,
+  serialized_end=11346,
 )
 
 
@@ -2116,8 +2000,8 @@ _ALERTSDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11843,
-  serialized_end=11882,
+  serialized_start=11348,
+  serialized_end=11387,
 )
 
 
@@ -2147,8 +2031,8 @@ _ALERTSDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11884,
-  serialized_end=11924,
+  serialized_start=11389,
+  serialized_end=11429,
 )
 
 
@@ -2171,8 +2055,8 @@ _ALERTSCLEARREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11926,
-  serialized_end=11946,
+  serialized_start=11431,
+  serialized_end=11451,
 )
 
 
@@ -2195,8 +2079,8 @@ _ALERTSCLEARRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11948,
-  serialized_end=11969,
+  serialized_start=11453,
+  serialized_end=11474,
 )
 
 
@@ -2233,8 +2117,8 @@ _DASHBOARDDATAREQUEST_INPUTTOKENSENTRY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12142,
-  serialized_end=12192,
+  serialized_start=11647,
+  serialized_end=11697,
 )
 
 _DASHBOARDDATAREQUEST = _descriptor.Descriptor(
@@ -2270,8 +2154,8 @@ _DASHBOARDDATAREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=11972,
-  serialized_end=12192,
+  serialized_start=11477,
+  serialized_end=11697,
 )
 
 
@@ -2301,8 +2185,8 @@ _DASHBOARDDATARESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12194,
-  serialized_end=12268,
+  serialized_start=11699,
+  serialized_end=11773,
 )
 
 
@@ -2332,8 +2216,8 @@ _ALERTGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12270,
-  serialized_end=12304,
+  serialized_start=11775,
+  serialized_end=11809,
 )
 
 
@@ -2363,8 +2247,8 @@ _ALERTGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12306,
-  serialized_end=12359,
+  serialized_start=11811,
+  serialized_end=11864,
 )
 
 
@@ -2394,8 +2278,8 @@ _ARWORKSPACESETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12361,
-  serialized_end=12429,
+  serialized_start=11866,
+  serialized_end=11934,
 )
 
 
@@ -2425,8 +2309,8 @@ _ARWORKSPACESETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12431,
-  serialized_end=12476,
+  serialized_start=11936,
+  serialized_end=11981,
 )
 
 
@@ -2456,8 +2340,8 @@ _ARWORKSPACEGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12478,
-  serialized_end=12522,
+  serialized_start=11983,
+  serialized_end=12027,
 )
 
 
@@ -2487,8 +2371,8 @@ _ARWORKSPACEGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12524,
-  serialized_end=12593,
+  serialized_start=12029,
+  serialized_end=12098,
 )
 
 
@@ -2518,8 +2402,8 @@ _ARWORKSPACEFORMATREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12595,
-  serialized_end=12670,
+  serialized_start=12100,
+  serialized_end=12175,
 )
 
 
@@ -2549,8 +2433,8 @@ _ARWORKSPACEFORMATRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12672,
-  serialized_end=12748,
+  serialized_start=12177,
+  serialized_end=12253,
 )
 
 
@@ -2580,8 +2464,8 @@ _ARWORKSPACELISTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12750,
-  serialized_end=12795,
+  serialized_start=12255,
+  serialized_end=12300,
 )
 
 
@@ -2611,8 +2495,8 @@ _ARWORKSPACELISTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12797,
-  serialized_end=12875,
+  serialized_start=12302,
+  serialized_end=12380,
 )
 
 
@@ -2642,8 +2526,8 @@ _ARWORKSPACEIMAGESETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12877,
-  serialized_end=12968,
+  serialized_start=12382,
+  serialized_end=12473,
 )
 
 
@@ -2673,8 +2557,8 @@ _ARWORKSPACEIMAGESETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=12970,
-  serialized_end=13049,
+  serialized_start=12475,
+  serialized_end=12554,
 )
 
 
@@ -2704,8 +2588,8 @@ _ARWORKSPACESETREQUESTV2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13051,
-  serialized_end=13125,
+  serialized_start=12556,
+  serialized_end=12630,
 )
 
 
@@ -2735,8 +2619,8 @@ _ARWORKSPACESETRESPONSEV2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13127,
-  serialized_end=13176,
+  serialized_start=12632,
+  serialized_end=12681,
 )
 
 
@@ -2766,8 +2650,8 @@ _ARWORKSPACEGETREQUESTV2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13178,
-  serialized_end=13226,
+  serialized_start=12683,
+  serialized_end=12731,
 )
 
 
@@ -2797,8 +2681,8 @@ _ARWORKSPACEGETRESPONSEV2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13228,
-  serialized_end=13303,
+  serialized_start=12733,
+  serialized_end=12808,
 )
 
 
@@ -2828,8 +2712,8 @@ _ARWORKSPACEDELETEREQUESTV2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13305,
-  serialized_end=13356,
+  serialized_start=12810,
+  serialized_end=12861,
 )
 
 
@@ -2852,8 +2736,8 @@ _ARWORKSPACEDELETERESPONSEV2 = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13358,
-  serialized_end=13387,
+  serialized_start=12863,
+  serialized_end=12892,
 )
 
 
@@ -2883,8 +2767,8 @@ _ASSETGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13389,
-  serialized_end=13424,
+  serialized_start=12894,
+  serialized_end=12929,
 )
 
 
@@ -2914,8 +2798,8 @@ _ASSETGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13426,
-  serialized_end=13484,
+  serialized_start=12931,
+  serialized_end=12989,
 )
 
 
@@ -2945,8 +2829,8 @@ _ASSETSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13486,
-  serialized_end=13555,
+  serialized_start=12991,
+  serialized_end=13060,
 )
 
 
@@ -2976,8 +2860,8 @@ _ASSETSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13557,
-  serialized_end=13633,
+  serialized_start=13062,
+  serialized_end=13138,
 )
 
 
@@ -3007,8 +2891,8 @@ _ASSETDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13635,
-  serialized_end=13673,
+  serialized_start=13140,
+  serialized_end=13178,
 )
 
 
@@ -3031,8 +2915,8 @@ _ASSETDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13675,
-  serialized_end=13696,
+  serialized_start=13180,
+  serialized_end=13201,
 )
 
 
@@ -3055,8 +2939,8 @@ _JUBILEECONNECTIONINFOREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13698,
-  serialized_end=13728,
+  serialized_start=13203,
+  serialized_end=13233,
 )
 
 
@@ -3100,8 +2984,8 @@ _JUBILEECONNECTIONINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13730,
-  serialized_end=13817,
+  serialized_start=13235,
+  serialized_end=13322,
 )
 
 
@@ -3138,8 +3022,8 @@ _GROUPGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13819,
-  serialized_end=13908,
+  serialized_start=13324,
+  serialized_end=13413,
 )
 
 
@@ -3169,8 +3053,8 @@ _GROUPGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13910,
-  serialized_end=13964,
+  serialized_start=13415,
+  serialized_end=13469,
 )
 
 
@@ -3207,8 +3091,8 @@ _GROUPSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=13966,
-  serialized_end=14036,
+  serialized_start=13471,
+  serialized_end=13541,
 )
 
 
@@ -3238,8 +3122,8 @@ _GROUPSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14038,
-  serialized_end=14073,
+  serialized_start=13543,
+  serialized_end=13578,
 )
 
 
@@ -3276,8 +3160,8 @@ _GROUPDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14075,
-  serialized_end=14131,
+  serialized_start=13580,
+  serialized_end=13636,
 )
 
 
@@ -3300,8 +3184,8 @@ _GROUPDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14133,
-  serialized_end=14154,
+  serialized_start=13638,
+  serialized_end=13659,
 )
 
 
@@ -3324,8 +3208,8 @@ _BEACONREGIONGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14156,
-  serialized_end=14180,
+  serialized_start=13661,
+  serialized_end=13685,
 )
 
 
@@ -3355,8 +3239,8 @@ _BEACONREGIONGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14182,
-  serialized_end=14257,
+  serialized_start=13687,
+  serialized_end=13762,
 )
 
 
@@ -3386,8 +3270,8 @@ _BEACONREGIONSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14259,
-  serialized_end=14332,
+  serialized_start=13764,
+  serialized_end=13837,
 )
 
 
@@ -3410,8 +3294,8 @@ _BEACONREGIONSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14334,
-  serialized_end=14359,
+  serialized_start=13839,
+  serialized_end=13864,
 )
 
 
@@ -3441,8 +3325,8 @@ _BEACONREGIONDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14361,
-  serialized_end=14415,
+  serialized_start=13866,
+  serialized_end=13920,
 )
 
 
@@ -3472,8 +3356,8 @@ _BEACONREGIONDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14417,
-  serialized_end=14478,
+  serialized_start=13922,
+  serialized_end=13983,
 )
 
 
@@ -3517,8 +3401,8 @@ _GEOFENCEDASHBOARDMAPPINGGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14480,
-  serialized_end=14598,
+  serialized_start=13985,
+  serialized_end=14103,
 )
 
 
@@ -3548,8 +3432,8 @@ _GEOFENCEDASHBOARDMAPPINGGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14600,
-  serialized_end=14692,
+  serialized_start=14105,
+  serialized_end=14197,
 )
 
 
@@ -3572,8 +3456,8 @@ _GEOFENCEDASHBOARDMAPPINGGETALLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14694,
-  serialized_end=14733,
+  serialized_start=14199,
+  serialized_end=14238,
 )
 
 
@@ -3603,8 +3487,8 @@ _GEOFENCEDASHBOARDMAPPINGGETALLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14735,
-  serialized_end=14830,
+  serialized_start=14240,
+  serialized_end=14335,
 )
 
 
@@ -3634,8 +3518,8 @@ _NEARBYDASHBOARDMAPPINGGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14832,
-  serialized_end=14922,
+  serialized_start=14337,
+  serialized_end=14427,
 )
 
 
@@ -3665,8 +3549,8 @@ _NEARBYDASHBOARDMAPPINGGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=14924,
-  serialized_end=15014,
+  serialized_start=14429,
+  serialized_end=14519,
 )
 
 
@@ -3696,8 +3580,8 @@ _NEARBYDASHBOARDMAPPINGSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15016,
-  serialized_end=15104,
+  serialized_start=14521,
+  serialized_end=14609,
 )
 
 
@@ -3720,8 +3604,8 @@ _NEARBYDASHBOARDMAPPINGSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15106,
-  serialized_end=15141,
+  serialized_start=14611,
+  serialized_end=14646,
 )
 
 
@@ -3751,8 +3635,8 @@ _NEARBYDASHBOARDMAPPINGDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15143,
-  serialized_end=15236,
+  serialized_start=14648,
+  serialized_end=14741,
 )
 
 
@@ -3782,8 +3666,8 @@ _NEARBYDASHBOARDMAPPINGDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15238,
-  serialized_end=15332,
+  serialized_start=14743,
+  serialized_end=14837,
 )
 
 
@@ -3820,8 +3704,8 @@ _CREATEPHANTOMREGISTRATIONREQUEST_PHANTOMCREDS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15520,
-  serialized_end=15570,
+  serialized_start=15025,
+  serialized_end=15075,
 )
 
 _CREATEPHANTOMREGISTRATIONREQUEST = _descriptor.Descriptor(
@@ -3871,8 +3755,8 @@ _CREATEPHANTOMREGISTRATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15335,
-  serialized_end=15570,
+  serialized_start=14840,
+  serialized_end=15075,
 )
 
 
@@ -3902,8 +3786,8 @@ _CREATEPHANTOMREGISTRATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15572,
-  serialized_end=15634,
+  serialized_start=15077,
+  serialized_end=15139,
 )
 
 
@@ -3926,8 +3810,8 @@ _GETPHANTOMREGISTRATIONINFOREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15636,
-  serialized_end=15671,
+  serialized_start=15141,
+  serialized_end=15176,
 )
 
 
@@ -3964,8 +3848,8 @@ _GETPHANTOMREGISTRATIONINFORESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15673,
-  serialized_end=15752,
+  serialized_start=15178,
+  serialized_end=15257,
 )
 
 
@@ -3995,8 +3879,8 @@ _CONNECTIVITYTESTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15754,
-  serialized_end=15798,
+  serialized_start=15259,
+  serialized_end=15303,
 )
 
 
@@ -4026,8 +3910,8 @@ _CONNECTIVITYTESTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15800,
-  serialized_end=15845,
+  serialized_start=15305,
+  serialized_end=15350,
 )
 
 
@@ -4071,8 +3955,8 @@ _COMPLETEDEVICEREGISTRATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15847,
-  serialized_end=15956,
+  serialized_start=15352,
+  serialized_end=15461,
 )
 
 
@@ -4103,8 +3987,8 @@ _COMPLETEDEVICEREGISTRATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=15959,
-  serialized_end=16263,
+  serialized_start=15464,
+  serialized_end=15768,
 )
 
 
@@ -4134,8 +4018,8 @@ _TVGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16265,
-  serialized_end=16297,
+  serialized_start=15770,
+  serialized_end=15802,
 )
 
 
@@ -4165,8 +4049,8 @@ _TVGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16299,
-  serialized_end=16351,
+  serialized_start=15804,
+  serialized_end=15856,
 )
 
 
@@ -4196,8 +4080,8 @@ _TVCONFIGSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16353,
-  serialized_end=16414,
+  serialized_start=15858,
+  serialized_end=15919,
 )
 
 
@@ -4220,8 +4104,8 @@ _TVCONFIGSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16416,
-  serialized_end=16437,
+  serialized_start=15921,
+  serialized_end=15942,
 )
 
 
@@ -4258,8 +4142,8 @@ _TVCONFIGBULKSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16439,
-  serialized_end=16527,
+  serialized_start=15944,
+  serialized_end=16032,
 )
 
 
@@ -4289,8 +4173,8 @@ _TVCONFIGBULKSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16529,
-  serialized_end=16572,
+  serialized_start=16034,
+  serialized_end=16077,
 )
 
 
@@ -4320,8 +4204,8 @@ _TVCONFIGDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16574,
-  serialized_end=16615,
+  serialized_start=16079,
+  serialized_end=16120,
 )
 
 
@@ -4351,8 +4235,8 @@ _TVCONFIGDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16617,
-  serialized_end=16661,
+  serialized_start=16122,
+  serialized_end=16166,
 )
 
 
@@ -4382,8 +4266,8 @@ _TVBOOKMARKGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16663,
-  serialized_end=16707,
+  serialized_start=16168,
+  serialized_end=16212,
 )
 
 
@@ -4413,8 +4297,8 @@ _TVBOOKMARKGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16709,
-  serialized_end=16777,
+  serialized_start=16214,
+  serialized_end=16282,
 )
 
 
@@ -4465,8 +4349,8 @@ _TVBOOKMARKSETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16779,
-  serialized_end=16880,
+  serialized_start=16284,
+  serialized_end=16385,
 )
 
 
@@ -4489,8 +4373,8 @@ _TVBOOKMARKSETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16882,
-  serialized_end=16905,
+  serialized_start=16387,
+  serialized_end=16410,
 )
 
 
@@ -4520,8 +4404,8 @@ _TVBOOKMARKDELETEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16907,
-  serialized_end=16954,
+  serialized_start=16412,
+  serialized_end=16459,
 )
 
 
@@ -4544,8 +4428,8 @@ _TVBOOKMARKDELETERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16956,
-  serialized_end=16982,
+  serialized_start=16461,
+  serialized_end=16487,
 )
 
 
@@ -4575,8 +4459,8 @@ _TVBOOKMARKACTIVATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=16984,
-  serialized_end=17033,
+  serialized_start=16489,
+  serialized_end=16538,
 )
 
 
@@ -4606,8 +4490,8 @@ _TVBOOKMARKACTIVATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17035,
-  serialized_end=17081,
+  serialized_start=16540,
+  serialized_end=16586,
 )
 
 
@@ -4658,8 +4542,8 @@ _TVCAPTAINURLREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17083,
-  serialized_end=17188,
+  serialized_start=16588,
+  serialized_end=16693,
 )
 
 
@@ -4682,8 +4566,8 @@ _TVCAPTAINURLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17190,
-  serialized_end=17212,
+  serialized_start=16695,
+  serialized_end=16717,
 )
 
 
@@ -4713,8 +4597,8 @@ _STARTMPCBROADCASTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17214,
-  serialized_end=17258,
+  serialized_start=16719,
+  serialized_end=16763,
 )
 
 
@@ -4737,8 +4621,8 @@ _STARTMPCBROADCASTRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17260,
-  serialized_end=17287,
+  serialized_start=16765,
+  serialized_end=16792,
 )
 
 
@@ -4768,8 +4652,8 @@ _TVINTERACTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17289,
-  serialized_end=17362,
+  serialized_start=16794,
+  serialized_end=16867,
 )
 
 
@@ -4792,8 +4676,8 @@ _TVINTERACTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17364,
-  serialized_end=17387,
+  serialized_start=16869,
+  serialized_end=16892,
 )
 
 
@@ -4816,8 +4700,8 @@ _TVCAPTAINREELECTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17389,
-  serialized_end=17417,
+  serialized_start=16894,
+  serialized_end=16922,
 )
 
 
@@ -4840,8 +4724,8 @@ _TVCAPTAINREELECTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17419,
-  serialized_end=17448,
+  serialized_start=16924,
+  serialized_end=16953,
 )
 
 
@@ -4871,8 +4755,8 @@ _BEACONMAPPINGGETREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17450,
-  serialized_end=17540,
+  serialized_start=16955,
+  serialized_end=17045,
 )
 
 
@@ -4902,8 +4786,8 @@ _BEACONMAPPINGGETRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17542,
-  serialized_end=17649,
+  serialized_start=17047,
+  serialized_end=17154,
 )
 
 
@@ -4926,8 +4810,8 @@ _DEVICECREDENTIALSVALIDATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17651,
-  serialized_end=17685,
+  serialized_start=17156,
+  serialized_end=17190,
 )
 
 
@@ -4957,8 +4841,8 @@ _DEVICECREDENTIALSVALIDATERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17687,
-  serialized_end=17757,
+  serialized_start=17192,
+  serialized_end=17262,
 )
 
 
@@ -4995,8 +4879,8 @@ _UDFHOSTEDRESOURCEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17759,
-  serialized_end=17828,
+  serialized_start=17264,
+  serialized_end=17333,
 )
 
 
@@ -5014,13 +4898,6 @@ _UDFHOSTEDRESOURCERESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='resourceUrlExpiresAt', full_name='Application.UdfHostedResourceResponse.resourceUrlExpiresAt', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -5033,8 +4910,8 @@ _UDFHOSTEDRESOURCERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17830,
-  serialized_end=17917,
+  serialized_start=17335,
+  serialized_end=17392,
 )
 
 
@@ -5057,8 +4934,8 @@ _TOKENREFRESHREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17919,
-  serialized_end=17940,
+  serialized_start=17394,
+  serialized_end=17415,
 )
 
 
@@ -5103,8 +4980,8 @@ _TOKENREFRESHRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=17943,
-  serialized_end=18176,
+  serialized_start=17418,
+  serialized_end=17651,
 )
 
 
@@ -5127,8 +5004,8 @@ _SNOOZEALLRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18178,
-  serialized_end=18197,
+  serialized_start=17653,
+  serialized_end=17672,
 )
 
 
@@ -5168,8 +5045,8 @@ _SNOOZEREQUEST = _descriptor.Descriptor(
       name='requestType', full_name='Application.SnoozeRequest.requestType',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=18199,
-  serialized_end=18291,
+  serialized_start=17674,
+  serialized_end=17766,
 )
 
 
@@ -5209,8 +5086,8 @@ _SNOOZERESPONSE = _descriptor.Descriptor(
       name='responseType', full_name='Application.SnoozeResponse.responseType',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=18293,
-  serialized_end=18404,
+  serialized_start=17768,
+  serialized_end=17879,
 )
 
 
@@ -5240,8 +5117,8 @@ _GETSNOOZEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18406,
-  serialized_end=18450,
+  serialized_start=17881,
+  serialized_end=17925,
 )
 
 
@@ -5271,8 +5148,8 @@ _GETSNOOZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18452,
-  serialized_end=18509,
+  serialized_start=17927,
+  serialized_end=17984,
 )
 
 
@@ -5305,8 +5182,8 @@ _UNSNOOZEREQUEST = _descriptor.Descriptor(
       name='snoozeType', full_name='Application.UnsnoozeRequest.snoozeType',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=18511,
-  serialized_end=18587,
+  serialized_start=17986,
+  serialized_end=18062,
 )
 
 
@@ -5336,129 +5213,8 @@ _UNSNOOZERESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=18589,
-  serialized_end=18626,
-)
-
-
-_SPLUNKAPIREQUEST_PARAMSENTRY = _descriptor.Descriptor(
-  name='ParamsEntry',
-  full_name='Application.SplunkApiRequest.ParamsEntry',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='key', full_name='Application.SplunkApiRequest.ParamsEntry.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='Application.SplunkApiRequest.ParamsEntry.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=_b('8\001'),
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=18792,
-  serialized_end=18837,
-)
-
-_SPLUNKAPIREQUEST = _descriptor.Descriptor(
-  name='SplunkApiRequest',
-  full_name='Application.SplunkApiRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='requestType', full_name='Application.SplunkApiRequest.requestType', index=0,
-      number=1, type=14, cpp_type=8, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='requestApi', full_name='Application.SplunkApiRequest.requestApi', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='params', full_name='Application.SplunkApiRequest.params', index=2,
-      number=3, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_SPLUNKAPIREQUEST_PARAMSENTRY, ],
-  enum_types=[
-    _SPLUNKAPIREQUEST_REQUESTTYPE,
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=18629,
-  serialized_end=18871,
-)
-
-
-_SPLUNKAPIRESPONSE = _descriptor.Descriptor(
-  name='SplunkApiResponse',
-  full_name='Application.SplunkApiResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='json', full_name='Application.SplunkApiResponse.json', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='statusCode', full_name='Application.SplunkApiResponse.statusCode', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=18873,
-  serialized_end=18951,
+  serialized_start=18064,
+  serialized_end=18101,
 )
 
 _CLIENTSINGLEREQUEST.fields_by_name['runAs'].message_type = common__pb2._DEVICECREDENTIALS
@@ -5525,7 +5281,6 @@ _CLIENTSINGLEREQUEST.fields_by_name['tvCaptainReelectionRequest'].message_type =
 _CLIENTSINGLEREQUEST.fields_by_name['snoozeRequest'].message_type = _SNOOZEREQUEST
 _CLIENTSINGLEREQUEST.fields_by_name['unsnoozeRequest'].message_type = _UNSNOOZEREQUEST
 _CLIENTSINGLEREQUEST.fields_by_name['getSnoozeRequest'].message_type = _GETSNOOZEREQUEST
-_CLIENTSINGLEREQUEST.fields_by_name['splunkApiRequest'].message_type = _SPLUNKAPIREQUEST
 _CLIENTSINGLEREQUEST.oneofs_by_name['request_message'].fields.append(
   _CLIENTSINGLEREQUEST.fields_by_name['dashboardListRequest'])
 _CLIENTSINGLEREQUEST.fields_by_name['dashboardListRequest'].containing_oneof = _CLIENTSINGLEREQUEST.oneofs_by_name['request_message']
@@ -5715,9 +5470,6 @@ _CLIENTSINGLEREQUEST.fields_by_name['unsnoozeRequest'].containing_oneof = _CLIEN
 _CLIENTSINGLEREQUEST.oneofs_by_name['request_message'].fields.append(
   _CLIENTSINGLEREQUEST.fields_by_name['getSnoozeRequest'])
 _CLIENTSINGLEREQUEST.fields_by_name['getSnoozeRequest'].containing_oneof = _CLIENTSINGLEREQUEST.oneofs_by_name['request_message']
-_CLIENTSINGLEREQUEST.oneofs_by_name['request_message'].fields.append(
-  _CLIENTSINGLEREQUEST.fields_by_name['splunkApiRequest'])
-_CLIENTSINGLEREQUEST.fields_by_name['splunkApiRequest'].containing_oneof = _CLIENTSINGLEREQUEST.oneofs_by_name['request_message']
 _SERVERSINGLERESPONSE.fields_by_name['error'].message_type = common__pb2._ERROR
 _SERVERSINGLERESPONSE.fields_by_name['dashboardListResponse'].message_type = _DASHBOARDLISTRESPONSE
 _SERVERSINGLERESPONSE.fields_by_name['alertsListResponse'].message_type = _ALERTSLISTRESPONSE
@@ -5782,7 +5534,6 @@ _SERVERSINGLERESPONSE.fields_by_name['tvCaptainReelectionResponse'].message_type
 _SERVERSINGLERESPONSE.fields_by_name['snoozeResponse'].message_type = _SNOOZERESPONSE
 _SERVERSINGLERESPONSE.fields_by_name['unsnoozeResponse'].message_type = _UNSNOOZERESPONSE
 _SERVERSINGLERESPONSE.fields_by_name['getSnoozeResponse'].message_type = _GETSNOOZERESPONSE
-_SERVERSINGLERESPONSE.fields_by_name['splunkApiResponse'].message_type = _SPLUNKAPIRESPONSE
 _SERVERSINGLERESPONSE.oneofs_by_name['response_message'].fields.append(
   _SERVERSINGLERESPONSE.fields_by_name['error'])
 _SERVERSINGLERESPONSE.fields_by_name['error'].containing_oneof = _SERVERSINGLERESPONSE.oneofs_by_name['response_message']
@@ -5975,17 +5726,10 @@ _SERVERSINGLERESPONSE.fields_by_name['unsnoozeResponse'].containing_oneof = _SER
 _SERVERSINGLERESPONSE.oneofs_by_name['response_message'].fields.append(
   _SERVERSINGLERESPONSE.fields_by_name['getSnoozeResponse'])
 _SERVERSINGLERESPONSE.fields_by_name['getSnoozeResponse'].containing_oneof = _SERVERSINGLERESPONSE.oneofs_by_name['response_message']
-_SERVERSINGLERESPONSE.oneofs_by_name['response_message'].fields.append(
-  _SERVERSINGLERESPONSE.fields_by_name['splunkApiResponse'])
-_SERVERSINGLERESPONSE.fields_by_name['splunkApiResponse'].containing_oneof = _SERVERSINGLERESPONSE.oneofs_by_name['response_message']
 _VERSIONGETRESPONSE_COMPANIONAPP.containing_type = _VERSIONGETRESPONSE
 _VERSIONGETRESPONSE.fields_by_name['installationEnvironment'].enum_type = _VERSIONGETRESPONSE_INSTALLATIONENVIRONMENT
 _VERSIONGETRESPONSE.fields_by_name['companionApps'].message_type = _VERSIONGETRESPONSE_COMPANIONAPP
-_VERSIONGETRESPONSE.fields_by_name['registrationType'].enum_type = _VERSIONGETRESPONSE_REGISTRATIONTYPE
-_VERSIONGETRESPONSE.fields_by_name['registrationMethod'].enum_type = _VERSIONGETRESPONSE_REGISTRATIONMETHOD
 _VERSIONGETRESPONSE_INSTALLATIONENVIRONMENT.containing_type = _VERSIONGETRESPONSE
-_VERSIONGETRESPONSE_REGISTRATIONTYPE.containing_type = _VERSIONGETRESPONSE
-_VERSIONGETRESPONSE_REGISTRATIONMETHOD.containing_type = _VERSIONGETRESPONSE
 _APPLISTRESPONSE_APP.containing_type = _APPLISTRESPONSE
 _APPLISTRESPONSE.fields_by_name['apps'].message_type = _APPLISTRESPONSE_APP
 _DASHBOARDLISTRESPONSE_CONTINUATION.containing_type = _DASHBOARDLISTRESPONSE
@@ -6051,11 +5795,6 @@ _UNSNOOZEREQUEST.fields_by_name['snoozeAll'].message_type = common__pb2._SNOOZEA
 _UNSNOOZEREQUEST.oneofs_by_name['snoozeType'].fields.append(
   _UNSNOOZEREQUEST.fields_by_name['snoozeAll'])
 _UNSNOOZEREQUEST.fields_by_name['snoozeAll'].containing_oneof = _UNSNOOZEREQUEST.oneofs_by_name['snoozeType']
-_SPLUNKAPIREQUEST_PARAMSENTRY.containing_type = _SPLUNKAPIREQUEST
-_SPLUNKAPIREQUEST.fields_by_name['requestType'].enum_type = _SPLUNKAPIREQUEST_REQUESTTYPE
-_SPLUNKAPIREQUEST.fields_by_name['params'].message_type = _SPLUNKAPIREQUEST_PARAMSENTRY
-_SPLUNKAPIREQUEST_REQUESTTYPE.containing_type = _SPLUNKAPIREQUEST
-_SPLUNKAPIRESPONSE.fields_by_name['json'].message_type = google_dot_protobuf_dot_struct__pb2._STRUCT
 DESCRIPTOR.message_types_by_name['ClientSingleRequest'] = _CLIENTSINGLEREQUEST
 DESCRIPTOR.message_types_by_name['ServerSingleResponse'] = _SERVERSINGLERESPONSE
 DESCRIPTOR.message_types_by_name['ClientConfigRequest'] = _CLIENTCONFIGREQUEST
@@ -6177,8 +5916,6 @@ DESCRIPTOR.message_types_by_name['GetSnoozeRequest'] = _GETSNOOZEREQUEST
 DESCRIPTOR.message_types_by_name['GetSnoozeResponse'] = _GETSNOOZERESPONSE
 DESCRIPTOR.message_types_by_name['UnsnoozeRequest'] = _UNSNOOZEREQUEST
 DESCRIPTOR.message_types_by_name['UnsnoozeResponse'] = _UNSNOOZERESPONSE
-DESCRIPTOR.message_types_by_name['SplunkApiRequest'] = _SPLUNKAPIREQUEST
-DESCRIPTOR.message_types_by_name['SplunkApiResponse'] = _SPLUNKAPIRESPONSE
 DESCRIPTOR.enum_types_by_name['Order'] = _ORDER
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -7069,28 +6806,6 @@ UnsnoozeResponse = _reflection.GeneratedProtocolMessageType('UnsnoozeResponse', 
   ))
 _sym_db.RegisterMessage(UnsnoozeResponse)
 
-SplunkApiRequest = _reflection.GeneratedProtocolMessageType('SplunkApiRequest', (_message.Message,), dict(
-
-  ParamsEntry = _reflection.GeneratedProtocolMessageType('ParamsEntry', (_message.Message,), dict(
-    DESCRIPTOR = _SPLUNKAPIREQUEST_PARAMSENTRY,
-    __module__ = 'request_pb2'
-    # @@protoc_insertion_point(class_scope:Application.SplunkApiRequest.ParamsEntry)
-    ))
-  ,
-  DESCRIPTOR = _SPLUNKAPIREQUEST,
-  __module__ = 'request_pb2'
-  # @@protoc_insertion_point(class_scope:Application.SplunkApiRequest)
-  ))
-_sym_db.RegisterMessage(SplunkApiRequest)
-_sym_db.RegisterMessage(SplunkApiRequest.ParamsEntry)
-
-SplunkApiResponse = _reflection.GeneratedProtocolMessageType('SplunkApiResponse', (_message.Message,), dict(
-  DESCRIPTOR = _SPLUNKAPIRESPONSE,
-  __module__ = 'request_pb2'
-  # @@protoc_insertion_point(class_scope:Application.SplunkApiResponse)
-  ))
-_sym_db.RegisterMessage(SplunkApiResponse)
-
 
 DESCRIPTOR._options = None
 _CLIENTSINGLEREQUEST.fields_by_name['beaconMappingGetRequest']._options = None
@@ -7098,5 +6813,4 @@ _SERVERSINGLERESPONSE.fields_by_name['beaconMappingGetResponse']._options = None
 _DASHBOARDDATAREQUEST_INPUTTOKENSENTRY._options = None
 _BEACONMAPPINGGETREQUEST._options = None
 _BEACONMAPPINGGETRESPONSE._options = None
-_SPLUNKAPIREQUEST_PARAMSENTRY._options = None
 # @@protoc_insertion_point(module_scope)

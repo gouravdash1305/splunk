@@ -1,15 +1,23 @@
 define(
     [
+        'jquery',
         'underscore',
         'module',
         'backbone',
-        'splunk_monitoring_console/views/table/controls/SimpleDialog'
+        'collections/shared/FlashMessages',
+        'splunk_monitoring_console/views/table/controls/SimpleDialog',
+        'views/shared/FlashMessagesLegacy',
+        'splunk.util'
     ],
     function(
+        $,
         _,
         module,
         Backbone,
-        SimpleDialog
+        FlashMessagesCollection,
+        SimpleDialog,
+        FlashMessagesView,
+        util
     ) {
         var button_continue = '<a href="#" class="btn modal-btn-continue pull-right" data-dismiss="modal">' + _('Continue').t() + '</a>';
         return SimpleDialog.extend({

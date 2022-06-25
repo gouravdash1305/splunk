@@ -14,7 +14,8 @@
                         "process_type": "splunkd server", 
                         "ppid": 0,
                         "default_value_description": "By default, the main splunkd process is selected."
-                    }
+                    },
+                    "action_needed": "Please ensure that the correct target process has been specified (default is the main Splunk process)"
                 }
             ], 
             "sampleCount": 1000, 
@@ -26,7 +27,7 @@
     ],
   "name": "Performance",
   "collector_tool_names": "pstack, splunkdiag",
-  "description": "For investigating issues related to excessive time or CPU load used by a process. The collector monitors a process and generates a series of process stacks on the host it is running on. By default, the main splunkd process is selected.",
+  "description": "For investigating issues related to excessive time or CPU load used by a process. The collector monitors a process and generates a series of process stacks on the host it is running on. The template requires a target process type or process ID. ",
   "host": "",
   "task_id": "pstacks-main",
   "symptoms" : [ "slow-search", "high-cpu", "stuck-process", "scheduler-issues", "blocked-queues" ]

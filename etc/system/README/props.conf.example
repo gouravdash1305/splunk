@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # The following are example props.conf configurations. Configure properties for
 # your data.
@@ -117,17 +117,12 @@ sourcetype = splunk_web_access
 [source::...\\iis\\iis6.log]
 sourcetype = iis_access
 
-# The following example extracts data from a .Z archive
+# The following example extracts syslog events.
 
-[preprocess-Z]
+[syslog]
 invalid_cause = archive
-is_valid = False
-LEARN_MODEL = false
-
-[source::....Z(.\d+)?]
 unarchive_cmd = gzip -cd -
-sourcetype = preprocess-Z 
-NO_BINARY_CHECK = true
+
 
 # The following example learns a custom sourcetype and limits the range between
 # different examples with a smaller than default maxDist.

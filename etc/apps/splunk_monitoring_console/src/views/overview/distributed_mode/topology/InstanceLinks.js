@@ -3,13 +3,15 @@ define(
         'jquery',
         'underscore',
         'backbone',
-        '@splunk/swc-mc'
+        'views/Base',
+        'util/svg'
     ],
     function(
         $,
         _,
         Backbone,
-        SwcMC
+        BaseView,
+        svgUtil
     ) {
         var DEFAULT_STROKE = '#eaebec';
         var HOVER_STROKE = '#4bbfe4';
@@ -22,10 +24,10 @@ define(
         var CHUNK_INTERVAL = 10; //ms
 
         // Class to render links as lines between 2 or more svg list views (InstanceList objects).
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             initialize: function(options) {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
-                this.setElement(SwcMC.UtilSVG.createElement('g'));
+                BaseView.prototype.initialize.apply(this, arguments);
+                this.setElement(svgUtil.createElement('g'));
                 this._timeoutId = null;
 
                 // Expected to be InstanceListViews
@@ -203,7 +205,7 @@ define(
                                         leftMostElement = this._getExtremes(bboxCache, leftMostElement, { direction: 'right' });
                                         rightMostElement = this._getExtremes(bboxCache, rightMostElement, { direction: 'left' });
 
-                                        var $linkLine = SwcMC.UtilSVG.createElement('path');
+                                        var $linkLine = svgUtil.createElement('path');
                                         $linkLine.attr({
                                             d: 'M' + (this._fastGetBBox(bboxCache, leftMostElement).x2 + MARGIN) + 
                                                     ',' + 
@@ -312,7 +314,7 @@ define(
                     id = $element.data('svgId');
 
                 if (!_.has(bboxCache, id)) {
-                    bboxCache[id] = SwcMC.UtilSVG.getBBox($element);
+                    bboxCache[id] = svgUtil.getBBox($element);
                 }
 
                 return bboxCache[id];

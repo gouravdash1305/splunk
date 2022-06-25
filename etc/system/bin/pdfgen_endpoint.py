@@ -1,5 +1,5 @@
 import sys
-import splunk.safe_lxml_etree as et
+import lxml.etree as et
 import logging
 import time
 import json
@@ -11,7 +11,6 @@ import splunk
 import splunk.rest as rest
 import splunk.entity as entity
 import splunk.auth
-import splunk.clilib.cli_common as cli_common
 import splunk.models.dashboard as sm_dashboard
 import splunk.models.dashboard_panel as sm_dashboard_panel
 import splunk.models.saved_search as sm_saved_search
@@ -23,7 +22,7 @@ import splunk.pdf.pdfgen_views as pv
 import splunk.pdf.pdfgen_utils as pu
 import splunk.pdf.pdfgen_chart as pc
 import splunk.pdf.pdfgen_table as pt
-from splunk.pdf.studio.pdfgen_studio import convertDashboardToPdfContent
+
 import splunk.pdf.pdfrenderer as pdfrenderer
 from builtins import range, filter
 from gettext import gettext as _
@@ -39,7 +38,7 @@ DEFAULT_PAPER_SIZE =   'letter'
 DEFAULT_PAPER_ORIENTATION = 'portrait'
 
 # Change the default lxml parsing to not allow imported entities
-import splunk.safe_lxml_etree
+import splunk.lockdownlxmlparsing
 
 class ArgError(Exception):
     def __init__(self, message):
@@ -61,8 +60,6 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
     
     _title = "Untitled"
     _description = ""
-    _dashboardContent = None
-    _pdfContent = None
     _dashboardName = None
     _dashboardXml = None
     _reportName = None
@@ -166,6 +163,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
 
     def _handleRequest(self):
         logger.debug("pdfgen/render request: " + str(self.request))
+
         if not self._initialize():
             return
         
@@ -175,23 +173,10 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
             self._outputError([errorMsg])
             return
 
-        if self._dashboardContent and not self._handleStudioDashboardPdf():
-            return
-        if not self._dashboardContent and not self._render():
+        if not self._render():
             return
 
         self._respond()
-
-    def _handleStudioDashboardPdf(self):
-        try:
-            self._pdfContent = convertDashboardToPdfContent(self.sessionKey, self._namespace, self._owner, self._dashboardContent, self._dashboardName)
-            self._pdfBuffer = BytesIO(self._pdfContent)
-            return True
-        except Exception as e:
-            errorMsg = "Exception raised while trying to render Studio Dashboard \"%s\" to PDF. %s" % (self._dashboardName, str(e))
-            pu.logErrorAndTrace(errorMsg)
-            self._outputError([errorMsg])
-            return False
 
     def _initialize(self):
         try:
@@ -207,9 +192,6 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
                         owner=self._owner,
                         sessionKey=self.sessionKey)
                 elif self._dashboardName != None:
-                    self._dashboardContent = pv.getStudioDashboardContent(self._dashboardName, self._namespace, self._owner, self.sessionKey)
-                    if self._dashboardContent != None:
-                        return True
                     (self._title, self._description, self._views) = pv.getDashboardTitleAndPanels(
                         dashboard_name=self._dashboardName, 
                         namespace=self._namespace, 
@@ -231,7 +213,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
                                                         paperSize=self._paperSize, timestamp=self._timestampStr,
                                                         includeSplunkLogo=self._includeSplunkLogo,
                                                         cidFontList=self._cidFontList, pdfSettings=self._pdfSettings,
-                                                        requestSettings=self._requestSettings, sessionKey=self.sessionKey)
+                                                        requestSettings=self._requestSettings)
             return True
         except ArgError as e:
             self.response.setStatus(400)
@@ -304,7 +286,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
     def _respond(self):
         # save and write out the file
         try:
-            self.response.write(self._pdfBuffer.getvalue(), flushBuffer=True)
+            self.response.write(self._pdfBuffer.getvalue().decode('ISO 8859-1'))
             self.response.setHeader('content-type', 'application/pdf')
             # override normal cache-control header to fix problem on ie6-ie8 (see SPL-50739)
             self.response.setHeader('cache-control', 'max-age=0, must-revalidate')
@@ -551,8 +533,10 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
     def _initWebDefaults(self):
         defaultSplunkdConnectionTimeout = 30
         try:
-            splunkdConnectionTimeout = int(cli_common.getWebConfKeyValue('splunkdConnectionTimeout'))
-            self._enableInsecurePdfgen = normalizeBoolean(cli_common.getWebConfKeyValue('enable_insecure_pdfgen'))
+            # SPL-107168 Passing namespace and owner to generate context specifc endpoint
+            settings = entity.getEntity(self.WEB_ENTITY, 'settings', namespace=self._namespace, owner=self._owner, sessionKey=self.sessionKey)
+            self._enableInsecurePdfgen = normalizeBoolean(settings.get('enable_insecure_pdfgen', self._enableInsecurePdfgen))
+            splunkdConnectionTimeout = int(settings.get('splunkdConnectionTimeout', defaultSplunkdConnectionTimeout))
             if splunkdConnectionTimeout < defaultSplunkdConnectionTimeout:
                 splunkdConnectionTimeout = defaultSplunkdConnectionTimeout
 
@@ -680,15 +664,7 @@ class PDFGenHandler(splunk.rest.BaseRestHandler):
                         pdfRenderer.renderText("No render option for type '%s'" % type)
                         logger.warning("PDFGenHandler::_renderView> No render option for type = '%s'" % type)
             except Exception as e:
-                if (isinstance(e, splunk.AuthorizationFailed) and
-                        'check_risky_command' in e.extendedMessages and
-                        pu.isRiskyCommandCheckDashboardEnabled(self.sessionKey)):
-                    # This is a special case for chain searches containing risky commands, which throw an AuthorizationFailed
-                    # exception which does not contain any useful info for security reasons. Because of this, we need to return
-                    # a more generic risky commands error message.
-                    content = "Found potentially risky commands."
-                else:
-                    content = str(e)
+                content = str(e)
                 pu.logErrorAndTrace(e)
                 pdfRenderer.renderText(content)
 

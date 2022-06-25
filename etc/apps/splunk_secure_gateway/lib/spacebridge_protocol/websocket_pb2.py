@@ -20,8 +20,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='websocket.proto',
   package='Spacebridge',
   syntax='proto3',
-  serialized_options=_b('\n0com.splunk.mobile.spacebridge.messages.websocketP\001ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridge'),
-  serialized_pb=_b('\n\x0fwebsocket.proto\x12\x0bSpacebridge\x1a\x0fsb_common.proto\"\xa0\x02\n\x0eWebsocketError\x12.\n\x04\x63ode\x18\x01 \x01(\x0e\x32 .Spacebridge.WebsocketError.Code\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xcc\x01\n\x04\x43ode\x12\x11\n\rERROR_UNKNOWN\x10\x00\x12\x1f\n\x1b\x45RROR_MESSAGE_UNDELIVERABLE\x10\x01\x12\x1c\n\x18\x45RROR_MESSAGE_UNROUTABLE\x10\x02\x12\x1b\n\x17\x45RROR_INVALID_SIGNATURE\x10\x03\x12\x1b\n\x17\x45RROR_MESSAGE_TOO_LARGE\x10\x04\x12\x19\n\x15\x45RROR_UPDATE_REQUIRED\x10\x05\x12\x1d\n\x19\x45RROR_RATE_LIMIT_EXCEEDED\x10\x06\"\x80\x02\n\x12\x41pplicationMessage\x12\n\n\x02id\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\x0c\x12\x0e\n\x06sender\x18\x03 \x01(\x0c\x12\x1e\n\x12\x65phemeralPublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\x0f\n\x07payload\x18\x05 \x01(\x0c\x12=\n\x07version\x18\x06 \x01(\x0e\x32,.Spacebridge.ApplicationMessage.MajorVersion\x12\x11\n\tcreatedAt\x18\x07 \x01(\x03\"?\n\x0cMajorVersion\x12\x19\n\x15MAJOR_VERSION_INVALID\x10\x00\x12\x14\n\x10MAJOR_VERSION_V1\x10\x01\"\xed\x01\n\x14\x41pplicationMessageV2\x12\n\n\x02id\x18\x01 \x01(\t\x12<\n\trecipient\x18\x02 \x01(\x0b\x32).Spacebridge.ApplicationMessageV2.Address\x12\x39\n\x06sender\x18\x03 \x01(\x0b\x32).Spacebridge.ApplicationMessageV2.Address\x12\x0f\n\x07payload\x18\x04 \x01(\x0c\x12\x11\n\tcreatedAt\x18\x05 \x01(\x03\x1a,\n\x07\x41\x64\x64ress\x12\x10\n\x08\x63lientId\x18\x01 \x01(\x0c\x12\x0f\n\x07shardId\x18\x02 \x01(\t\"9\n\x0fUnregisterEvent\x12\x14\n\x0c\x64\x65ploymentId\x18\x01 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\">\n\x03\x41\x63k\x12\n\n\x02id\x18\x01 \x01(\t\x12\x18\n\x10replyToMessageId\x18\x02 \x01(\t\x12\x11\n\tcreatedAt\x18\x03 \x01(\x03\"\x94\x02\n\x12SpacebridgeMessage\x12\n\n\x02id\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\x0c\x12\x18\n\x10replyToMessageId\x18\x03 \x01(\t\x12,\n\x05\x65rror\x18\x04 \x01(\x0b\x32\x1b.Spacebridge.WebsocketErrorH\x00\x12\x37\n\x0funregisterEvent\x18\x05 \x01(\x0b\x32\x1c.Spacebridge.UnregisterEventH\x00\x12G\n\x16mdmRegistrationRequest\x18\x06 \x01(\x0b\x32%.Spacebridge.MdmAuthenticationRequestH\x00\x12\x11\n\tcreatedAt\x18\x07 \x01(\x03\x42\t\n\x07payloadB|\n0com.splunk.mobile.spacebridge.messages.websocketP\x01ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridgeb\x06proto3')
+  serialized_options=_b('\n0com.splunk.mobile.spacebridge.messages.websocketP\001'),
+  serialized_pb=_b('\n\x0fwebsocket.proto\x12\x0bSpacebridge\x1a\x0fsb_common.proto\"\xa0\x02\n\x0eWebsocketError\x12.\n\x04\x63ode\x18\x01 \x01(\x0e\x32 .Spacebridge.WebsocketError.Code\x12\x0f\n\x07message\x18\x02 \x01(\t\"\xcc\x01\n\x04\x43ode\x12\x11\n\rERROR_UNKNOWN\x10\x00\x12\x1f\n\x1b\x45RROR_MESSAGE_UNDELIVERABLE\x10\x01\x12\x1c\n\x18\x45RROR_MESSAGE_UNROUTABLE\x10\x02\x12\x1b\n\x17\x45RROR_INVALID_SIGNATURE\x10\x03\x12\x1b\n\x17\x45RROR_MESSAGE_TOO_LARGE\x10\x04\x12\x19\n\x15\x45RROR_UPDATE_REQUIRED\x10\x05\x12\x1d\n\x19\x45RROR_RATE_LIMIT_EXCEEDED\x10\x06\"\xed\x01\n\x12\x41pplicationMessage\x12\n\n\x02id\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\x0c\x12\x0e\n\x06sender\x18\x03 \x01(\x0c\x12\x1e\n\x12\x65phemeralPublicKey\x18\x04 \x01(\x0c\x42\x02\x18\x01\x12\x0f\n\x07payload\x18\x05 \x01(\x0c\x12=\n\x07version\x18\x06 \x01(\x0e\x32,.Spacebridge.ApplicationMessage.MajorVersion\"?\n\x0cMajorVersion\x12\x19\n\x15MAJOR_VERSION_INVALID\x10\x00\x12\x14\n\x10MAJOR_VERSION_V1\x10\x01\"9\n\x0fUnregisterEvent\x12\x14\n\x0c\x64\x65ploymentId\x18\x01 \x01(\x0c\x12\x10\n\x08\x64\x65viceId\x18\x02 \x01(\x0c\"+\n\x03\x41\x63k\x12\n\n\x02id\x18\x01 \x01(\t\x12\x18\n\x10replyToMessageId\x18\x02 \x01(\t\"\x81\x02\n\x12SpacebridgeMessage\x12\n\n\x02id\x18\x01 \x01(\t\x12\n\n\x02to\x18\x02 \x01(\x0c\x12\x18\n\x10replyToMessageId\x18\x03 \x01(\t\x12,\n\x05\x65rror\x18\x04 \x01(\x0b\x32\x1b.Spacebridge.WebsocketErrorH\x00\x12\x37\n\x0funregisterEvent\x18\x05 \x01(\x0b\x32\x1c.Spacebridge.UnregisterEventH\x00\x12G\n\x16mdmRegistrationRequest\x18\x06 \x01(\x0b\x32%.Spacebridge.MdmAuthenticationRequestH\x00\x42\t\n\x07payloadB4\n0com.splunk.mobile.spacebridge.messages.websocketP\x01\x62\x06proto3')
   ,
   dependencies=[sb__common__pb2.DESCRIPTOR,])
 
@@ -86,8 +86,8 @@ _APPLICATIONMESSAGE_MAJORVERSION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=534,
-  serialized_end=597,
+  serialized_start=515,
+  serialized_end=578,
 )
 _sym_db.RegisterEnumDescriptor(_APPLICATIONMESSAGE_MAJORVERSION)
 
@@ -180,13 +180,6 @@ _APPLICATIONMESSAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='createdAt', full_name='Spacebridge.ApplicationMessage.createdAt', index=6,
-      number=7, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -201,103 +194,7 @@ _APPLICATIONMESSAGE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=341,
-  serialized_end=597,
-)
-
-
-_APPLICATIONMESSAGEV2_ADDRESS = _descriptor.Descriptor(
-  name='Address',
-  full_name='Spacebridge.ApplicationMessageV2.Address',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='clientId', full_name='Spacebridge.ApplicationMessageV2.Address.clientId', index=0,
-      number=1, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='shardId', full_name='Spacebridge.ApplicationMessageV2.Address.shardId', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=793,
-  serialized_end=837,
-)
-
-_APPLICATIONMESSAGEV2 = _descriptor.Descriptor(
-  name='ApplicationMessageV2',
-  full_name='Spacebridge.ApplicationMessageV2',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='Spacebridge.ApplicationMessageV2.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='recipient', full_name='Spacebridge.ApplicationMessageV2.recipient', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='sender', full_name='Spacebridge.ApplicationMessageV2.sender', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='payload', full_name='Spacebridge.ApplicationMessageV2.payload', index=3,
-      number=4, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='createdAt', full_name='Spacebridge.ApplicationMessageV2.createdAt', index=4,
-      number=5, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[_APPLICATIONMESSAGEV2_ADDRESS, ],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=600,
-  serialized_end=837,
+  serialized_end=578,
 )
 
 
@@ -334,8 +231,8 @@ _UNREGISTEREVENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=839,
-  serialized_end=896,
+  serialized_start=580,
+  serialized_end=637,
 )
 
 
@@ -360,13 +257,6 @@ _ACK = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='createdAt', full_name='Spacebridge.Ack.createdAt', index=2,
-      number=3, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -379,8 +269,8 @@ _ACK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=898,
-  serialized_end=960,
+  serialized_start=639,
+  serialized_end=682,
 )
 
 
@@ -433,13 +323,6 @@ _SPACEBRIDGEMESSAGE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='createdAt', full_name='Spacebridge.SpacebridgeMessage.createdAt', index=6,
-      number=7, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -455,17 +338,14 @@ _SPACEBRIDGEMESSAGE = _descriptor.Descriptor(
       name='payload', full_name='Spacebridge.SpacebridgeMessage.payload',
       index=0, containing_type=None, fields=[]),
   ],
-  serialized_start=963,
-  serialized_end=1239,
+  serialized_start=685,
+  serialized_end=942,
 )
 
 _WEBSOCKETERROR.fields_by_name['code'].enum_type = _WEBSOCKETERROR_CODE
 _WEBSOCKETERROR_CODE.containing_type = _WEBSOCKETERROR
 _APPLICATIONMESSAGE.fields_by_name['version'].enum_type = _APPLICATIONMESSAGE_MAJORVERSION
 _APPLICATIONMESSAGE_MAJORVERSION.containing_type = _APPLICATIONMESSAGE
-_APPLICATIONMESSAGEV2_ADDRESS.containing_type = _APPLICATIONMESSAGEV2
-_APPLICATIONMESSAGEV2.fields_by_name['recipient'].message_type = _APPLICATIONMESSAGEV2_ADDRESS
-_APPLICATIONMESSAGEV2.fields_by_name['sender'].message_type = _APPLICATIONMESSAGEV2_ADDRESS
 _SPACEBRIDGEMESSAGE.fields_by_name['error'].message_type = _WEBSOCKETERROR
 _SPACEBRIDGEMESSAGE.fields_by_name['unregisterEvent'].message_type = _UNREGISTEREVENT
 _SPACEBRIDGEMESSAGE.fields_by_name['mdmRegistrationRequest'].message_type = sb__common__pb2._MDMAUTHENTICATIONREQUEST
@@ -480,7 +360,6 @@ _SPACEBRIDGEMESSAGE.oneofs_by_name['payload'].fields.append(
 _SPACEBRIDGEMESSAGE.fields_by_name['mdmRegistrationRequest'].containing_oneof = _SPACEBRIDGEMESSAGE.oneofs_by_name['payload']
 DESCRIPTOR.message_types_by_name['WebsocketError'] = _WEBSOCKETERROR
 DESCRIPTOR.message_types_by_name['ApplicationMessage'] = _APPLICATIONMESSAGE
-DESCRIPTOR.message_types_by_name['ApplicationMessageV2'] = _APPLICATIONMESSAGEV2
 DESCRIPTOR.message_types_by_name['UnregisterEvent'] = _UNREGISTEREVENT
 DESCRIPTOR.message_types_by_name['Ack'] = _ACK
 DESCRIPTOR.message_types_by_name['SpacebridgeMessage'] = _SPACEBRIDGEMESSAGE
@@ -499,21 +378,6 @@ ApplicationMessage = _reflection.GeneratedProtocolMessageType('ApplicationMessag
   # @@protoc_insertion_point(class_scope:Spacebridge.ApplicationMessage)
   ))
 _sym_db.RegisterMessage(ApplicationMessage)
-
-ApplicationMessageV2 = _reflection.GeneratedProtocolMessageType('ApplicationMessageV2', (_message.Message,), dict(
-
-  Address = _reflection.GeneratedProtocolMessageType('Address', (_message.Message,), dict(
-    DESCRIPTOR = _APPLICATIONMESSAGEV2_ADDRESS,
-    __module__ = 'websocket_pb2'
-    # @@protoc_insertion_point(class_scope:Spacebridge.ApplicationMessageV2.Address)
-    ))
-  ,
-  DESCRIPTOR = _APPLICATIONMESSAGEV2,
-  __module__ = 'websocket_pb2'
-  # @@protoc_insertion_point(class_scope:Spacebridge.ApplicationMessageV2)
-  ))
-_sym_db.RegisterMessage(ApplicationMessageV2)
-_sym_db.RegisterMessage(ApplicationMessageV2.Address)
 
 UnregisterEvent = _reflection.GeneratedProtocolMessageType('UnregisterEvent', (_message.Message,), dict(
   DESCRIPTOR = _UNREGISTEREVENT,

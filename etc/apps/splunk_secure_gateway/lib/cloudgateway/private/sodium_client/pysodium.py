@@ -244,7 +244,6 @@ if sodium_version_check(1, 0, 12):
     crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MIN = sodium.crypto_pwhash_scryptsalsa208sha256_opslimit_min()
     crypto_pwhash_scryptsalsa208sha256_PASSWD_MAX = sodium.crypto_pwhash_scryptsalsa208sha256_passwd_max()
     crypto_pwhash_scryptsalsa208sha256_PASSWD_MIN = sodium.crypto_pwhash_scryptsalsa208sha256_passwd_min()
-    crypto_kdf_KEYBYTES = sodium.crypto_kdf_keybytes()
 else:
     crypto_pwhash_scryptsalsa208sha256_BYTES_MIN = 16
     crypto_pwhash_scryptsalsa208sha256_BYTES_MAX = 4294967264
@@ -1006,15 +1005,7 @@ def crypto_pwhash(outlen, passwd, salt, opslimit, memlimit, alg=crypto_pwhash_AL
     if not (crypto_pwhash_MEMLIMIT_MIN <= memlimit <= crypto_pwhash_MEMLIMIT_MAX): raise ValueError("invalid memlimit")
 
     out = ctypes.create_string_buffer(outlen)
-
-    __check(sodium.crypto_pwhash(ctypes.byref(out),
-                                 ctypes.c_ulonglong(outlen),
-                                 passwd,
-                                 ctypes.c_ulonglong(len(passwd)),
-                                 ctypes.byref(salt),
-                                 ctypes.c_ulonglong(opslimit),
-                                 ctypes.c_size_t(memlimit),
-                                 ctypes.c_int(alg)))
+    __check(sodium.crypto_pwhash(ctypes.byref(out), ctypes.c_ulonglong(outlen), passwd, ctypes.c_ulonglong(len(passwd)), salt, ctypes.c_ulonglong(opslimit), ctypes.c_size_t(memlimit), ctypes.c_int(alg)))
     return out.raw
 
 # int crypto_pwhash_str(char out[crypto_pwhash_STRBYTES],
@@ -1224,21 +1215,3 @@ def crypto_core_ristretto255_scalar_reduce(s):
     r = ctypes.create_string_buffer(crypto_core_ristretto255_SCALARBYTES)
     sodium.crypto_core_ristretto255_scalar_reduce(r,s)
     return r.raw
-
-@sodium_version(1, 0, 12)
-def crypto_kdf_derive_from_key(subkey_id, context, master_key):
-    r = ctypes.create_string_buffer(crypto_kdf_KEYBYTES)
-    __check(sodium.crypto_kdf_derive_from_key(r,
-                                              crypto_kdf_KEYBYTES,
-                                              ctypes.c_uint64(subkey_id),
-                                              ctypes.c_char_p(context),
-                                              ctypes.c_char_p(master_key)))
-    return r.raw
-
-@sodium_version(1, 0, 12)
-def crypto_pwhash_easy(plaintext, salt=None):
-    if not salt:
-        salt = ctypes.create_string_buffer(crypto_pwhash_SALTBYTES)
-
-    return crypto_pwhash(crypto_box_SEEDBYTES, plaintext, salt,
-                         crypto_pwhash_OPSLIMIT_MODERATE, crypto_pwhash_MEMLIMIT_MODERATE)

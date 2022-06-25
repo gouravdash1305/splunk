@@ -2,11 +2,13 @@
 // of the topology
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'splunk_monitoring_console/collections/Instances'
     ],
     function(
+        $,
         _,
         Backbone,
         InstancesCollection

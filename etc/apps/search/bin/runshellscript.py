@@ -6,7 +6,6 @@ import subprocess
 from subprocess import PIPE, STDOUT
 from builtins import range
 from future.moves.urllib.parse import quote as urllib_quote
-import splunk.clilib.cli_common as comm
 
 import splunk.Intersplunk
 import splunk.mining.dcutils as dcu
@@ -62,8 +61,12 @@ if 'sharedStorage' in settings:
 else:
     etcSubdir = os.environ['SPLUNK_ETC']
 
-baseStorage   = os.path.join(sharedStorage, 'var', 'run', 'splunk')
-path          = os.path.join(baseStorage, 'dispatch', sys.argv[9], 'results.csv.gz')
+if len(sys.argv) > 10:
+   path = sys.argv[10]   # the tenth arg is going to be the file
+else:
+   baseStorage   = os.path.join(sharedStorage, 'var', 'run', 'splunk')
+   path          = os.path.join(baseStorage, 'dispatch', sys.argv[9], 'results.csv.gz')
+
 
 # ensure nothing dangerous
 # keep this rule in agreement with etc/system/default/restmap.conf for sane UI
@@ -78,7 +81,7 @@ else:
     scriptName = script
 
     if namespace:
-        script = os.path.join(etcSubdir,comm.getAppDir(),namespace,"bin","scripts",scriptName)
+        script = os.path.join(etcSubdir,"slave-apps",namespace,"bin","scripts",scriptName)
         if not os.path.exists(script):
             script = os.path.join(etcSubdir,"apps",namespace,"bin","scripts",scriptName)
 

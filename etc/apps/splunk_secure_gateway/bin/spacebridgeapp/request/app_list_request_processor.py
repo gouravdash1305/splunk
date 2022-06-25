@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module to process App List Requests
 """
@@ -119,6 +119,7 @@ async def set_dashboard_app_list(request_context, app_names=None, async_kvstore_
     # We need to write the json dumped version of the app names to kvstore
     kvstore_data = {
         KEY: DASHBOARD_APP_LIST,
+        USER_KEY: dashboard_app_list._user,
         APP_NAMES: json.dumps(list(dashboard_app_list.app_names)),
     }
 
@@ -238,23 +239,12 @@ async def process_app_list_request(request_context,
     LOGGER.debug("Finished populating response for app list request")
 
 
-def fetch_app_details(request_context, app_id, async_splunk_client):
-    return _fetch_app_names(request_context, app_id, async_splunk_client)
-
-
-def fetch_app_names(request_context,
+async def fetch_app_names(request_context,
                           async_splunk_client=None):
-    return _fetch_app_names(request_context, async_splunk_client=async_splunk_client)
-
-
-async def _fetch_app_names(request_context,
-                           app_id=None,
-                           async_splunk_client=None):
     """
     Method makes async http call to get app list and returns the app names and display app names
 
     :param request_context:
-    :param app_id: Use if you only want to fetch details for a specific app
     :param async_splunk_client:
     :return:
     """
@@ -264,7 +254,6 @@ async def _fetch_app_names(request_context,
               'count': 0}
 
     response = await async_splunk_client.async_get_app_list_request(auth_header=request_context.auth_header,
-                                                                    app_id=app_id,
                                                                     params=params)
 
     if response.code != HTTPStatus.OK:
@@ -284,11 +273,14 @@ async def _fetch_app_names(request_context,
     # TODO: Get rid of this to just use label
     for entry_json in entry_json_list:
         app_name = entry_json.get('name')
-        content = entry_json.get('content')
-        label = content.get('label')
-        author = content.get('author')
 
-        app = App(app_name=app_name, display_app_name=label, author=author)
-        app_list.append(app)
+        # Populate display_app_name
+        display_app_name = ""
+        if async_splunk_client is not None:
+            display_app_name = await fetch_display_app_name(request_context=request_context,
+                                                            app_name=app_name,
+                                                            async_splunk_client=async_splunk_client)
+            app = App(app_name=app_name, display_app_name=display_app_name)
+            app_list.append(app)
 
     return app_list

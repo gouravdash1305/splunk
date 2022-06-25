@@ -1,8 +1,8 @@
-<form version="1.1" hideEdit="true">
+<form hideEdit="true">
 	<label>License Usage - Today</label>
 	<fieldset autoRun="true" submitButton="false">
 		<input type="dropdown" searchWhenChanged="true" token="splunk_server">
-			<label>License Managers</label>
+			<label>License Masters</label>
 			<showClearButton>false</showClearButton>
 			<fieldForLabel>serverName</fieldForLabel>
 			<fieldForValue>serverName</fieldForValue>
@@ -85,3 +85,4 @@
     </panel>
   </row>
 </form>
+

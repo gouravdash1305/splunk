@@ -3,14 +3,16 @@ define([
             'underscore',
             'vizapi/SplunkVisualizationBase',
             'vizapi/SplunkVisualizationUtils',
-            'd3'
+            'd3',
+            'util/general_utils'
         ],
         function(
             $,
             _,
             SplunkVisualizationBase,
             vizUtils,
-            d3
+            d3,
+            util
         ) {
 
     var GRID_HEIGHT = 20;
@@ -376,14 +378,14 @@ define([
                 .style("fill", DEFAULT_COLOR_PALETTE[0]) // default color
                 .style("opacity", 0)
                 .on("mouseout", function () {
-                    if (_.isUndefined(showTooltip) || SwcMC.GeneralUtils.normalizeBoolean(showTooltip) === true) {
+                    if (_.isUndefined(showTooltip) || util.normalizeBoolean(showTooltip) === true) {
                         d3.select(this).style("cursor", "default");
                         tooltip.interrupt().transition();
                         tooltip.style("opacity", 0);
                     }
                 })
                 .on("mouseover", function (d) {
-                    if (_.isUndefined(showTooltip) || SwcMC.GeneralUtils.normalizeBoolean(showTooltip) === true) {
+                    if (_.isUndefined(showTooltip) || util.normalizeBoolean(showTooltip) === true) {
                         d3.select(this).style("cursor", "pointer");
                         tooltip.style("opacity", 0.8);
 

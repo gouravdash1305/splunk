@@ -4,7 +4,7 @@ define(
         'underscore',
         'backbone',
         'module',
-        '@splunk/swc-mc',
+        'views/shared/PopTart',
         'splunk_monitoring_console/views/table/controls/EditAllServerRolesDialog',
         'splunk_monitoring_console/views/table/controls/EditAllGroupsDialog',
         'splunk_monitoring_console/views/table/controls/EditAllDisableDialog',
@@ -15,19 +15,19 @@ define(
         _,
         Backbone,
         module,
-        SwcMC,
+        PopTartView,
         EditAllServerRolesDialogView,
         EditAllGroupsDialog,
         EditAllDisableDialog,
         EditAllSuccessFailureDialog
     ) {
 
-        return SwcMC.PopTartView.extend({
+        return PopTartView.extend({
             moduleId: module.id,
             className: 'dropdown-menu',
             initialize: function(options) {
                 options = _.defaults(options, { mode: 'menu' });
-                SwcMC.PopTartView.prototype.initialize.call(this, options);
+                PopTartView.prototype.initialize.call(this, options);
             },
 
             events: {
@@ -100,7 +100,7 @@ define(
 
                     settingsAsset.entry.content.set('blackList', blackList.join(','));
 
-                    settingsAsset.save().then(function() {
+                    $.when(settingsAsset.save()).done(function() {
                         this.hide();
                         this.model.state.set('changesMade', true);
                         var dialog = new EditAllSuccessFailureDialog({
@@ -109,7 +109,7 @@ define(
                         });
                         $('body').append(dialog.render().el);
                         dialog.show();
-                    }.bind(this)).catch(function() {
+                    }.bind(this)).fail(function() {
                         this.hide();
                         this.model.state.set('changesMade', true);
                         var dialog = new EditAllSuccessFailureDialog({
@@ -122,8 +122,8 @@ define(
                 }
             },
             render: function() {
-                this.el.innerHTML = SwcMC.PopTartView.prototype.template_menu;
-                var editMenuDisabled = this.collection.peers.where({'bulk-selected': true}).length === 0;
+                this.el.innerHTML = PopTartView.prototype.template_menu;
+                var editMenuDisabled = this.collection.clientSidePeers.where({'bulk-selected': true}).length === 0;
                 this.$el.append(this.compiledTemplate({
                     disabled: editMenuDisabled ? 'disabled' : 'enabled'
                 }));

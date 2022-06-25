@@ -1,15 +1,23 @@
 define(
     [
+        'jquery',
         'underscore',
         'module',
         'backbone',
-        'splunk_monitoring_console/views/table/controls/SimpleDialog'
+        'collections/shared/FlashMessages',
+        'splunk_monitoring_console/views/table/controls/SimpleDialog',
+        'views/shared/FlashMessagesLegacy',
+        'splunk.util'
     ],
     function(
+        $,
         _,
         module,
         Backbone,
-        SimpleDialog
+        FlashMessagesCollection,
+        SimpleDialog,
+        FlashMessagesView,
+        util
     ) {
         return SimpleDialog.extend({
             moduleId: module.id,

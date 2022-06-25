@@ -1,9 +1,10 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module which handles updating the device role mapping kvstore table
 """
 
+import asyncio
 import json
 import sys
 import os
@@ -63,44 +64,43 @@ async def clean_up_old_entries(timestamp, async_kvstore_client, session_token):
         LOGGER.exception("exception deleting old entries")
 
 
-def appid_has_alert_support(app_id: str):
-    supported_app_ids = {
-        "com.splunk.mobile.Alerts",
-        "com.splunk.mobile.Stargate",
-        "com.splunk.android.alerts",
-        "com.splunk.android.alerts.debug",
-        "com.splunk.mobile.Splunk-iPad",
-        "com.splunk.mobile.Asgard"
-    }
-
-    return app_id in supported_app_ids
-
-
-async def get_registered_devices(auth_header, user_list, async_kvstore_client):
+async def get_registered_devices(auth_header, user_list, async_kvstore_client, max_batch_size=20):
     """
     fetch list of devices for a list of users
     """
-    devices = []
-    LOGGER.info("fetching registered devices with user_list=%s", user_list)
-    for user in user_list:
-        LOGGER.debug("current_user, value=%s", user)
-        r = await async_kvstore_client.async_kvstore_get_request(constants.REGISTERED_DEVICES_COLLECTION_NAME, owner=user,
-                                                                 auth_header=auth_header)
-        if r.code == HTTPStatus.OK:
-            user_devices = await r.json()
-            LOGGER.debug("current_user devices list, user=%s, len=%s", user, len(devices))
-            for device in user_devices:
-                app_id = device.get(constants.APP_ID, '')
-                app_alert_support = appid_has_alert_support(device.get(constants.APP_ID, ''))
-                legacy_app = device.get(constants.DEVICE_TYPE, None) == constants.ALERTS_IOS
-                LOGGER.debug("device, owner=%s, id=%s, app_id=%s, app_alert_support=%s, legacy_app=%s", user,
-                            device.get('device_id'), app_id, app_alert_support, legacy_app)
-                if app_alert_support or legacy_app:
-                    devices.append(device)
-        else:
-            LOGGER.warn("Failed to fetch devices for user=%s with status_code=%s", user, r.code)
-    LOGGER.debug("get_registered_devices, value=%s", devices)
-    return devices
+    devices_table = constants.REGISTERED_DEVICES_COLLECTION_NAME
+    n = len(user_list)
+
+    try:
+        registered_devices = []
+
+        for idx in range(0, n, max_batch_size):
+            # Boundary condition
+            end_idx = min(n, idx + max_batch_size)
+
+            # Make max_batch_size requests concurrently and wait for them to complete
+            responses = await asyncio.gather(*[async_kvstore_client.async_kvstore_get_request(
+                devices_table, owner=user, auth_header=auth_header) for user in user_list[idx: end_idx]],
+                                             return_exceptions=True)
+
+            responses = await asyncio.gather(*[r.json() for r in responses if not isinstance(r, Exception) and
+                                               r.code == HTTPStatus.OK])
+
+            exceptions = [e for e in responses if isinstance(e, Exception)]
+
+            if exceptions:
+                LOGGER.exception("Encountered exceptions fetching some registered devices, e=%s", str(exceptions))
+
+            registered_devices.append(
+                [device
+                 for response in responses for device in response
+                 if device.get(constants.REGISTERED_DEVICES_DEVICE_TYPE, None) == constants.ALERTS_IOS])
+
+            return [device for user_devices in registered_devices for device in user_devices]
+
+    except Exception:
+        LOGGER.exception("Exception getting registered_devices")
+        return []
 
 
 def create_payloads(registered_devices, user_to_role_mapping, timestamp):
@@ -108,22 +108,19 @@ def create_payloads(registered_devices, user_to_role_mapping, timestamp):
     Given a list of devices and a mapping of user to roles, create the payload to be inserted in KV Store
     """
     payload = []
-    LOGGER.debug("creating payloads for registered devices, value=%s", registered_devices)
 
     for device in registered_devices:
         user = device[constants.USER_KEY]
         if user not in user_to_role_mapping.keys():
-            LOGGER.warning("user not in role mapping, user=%s, role_mapping_keys=%s", user, user_to_role_mapping.keys())
             continue
 
         for role in user_to_role_mapping[user]:
             payload.append({
                 constants.ROLE: role,
-                constants.DEVICE_ID: device[constants.DEVICE_ID],
+                constants.REGISTERED_DEVICES_DEVICE_ID: device[constants.REGISTERED_DEVICES_DEVICE_ID],
                 constants.TIMESTAMP: timestamp
             })
 
-    LOGGER.debug("finished creating payloads, value=%s", payload)
     return payload
 
 

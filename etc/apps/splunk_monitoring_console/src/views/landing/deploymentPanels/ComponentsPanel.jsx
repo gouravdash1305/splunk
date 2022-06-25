@@ -18,9 +18,7 @@ function DeploymentComponentsPanel(props) {
                         data-test-name="component-item"
                         key={feature.name}
                     >
-                        <div className="componentItemLabel">
-                            {feature.display_name ? feature.display_name : feature.name}
-                        </div>
+                        <div className="componentItemLabel">{feature.name}</div>
                         {icons[feature.health].icon}
                     </div>
                 ))}

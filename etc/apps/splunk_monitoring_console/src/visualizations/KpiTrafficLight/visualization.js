@@ -19,7 +19,7 @@ define([
     'underscore',
     'backbone',
     'vizapi/SplunkVisualizationBase',
-    'bootstrap'
+    'bootstrap.tooltip'
 ], function(
     $,
     _,

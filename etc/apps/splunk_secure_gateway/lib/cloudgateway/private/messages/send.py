@@ -1,4 +1,5 @@
 from functools import partial
+
 from cloudgateway.private.encryption.encryption_handler import (
     encrypt_for_send, sign_detached)
 from spacebridge_protocol import http_pb2, sb_common_pb2, websocket_pb2

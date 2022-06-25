@@ -35,35 +35,11 @@
 		</processor>
 	</pipeline>
 
-	<pipeline name="remotequeueruleset" type="startup">
-		<processor name="readerIn" plugin="queueinputprocessor">
-			<config>
-				<queueName>rulesetQueue</queueName>
-			</config>
-		</processor>
-
-		<processor name="regexreplacement" plugin="regexextractionprocessor">
-			<config>
-				<rulesetOnly>true</rulesetOnly>
-			</config>
-		</processor>
-
-		<processor name="sendOut" plugin="queueoutputprocessor">
-			<config>
-				<queueName>remoteOutputQueue</queueName>
-			</config>
-		</processor>
-	</pipeline>
-
 	<pipeline name="remotequeueoutput" type="startup">
 		<processor name="readerIn" plugin="queueinputprocessor">
 				<config>
 					<queueName>remoteOutputQueue</queueName>
 				</config>
-		</processor>
-
-		<processor name="destination-key-processor" plugin="destinationkeyprocessor">
-				<config></config>
 		</processor>
 
 		<processor name="remotequeueoutput" plugin="remotequeueoutputprocessor">

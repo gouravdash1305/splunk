@@ -87,10 +87,6 @@
 		 	   </config>
 		</processor>
 
-		<processor name="tee" plugin="teeprocessor">
-			<config></config>
-		</processor>
-
 		<processor name="regexreplacement" plugin="regexextractionprocessor">
 			<config></config>
 		</processor>
@@ -114,26 +110,6 @@
 		</processor>
 	</pipeline>
 	
-    <pipeline name="ruleset" type="startup">
-        <processor name="readerIn" plugin="queueinputprocessor">
-            <config>
-                <queueName>rulesetQueue</queueName>
-            </config>
-        </processor>
-
-        <processor name="regexreplacement" plugin="regexextractionprocessor">
-            <config>
-                <rulesetOnly>true</rulesetOnly>
-            </config>
-        </processor>
-
-        <processor name="sendOut" plugin="queueoutputprocessor">
-            <config>
-                <queueName>indexQueue</queueName>
-            </config>
-        </processor>
-    </pipeline>
-
         <pipeline name="vix"  type="startup">
                 <processor name="readerIn" plugin="queueinputprocessor">
                            <config>

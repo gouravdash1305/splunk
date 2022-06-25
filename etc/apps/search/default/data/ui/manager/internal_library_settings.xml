@@ -1,6 +1,0 @@
-<endpoint name="internal_library_settings" template="pages/system.html">
-    <capabilities>
-        <read>read_internal_libraries_settings</read>
-    </capabilities>
-    <header>Internal Library Settings</header>
-</endpoint>

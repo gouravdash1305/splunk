@@ -30,6 +30,7 @@ class TaskInformationEndpoint(PersistentServerConnectionApplication):
         """
         return persistent_handler_wrap_handle(self._handle, args)
 
+
     def _handle(self, args: JsonObject) -> JsonObject:
         try:
             local_host = get_server_name(args['system_authtoken'])

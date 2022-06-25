@@ -5,29 +5,43 @@
 */
 
 define([
+	'jquery',
 	'underscore',
 	'backbone',
 	'module',
-	'@splunk/swc-mc',
+	'controllers/Base',
+	'collections/shared/FlashMessages',
+	'collections/managementconsole/AlertConfigs',
 	'splunk_monitoring_console/collections/DMCAlertsSavedSearches',
+    'collections/services/data/ui/ModAlerts',
+    'collections/shared/ModAlertActions',
+    'models/services/data/ui/Manager',
+    'models/services/server/ServerInfo',
 	'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/Master',
     '../PageController.pcss'
 
 ], function(
+	$,
 	_,
 	Backbone,
 	module,
-	SwcMC,
+	BaseController,
+	FlashMessagesCollection,
+	AlertConfigsCollection,
 	DMCAlertsSavedSearchesCollection,
+	ModAlertsUICollection,
+	ModAlertActionsCollection,
+	ManagerViewModel,
+	ServerInfoModel,
 	MasterView,
     css
 	) {
 
-	return SwcMC.BaseController.extend({
+	return BaseController.extend({
 		moduleId: module.id,
 
 		initialize: function(options) {
-			SwcMC.BaseController.prototype.initialize.apply(this, arguments);
+			BaseController.prototype.initialize.apply(this, arguments);
 
 			this.collection = this.collection || {};
 			this.model = this.model || {};
@@ -36,11 +50,11 @@ define([
 			this.collection.savedSearches = new DMCAlertsSavedSearchesCollection();
 			this.deferreds.savedSearches = this.collection.savedSearches.fetch();
 
-			this.collection.alertConfigs = new SwcMC.AlertConfigsCollection();
+			this.collection.alertConfigs = new AlertConfigsCollection();
 			this.deferreds.alertConfigs = this.collection.alertConfigs.fetch();
 
 			//splunk_monitoring_console/alerts/alert_actions
-			this.collection.alertActions = new SwcMC.ModAlertActionsCollection();
+			this.collection.alertActions = new ModAlertActionsCollection();
 			this.deferreds.alertActions = this.collection.alertActions.fetch({
 				data: {
                     app: this.model.application.get("app"),
@@ -51,7 +65,7 @@ define([
 			});
 
 			//splunk_monitoring_console/data/ui/alerts
-            this.collection.alertActionUIs = new SwcMC.ModAlertsCollection();
+            this.collection.alertActionUIs = new ModAlertsUICollection();
             this.deferreds.alertActionUIs = this.collection.alertActionUIs.fetch({
                 data: {
                     app: this.model.application.get("app"),
@@ -59,7 +73,7 @@ define([
                 }
             });	
 
-            var alertActionsManagerModel = new SwcMC.DataUIManagerModel();
+            var alertActionsManagerModel = new ManagerViewModel();
             alertActionsManagerModel.set('id', 'alert_actions');
             //splunk_monitoring_console/data/ui/manager/alert_actions
             this.deferreds.alertActionsManagerModel = alertActionsManagerModel.binaryPromiseFetch({
@@ -69,19 +83,18 @@ define([
                 }
             });
 
-			this.model.serverInfoModel = new SwcMC.ServerInfoModel();
+			this.model.serverInfoModel = new ServerInfoModel();
 			this.deferreds.serverInfoModel = this.model.serverInfoModel.fetch();
 			
-			this.collection.flashMessages = this.collection.flashMessages || new SwcMC.FlashMessagesCollection();
+			this.collection.flashMessages = this.collection.flashMessages || new FlashMessagesCollection();
 
-			Promise.all([
+			$.when(
 				this.deferreds.savedSearches, 
 				this.deferreds.alertConfigs,
 				this.deferreds.alertActionUIs,
 				this.deferreds.alertActions,
 				this.deferreds.serverInfoModel,
-				this.deferreds.alertActionsManagerModel
-			]).then(_(function() {
+				this.deferreds.alertActionsManagerModel).then(_(function() {
 					this.children.masterView = new MasterView({
 						model: { 
 							application: this.model.application, 

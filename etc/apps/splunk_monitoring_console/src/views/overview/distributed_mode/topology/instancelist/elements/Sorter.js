@@ -1,15 +1,17 @@
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Base',
-        '@splunk/swc-mc'
+        'util/svg'
     ],
     function(
+        $,
         _,
         Backbone,
         BaseElementView,
-        SwcMC
+        svgUtil
     ) {
         var TRIANGLE_SIZE = 10,
             TRIANGLE_OFFSET = 30,
@@ -40,7 +42,7 @@ define(
 
                 this.$el.empty();
 
-                $sortText = SwcMC.UtilSVG.createElement('text')
+                $sortText = svgUtil.createElement('text')
                     .text(_('Sort').t())
                     .attr({
                         'class': 'link',
@@ -51,7 +53,7 @@ define(
                     .appendTo(this.$el);
                     
 
-                $sortIcon = SwcMC.UtilSVG.createElement('tspan')
+                $sortIcon = svgUtil.createElement('tspan')
                     .text(' ' + (sortDir === 'asc' ? '\u21A5' : '\u21A7'))
                     .attr({
                         'class': 'icon'

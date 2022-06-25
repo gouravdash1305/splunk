@@ -1,6 +1,6 @@
 
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for kvstore dashboard client
 """
@@ -19,7 +19,7 @@ from spacebridgeapp.util import constants
 from spacebridgeapp.rest.base_endpoint import BaseRestHandler
 from spacebridgeapp.rest.services.kvstore_service import KVStoreCollectionAccessObject
 from spacebridgeapp.rest.debug.util import create_splunk_resp
-from spacebridgeapp.util.constants import OWNER, LIMIT, SORT, APP
+from spacebridgeapp.util.constants import OWNER, LIMIT, SORT, APP_NAME
 
 LOGGER = setup_logging(constants.SPACEBRIDGE_APP_NAME + ".log", "kvstore_dashboard_client")
 
@@ -49,7 +49,7 @@ class KvstoreDashboardClientHandler(BaseRestHandler, PersistentServerConnectionA
 
             collection = request['query'][COLLECTION]
             owner = request['query'][OWNER]
-            app = request['query'][APP]
+            app = request['query'][APP_NAME]
             method = request['query'][METHOD]
             limit = request['query'][LIMIT]
             sort = request['query'][SORT] if SORT in request['query'] else ""

@@ -1,9 +1,11 @@
 define(
 	[
+		'jquery',
 		'underscore',
-		'splunk_monitoring_console/models/DistsearchGroup'
+		'models/monitoringconsole/DistsearchGroup'
 	],
 	function(
+		$,
 		_,
 		DistsearchGroupModel
 	) {
@@ -23,14 +25,12 @@ define(
 
 		var serverRolesI18n = {
 			'Search Head': _('Search Head').t(),
-			'Cluster Master': _('Cluster Manager').t(),
-			'Cluster Manager': _('Cluster Manager').t(),
-			'License Manager': _('License Manager').t(),
-			'License Master': _('License Manager').t(),
+			'Cluster Master': _('Cluster Master').t(),
+			'License Master': _('License Master').t(),
 			'Indexer': _('Indexer').t(),
 			'Deployment Server': _('Deployment Server').t(),
 			'KV Store': _('KV Store').t(),
-      'SHC Deployer': _('SHC Deployer').t()
+			'SHC Deployer': _('SHC Deployer').t()
 		};
 
 		return {
@@ -63,7 +63,7 @@ define(
 					return 'SHC Deployer';
 				}
 				return roleId.replace(/_/g, ' ').replace(
-					/\b([a-z])/g,
+					/\b([a-z])/g, 
 					function(letter) {
 						return letter.toUpperCase();
 					}
@@ -137,8 +137,8 @@ define(
 
 
 				this.entry.content.set(
-					'indexerClusters',
-					this.entry.content.get('status-toggle') === 'Disabled' ?
+					'indexerClusters', 
+					this.entry.content.get('status-toggle') === 'Disabled' ? 
 						[] :
 					    (!_.isUndefined(this.entry.content.get('indexerClusters')) ? // If true, this means it has been overridden by assets.conf
 					    	this.entry.content.get('indexerClusters') :
@@ -149,9 +149,9 @@ define(
 				this.entry.content.on('change:indexerClusters', this._updateIndexerClusterSearchGroups, this);
 
 				this.entry.content.set(
-					'searchHeadClusters',
-					this.entry.content.get('status-toggle') === 'Disabled' ?
-						[] :
+					'searchHeadClusters', 
+					this.entry.content.get('status-toggle') === 'Disabled' ? 
+						[] : 
 					    (!_.isUndefined(this.entry.content.get('searchHeadClusters')) ? // If true, this means it has been overridden by assets.conf
 					    	this.entry.content.get('searchHeadClusters') :
 					    	this._searchHeadClustersFromInternal()
@@ -165,33 +165,33 @@ define(
 					if (!_.isUndefined(attrs.active_server_roles) &&
 						(!_.isArray(attrs.active_server_roles) ||
 						 attrs.active_server_roles.length === 0)) {
-
+					
 						return _("You must provide at least one server role.").t();
 					}
 
 					var errorMessage = null;
 					_.each(
 						[
-							{
-								prop: 'tags',
-								message: _("Group names must only contain alphanumeric characters, dashes, or underscores.").t()
+							{ 
+								prop: 'tags', 
+								message: _("Group names must only contain alphanumeric characters, dashes, or underscores.").t() 
 							},
-							{
-								prop: 'indexerClusters',
-								message: _("Indexer cluster names must only contain alphanumeric characters, dashes, or underscores.").t()
+							{ 
+								prop: 'indexerClusters', 
+								message: _("Indexer cluster names must only contain alphanumeric characters, dashes, or underscores.").t() 
 							},
-							{
-								prop: 'searchHeadClusters',
+							{ 
+								prop: 'searchHeadClusters', 
 								message: _("Search head cluster names must only contain alphanumeric characters, dashes, or underscores.").t()
 							}
-						],
+						], 
 						function(tuple) {
 							if (!_.isUndefined(attrs[tuple.prop])) {
 								if (_.find(attrs[tuple.prop], function(name) { return /[^a-zA-Z0-9_\-]/.test(name); })) {
 									errorMessage = tuple.message;
 								}
 							}
-						},
+						}, 
 						this
 					);
 					if (errorMessage !== null) {
@@ -328,7 +328,7 @@ define(
 					var roleGroup = this.distributedSearchGroupsCollection.find(function(group) {
 						return this.getRoleFromGroupName(group.getGroupName()) === primaryRole;
 					}, this);
-
+					
 					if (!roleGroup) {
 						roleGroup = new DistsearchGroupModel();
 						roleGroup.setName(this.getRoleGroupName(primaryRole));
@@ -344,7 +344,7 @@ define(
 					return !group.isCustomGroup() && !group.isIndexerClusterGroup() && !group.isSearchHeadClusterGroup();
 				}, this)).each(function(distsearch) {
 					var groupName = distsearch.getGroupName();
-					// The role is encoded in the name.
+					// The role is encoded in the name. 
 					var groupRole = groupName.substr(DistsearchGroupModel.GROUP_NAME_PREFIX.length);
 
 					// If this peer is now in this group's role, add it
@@ -364,8 +364,8 @@ define(
 				// Additionally, if you can't, make a "flush" mechanism that tallies up these "dirty" groups
 				// and only saves them off
 
-				var customGroups = _(this.distributedSearchGroupsCollection.filter(function(group) {
-					return group.isCustomGroup();
+				var customGroups = _(this.distributedSearchGroupsCollection.filter(function(group) { 
+					return group.isCustomGroup(); 
 				}));
 
 				_.each(this.entry.content.get('tags'), function(tagName) {
@@ -381,8 +381,8 @@ define(
 						this.distributedSearchGroupsCollection.add(customGroup);
 					}
 				}, this);
-				customGroups = _(this.distributedSearchGroupsCollection.filter(function(group) {
-					return group.isCustomGroup();
+				customGroups = _(this.distributedSearchGroupsCollection.filter(function(group) { 
+					return group.isCustomGroup(); 
 				}));
 
 				customGroups.each(function(group) {

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module providing client for making asynchronous get requests to KV Store using Twisted
 """
@@ -164,7 +164,7 @@ class AsyncKvStoreClient(AsyncNonSslClient):
 
         return '{rest_uri}servicesNS/{owner}/{app}/storage/collections/data/{url_suffix}'.format(
             rest_uri=self.get_splunkd_uri(),
-            owner=urllib.quote(owner if owner else NOBODY),  # default owner to NOBODY if none specified
+            owner=urllib.quote(owner),
             app=app,
             url_suffix=url_suffix
         )

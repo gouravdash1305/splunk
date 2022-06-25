@@ -4,16 +4,16 @@ define(
 		'jquery',
 		'underscore',
 		'splunk_monitoring_console/models/Asset',
-		'@splunk/swc-mc'
+		'collections/SplunkDsBase'
 	],
 	function(
 		$,
 		_,
 		AssetModel,
-		SwcMC
+		SplunkDsBaseCollection
 	) {
 
-		return SwcMC.SplunkDsBaseCollection.extend({
+		return SplunkDsBaseCollection.extend({
 			model: AssetModel,
 			url: 'configs/conf-splunk_monitoring_console_assets',
 			fetch: function(options) {
@@ -24,7 +24,7 @@ define(
 					count: -1
 				});
 
-				return SwcMC.SplunkDsBaseCollection.prototype.fetch.call(this, options);
+				return SplunkDsBaseCollection.prototype.fetch.call(this, options);
 			}
 		});
 

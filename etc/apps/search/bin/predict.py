@@ -229,11 +229,8 @@ class FC:
                 results[I][self.UIlowerNames[field]] = self.lowerNames[field]
                 results[I][self.lowerNames[field]] = str(lower)
 
-        # SPL-181973 For datasets that have NULL data at the start of the time range, which can occur when "earliest" or the
-        # time picker is used, the lasttime will need to account for where the data actually begins.
-        # For results with full data sets, the result will always begin at 0
-        if '_time' in results[kk + beginning - 1]:
-            lasttime = float(results[kk + beginning - 1]['_time'])
+        if '_time' in results[kk - 1]:
+            lasttime = float(results[kk - 1]['_time'])
         else:
             splunk.Intersplunk.generateErrorResults("Unable to predict: data has no time")
             sys.exit()
@@ -524,7 +521,7 @@ class TestPredict(unittest.TestCase):
                         print("list2 = %s" % list2)
                     self.assertTrue(list1[i][j]==list2[i][j])
                 else:
-                    self.assertAlmostEqual(float(list1[i][j]), float(list2[i][j]), 0)
+                    self.assertAlmostEqual(float(list1[i][j]), float(list2[i][j]), 2)
 
     @classmethod
     def getResults(cls, data, fields):

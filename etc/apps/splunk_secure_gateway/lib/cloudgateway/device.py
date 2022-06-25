@@ -27,8 +27,7 @@ class DeviceInfo(object):
     """
 
     def __init__(self, encrypt_public_key, sign_public_key, device_id="", confirmation_code="", app_id="",
-                 client_version="", app_name="", platform="", registration_method="", auth_method="",
-                 device_management_method="", device_registered_timestamp="", tenant_id="", user_agent=""):
+                 client_version="", app_name="", platform=""):
         self.encrypt_public_key = encrypt_public_key  # binary value
         self.sign_public_key = sign_public_key  # binary value
         self.device_id = device_id  # binary value
@@ -37,12 +36,6 @@ class DeviceInfo(object):
         self.client_version = client_version  # string
         self.app_name = app_name
         self.platform = platform
-        self.registration_method = registration_method  # string
-        self.auth_method = auth_method  # string
-        self.device_management_method = device_management_method  # string
-        self.device_registered_timestamp = device_registered_timestamp  # int
-        self.tenant_id = tenant_id  # string
-        self.user_agent = user_agent  # string
 
     def __repr__(self):
         return str(self.__dict__)
@@ -65,13 +58,8 @@ class DeviceInfo(object):
             'conf_code': self.confirmation_code,
             'app_id': self.app_id,
             'client_version': self.client_version,
-            'app_name': self.app_name,
-            'registration_method': self.registration_method,
-            'auth_method': self.auth_method,
-            'device_management_method': self.device_management_method,
-            'device_registered_timestamp': self.device_registered_timestamp,
-            'tenant_id': self.tenant_id,
-            'user_agent': self.user_agent
+            'app_name': self.app_name
+
         }
 
     @staticmethod

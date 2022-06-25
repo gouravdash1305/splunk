@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Utilities for creating Splunk facing REST endpoints that use Twisted APIs and asynchronous code. Usage is similar to
 base_endpoint.BaseRestHandler but instead of get, post, put, and delete, subclasses should override async_get,
@@ -41,7 +41,6 @@ from spacebridgeapp.util import constants
 from splunk import rest
 from splunk.persistconn import application
 import asyncio
-import spacebridgeapp.util.constants
 
 
 LOGGER = logging.setup_logging(constants.SPACEBRIDGE_APP_NAME + '.log', 'async_base_rest_handler')
@@ -60,13 +59,6 @@ class AsyncBaseRestHandler(base_endpoint.BaseRestHandler, application.Persistent
         # Accepting them at this level saves us from making all subclasses accept them.
         super(AsyncBaseRestHandler, self).__init__()
         self.async_client_factory = async_client_factory or AsyncClientFactory(rest.makeSplunkdUri())
-
-    @staticmethod
-    def render(status_code, response):
-        return {
-            constants.STATUS: status_code,
-            constants.PAYLOAD: response
-        }
 
     def handle_request(self, request):
         method = request['method']

@@ -3,7 +3,7 @@ define(
 		'jquery',
 		'underscore',
 		'module',
-		'@splunk/swc-mc',
+		'views/shared/PopTart',
 		'splunk_monitoring_console/views/table/controls/EditServerRolesDialog',
 		'splunk_monitoring_console/views/table/controls/EditGroupsDialog',
 		'splunk_monitoring_console/views/table/controls/EditInstanceDialog',
@@ -15,7 +15,7 @@ define(
 		$,
 		_,
 		module,
-		SwcMC,
+		PopTartView,
 		EditServerRolesDialogView,
 		EditGroupsDialogView,
 		EditInstanceDialogView,
@@ -24,12 +24,12 @@ define(
         FailureDialog
 	) {
 
-		return SwcMC.PopTartView.extend({
+		return PopTartView.extend({
 			moduleId: module.id,
 			className: 'dropdown-menu',
 			initialize: function(options) {
 				options = _.defaults(options, { mode: 'menu' });
-				SwcMC.PopTartView.prototype.initialize.call(this, options);
+				PopTartView.prototype.initialize.call(this, options);
 
 				this.model.appLocal.entry.content.on('change:configured', this._updateConfigured, this);
 			},
@@ -112,7 +112,7 @@ define(
 
                     //reset internal server roles for instance
                     this.model.peer.resetInitialInternalServerRoles();
-                    settingsAsset.save().then(function() {
+                    $.when(settingsAsset.save()).done(function() {
                     	this.model.state.set('changesMade', true);
 
                         var dialog = new ConfirmationDialogView({
@@ -120,14 +120,14 @@ define(
                         });
                         $('body').append(dialog.render().el);
                         dialog.show();
-                    }.bind(this)).catch(function() {
+                    }.bind(this)).fail(function() {
                     	var dialog = new FailureDialog().render();
                         dialog.show();
                     }.bind(this));
                 }
 			},
 			render: function() {
-				this.el.innerHTML = SwcMC.PopTartView.prototype.template_menu;
+				this.el.innerHTML = PopTartView.prototype.template_menu;
 				this.$el.append(this.compiledTemplate({
 					_: _,
 					disabled: this.model.peer.entry.content.get('status-toggle') === 'Disabled',

@@ -5,7 +5,7 @@ import { isEmpty } from 'lodash';
 import querystring from 'querystring';
 import { createRESTURL } from '@splunk/splunk-utils/url';
 import { defaultFetchInit } from '@splunk/splunk-utils/fetch';
-import { SplunkUtil } from '@splunk/swc-mc';
+import splunkUtil from 'splunk.util';
 import Button from '@splunk/react-ui/Button';
 import ControlGroup from '@splunk/react-ui/ControlGroup';
 import Modal from '@splunk/react-ui/Modal';
@@ -14,7 +14,6 @@ import Text from '@splunk/react-ui/Text';
 import WaitSpinner from '@splunk/react-ui/WaitSpinner';
 import * as Utils from './Utils';
 import './BookmarkModal.pcss';
-import styled from 'styled-components';
 
 export const BOOKMARKS_ENDPOINT = 'saved/bookmarks/monitoring_console';
 export const MC_APP = 'splunk_monitoring_console';
@@ -140,7 +139,7 @@ class BookmarkModal extends Component {
                 const messageObj = response.responseJSON.messages[0];
                 this.setState({
                     isWorking: false,
-                    backendErrorMsg: SplunkUtil.sprintf(_('%s: %s'), messageObj.type, messageObj.text),
+                    backendErrorMsg: splunkUtil.sprintf(_('%s: %s'), messageObj.type, messageObj.text),
                     backendError: true,
                 });
             }
@@ -151,15 +150,11 @@ class BookmarkModal extends Component {
      * Render bookmark modal.
      */
     render() {
-        const AddDeploymentButton = styled(Button)`
-            margin: auto;
-            display: block;
-`
         return (
             <div
                 data-test-name="bookmarks-button"
             >
-                <AddDeploymentButton
+                <Button
                     appearance="primary"
                     disabled={(this.state.bookmarks.length >= 6)}
                     label={_('Add Deployment')}
@@ -197,7 +192,7 @@ class BookmarkModal extends Component {
                                 value={this.state.label}
                                 name="label"
                                 onChange={this.handleTextChange}
-                                autoComplete="off"
+                                autoComplete={false}
                             />
                         </ControlGroup>
 
@@ -214,7 +209,7 @@ class BookmarkModal extends Component {
                                 value={this.state.url}
                                 name="url"
                                 onChange={this.handleTextChange}
-                                autoComplete="off"
+                                autoComplete={false}
                             />
                         </ControlGroup>
                     </Modal.Body>

@@ -1,21 +1,25 @@
 define(
 	[
+		'jquery',
 		'underscore',
 		'backbone',
-		'@splunk/swc-mc'
+		'models/SplunkDBase',
+		'models/SplunkDWhiteList'
 	], 
 	function(
+		$,
 		_,
 		Backbone,
-		SwcMC
+		SplunkDBaseModel,
+		SplunkDWhiteListModel
 	) {
 
 		// Subclass SplunkDBaseModel's SplunkDWhiteListModel
 		// Reason: specify attributes required because I'm not sure how to do it any other way
 		// for conf files. via .conf.spec perhaps?
-		var AssetWhiteListModel = SwcMC.SplunkDWhiteListModel.extend({
+		var AssetWhiteListModel = SplunkDWhiteListModel.extend({
 			initialize: function() {
-				SwcMC.SplunkDWhiteListModel.prototype.initialize.apply(this, arguments);
+				SplunkDWhiteListModel.prototype.initialize.apply(this, arguments);
 			},
 			concatOptionalRequired: function() {
 				// Save previous state
@@ -31,7 +35,7 @@ define(
 				]), { silent: true });
 
 				var whiteListOptAndReq = 
-					SwcMC.SplunkDWhiteListModel.prototype.concatOptionalRequired.apply(this, arguments);
+					SplunkDWhiteListModel.prototype.concatOptionalRequired.apply(this, arguments);
 
 				// Revert to previous state
 				this.set('optional', previousOptional, { silent: true });
@@ -41,12 +45,12 @@ define(
 		});
 
 
-		var AssetModel = SwcMC.SplunkDBaseModel.extend(
+		var AssetModel = SplunkDBaseModel.extend(
 			{
 				url: 'configs/conf-splunk_monitoring_console_assets',
 
 				initialize: function(attributes, options) {
-					SwcMC.SplunkDBaseModel.prototype.initialize.call(
+					SplunkDBaseModel.prototype.initialize.call(
 						this,
 						attributes,
 						_.defaults(options || {}, {
@@ -66,7 +70,7 @@ define(
 						});
 					}
 
-					return SwcMC.SplunkDBaseModel.prototype.save.call(this, attributes, options);
+					return SplunkDBaseModel.prototype.save.call(this, attributes, options);
 				}
 			}
 		);

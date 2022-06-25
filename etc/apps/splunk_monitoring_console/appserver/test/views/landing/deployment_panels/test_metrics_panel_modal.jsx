@@ -59,6 +59,23 @@ suite('MC Deployment Metrics Modal Component', function() {
         this.fakeMetrics = {};
         assert.ok(true, 'Teardown was successful');
     });
+    test('Test rendering the MetricsPanelModal component', function() {
+        assert.equal(
+            this.wrapper.find(Modal).length,1,
+            'MetricsPanelModal page rendered');
+        assert.equal(this.wrapper.find('Header').length, 1,
+            'Should be 1 main header');
+        assert.equal(this.wrapper.find('Heading').length, 3,
+            'Should be 3 sub headings');
+        assert.equal(this.wrapper.find('Message').length, 0,
+            'No error message by default');
+        assert.equal(this.wrapper.find('Button').length, 6,
+            'Total buttons should equal 6');
+        assert.equal(this.wrapper.find('ControlGroup').length, 4,
+            'Should be 4 total metrics');
+        assert.equal(this.wrapper.find('Footer').length, 1,
+            'Should have 1 footer');
+    });
     test('Test updateMetrics', function() {
         assert.equal(Object.keys(this.inst.state.metrics).length, 4,
             "currently should be 4 metrics");

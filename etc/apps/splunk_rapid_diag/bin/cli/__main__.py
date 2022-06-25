@@ -52,9 +52,7 @@ def argparse_add_process_arg(parser : argparse.ArgumentParser) -> None:
     """ Used for all collectors that operate on a process
     """
     parser.add_argument('--pid', default=0,
-            help='The process id to monitor. If fuzzy matching should be used - set this to 0. '
-                 'Process with id equal to pid will be monitored if different from 0, '
-                 'and other arguments will be ignored.')
+            help='The process id to monitor. If fuzzy matching should be used - set this to 0.')
     parser.add_argument('--ppid', default=0, help='The parent process id to monitor.')
     parser.add_argument('--name', default="splunkd",
             help='The name of the process to monitor. Defaults to \'splunkd\'.')
@@ -154,8 +152,8 @@ def argparse_case_upload_arg(parser : argparse.ArgumentParser) -> None:
                         dest='upload_description')
     parser.add_argument('--firstchunk', type=int,  metavar="chunk-number", help="For resuming upload of a "
                         "multi-part upload; select the first chunk to send", dest='firstchunk')
-    parser.add_argument('--chunk-size', type=int, help='Chunk size in bytes, use for larger uploads, default to 1GB',
-                        default=1000000000, dest='chunksize')
+    parser.add_argument('--chunk-size', type=int, help='Chunk size in bytes, use for larger uploads, default to 100mb',
+                        default=100000000, dest='chunksize')
     parser.add_argument('--auth', type=str, help='specify login credentials [user]:[password] to execute upload',
                         dest='user_password', action=ParseKeyValueArg)
 

@@ -4,14 +4,14 @@ define(
         'underscore',
         'backbone',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Base',
-        '@splunk/swc-mc'
+        'util/svg'
     ],
     function(
         $,
         _,
         Backbone,
         BaseElementView,
-        SwcMC
+        svgUtil
     ) {
         var HEIGHT = 10,
             WIDTH = 300,
@@ -43,7 +43,7 @@ define(
                     if ((this.type === TYPES.MORE && pages.thisPage < pages.lastPage) ||
                         (this.type === TYPES.LESS && pages.thisPage > 1)) {
                         
-                        SwcMC.UtilSVG.createElement('rect')
+                        svgUtil.createElement('rect')
                             .attr({
                                 x: currentPoint.x,
                                 y: currentPoint.y,

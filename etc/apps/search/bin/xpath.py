@@ -5,16 +5,15 @@ if sys.version_info >= (3, 0):
     from io import StringIO
 else:
     from StringIO import StringIO
-import splunk.safe_lxml_etree as etree
+from lxml import etree
+import lxml
+import defusedxml.lxml as safe_lxml
 
 def tostr(node):
-    if isinstance(node, etree._Element):
+    if isinstance(node, lxml.etree._Element):
         if len(node.getchildren()) == 0:
             return node.text or "Null"
-        if sys.version_info >= (3, 0):
-            return etree.tostring(node, encoding="unicode")
-        else:
-            return etree.tostring(node)
+        return etree.tostring(node)
     return str(node)
 
 if __name__ == '__main__':
@@ -40,7 +39,7 @@ if __name__ == '__main__':
                 # make event value valid xml
                 myxml = "<data>%s</data>" % myxml
                 try:
-                    et = etree.parse(StringIO(myxml))
+                    et = safe_lxml.parse(StringIO(myxml))
                     nodes = et.xpath(path)
                     values = [tostr(node) for node in nodes]
                     result[outfield] = values

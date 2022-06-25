@@ -63,19 +63,23 @@ class ToolsCollector(Collector):
             output : TextIO,
             error : TextIO,
             poll_period : float = RapidDiagConf.get_collectors_startup_poll_interval()) -> CollectorResult:
+        if IS_LINUX:
+            process = subprocess.Popen(
+                command, stdout=output, stderr=error)
+        else:
+            process = subprocess.Popen(
+                command, creationflags=DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP, stdout=output, stderr=error)
 
-        creationflags = 0 if IS_LINUX else (DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP)
-        with subprocess.Popen(command, creationflags=creationflags, stdout=output, stderr=error) as process:
-            return_code = self.__wait_for_completion(process, self.collection_time, poll_period)
-            _LOGGER.debug("return_code : %s", str(return_code))
+        return_code = self.__wait_for_completion(process, self.collection_time, poll_period)
+        _LOGGER.debug("return_code : %s", str(return_code))
 
-            if return_code is None:
-                self.__terminate(process)
+        if return_code is None:
+            self.__terminate(process)
 
-            if return_code not in self.valid_return_code:
-                return CollectorResult.Failure("Error occurred for collector " + str(self.get_tool_name()) +
-                                               " while running `" + " ".join(command) + "`\nProcess finished with " +
-                                               "code=" + str(process.returncode) , _LOGGER)
+        if return_code not in self.valid_return_code:
+            return CollectorResult.Failure("Error occurred for collector " + str(self.get_tool_name()) + " while running `" +
+                                        " ".join(command) + "`\nProcess finished with " +
+                                        "code=" + str(process.returncode) , _LOGGER)
 
         if self.get_state() == Collector.State.ABORTING:
             return CollectorResult.Aborted(self.get_tool_name() + " aborted by user", _LOGGER)

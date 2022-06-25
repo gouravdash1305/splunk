@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This file contains example saved searches and alerts.
 #
@@ -42,12 +42,15 @@ dispatch.earliest_time = -3h
 search = index=_internal " error " NOT debug source=*/splunkd.log*
 dispatch.earliest_time = -24h
 
-[stats with durable search]
-search = index=_internal eps | stats avg(eps) as avg, max(eps) as max, min(eps) as min
-dispatch.indexed_earliest = -30m
-dispatch.indexed_latest   = now
+## Federated Datasets
+[search-sf-usage]
+search = search index=sf_index | stats count by user
+federated.provider = deployment-sf-search
 
-durable.track_time_type   = _indextime
-durable.lag_time          = 60
-durable.backfill_type     = time_interval
-durable.max_backfill_intervals = 100
+[search-sf-hr]
+search = | union [search index=sf_index] [search index=hr_index] | stats count by user
+federated.provider = deployment-sf-hr
+
+[search-sr]
+search = search index=sr_index | join left=L right=R L.user=R.group [ search index=hr_index]
+federated.provider = deployment-sr-search

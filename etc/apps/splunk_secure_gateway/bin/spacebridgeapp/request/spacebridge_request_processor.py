@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 """
 import asyncio
 import json
@@ -27,7 +27,8 @@ from splapp_protocol.request_pb2 import VersionGetResponse
 from spacebridgeapp.versioning import app_version, minimum_build
 from spacebridgeapp.request.generic_request_processor import fetch_registered_apps
 from spacebridgeapp.data.telemetry_data import InstallationEnvironment
-from spacebridgeapp.request.version_request_processor import async_get_meta_info
+from spacebridgeapp.request.version_request_processor import _get_deployment_friendly_name
+from spacebridgeapp.messages.request_context import RequestContext
 from spacebridgeapp.rest.registration.registration_webhook import aio_validate_user
 
 LOGGER = setup_logging(constants.SPACEBRIDGE_APP_NAME + "_spacebridge_request_processor.log",
@@ -211,11 +212,18 @@ class CloudgatewayMdmRegistrationContext(ServerRegistrationContext):
         Get deployment name
         :return:
         """
+        r = await self.async_kvstore_client.async_kvstore_get_request(
+            constants.META_COLLECTION_NAME,
+            self.system_auth_header,
+            key_id="deployment_info")
 
-        meta_info = await async_get_meta_info(self.system_auth_header, self.async_kvstore_client)
-        deployment_name = meta_info[constants.DEPLOYMENT_INFO][constants.DEPLOYMENT_FRIENDLY_NAME]
+        if r.code == HTTPStatus.OK:
+            jsn = await r.json()
+            deployment_name = jsn['friendly_name']
+            LOGGER.debug("Retrieved deployment_info={}".format(deployment_name))
+            return deployment_name
 
-        return deployment_name
+        return ""
 
     def build_device_name(self, device_info, username):  # pylint: disable=no-self-use
         """
@@ -253,7 +261,6 @@ class CloudgatewayMdmRegistrationContext(ServerRegistrationContext):
         """
         url_safe_device_id = py23.urlsafe_b64encode_to_str(device_info.device_id)
         device_id = py23.b64encode_to_str(device_info.device_id)
-        platform = device_info.platform
 
         # Insert into public keys table
         device_public_keys_payload = {
@@ -268,12 +275,7 @@ class CloudgatewayMdmRegistrationContext(ServerRegistrationContext):
             'device_type': resolve_app_name(device_info.app_id),
             'device_name': self.build_device_name(device_info, username),
             'user': username,
-            'device_id': device_id,
-            'platform': platform,
-            'registration_method': device_info.registration_method,
-            'auth_method': device_info.auth_method,
-            'device_management_method': device_info.device_management_method,
-            'device_registered_timestamp': device_info.device_registered_timestamp
+            'device_id': device_id
         }
 
         keys_resp = await self.async_kvstore_client.async_kvstore_post_request(
@@ -318,13 +320,11 @@ class CloudgatewayMdmRegistrationContext(ServerRegistrationContext):
         """
         return constants.SPLAPP_APP_ID
 
-    async def get_environment_meta(self, device_info, username, registration_info=None):
+    async def get_environment_meta(self, device_info, username):
         """
         Fetch environment metadata
         return (EnvironmentMetadata)
         """
-        if registration_info is None:
-            registration_info = {}
         try:
             version_get_response = VersionGetResponse()
 
@@ -356,33 +356,18 @@ class CloudgatewayMdmRegistrationContext(ServerRegistrationContext):
                 else VersionGetResponse.ENTERPRISE
             version_get_response.installationEnvironment = installation_environment_proto
 
-            meta_info = await async_get_meta_info(self.system_auth_header, self.async_kvstore_client)
-
             # Deployment friendly name
-            deployment_friendly_name = meta_info[constants.DEPLOYMENT_INFO][constants.DEPLOYMENT_FRIENDLY_NAME]
+            deployment_friendly_name = await _get_deployment_friendly_name(self.system_auth_header,
+                                                                           self.async_kvstore_client,
+                                                                           RequestContext(self.system_auth_header))
             version_get_response.deploymentFriendlyName = deployment_friendly_name
 
-            # Device name
+            # device name
             version_get_response.deviceName = self.build_device_name(device_info, username)
-
-            # Mdm Enforced
-            mdm_configuration = meta_info.get(constants.ENFORCE_MDM, {})
-            version_get_response.mdmEnforced = mdm_configuration.get(constants.ENFORCE_MDM, False)
-
-            # Registration Type
-            registration_type_proto = registration_info.get("registration_type", None)
-
-            if registration_type_proto:
-                version_get_response.registrationType = registration_type_proto
-
-            # Registration Method
-            registration_method_proto = registration_info.get("registration_method", None)
-            if registration_method_proto:
-                version_get_response.registrationMethod = registration_method_proto
 
             return EnvironmentMetadata(version_get_response.SerializeToString(), "{}.{}".format(
                 constants.SPLAPP_APP_ID, constants.VERSION_GET_RESPONSE
-            ))
+            ) )
 
         except Exception as e:
             LOGGER.exception("Exception fetching environment data")

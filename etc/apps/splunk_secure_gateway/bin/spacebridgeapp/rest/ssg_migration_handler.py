@@ -1,26 +1,27 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 REST endpoint handler for Splunk Cloud Gateway migration to Splunk Secure Gateway
 """
 import sys
 import json
-from http import HTTPStatus
-from splunk import RESTException
 from splunk.persistconn.application import PersistentServerConnectionApplication
 from splunk.clilib.bundle_paths import make_splunkhome_path
 
 sys.path.append(make_splunkhome_path(['etc', 'apps', 'splunk_secure_gateway', 'bin']))
 sys.path.append(make_splunkhome_path(['etc', 'apps', 'splunk_secure_gateway', 'lib']))
+from spacebridgeapp.util import py23
 
 from spacebridgeapp.rest.base_endpoint import BaseRestHandler
 from spacebridgeapp.migration.migration_script import Migration
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.rest.services.splunk_service import get_app_list_request
 from spacebridgeapp.rest.services.kvstore_service import KVStoreCollectionAccessObject as KvStore
-from spacebridgeapp.rest.config.get_spacebridge_servers import get_current_spacebridge_server_bundle
-from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, CLOUDGATEWAY_APP_NAME, META_COLLECTION_NAME, NOBODY, \
-    KEY, MIGRATION_DONE, STATUS, SYSTEM_AUTHTOKEN, PAYLOAD, INSTANCE_ID, ENTRY, CONTENT, DISABLED
+from spacebridgeapp.request.splunk_auth_header import SplunkAuthHeader
+from spacebridgeapp.rest.services.kvstore_service import get_all_collections
+from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME, ENCRYPTION_KEYS, \
+    MDM_SIGN_PUBLIC_KEY, MDM_SIGN_PRIVATE_KEY, CLOUDGATEWAY_APP_NAME, META_COLLECTION_NAME, NOBODY, KEY, \
+    MIGRATION_DONE, STATUS, MTLS_KEY, MTLS_CERT, SYSTEM_AUTHTOKEN, DEPLOYMENT_INFO, PAYLOAD
 LOGGER = setup_logging(SPACEBRIDGE_APP_NAME + ".log", "ssg_migration_handler")
 
 RUN = "RUN"
@@ -28,8 +29,6 @@ STOP = "STOP"
 PENDING = "0"
 DONE = "1"
 CANCELLED = "2"
-NOT_SUPPORTED = "3"
-SUPPORTED_SB_INSTANCE = "spacebridge-us-east-1"
 
 
 class MigrationHandler(BaseRestHandler, PersistentServerConnectionApplication):
@@ -39,14 +38,31 @@ class MigrationHandler(BaseRestHandler, PersistentServerConnectionApplication):
 
     def get(self, request):
         system_authtoken = request[SYSTEM_AUTHTOKEN]
-        status, migration_data = get_migration_status(system_authtoken)
+        meta_collection = KvStore(META_COLLECTION_NAME, system_authtoken, owner=NOBODY)
+        meta_keys = meta_collection.get_collection_keys()
+        keys = json.loads(meta_keys[1])
+        migration_data = {}
+        status = PENDING
+        try:
+            app_info = get_app_list_request(system_authtoken, CLOUDGATEWAY_APP_NAME)
+            if not app_info or app_info['entry'][0]['content']['disabled']:
+                status = CANCELLED
+            else:
+                for dictionary in keys:
+                    if MIGRATION_DONE in dictionary.values():
+                        migration_data = json.loads(meta_collection.get_item_by_key(MIGRATION_DONE)[1])
+                        status = migration_data[STATUS]
+                        break
+
+        except Exception as e:
+            status = CANCELLED
 
         return {
             'payload': {
                 'status': status,
                 'migration': migration_data,
             },
-            'status': HTTPStatus.OK,
+            'status': 200,
         }
 
     def post(self, request):
@@ -60,7 +76,7 @@ class MigrationHandler(BaseRestHandler, PersistentServerConnectionApplication):
                 'payload': {
                     'RUN': "success",
                 },
-                'status': HTTPStatus.OK,
+                'status': 200,
             }
         if STOP in body:
             meta_collection = KvStore(META_COLLECTION_NAME, system_authtoken, owner=NOBODY)
@@ -70,7 +86,7 @@ class MigrationHandler(BaseRestHandler, PersistentServerConnectionApplication):
                 'payload': {
                     'STOP': "success",
                 },
-                'status': HTTPStatus.OK,
+                'status': 200,
             }
 
     def put(self, request):
@@ -82,40 +98,5 @@ class MigrationHandler(BaseRestHandler, PersistentServerConnectionApplication):
            'payload': {
                "test": "reset"
            },
-           'status': HTTPStatus.OK,
+           'status': 200,
         }
-
-
-def get_migration_status(system_authtoken):
-    """
-    Get the migration_status and migration_data
-    :param system_authtoken:
-    :return: (migration_status, migration_data)
-    """
-    try:
-        # Non default SB server doesn't support migration
-        spacebridge_server_bundle = get_current_spacebridge_server_bundle(system_authtoken)
-        spacebridge_instance_id = spacebridge_server_bundle.get(INSTANCE_ID, '')
-        if spacebridge_instance_id and spacebridge_instance_id != SUPPORTED_SB_INSTANCE:
-            return NOT_SUPPORTED, {}
-
-        # Check if SCG is disabled
-        app_info = get_app_list_request(system_authtoken, CLOUDGATEWAY_APP_NAME)
-        if not app_info or app_info[ENTRY][0][CONTENT][DISABLED]:
-            return CANCELLED, {}
-
-        # Return migration status
-        try:
-            meta_collection = KvStore(META_COLLECTION_NAME, system_authtoken, owner=NOBODY)
-            _, migration_done_obj = meta_collection.get_item_by_key(MIGRATION_DONE)
-            migration_data = json.loads(migration_done_obj)
-            return migration_data[STATUS], migration_data
-        except RESTException as e:
-            # If migration_done key is not found then we fall-through to PENDING
-            if e.statusCode != HTTPStatus.NOT_FOUND:
-                raise e
-
-    except Exception as e:
-        return CANCELLED, {}
-
-    return PENDING, {}

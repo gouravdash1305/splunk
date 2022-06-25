@@ -1,36 +1,46 @@
 define(
     [
+        'jquery',
         'underscore',
         'backbone',
         'module',
-        '@splunk/swc-mc'
+        'collections/shared/FlashMessages',
+        'views/Base',
+        'views/shared/FlashMessagesLegacy',
+        'splunk.config',
+        'uri/route'
     ],
     function(
+        $,
         _,
         Backbone,
     	module,
-        SwcMC
+        FlashMessagesCollection,
+    	BaseView,
+        FlashMessagesView,
+        config,
+    	route
     )
     {
-    	return SwcMC.BaseView.extend({
+    	return BaseView.extend({
     		moduleId: module.id,
     		tagName: 'tr',
     		className: 'more-info',
 
     		initialize: function() {
-    			SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+    			BaseView.prototype.initialize.apply(this, arguments);
     			this.$el.addClass((this.options.index % 2) ? 'odd' : 'even').css('display', 'none');
 
                 this.collection = this.collection || new Backbone.Collection();
-                this.collection.errorsCollection = new SwcMC.FlashMessagesCollection(); 
-                this.collection.warningsCollection = new SwcMC.FlashMessagesCollection();
+                this.collection.errorsCollection = new FlashMessagesCollection(); 
+                this.collection.warningsCollection = new FlashMessagesCollection();
 
-                this.children.errorMessages = new SwcMC.FlashMessagesLegacyView({
+                this.children.errorMessages = new FlashMessagesView({
                     collection: this.collection.errorsCollection,
                     escape: false
                 });
 
-                this.children.warningMessages = new SwcMC.FlashMessagesLegacyView({
+                this.children.warningMessages = new FlashMessagesView({
                     collection: this.collection.warningsCollection,
                     escape: false
                 });
@@ -62,9 +72,9 @@ define(
             },
 
             render: function() {
-                var root = (SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.indexOf("/") === 0 ?
-                    SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.substring(1) :
-                    SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH
+                var root = (config.MRSPARKLE_ROOT_PATH.indexOf("/") === 0 ? 
+                    config.MRSPARKLE_ROOT_PATH.substring(1) : 
+                    config.MRSPARKLE_ROOT_PATH
                 );
 
                 var peer_uri = this.model.peer.entry.get("name") || _("N/A").t();
@@ -83,7 +93,7 @@ define(
 
 
                 if(this._hasProblem()) {
-                    this.$('td.details').prepend("<p class='message-generic-warning-learn-more'>"+ _("Resolve these problems to ensure that your dashboards are complete.").t() + " <a style='font-weight:bold;' href='"+SwcMC.URIRoute.docHelp(root, SwcMC.SplunkConfig.LOCALE, "app.splunk_monitoring_console.warnings")+"'' target='_blank' class='external'>" + _("Learn more").t() + "</a></p>");
+                    this.$('td.details').prepend("<p class='message-generic-warning-learn-more'>"+ _("Resolve these problems to ensure that your dashboards are complete.").t() + " <a style='font-weight:bold;' href='"+route.docHelp(root, config.LOCALE, "app.splunk_monitoring_console.warnings")+"'' target='_blank' class='external'>" + _("Learn more").t() + "</a></p>");
                 }
 
                 this.$('td.details').prepend(this.children.warningMessages.render().el);

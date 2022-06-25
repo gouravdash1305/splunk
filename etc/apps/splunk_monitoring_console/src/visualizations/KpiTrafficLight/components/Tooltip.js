@@ -3,14 +3,14 @@
  */
 define([
     'underscore',
-    '@splunk/swc-mc'
+    'views/shared/PopTart'
 ], function(
     _,
-    SwcMC
+    PopTart
 ) {
-    return SwcMC.PopTartView.extend({
+    return PopTart.extend({
         initialize: function() {
-            SwcMC.PopTartView.prototype.initialize.apply(this, arguments);
+            PopTart.prototype.initialize.apply(this, arguments);
 
             this.listenTo(this.model, 'change', this.render);
         },

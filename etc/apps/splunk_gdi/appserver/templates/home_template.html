@@ -1,6 +1,4 @@
 <%!
-app_name = cherrypy.request.path_info.split('/')[3]
-
 from splunk.appserver.mrsparkle.lib import util
 isLite = util.isLite()
 
@@ -23,12 +21,22 @@ else:
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <%
-    style_page_path = "/static/app/splunk_gdi/build/home.pcss." + theme + ".css"
+    css_less_qs = {}
+    if hasattr(cherrypy.request, 'embed') and cherrypy.request.embed:
+        css_less_qs['embed'] = 1
     %>
-    <link rel="stylesheet" type="text/css" media="all" href="${make_url(style_page_path)}" />
+    % if isLite:
+    <link rel="stylesheet" type="text/css" href="${make_url('/static/build/css/bootstrap-lite.css', _qs=css_less_qs)}" />
+    % else:
+    <link rel="stylesheet" type="text/css" href="${make_url('/static/build/css/bootstrap-enterprise.css', _qs=css_less_qs)}" />
+    % endif
 </head>
 
-<body>
+% if isLite:
+<body class="locale-${i18n.current_lang()[0]|h} lite">
+% else:
+<body class="locale-${i18n.current_lang()[0]|h}">
+% endif
     <script src="${make_url('/config?autoload=1')}" crossorigin="use-credentials"></script>
     <script src="${make_url('/static/js/i18n.js')}"></script>
     <script src="${make_url('/i18ncatalog?autoload=1')}"></script>

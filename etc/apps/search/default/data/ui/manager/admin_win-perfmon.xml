@@ -101,8 +101,8 @@
               <key name="processValueList">('None' * (not value)) or ('All' * (value == '*')) or (', '.join(value) * (isinstance(value, list)))</key>
               <key name="caseSensitiveMatch">false</key>                    
               <key name="nullUnlessFieldSet">object</key>
-              <key name="submitValueAdd">value</key>
-              <key name="submitValueEdit">value</key>
+              <key name="submitValueAdd">eval('value')</key>  
+              <key name="submitValueEdit">eval('value')</key> 
               <key name="dynamicOptions" type="dict">
                 <key name="splunkSource">'/admin/win-perfmon-find-collection'</key>
                 <key name="splunkSourceParams" type="dict">
@@ -128,8 +128,8 @@
               <view name="edit"/>
               <view name="create"/>
               <key name="labelList">Instances</key>
-              <key name="submitValueAdd">value</key>
-              <key name="submitValueEdit">value</key>
+              <key name="submitValueAdd">eval('value')</key>  
+              <key name="submitValueEdit">eval('value')</key> 
               <key name="processValueList">('*' * (not value)) or ('All' * (value == '*')) or (', '.join(value) * (isinstance(value, list)))</key>
               <key name="nullUnlessFieldSet">object</key>
               <key name="caseSensitiveMatch">false</key>          

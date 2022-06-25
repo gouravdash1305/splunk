@@ -20,8 +20,8 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='sb_common.proto',
   package='Spacebridge',
   syntax='proto3',
-  serialized_options=_b('\n-com.splunk.mobile.spacebridge.messages.commonP\001ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridge'),
-  serialized_pb=_b('\n\x0fsb_common.proto\x12\x0bSpacebridge\"\xd1\x02\n\x0eSignedEnvelope\x12<\n\x0bmessageType\x18\x01 \x01(\x0e\x32\'.Spacebridge.SignedEnvelope.MessageType\x12\x12\n\nserialized\x18\x02 \x01(\x0c\x12\x11\n\tsignature\x18\x03 \x01(\x0c\"\xd9\x01\n\x0bMessageType\x12\x18\n\x14MESSAGE_TYPE_INVALID\x10\x00\x12$\n MESSAGE_TYPE_APPLICATION_MESSAGE\x10\x01\x12$\n MESSAGE_TYPE_SPACEBRIDGE_MESSAGE\x10\x02\x12%\n!MESSAGE_TYPE_NOTIFICATION_MESSAGE\x10\x03\x12\x14\n\x10MESSAGE_TYPE_ACK\x10\x04\x12\'\n#MESSAGE_TYPE_APPLICATION_MESSAGE_V2\x10\x05\"\xa8\x04\n\x18MdmAuthenticationRequest\x12\x19\n\x11\x63lientCredentials\x18\x01 \x01(\x0c\x12\x14\n\x0cmdmSignature\x18\x02 \x01(\x0c\x12\x17\n\x0f\x63lientSignature\x18\x03 \x01(\x0c\x1a\x9a\x02\n\x11\x43redentialsBundle\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x1b\n\x13publicKeyForSigning\x18\x03 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x04 \x01(\x0c\x12\x1d\n\x15registrationAttemptId\x18\x05 \x01(\t\x12\x18\n\x10registeringAppId\x18\x06 \x01(\t\x12\x11\n\tloginType\x18\x07 \x01(\t\x12\x14\n\x0csessionToken\x18\x08 \x01(\t\x12\"\n\x1aregisteringAppFriendlyName\x18\t \x01(\t\x12\x1e\n\x16registeringAppPlatform\x18\n \x01(\t\x1a\xa4\x01\n\x11\x43lientCredentials\x12=\n\x13registrationVersion\x18\x01 \x01(\x0e\x32 .Spacebridge.RegistrationVersion\x12\x19\n\x11registrarClientId\x18\x02 \x01(\x0c\x12\"\n\x1a\x65ncryptedCredentialsBundle\x18\x03 \x01(\x0c\x12\x11\n\tcreatedAt\x18\x04 \x01(\x03*S\n\x13RegistrationVersion\x12 \n\x1cREGISTRATION_VERSION_INVALID\x10\x00\x12\x1a\n\x16REGISTRATION_VERSION_1\x10\x01\x42y\n-com.splunk.mobile.spacebridge.messages.commonP\x01ZFcd.splunkdev.com/mobile/spacebridge-golang-protos/splunkcx/spacebridgeb\x06proto3')
+  serialized_options=_b('\n-com.splunk.mobile.spacebridge.messages.commonP\001'),
+  serialized_pb=_b('\n\x0fsb_common.proto\x12\x0bSpacebridge\"\xa8\x02\n\x0eSignedEnvelope\x12<\n\x0bmessageType\x18\x01 \x01(\x0e\x32\'.Spacebridge.SignedEnvelope.MessageType\x12\x12\n\nserialized\x18\x02 \x01(\x0c\x12\x11\n\tsignature\x18\x03 \x01(\x0c\"\xb0\x01\n\x0bMessageType\x12\x18\n\x14MESSAGE_TYPE_INVALID\x10\x00\x12$\n MESSAGE_TYPE_APPLICATION_MESSAGE\x10\x01\x12$\n MESSAGE_TYPE_SPACEBRIDGE_MESSAGE\x10\x02\x12%\n!MESSAGE_TYPE_NOTIFICATION_MESSAGE\x10\x03\x12\x14\n\x10MESSAGE_TYPE_ACK\x10\x04\"\x95\x04\n\x18MdmAuthenticationRequest\x12\x19\n\x11\x63lientCredentials\x18\x01 \x01(\x0c\x12\x14\n\x0cmdmSignature\x18\x02 \x01(\x0c\x12\x17\n\x0f\x63lientSignature\x18\x03 \x01(\x0c\x1a\x9a\x02\n\x11\x43redentialsBundle\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x1b\n\x13publicKeyForSigning\x18\x03 \x01(\x0c\x12\x1e\n\x16publicKeyForEncryption\x18\x04 \x01(\x0c\x12\x1d\n\x15registrationAttemptId\x18\x05 \x01(\t\x12\x18\n\x10registeringAppId\x18\x06 \x01(\t\x12\x11\n\tloginType\x18\x07 \x01(\t\x12\x14\n\x0csessionToken\x18\x08 \x01(\t\x12\"\n\x1aregisteringAppFriendlyName\x18\t \x01(\t\x12\x1e\n\x16registeringAppPlatform\x18\n \x01(\t\x1a\x91\x01\n\x11\x43lientCredentials\x12=\n\x13registrationVersion\x18\x01 \x01(\x0e\x32 .Spacebridge.RegistrationVersion\x12\x19\n\x11registrarClientId\x18\x02 \x01(\x0c\x12\"\n\x1a\x65ncryptedCredentialsBundle\x18\x03 \x01(\x0c*S\n\x13RegistrationVersion\x12 \n\x1cREGISTRATION_VERSION_INVALID\x10\x00\x12\x1a\n\x16REGISTRATION_VERSION_1\x10\x01\x42\x31\n-com.splunk.mobile.spacebridge.messages.commonP\x01\x62\x06proto3')
 )
 
 _REGISTRATIONVERSION = _descriptor.EnumDescriptor(
@@ -41,8 +41,8 @@ _REGISTRATIONVERSION = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=927,
-  serialized_end=1010,
+  serialized_start=867,
+  serialized_end=950,
 )
 _sym_db.RegisterEnumDescriptor(_REGISTRATIONVERSION)
 
@@ -77,15 +77,11 @@ _SIGNEDENVELOPE_MESSAGETYPE = _descriptor.EnumDescriptor(
       name='MESSAGE_TYPE_ACK', index=4, number=4,
       serialized_options=None,
       type=None),
-    _descriptor.EnumValueDescriptor(
-      name='MESSAGE_TYPE_APPLICATION_MESSAGE_V2', index=5, number=5,
-      serialized_options=None,
-      type=None),
   ],
   containing_type=None,
   serialized_options=None,
   serialized_start=153,
-  serialized_end=370,
+  serialized_end=329,
 )
 _sym_db.RegisterEnumDescriptor(_SIGNEDENVELOPE_MESSAGETYPE)
 
@@ -132,7 +128,7 @@ _SIGNEDENVELOPE = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=33,
-  serialized_end=370,
+  serialized_end=329,
 )
 
 
@@ -225,8 +221,8 @@ _MDMAUTHENTICATIONREQUEST_CREDENTIALSBUNDLE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=476,
-  serialized_end=758,
+  serialized_start=435,
+  serialized_end=717,
 )
 
 _MDMAUTHENTICATIONREQUEST_CLIENTCREDENTIALS = _descriptor.Descriptor(
@@ -257,13 +253,6 @@ _MDMAUTHENTICATIONREQUEST_CLIENTCREDENTIALS = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='createdAt', full_name='Spacebridge.MdmAuthenticationRequest.ClientCredentials.createdAt', index=3,
-      number=4, type=3, cpp_type=2, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -276,8 +265,8 @@ _MDMAUTHENTICATIONREQUEST_CLIENTCREDENTIALS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=761,
-  serialized_end=925,
+  serialized_start=720,
+  serialized_end=865,
 )
 
 _MDMAUTHENTICATIONREQUEST = _descriptor.Descriptor(
@@ -320,8 +309,8 @@ _MDMAUTHENTICATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=373,
-  serialized_end=925,
+  serialized_start=332,
+  serialized_end=865,
 )
 
 _SIGNEDENVELOPE.fields_by_name['messageType'].enum_type = _SIGNEDENVELOPE_MESSAGETYPE

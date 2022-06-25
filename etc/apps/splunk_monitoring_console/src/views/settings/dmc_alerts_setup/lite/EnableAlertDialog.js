@@ -3,14 +3,14 @@ define(
     'jquery',
     'module',
     'underscore',
-    '@splunk/swc-mc',
+    'util/splunkd_utils',
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/shared/EnableAlertDialog'
 ],
 function(
     $,
     module,
     _,
-    SwcMC,
+    splunkDUtils,
     EnableAlertDialogShared
 ){
 
@@ -60,7 +60,7 @@ function(
                 var errMessage = _('Failed to enable alert.').t();
                 this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('enable_failed',
                     {
-                        type: SwcMC.SplunkdUtils.ERROR,
+                        type: splunkDUtils.ERROR,
                         html: errMessage
                     });
             } else {

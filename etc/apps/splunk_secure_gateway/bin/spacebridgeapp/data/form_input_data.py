@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Data models for inputs for form dashboards
 """
@@ -8,7 +8,6 @@ import os
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 from abc import ABCMeta, abstractmethod
 from spacebridgeapp.data.base import SpacebridgeAppBase
-from spacebridgeapp.util.type_to_string import to_utf8_str
 from splapp_protocol import form_inputs_pb2
 
 
@@ -266,8 +265,4 @@ class DynamicOptions(SpacebridgeAppBase):
         proto.fieldForValue = self.field_for_value
         proto.fieldForLabel = self.field_for_label
         proto.queryId = self.query_id
-
-        search_token_names_list = \
-            [to_utf8_str(search_token) for search_token in self.search.search_token_names] if self.search else []
-        proto.searchTokenNames.extend(search_token_names_list)
 

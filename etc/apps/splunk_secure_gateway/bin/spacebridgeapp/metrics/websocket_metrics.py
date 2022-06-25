@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Methods for per message instrumentation beacons from the websocket side of things
 """
@@ -21,8 +21,8 @@ def send_websocket_metrics_to_telemetry(message_type,
     :return:
     """
     payload = {
-        "messageType": message_type,
-        "deviceId": request_context.device_id,
+        "message_type": message_type,
+        "device_id": request_context.device_id,
         "useragent": useragent
     }
     if params:

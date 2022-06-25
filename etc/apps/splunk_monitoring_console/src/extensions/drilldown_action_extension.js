@@ -1,10 +1,12 @@
 define([
+    'jquery',
     'underscore',
-    'splunk_monitoring_console/views/instances/components/Action_old',
+    'splunk_monitoring_console/views/instances/components/Action',
     'splunkjs/mvc',
     'splunkjs/mvc/tableview',
     'splunkjs/mvc/simplexml/ready!'
 ], function(
+    $,
     _,
     ActionView,
     mvc,

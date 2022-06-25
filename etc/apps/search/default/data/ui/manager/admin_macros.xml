@@ -1,9 +1,17 @@
-<endpoint name="data/macros" showAppContext="1">
+<endpoint name="admin/macros" showAppContext="1">
   <header>Search macros</header>
   <breadcrumb>
     <parent hidecurrent="False">advancedsearch</parent>
     <name>Search macros</name>
   </breadcrumb>
+  <!-- not putting this on the homepage menu for now
+  <menu name="app_configurations">
+    <label>Search macros</label>
+    <url>/manager/%(namespace)s/admin/macros</url>
+    <description>View, edit, and create search macros.</description>
+    <order>45</order>
+  </menu>
+  -->
   <elements>
     <element name="extractions" type="fieldset">
       <view name="list"/>

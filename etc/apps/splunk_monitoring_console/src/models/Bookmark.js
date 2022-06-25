@@ -1,18 +1,18 @@
 define(
     [
         'underscore',
-        '@splunk/swc-mc'
+        'models/SplunkDBase'
     ],
     function(
         _,
-        SwcMC
+        SplunkDBaseModel
     ) {
-        return SwcMC.SplunkDBaseModel.extend({
+        return SplunkDBaseModel.extend({
             url: 'saved/bookmarks/monitoring_console',
             urlRoot: 'saved/bookmarks/monitoring_console',
             id: 'monitoring_console',
             initialize: function() {
-                SwcMC.SplunkDBaseModel.prototype.initialize.apply(this, arguments);
+                SplunkDBaseModel.prototype.initialize.apply(this, arguments);
             },
             save: function(attributes, options) {
                 if (this.isNew()) {
@@ -23,7 +23,7 @@ define(
                         name: this.entry.get('name'),
                     });
                 }
-                return SwcMC.SplunkDBaseModel.prototype.save.call(this, attributes, options);
+                return SplunkDBaseModel.prototype.save.call(this, attributes, options);
             }
         });
     }

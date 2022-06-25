@@ -22,15 +22,6 @@
                          	   </config>
                          </processor>
 
-                         <processor name="latencytracker" plugin="latencytrackerprocessor">
-                               <config></config>
-                           </processor>
-
-                         <processor name="destination-key-processor" plugin="destinationkeyprocessor">
-                               <config>
-                               </config>
-                         </processor>
-
                          <processor name="index_thruput" plugin="thruputprocessor">
                                <config>
                                 <key>_raw</key>

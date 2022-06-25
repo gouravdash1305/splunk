@@ -1,31 +1,53 @@
 # Translations template for PROJECT.
-# Copyright (C) 2021 ORGANIZATION
+# Copyright (C) 2020 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2021.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2020.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-05 19:32+0000\n"
-"PO-Revision-Date: 2021-03-19 15:42+0000\n"
+"POT-Creation-Date: 2020-08-17 20:05+0000\n"
+"PO-Revision-Date: 2020-09-07 14:35+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: zh\n"
-"X-Generator: Poedit 2.4.2\n"
+"Language: zh_CN\n"
+"X-Generator: Poedit 2.4.1\n"
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:39
+msgid ""
+"\n"
+"  cursor: "
+msgstr ""
+"\n"
+"  光标: "
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:39
+msgid ""
+"\n"
+"  display: inline-block;\n"
+"  cursor: "
+msgstr ""
+"\n"
+"  显示: 内联块;\n"
+"  光标: "
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:6
+msgid " 0o1"
+msgstr " 0o1"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Dashboard/SaveDashboardPanel.jsx:89
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:90
 msgid " You may now view the dashboard."
-msgstr " 您现在可以查看仪表板。"
+msgstr "您现在可以查看仪表板。"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDialog/Frequency.jsx:41
 msgid " minutes past the hour"
-msgstr " 分钟(整点后)"
+msgstr " 分钟 (整点后)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/splunk_metrics_workspace/src/main/webapp/pages/home/ConfigurationCheck.jsx:22
 #, python-format
@@ -144,11 +166,14 @@ msgid "(Refreshing)"
 msgstr "(刷新中)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertPanel/AlertPanel.jsx:23
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:255
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:251
 #, python-format
 msgid "(Time span=%(span)s)"
 msgstr "(时间跨度=%(span)s)"
 
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/main.aaee9aca1af307a2ec8f.bundle.js:1
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/workflow-headless/fixtures/common.js:237326
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/workflow-sauce/fixtures/common.js:237326
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/lib/index.js:1
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/HierarchyMenuItem.jsx:21
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/internationalized-names.js:57
@@ -160,9 +185,17 @@ msgstr "(默认)"
 msgid "(over %(span)s intervals)"
 msgstr "(超过 %(span)s 个间隔)"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:600
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:6
+msgid "+0x1"
+msgstr "+0x1"
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:601
 msgid ", "
 msgstr ", "
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/build/storybook-bundle/vendors~main.e0df70734e05c354eb36.bundle.js:6
+msgid "0b1"
+msgstr "0b1"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/DataPanel.jsx:335
 msgid "1 match found"
@@ -222,11 +255,11 @@ msgstr "新增过滤器"
 msgid "Add New Reference Line"
 msgstr "新增参考线"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:176
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:174
 msgid "Add a horizontal line to indicate significant values or thresholds."
 msgstr "添加一条水平线以指示有效值或阈值。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionFilterSection.jsx:128
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionFilterSection.jsx:126
 msgid "Add dimension filter"
 msgstr "添加维度过滤器"
 
@@ -252,7 +285,7 @@ msgid ""
 "after the throttle period."
 msgstr "触发告警后，将不会触发后续告警，直到限制周期结束后为止。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:205
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:199
 msgid "Aggregation"
 msgstr "聚合"
 
@@ -268,8 +301,8 @@ msgstr "告警时机"
 msgid "Alerts"
 msgstr "告警"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:57
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:63
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:55
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:61
 msgid "Alerts cannot be saved to a dashboard."
 msgstr "无法将告警保存至仪表板。"
 
@@ -296,11 +329,10 @@ msgstr "所有图表均已加载。"
 msgid "All time"
 msgstr "所有时间"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:441
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:429
 msgid "Analysis"
 msgstr "分析"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:48
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TimePicker/TimePickerDialog.jsx:26
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TransientPanel/TransientPanel.jsx:29
 msgid "Apply"
@@ -355,7 +387,6 @@ msgstr "只能包含字母、数字和下划线。"
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDialog/AlertFormModal.jsx:44
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDialog/DeleteAlertDialog.jsx:30
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Dashboard/SaveDashboardPanel.jsx:141
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:43
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/TimeSpanPicker.jsx:139
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/YAxisForm.jsx:145
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Report/SaveAsReportModal.jsx:78
@@ -399,12 +430,12 @@ msgstr "图表"
 msgid "Choose the type of time range"
 msgstr "选择时间范围的类型"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:385
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:386
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/icons/ClearAll.jsx:10
 msgid "Clear All"
 msgstr "全部清除"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:385
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:386
 msgid "Clear All Matches"
 msgstr "清除所有匹配"
 
@@ -523,7 +554,7 @@ msgstr "仪表板 ID"
 msgid "Dashboard Title"
 msgstr "仪表板标题"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:345
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:337
 msgid "Data"
 msgstr "数据"
 
@@ -575,15 +606,11 @@ msgstr "描述"
 msgid "Details"
 msgstr "详细信息"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:141
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:135
 msgid "Dimension"
 msgstr "维度"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:95
-msgid "Display"
-msgstr "显示"
-
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:271
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:264
 msgid "Display an earlier time range."
 msgstr "显示较早的时间范围。"
 
@@ -696,7 +723,7 @@ msgstr "导出为 CSV"
 msgid "Export as PNG"
 msgstr "导出为 PNG"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:143
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:139
 msgid "Failed to fetch measure."
 msgstr "获取度量失败。"
 
@@ -714,7 +741,7 @@ msgstr "无法加载索引: %(error)s"
 msgid "Field Filter"
 msgstr "字段过滤器"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:406
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:407
 msgid "Filter"
 msgstr "过滤器"
 
@@ -735,7 +762,7 @@ msgid "Filtered"
 msgstr "已过滤"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDetails/AlertDetails.jsx:163
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:148
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:146
 msgid "Filters"
 msgstr "过滤器"
 
@@ -771,7 +798,7 @@ msgstr "从 %(datetimeEarliest)s 到 %(datetimeLatest)s"
 msgid "Global Actions"
 msgstr "全局操作"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalControls/GlobalControls.jsx:145
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalControls/GlobalControls.jsx:133
 msgid "Global controls"
 msgstr "全局控制"
 
@@ -827,8 +854,7 @@ msgstr "找不到层次结构: %(sourceName)s"
 msgid "High"
 msgstr "高"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:104
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:161
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:155
 msgid "Highest"
 msgstr "最高"
 
@@ -861,7 +887,7 @@ msgstr "包括"
 msgid "Include Value"
 msgstr "包括值"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:149
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:147
 msgid "Include or exclude values from specific dimensions."
 msgstr "包括或排除特定维度中的值。"
 
@@ -917,13 +943,11 @@ msgstr "左"
 msgid "Let's bring you up to speed!"
 msgstr "让我们加快速度!"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:112
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:173
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:167
 msgid "Limit"
 msgstr "限制"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:102
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:159
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:153
 msgid "Limit Type"
 msgstr "限制类型"
 
@@ -978,8 +1002,7 @@ msgstr "回溯期必须大于 0"
 msgid "Low"
 msgstr "低"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:105
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:162
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:156
 msgid "Lowest"
 msgstr "最低"
 
@@ -1052,7 +1075,7 @@ msgstr "分钟数必须为从 1 到 60 的数字。"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/timeranges.js:9
 msgid "Month to date"
-msgstr "本月迄今"
+msgstr "一个月迄今"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/TimeSpanPicker.jsx:34
 msgid "Months"
@@ -1087,7 +1110,7 @@ msgstr "无数据可用"
 msgid "No details found for this alert."
 msgstr "找不到此告警的详细信息。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:143
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:144
 msgid "No matches"
 msgstr "无匹配项"
 
@@ -1099,7 +1122,7 @@ msgstr "无选项"
 msgid "No thresholds found for this alert"
 msgstr "找不到此告警的阈值"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:108
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SplitBy/SplitBy.jsx:105
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/TimeShift/TimeShift.jsx:19
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/view-utils.js:8
 msgid "None"
@@ -1209,7 +1232,7 @@ msgstr "原始数据"
 msgid "Reference Line Time Range"
 msgstr "参考线时间范围"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:175
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:173
 msgid "Reference Lines"
 msgstr "参考线"
 
@@ -1262,11 +1285,11 @@ msgstr "已新建报表 %(reportName)s。您现在可以查看此报表。"
 msgid "Required"
 msgstr "必填"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:82
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:80
 msgid "Reset zoom to enable auto-refresh"
 msgstr "重置缩放以启用自动刷新"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:83
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/GlobalControlsContainer.jsx:81
 msgid "Reset zoom to enable refresh"
 msgstr "重置缩放以启用刷新"
 
@@ -1300,8 +1323,8 @@ msgid "Save All To Dashboard"
 msgstr "全部保存到仪表板"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:117
-msgid "Save All To Dashboard Studio"
-msgstr "全部保存到 Dashboard Studio"
+msgid "Save All To Dashboards App Beta"
+msgstr "全部保存到仪表板应用 Beta"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/Dashboard/SaveDashboardPanel.jsx:115
 msgid "Save As Dashboard Panel"
@@ -1311,13 +1334,13 @@ msgstr "另存为仪表板面板"
 msgid "Save As Report"
 msgstr "另存为报表"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:129
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:127
 msgid "Save all charts to Dashboard (XML)"
 msgstr "图表全部保存到仪表板(XML)"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:137
-msgid "Save all charts to Dashboard Studio"
-msgstr "图表全部保存到 Dashboard Studio"
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:135
+msgid "Save all charts to Dashboards App (beta)"
+msgstr "图表全部保存到仪表板应用(beta)"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/panel-utils.js:347
 msgid "Save as Report"
@@ -1337,10 +1360,13 @@ msgstr "另存为流告警"
 msgid "Save to Dashboard (XML)"
 msgstr "保存到仪表板(XML)"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:116
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/panel-utils.js:337
-msgid "Save to Dashboard Studio"
-msgstr "保存到 Dashboard Studio"
+msgid "Save to Dashboards App (beta)"
+msgstr "保存到仪表板应用(beta)"
+
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/UdfDashboard/SaveUdfDashboardPanel.jsx:116
+msgid "Save to Dashboards App Beta"
+msgstr "保存到仪表板应用 Beta"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ChartSettingsPanel/YAxisForm.jsx:129
 msgid "Scale"
@@ -1368,15 +1394,15 @@ msgstr "秒"
 msgid "Seconds Ago"
 msgstr "秒前"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:378
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:379
 msgid "Select All"
 msgstr "全选"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:378
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:379
 msgid "Select All Matches"
 msgstr "选择所有匹配"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionsDropdown.jsx:89
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/FilterPanel/DimensionFilterSection/DimensionsDropdown.jsx:82
 msgid "Select a dimension"
 msgstr "选择一个维度"
 
@@ -1388,7 +1414,7 @@ msgstr "选择时间范围。"
 msgid "Select a valid chart to add this series"
 msgstr "选择一个有效的图表以添加此系列"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:138
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-saga.js:134
 msgid "Select an aggregation."
 msgstr "选择一个聚合。"
 
@@ -1403,15 +1429,15 @@ msgid "Select index filters"
 msgstr "选择索引过滤器"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ReferenceLinePanel/ReferenceLinePanel.jsx:172
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:206
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:200
 msgid "Select or type an aggregation."
 msgstr "选择或输入一个聚合。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:146
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Multiselect/Compact.jsx:147
 msgid "Select..."
 msgstr "选择…"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Hierarchies.jsx:80
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/DataPanel/Hierarchies.jsx:79
 msgid "Selected Index:"
 msgstr "选定的索引:"
 
@@ -1483,21 +1509,15 @@ msgstr "跨度"
 msgid "Span Period"
 msgstr "跨度期"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalControls/GlobalSplitButton.jsx:9
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:247
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:241
 msgid "Split By"
 msgstr "拆分依据"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:184
-msgid "Split Metrics by a Dimension"
-msgstr "按维度拆分指标"
-
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/AlertDetails/AlertDetails.jsx:175
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/GlobalSplitPicker/GlobalSplitPicker.jsx:75
 msgid "Split by"
 msgstr "拆分依据"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:248
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:242
 msgid "Split this series into separate values."
 msgstr "将此系列拆分为单独的值。"
 
@@ -1592,19 +1612,19 @@ msgstr "${dimension} 没有可用的成员。请延长时间范围以查看可�
 msgid "There are no metric indexes"
 msgstr "没有指标索引"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:77
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:76
 msgid ""
 "There are not enough data points within the current time range. Select a wider "
 "time range to expand your results."
 msgstr "当前时间范围内没有足够的数据点。选择更长的时间范围以拓展结果。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:70
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:69
 msgid ""
 "There are too many data points within the current time range. Select a shorter "
 "time range to refine your results."
 msgstr "当前时间范围内的数据点太多。选择更短的时间范围以调整结果。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:61
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/ChartPanel/ChartPanel.jsx:60
 #, python-format
 msgid ""
 "There is no data available for %(measures)s. To see data on the chart, select "
@@ -1621,7 +1641,7 @@ msgid ""
 "again."
 msgstr "打开“另存为告警”对话框时出现问题。关闭对话框，然后重试。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:225
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:219
 msgid "This aggregation should only be used with accumulating counter metrics."
 msgstr "此聚合仅应与累积计数器指标一起使用。"
 
@@ -1682,7 +1702,7 @@ msgstr "时间范围"
 msgid "Time Range Picker"
 msgstr "时间范围挑选器"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:270
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/SeriesPanel.jsx:263
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TimePicker/TimePickerForm.jsx:48
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/TimePicker/TimePickerForm.jsx:210
 msgid "Time Shift"
@@ -1765,7 +1785,7 @@ msgstr "无法启动应用"
 msgid "Unable to load panel."
 msgstr "无法加载面板。"
 
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:86
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/containers/UnifiedAnalysisApp/UnifiedAnalysisApp.jsx:85
 msgid "Unable to process the chart's time range. Using default time range"
 msgstr "无法处理图表的时间范围。使用默认时间范围"
 
@@ -1789,7 +1809,7 @@ msgstr "使用维度 = 值对进一步过滤数据。例如: ip=10.1*, 10.2*"
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ReferenceLinePanel/ReferenceLinePanel.jsx:154
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/components/MultiSeriesPanel/ReferenceLinePanel/ReferenceLinePanel.jsx:185
 msgid "Value"
-msgstr "值"
+msgstr "个值"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/format-number.js:12
 msgid "Value cannot be empty"
@@ -1931,7 +1951,7 @@ msgid "by"
 msgstr "依据"
 
 #: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/redux/views/views-series.js:188
-#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/series.js:40
+#: /opt/splunk/etc/apps/splunk_metrics_workspace/build/data-analysis/packages/analysis-workspace-core/src/utils/series.js:35
 #, python-format
 msgid "by %(dimension)s"
 msgstr "依据 %(dimension)s"

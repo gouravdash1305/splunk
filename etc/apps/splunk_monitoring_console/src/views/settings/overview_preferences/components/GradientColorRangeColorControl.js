@@ -1,19 +1,23 @@
 define([
+    'jquery',
     'underscore',
     'module',
     'backbone',
-    '@splunk/swc-mc',
-    'splunk_monitoring_console/views/settings/overview_preferences/components/GradientColorRangeColorPicker'
+    'views/shared/controls/colors/ColorRangeColorControl',
+    'splunk_monitoring_console/views/settings/overview_preferences/components/GradientColorRangeColorPicker',
+    'util/color_utils'
 ],
 function(
+    $,
     _,
     module,
     Backbone,
-    SwcMC,
-    GradientColorRangeColorPicker
+    ColorRangeColorControl,
+    GradientColorRangeColorPicker,
+    colorUtils
     ) {
 
-    return SwcMC.ColorRangeColorControlView.extend({
+    return ColorRangeColorControl.extend({
         className: 'gradient-color-range-input-control',
         moduleId: module.id,
         

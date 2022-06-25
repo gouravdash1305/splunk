@@ -2,15 +2,17 @@
  * Created by ykou on 1/22/15.
  */
 define([
+    'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
     'splunk_monitoring_console/views/overview/distributed_mode/components/SingleValue',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/components/LicenseSlaveWarningSection.html'
 ], function(
+    $,
     _,
     module,
-    SwcMC,
+    BaseView,
     SingleValueView,
     Template
 ) {
@@ -21,11 +23,11 @@ define([
      * @param: {String}         SEARCH_GROUP    - search group for drilldown
      * @Param: {Object}         DMC_DOC         - all doc strings for tooltips.
      */
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         className: 'dmc-single-values-section',
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.children.warnings = new SingleValueView({
                 searchManager: this.options.searchManager,

@@ -5,28 +5,36 @@
 */
 
 define([
+	'jquery',
 	'underscore',
 	'backbone',
 	'module',
+	'controllers/Base',
+	'collections/shared/FlashMessages',
 	'splunk_monitoring_console/views/settings/dmc_alerts_setup/enterprise/Master',
-	'@splunk/swc-mc',
+	'collections/managementconsole/AlertConfigs',
 	'splunk_monitoring_console/collections/DMCAlertsSavedSearches',
+    'models/services/server/ServerInfo',
     '../PageController.pcss'
 ], function(
+	$,
 	_,
 	Backbone,
 	module,
+	BaseController,
+	FlashMessagesCollection,
 	MasterView,
-	SwcMC,
+	AlertConfigsCollection,
 	DMCAlertsSavedSearchesCollection,
+	ServerInfoModel,
     css
 	) {
 
-	return SwcMC.BaseController.extend({
+	return BaseController.extend({
 		moduleId: module.id,
 
 		initialize: function(options) {
-			SwcMC.BaseController.prototype.initialize.apply(this, arguments);
+			BaseController.prototype.initialize.apply(this, arguments);
 
 			this.collection = this.collection || {};
 			this.model = this.model || {};
@@ -35,15 +43,15 @@ define([
 			this.collection.alerts = new DMCAlertsSavedSearchesCollection();
 			this.deferreds.alerts = this.collection.alerts.fetch(); 
 
-			this.collection.alertConfigs = new SwcMC.AlertConfigsCollection();
+			this.collection.alertConfigs = new AlertConfigsCollection();
 			this.deferreds.alertConfigs = this.collection.alertConfigs.fetch();
 			
-			this.model.serverInfoModel = new SwcMC.ServerInfoModel();
+			this.model.serverInfoModel = new ServerInfoModel();
 			this.deferreds.serverInfoModel = this.model.serverInfoModel.fetch();
 			
-			this.collection.flashMessages = this.collection.flashMessages || new SwcMC.FlashMessagesCollection();
+			this.collection.flashMessages = this.collection.flashMessages || new FlashMessagesCollection();
 
-			Promise.all([this.deferreds.alerts, this.deferreds.alertConfigs, this.deferreds.serverInfoModel]).then(_(function() {
+			$.when(this.deferreds.alerts, this.deferreds.alertConfigs, this.deferreds.serverInfoModel).then(_(function() {
 				this.children.masterView = new MasterView({
 					model: { application: this.model.application, serverInfo: this.model.serverInfoModel },
 					collection: { alerts: this.collection.alerts, alertConfigs: this.collection.alertConfigs }

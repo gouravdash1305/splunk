@@ -12,9 +12,8 @@ import threading
 import socket
 import argparse
 import ssl
-from datetime import datetime
 from urllib import error as urllib_error
-from typing import Optional, Any, List, Tuple, IO
+from typing import Optional, Any, List, Tuple
 
 sys.path.append(os.path.realpath(os.path.dirname(os.path.dirname(__file__))))
 sys.path.append(os.path.realpath(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))))
@@ -123,7 +122,6 @@ class RapidDiagCLI:
         try:
             # enble logging
             info_gather.logging_horrorshow()
-            setattr(args, 'proxyFactory', FileWrappingProgressRD)
             upload_status = info_gather.upload_file(args.file, RapidDiagCLI.SPLUNKCOM_DESTINATION, args)
         except (urllib_error.URLError, urllib_error.HTTPError) as e:
             _LOGGER.error("Check splunk URL and login details: %s", str(e))
@@ -184,7 +182,7 @@ class RapidDiagCLI:
             _LOGGER.error("Host not found, %s", str(e))
 
         try:
-            return socket.gethostname() # pylint: disable=maybe-no-member
+            return socket.gethostname()
         except Exception as e: # pylint: disable=broad-except
             _LOGGER.error("Warning: Error getting host from os: %s", str(e))
         return ""
@@ -384,12 +382,21 @@ class RapidDiagCLI:
         elif name == "iostat":
             collector = IOPS(collection_time=args.collection_time)
         elif name == "pstack":
-            collector = StackTrace(process=ProcessLister.build_process_from_args(args))
+            collector = StackTrace(process=ProcessLister.build_process(args.name,
+                                                                       args.pid,
+                                                                       args.ppid,
+                                                                       [args.args]))
         elif name == "lsof":
-            collector = LSOF(process=ProcessLister.build_process_from_args(args))
+            collector = LSOF(process=ProcessLister.build_process(args.name,
+                                                                 args.pid,
+                                                                 args.ppid,
+                                                                 [args.args]))
         elif name == "strace":
             collector = SystemCallTrace(collection_time=args.collection_time,
-                                        process=ProcessLister.build_process_from_args(args))
+                                        process=ProcessLister.build_process(args.name,
+                                                                            args.pid,
+                                                                            args.ppid,
+                                                                            [args.args]))
         elif name == "tcpdump":
             collector = NetworkPacket(collection_time=args.collection_time,
                                       ip_address=args.ip_address, port=args.port)
@@ -429,54 +436,3 @@ class RapidDiagCLI:
                     task_id = "{}.{}.{}".format(RapidDiagCLI.CLI_TASK_PREFIX, mode, name))
 
         return RapidDiagCLI.run_task(cli_task, args.token_auth, None)
-
-class FileWrappingProgressRD():
-    """Writes progress to json file as the wrapped file-like readable
-    object is read() from.
-    This requires the size of the item (in bytes) be fixed and determinable."""
-    def __init__(self, readable_obj: IO, read_max: int = None) -> None:
-        """If read_max can be autoset if readable_obj is a real file
-        ( ie, if os.fstat(obj.fileno()) returns the size."""
-        self.wrapped_f = readable_obj
-        if not read_max:
-            # intentionally throws exception
-            read_max = os.fstat(readable_obj.fileno()).st_size
-            self.name = readable_obj.name + ".upload.json"
-        else:
-            self.name = readable_obj.f.name + ".upload.json" # type: ignore
-        self.read_max = read_max
-        self.bytes_read = 0
-
-    def __len__(self) -> int:
-        return self.read_max
-
-    def read(self, size: int = -1) -> Any:
-        """ Read function to update the progress
-            to the json file on each read."""
-        data = self.wrapped_f.read(size)
-        self.bytes_read += len(data)
-        self._update()
-        return data
-
-    def _update(self) -> None:
-        """ calculate the current progress from bytes read and max bytes
-            and write the results to the json file """
-        cur_percent = int(self.bytes_read * 1.0 / self.read_max * 100)
-        pct_text = "%2i" % cur_percent + "%"
-        str_now = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        if not os.path.exists(self.name):
-            with open(self.name, "w") as f:
-                data = {'percent':pct_text, 'start_time':str_now, 'updated': str_now}
-                json.dump( data, f, indent=4 )
-        else:
-            with open(self.name, "r+") as f:
-                data = json.load(f)
-                data['percent'] = pct_text
-                data['updated'] = str_now
-                f.seek(0)
-                json.dump( data, f, indent=4 )
-                f.truncate()
-
-    def close(self) -> None:
-        """ Close the file """
-        self.wrapped_f.close()

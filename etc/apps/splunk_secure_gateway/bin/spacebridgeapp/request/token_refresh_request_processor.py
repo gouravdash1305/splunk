@@ -31,7 +31,6 @@ async def process_token_refresh_request(request_context,
         return
 
     session_token = request_context.auth_header.token
-    system_auth_header = request_context.system_auth_header
     valid_request = await async_is_valid_session_token(request_context.current_user, session_token, async_splunk_client)
 
     if not valid_request:
@@ -39,7 +38,7 @@ async def process_token_refresh_request(request_context,
         return
 
     old_token_info = calculate_token_info(session_token)
-    new_JWT = await async_splunk_client.async_create_new_JWT_token(request_context.current_user, system_auth_header)
+    new_JWT = await async_splunk_client.async_create_new_JWT_token(request_context.current_user, request_context.auth_header)
     if new_JWT.code not in {HTTPStatus.CREATED, HTTPStatus.OK}:
         error = await new_JWT.text()
         LOGGER.warning("Failed to create new token status_code={}, error={}".format(new_JWT.code, error))

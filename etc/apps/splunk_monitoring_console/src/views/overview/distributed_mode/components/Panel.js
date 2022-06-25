@@ -5,13 +5,15 @@ define([
     'jquery',
     'underscore',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
+    'util/console',
     'contrib/text!splunk_monitoring_console/views/overview/distributed_mode/components/Panel.html'
 ], function(
     $,
     _,
     module,
-    SwcMC,
+    BaseView,
+    console,
     Template
 ) {
     /**
@@ -22,11 +24,11 @@ define([
      * @param {String}          this.options.downCountFieldName - search result field name of # down instance
      * @param {String}          this.options.icon - icon for this panel
      */
-    return SwcMC.BaseView.extend({
+    return BaseView.extend({
         moduleId: module.id,
         className: 'dmc-distributed-panel',
         initialize: function() {
-            SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+            BaseView.prototype.initialize.apply(this, arguments);
 
             this.instanceMachineCountSearchManager = this.options.instanceMachineCountSearchManager;
             this.instanceMachineCountSearchManagerDfd = $.Deferred();
@@ -59,13 +61,13 @@ define([
                 }));
             }
 
-            this.instanceMachineCountSearchManagerDfd.then(function() {
+            $.when(this.instanceMachineCountSearchManagerDfd).done(function() {
                 if (this.noSearchResult()) { // search returns no result
                     this.$el.hide();
                     return this;
                 }
 
-                this.instanceMachineCountSearchResultDfd.then(function() {
+                $.when(this.instanceMachineCountSearchResultDfd).done(function() {
                     // has no instance of given role
                     if (this.noInstanceFound()) {
                         this.$el.hide();
@@ -75,7 +77,7 @@ define([
                     // start rendering panel
                     this.$el.html(this.compiledTemplate(this.dataToRender));
 
-                    this.downCountSearchResultDfd.then(function() {
+                    $.when(this.downCountSearchResultDfd).done(function() {
                         if (this.getDownCount() > 0) {    // show warning message
                             this.$('.dmc-down-count').html(this.dataToRender.downCount);
                             this.$('.dmc-warning-message').addClass('active');
@@ -129,11 +131,11 @@ define([
                     srDfd.resolve();
                 });
                 this.listenTo(resultModel, 'error', function() {
-                    SwcMC.Console.log('search result model error: ', resultModel, sm);
+                    console.log('search result model error: ', resultModel, sm);
                 });
             });
             this.listenTo(sm, 'search:cancelled search:error search:failed', function() {
-                SwcMC.Console.log('search not finished! ', sm);
+                console.log('search not finished! ', sm);
             });
         },
         _startListenToDownCountSearch: function() {
@@ -149,11 +151,11 @@ define([
                     dfd.resolve();
                 });
                 this.listenTo(resultModel, 'error', function() {
-                    SwcMC.Console.log('search result model error:', resultModel, sm);
+                    console.log('search result model error:', resultModel, sm);
                 });
             });
             this.listenTo(sm, 'search:cancelled search:error search:failed', function() {
-                SwcMC.Console.log('search not finished! ', sm);
+               console.log('search not finished! ', sm);
             });
         },
         template: Template,

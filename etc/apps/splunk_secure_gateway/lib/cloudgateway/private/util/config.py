@@ -132,19 +132,12 @@ class SplunkConfig(CloudgatewaySdkConfig):
 
     # Config defaults
     DEFAULT_SPACEBRIDGE_SERVER = "prod.spacebridge.spl.mobi"
-    DEFAULT_SPACEBRIDGE_DISCOVERY_SERVER = "http.us-east-1.spacebridge.splunkcx.com"
 
-    def __init__(self,
-                 spacebridge_server=DEFAULT_SPACEBRIDGE_SERVER,
-                 spacebridge_discovery_server=DEFAULT_SPACEBRIDGE_DISCOVERY_SERVER):
+    def __init__(self, spacebridge_server=DEFAULT_SPACEBRIDGE_SERVER):
         self.spacebridge_server = spacebridge_server
-        self.spacebridge_discovery_server = spacebridge_discovery_server
 
     def get_spacebridge_server(self):
         return self.spacebridge_server
-
-    def get_spacebridge_discovery_server(self):
-        return self.spacebridge_discovery_server
 
     def get_https_proxy(self):
         try:

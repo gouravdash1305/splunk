@@ -9,7 +9,6 @@ import glob
 import urllib
 import sys
 import splunk.Intersplunk
-import splunk.clilib.cli_common as comm
 
 from builtins import chr, range
 from splunk.mining.DateParser import _validateDate, _validateTime
@@ -348,7 +347,7 @@ if __name__ == '__main__':
       else:
         app_dir = make_splunkhome_path(['etc', 'apps', app])
         if not os.path.isdir(app_dir):
-          app_dir = make_splunkhome_path(['etc', comm.getAppDir(), app])
+          app_dir = make_splunkhome_path(['etc', 'slave-apps', app])
           if not os.path.isdir(app_dir):
             msg = "Error: could not find specified app '%s' on disk" % app
             err_results.append(msg)

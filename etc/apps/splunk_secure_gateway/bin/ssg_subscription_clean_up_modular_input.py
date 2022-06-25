@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Modular Input for deleting expired subscriptions
 """
@@ -15,14 +15,13 @@ from spacebridgeapp.util import py23
 os.environ['PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION'] = 'python'
 
 from solnlib import modular_input
-from spacebridgeapp.util.base_modular_input import BaseModularInput
 from spacebridgeapp.util.splunk_utils.common import modular_input_should_run
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util.constants import SPACEBRIDGE_APP_NAME
 from spacebridgeapp.subscriptions.subscription_clean_up import SubscriptionCleanUp
 
 
-class SubscriptionCleanUpModularInput(BaseModularInput):
+class SubscriptionCleanUpModularInput(modular_input.ModularInput):
     title = 'Splunk Secure Gateway Subscription Clean Up'
     description = 'Clean up expired subscriptions'
     app = 'Splunk Secure Gateway'
@@ -53,9 +52,6 @@ class SubscriptionCleanUpModularInput(BaseModularInput):
         :param input_config:
         :return:
         """
-        if not super(SubscriptionCleanUpModularInput, self).do_run(input_config):
-            return
-
         if not modular_input_should_run(self.session_key, logger=self.logger):
             self.logger.debug("Modular input will not run on this node.")
             return

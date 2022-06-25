@@ -3,16 +3,16 @@ define(
         'jquery',
         'underscore',
         'module',
-        '@splunk/swc-mc',
+        'views/Base',
         'splunk_monitoring_console/views/table/controls/EditMenu'
     ],
     function(
         $,
         _,
         module,
-        SwcMC,
+        BaseView,
         EditMenu) {
-        return SwcMC.BaseView.extend({
+        return BaseView.extend({
             moduleId: module.id,
 
             tagName: 'tr',
@@ -20,7 +20,7 @@ define(
             className: 'expand',
 
             initialize: function() {
-                SwcMC.BaseView.prototype.initialize.apply(this, arguments);
+                BaseView.prototype.initialize.apply(this, arguments);
                 this.collection = this.collection || {};
                 this.$el.addClass((this.options.index % 2) ? 'odd' : 'even');
                 this.compiledRolesTemplate = this.compileTemplate(this.rolesTemplate);
@@ -31,7 +31,7 @@ define(
                 this.activate();
             },
 
-            events: $.extend(SwcMC.BaseView.prototype.events, {
+            events: $.extend(BaseView.prototype.events, {
                 'mousedown td.actions > a.dropdown-toggle': function(e) {
                     var $target = $(e.currentTarget);
                     if (this.children.editmenu && this.children.editmenu.shown) {
@@ -74,7 +74,7 @@ define(
 
             startListening: function() {
                 this.listenTo(
-                    this.model.peer.entry.content,
+                    this.model.peer.entry.content, 
                     'change:active_server_roles',
                     this.updateServerRoles
                 );
@@ -161,7 +161,7 @@ define(
                     _.each(this.model.peer.entry.content.get('active_server_roles'), function(role) {
                         var roleI18n = this.model.peer.getServerRoleI18n(role);
                         html += "<div class=\"server_roles\">";
-                        html += "<div title=\"" + roleI18n + "\" class=\"" + role + "_group\">";
+                        html += "<div title=\"" + roleI18n + "\" class=\"" + role + "_group\">"; 
                         html += "<span>" + roleI18n + "</span>";
                         html += "</div>";
                         html += "</div>";
@@ -232,7 +232,7 @@ define(
 
                 return this;
             },
-
+            
             template: '\
                 <td class="expands">\
                     <a href="#">\
@@ -305,3 +305,4 @@ define(
         });
     }
 );
+

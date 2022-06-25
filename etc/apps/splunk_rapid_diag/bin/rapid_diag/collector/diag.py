@@ -86,34 +86,34 @@ class Diag(Collector):
         _LOGGER.debug('Running `%s`', ' '.join(command))
 
         try:
-            with subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as process:
-                for _ in range(1, 60*15):
-                    if process.poll() is not None:
-                        break
-                    if self.get_state() == Collector.State.ABORTING:
-                        try:
-                            process.terminate()
-                        except OSError:
-                            pass
-                        process.communicate()
-                        return CollectorResult.Aborted('Splunk diag aborted by user', _LOGGER)
-                    time.sleep(1)
-                else:
+            process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            for _ in range(1, 60*15):
+                if process.poll() is not None:
+                    break
+                if self.get_state() == Collector.State.ABORTING:
                     try:
                         process.terminate()
                     except OSError:
                         pass
                     process.communicate()
-                    return CollectorResult.Failure('Splunk diag took too long, aborted process=' +
-                                                   ' '.join(command) + ' output_dir=' +
-                                                   run_context.output_dir + ' suffix=' + run_context.suffix,
-                                                   _LOGGER)
-                out, err = process.communicate()  # returns bytes strings
+                    return CollectorResult.Aborted('Splunk diag aborted by user', _LOGGER)
+                time.sleep(1)
+            else:
+                try:
+                    process.terminate()
+                except OSError:
+                    pass
+                process.communicate()
+                return CollectorResult.Failure('Splunk diag took too long, aborted process=' +
+                                               ' '.join(command) + ' output_dir=' +
+                                               run_context.output_dir + ' suffix=' + run_context.suffix,
+                                               _LOGGER)
+            out, err = process.communicate()  # returns bytes strings
 
-                message = 'Process finished with code=' + str(process.returncode) + \
-                          ' stdout="' + bytes_to_str(out) + '" stderr="' + bytes_to_str(err) + '"'
-                if process.returncode != 0:
-                    return CollectorResult.Failure(message, _LOGGER)
+            message = 'Process finished with code=' + str(process.returncode) + \
+                      ' stdout="' + bytes_to_str(out) + '" stderr="' + bytes_to_str(err) + '"'
+            if process.returncode != 0:
+                return CollectorResult.Failure(message, _LOGGER)
 
             # moving the diag.tar.gz file to the corresponding task folder for splunk versions 6.0.x, 6.1.x and 6.2.x
             # as there is no option --diag-name in those versions of splunk diag

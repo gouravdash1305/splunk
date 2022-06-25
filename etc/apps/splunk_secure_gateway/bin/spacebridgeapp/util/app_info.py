@@ -1,36 +1,24 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Helpers to get related app info entry objects given an app_name or objects from which we
 can parse out an app_name
 """
 
 from http import HTTPStatus
-from spacebridgeapp.tags.dashboard_tag import DashboardTag
 from spacebridgeapp.logging import setup_logging
 from spacebridgeapp.util import constants
-from spacebridgeapp.util.constants import ALERTS_IOS, APPLE_TV, AR_PLUS, VR, IOS, ANDROID, SPLUNK_VR, SPLUNK_TV, \
-    FIRE_TV, ANDROID_TV, SPLUNK_TV_COMPANION, ITSI, ITSI_DISPLAY_APP_NAME, \
-    IPAD_OS, SPLUNK_IPAD, SPLUNK_IPAD_DEV
+from spacebridgeapp.util.constants import ALERTS_IOS, APPLE_TV, AR_PLUS, VR, IOS, ANDROID, DRONE_MODE, SPLUNK_VR, SPLUNK_TV, FIRE_TV, ANDROID_TV
 
 LOGGER = setup_logging(constants.SPACEBRIDGE_APP_NAME + '_dashboard_app_info.log', 'dashboard_app_info')
 
-# Hard-coded and cached display names
-DISPLAY_APP_NAMES = {
-    ITSI: ITSI_DISPLAY_APP_NAME
-}
-
-# META Data Indicies
-APP_NAME = 0
-PLATFORM = 1
-TAG = 2
+DISPLAY_APP_NAMES = {}
 
 
 async def fetch_display_app_name(request_context, app_name, async_splunk_client):
     """
-        Use the client to fetch the display app name. If the fetch fails (i.e. no
-        client is provided, or none of the entry response objects match the target
-        app_name), returns the provided app_name.
+        Use the client to fetch the display app name. If all the entry response objects don't match the
+        target app_name, this function will return the provided app_name.
 
     :param request_context:
     :param app_name: The app name to use for display_app_name lookup
@@ -40,9 +28,6 @@ async def fetch_display_app_name(request_context, app_name, async_splunk_client)
 
     if app_name in DISPLAY_APP_NAMES:
         return DISPLAY_APP_NAMES[app_name]
-
-    if async_splunk_client is None:
-        return app_name
 
     try:
         app_info_response = await async_splunk_client.async_get_app_info(app_name=app_name,
@@ -66,49 +51,54 @@ async def fetch_display_app_name(request_context, app_name, async_splunk_client)
     return app_name
 
 
-APP_ID_TO_META_MAP = {
-    "com.splunk.mobile.Stargate": [ALERTS_IOS, IOS, DashboardTag.MOBILE.value],
-    "com.splunk.mobile.Alerts": [ALERTS_IOS, IOS, DashboardTag.MOBILE.value],
-    "com.splunk.android.alerts": [ALERTS_IOS, ANDROID, DashboardTag.MOBILE.value],
-    "com.splunk.android.alerts.debug": [ALERTS_IOS, ANDROID, DashboardTag.MOBILE.value],
-    "com.splunk.mobile.Ribs": [ALERTS_IOS, IOS, DashboardTag.MOBILE.value],
-    "com.splunk.DashKit.Example": [ALERTS_IOS, IOS, DashboardTag.MOBILE.value],
-    "com.splunk.mobile.SplunkTV": [SPLUNK_TV, APPLE_TV, DashboardTag.TV.value],
-    "com.splunk.mobile.SplunkTvOS": [SPLUNK_TV, APPLE_TV, DashboardTag.TV.value],
-    "com.splunk.mobile.ARDemo": [AR_PLUS, IOS, DashboardTag.AR.value],
-    "com.splunk.mobile.SplunkAR": [AR_PLUS, IOS, DashboardTag.AR.value],
-    "com.splunk.mobile.vrtest": [SPLUNK_VR, VR, DashboardTag.VR.value],
-    "com.splunk.mobile.vr": [SPLUNK_VR, VR, DashboardTag.VR.value],
-    "com.splunk.mobile.DroneTV": [SPLUNK_TV_COMPANION, IPAD_OS, DashboardTag.TV.value],
-    "com.splunk.mobile.DroneController": [SPLUNK_TV_COMPANION, IPAD_OS, DashboardTag.TV.value],
-    "com.splunk.android.tv": [SPLUNK_TV, ANDROID_TV, DashboardTag.TV.value],
-    "com.splunk.android.tv.debug": [SPLUNK_TV, ANDROID_TV, DashboardTag.TV.value],
-    "com.splunk.amazon.tv": [SPLUNK_TV, FIRE_TV, DashboardTag.TV.value],
-    "com.splunk.amazon.tv.debug": [SPLUNK_TV, FIRE_TV, DashboardTag.TV.value],
-    "com.splunk.mobile.Splunk-iPad": [SPLUNK_IPAD, IPAD_OS, DashboardTag.MOBILE.value],
-    "com.splunk.mobile.Asgard": [SPLUNK_IPAD_DEV, IPAD_OS, DashboardTag.MOBILE.value]
-}
-
-
-def get_app_id_meta(app_id, meta_type):
-    """
-    Function returns app_id metadata by type
-    :param app_id:
-    :param meta_type:
-    :return:
-    """
-    app_id_meta = APP_ID_TO_META_MAP.get(app_id)
-    return app_id_meta[meta_type] if app_id_meta else None
-
-
 def resolve_app_name(app_id):
     """
     Function maps app id to app category
     :param app_id:
     :return:
     """
-    return get_app_id_meta(app_id, APP_NAME)
+    app_id_map = {
+        "com.splunk.mobile.Stargate": ALERTS_IOS,
+        "com.splunk.mobile.Alerts": ALERTS_IOS,
+        "com.splunk.android.alerts": ALERTS_IOS,
+        "com.splunk.android.alerts.debug": ALERTS_IOS,
+        "com.splunk.mobile.Ribs": ALERTS_IOS,
+        "com.splunk.DashKit.Example": ALERTS_IOS,
+        "com.splunk.mobile.SplunkTV": SPLUNK_TV,
+        "com.splunk.mobile.SplunkTvOS": SPLUNK_TV,
+        "com.splunk.mobile.ARDemo": AR_PLUS,
+        "com.splunk.mobile.SplunkAR": AR_PLUS,
+        "com.splunk.mobile.vrtest": AR_PLUS,
+        "com.splunk.mobile.vr": SPLUNK_VR,
+        "com.splunk.mobile.DroneTV": DRONE_MODE,
+        "com.splunk.mobile.DroneController": DRONE_MODE,
+        "com.splunk.android.tv": SPLUNK_TV,
+        "com.splunk.android.tv.debug": SPLUNK_TV,
+        "com.splunk.amazon.tv": SPLUNK_TV,
+        "com.splunk.amazon.tv.debug": SPLUNK_TV
+    }
+    return app_id_map.get(app_id)
 
+APP_ID_TO_PLATFORM_MAP = {
+    "com.splunk.mobile.Stargate": IOS,
+    "com.splunk.mobile.Alerts": IOS,
+    "com.splunk.mobile.Ribs": IOS,
+    "com.splunk.DashKit.Example": IOS,
+    "com.splunk.android.alerts": ANDROID,
+    "com.splunk.android.alerts.debug": ANDROID,
+    "com.splunk.mobile.SplunkTV": APPLE_TV,
+    "com.splunk.mobile.SplunkTvOS": APPLE_TV,
+    "com.splunk.mobile.ARDemo": IOS,
+    "com.splunk.mobile.SplunkAR": IOS,
+    "com.splunk.mobile.vrtest": VR,
+    "com.splunk.mobile.vr": VR,
+    "com.splunk.mobile.DroneTV": IOS,
+    "com.splunk.mobile.DroneController": IOS,
+    "com.splunk.android.tv": ANDROID_TV,
+    "com.splunk.android.tv.debug": ANDROID_TV,
+    "com.splunk.amazon.tv": FIRE_TV,
+    "com.splunk.amazon.tv.debug": FIRE_TV
+}
 
 def get_app_platform(app_id):
     """
@@ -116,13 +106,4 @@ def get_app_platform(app_id):
     :param app_id:
     :return:
     """
-    return get_app_id_meta(app_id, PLATFORM)
-
-
-def get_app_tag(app_id):
-    """
-    Function maps app id to app tag
-    :param app_id:
-    :return:
-    """
-    return get_app_id_meta(app_id, TAG)
+    return APP_ID_TO_PLATFORM_MAP.get(app_id)

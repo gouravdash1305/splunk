@@ -52,7 +52,6 @@ class Collector(Serializable):
     class Type(Enum):
         SNAPSHOT = 0
         CONTINUOUS = 1
-        SCOPED = 2
 
     class State(Enum):
         WAITING = 0

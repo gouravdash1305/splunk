@@ -1,20 +1,24 @@
 define(
     [
+        'jquery',
         'underscore',
-        '@splunk/swc-mc',
+        'models/Base',
+        'collections/SplunkDsBase',
         'splunk_monitoring_console/collections/ThresholdConfigs',
         'splunk_monitoring_console/helpers/ThresholdConfigsClient'
     ],
     function(
+        $,
         _,
-        SwcMC,
+        BaseModel,
+        SplunkDsBaseCollection,
         ThresholdConfigsCollection,
         ThresholdConfigsClientHelper
     ) {
-        return SwcMC.BaseModel.extend({
+        return BaseModel.extend({
 
             initialize: function() {
-                SwcMC.BaseModel.prototype.initialize.apply(this, arguments);
+                BaseModel.prototype.initialize.apply(this, arguments);
                 this.thresholdConfigsCollection = new ThresholdConfigsCollection();
             },
             fetch: function(options) {

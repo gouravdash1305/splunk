@@ -24,8 +24,6 @@ from cloudgateway.private.websocket.parent_process_monitor import ParentProcessM
 from spacebridge_protocol import http_pb2
 from enum import Enum
 
-if sys.version_info >= (3,0):
-    from cloudgateway.private.asyncio.websocket.aio_parent_process_monitor import AioParentProcessMonitor
 
 
 try:
@@ -79,7 +77,7 @@ class ServerResponse(object):
 
 class CloudGatewayWsClient(object):
     def __init__(self, encryption_context, message_handler, logger=None, mode=WebsocketMode.THREADED,
-                 config=SplunkConfig(), shard_id=None, websocket_context=None, key_bundle=None, device_info=None):
+                 config=SplunkConfig(), shard_id=None, websocket_context=None, key_bundle=None):
         """
 
         Args:
@@ -90,7 +88,6 @@ class CloudGatewayWsClient(object):
             logger: Optional logger parameter for logging purposes
             mode: [WebsocketMode] Enum specifying either threaded mode or async mode. Defaults to Threaded mode
             config: Optional [CloudgatewaySdkConfig] configuration class
-            device_info: Optional [DeviceInfo] information for device observability
         """
         self.encryption_context = encryption_context
         self.logger = logger or DummyLogger()
@@ -100,7 +97,7 @@ class CloudGatewayWsClient(object):
         self.config = config
         self.shard_id = shard_id
         self.key_bundle = key_bundle
-        self.device_info = device_info
+
         if self.mode == WebsocketMode.THREADED:
             websocket_mode = constants.THREADED_MODE
 
@@ -111,10 +108,7 @@ class CloudGatewayWsClient(object):
 
         if self.encryption_context.mode == cloudgateway.private.util.sdk_mode.SdkMode.SPLUNK:
             session_key = self.encryption_context.session_key
-            if sys.version_info < (3,0):
-                parent_process_monitor = ParentProcessMonitor()
-            else:
-                parent_process_monitor = AioParentProcessMonitor()
+            parent_process_monitor = ParentProcessMonitor()
 
             cluster_monitor = None
             if self.shard_id is None:
@@ -135,8 +129,7 @@ class CloudGatewayWsClient(object):
                                                mode=websocket_mode,
                                                shard_id=self.shard_id,
                                                websocket_context=websocket_context,
-                                               key_bundle=self.key_bundle,
-                                               device_info=device_info
+                                               key_bundle=self.key_bundle
                                                )
 
     def connect(self, threadpool_size=None):
@@ -183,8 +176,7 @@ class CloudGatewayWsClient(object):
             return requests.post(sb_message_endpoint(self.config),
                                  headers=spacebridge_header,
                                  data=send_message_request.SerializeToString(),
-                                 cert=cert.name,
-                                 proxies=self.config.get_proxies()
+                                 cert=cert.name
                                  )
 
 
@@ -200,19 +192,19 @@ class AbstractWebsocketContext(object):
 
     @abstractmethod
     def on_open(self, protocol):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def on_ping(self, payload, protocol):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def on_pong(self, payload, protocol):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def on_close(self, wasClean, code, reason, protocol):
-        pass
+        raise NotImplementedError
 
 
 class AbstractMessageHandler(object):

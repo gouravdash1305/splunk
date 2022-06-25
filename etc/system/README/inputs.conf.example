@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This is an example inputs.conf. Use this file to configure data inputs.
 #
@@ -59,10 +59,10 @@ source = tcp:9995
 # All data is assigned the host "webhead-1", the sourcetype "access_common" and
 # the the source "//10.1.1.10/var/log/apache/access.log".
 
-[tcp://192.0.2.10:9995]
+[tcp://10.1.1.10:9995]
 host = webhead-1
 sourcetype = access_common
-source = //192.0.2.10/var/log/apache/access.log
+source = //10.1.1.10/var/log/apache/access.log
 
 
 # The following configuration listens on TCP port 9996 for
@@ -78,14 +78,14 @@ connection_host = dns
 # distributed search data from 10.1.1.100. The data is processed the same as
 # locally indexed data.
 
-[splunktcp://192.0.2.100:9996]
+[splunktcp://10.1.1.100:9996]
 
 
 # The following configuration listens on TCP port 514 for data
 # from syslog.corp.company.net. The data is assigned the sourcetype "syslog"
 # and the host is set to the host name of the remote server.
 
-[tcp://syslog.corp.example.net:514]
+[tcp://syslog.corp.company.net:514]
 sourcetype = syslog
 connection_host = dns
 

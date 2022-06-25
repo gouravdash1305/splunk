@@ -1,4 +1,4 @@
-#   Version 9.0.0
+#   Version 8.1.5
 #
 # This file contains settings and values that you can use to configure
 # data transformations.
@@ -280,7 +280,6 @@ SOURCE_KEY = <string>
 
 REPEAT_MATCH = <boolean>
 * NOTE: This setting is only valid for index-time field extractions.
-  This setting is ignored if DEST_KEY is _raw.
 * Optional. When set to true, Splunk software runs the REGEX multiple
   times on the SOURCE_KEY.
 * REPEAT_MATCH starts wherever the last match stopped, and continues until
@@ -290,10 +289,9 @@ REPEAT_MATCH = <boolean>
 
 INGEST_EVAL = <comma-separated list of evaluator expressions>
 * NOTE: This setting is only valid for index-time field extractions.
-* When you set INGEST_EVAL, this setting overrides all but one of other
-  index-time settings (such as REGEX, DEST_KEY, etc) and declares
-  the index-time extraction to be evaluator-based. The exception is
-  STOP_PROCESSING_IF, which is applied after INGEST_EVAL setting.
+* Optional. When you set INGEST_EVAL, this setting overrides all of the other
+  index-time settings (such as REGEX, DEST_KEY, etc) and declares the
+  index-time extraction to be evaluator-based.
 * The expression takes a similar format to the search-time "|eval" command.
   For example "a=b+c*d" Just like the search-time operator, you can
   string multiple expressions together, separated by commas like
@@ -351,7 +349,6 @@ INGEST_EVAL = <comma-separated list of evaluator expressions>
 * The capability of the search-time |eval operator to name the destination
   field based on the value of another field (like "| eval {destname}=1")
   is NOT available for index-time evaluations.
-* Optional.
 * Default: empty
 
 DELIMS = <quoted string list>
@@ -447,46 +444,6 @@ CAN_OPTIMIZE = <boolean>
 * NOTE: This option should be rarely set to false.
 * Default: true
 
-STOP_PROCESSING_IF = <evaluator expression>
-* An evaluator expression that the regexreplacement processor uses to determine 
-  whether or not further processing is to occur for this event.
-* If you set STOP_PROCESSING_IF, and the regexreplacement processor evaluates the
-  expression that you supply to be true, then the processor stops further 
-  processing of this event.
-* When you set STOP_PROCESSING_IF, like INGEST_EVAL, this setting overrides
-  all of the other index-time settings (such as REGEX, DEST_KEY, etc) except
-  for INGEST_EVAL. STOP_PROCESSING_IF executes after INGEST_EVAL.
-* The processor treats the return value for <evaluator expression> as a boolean value.
-  The final value depends on the value to which the expression initially calculates.
-  See the following list:
-    Numeric "0": false
-    Boolean: true/false
-    Null value: false
-    Any other value: true
-* If this setting appears in multiple rules, then the processor applies the settings
-  in the following order:
-  * All TRANSFORMS, alphabetically
-  * All RULESETs, alphabetically
-  * Within a single rule set class, where they appear in the rule set class
-    determines the order. For example, in the following configuration:
-
-    [rule1]
-    STOP_PROCESSING_IF = <expression1>
-
-    [rule2]
-    STOP_PROCESSING_IF = <expression2>
-
-    RULESET-ruleset1 = rule1, rule2, ...
-
-    rule1 executes first because rule1 appears before rule2 in ruleset1.
-    If <expression1> evaluates to "false", then rule2 and its associated
-    STOP_PROCESSING_IF setting executes.
-    If <expression1> evaluates to "true", then the processor skips rule2
-    and all rules after rule2 in ruleset1.
-* Optional.
-* Default: empty string
-* NOTE: This setting is only valid for index-time field extractions.
-
 #*******
 # Lookup tables
 #*******
@@ -517,7 +474,7 @@ collection = <string>
 max_matches = <integer>
 * The maximum number of possible matches for each input lookup value
   (range 1 - 1000).
-* If the lookup is non-temporal (not time-bound, meaning the time_field
+* If the lookup is non-temporal (not time-bounded, meaning the time_field
   setting is not specified), Splunk software uses the first <integer> entries,
   in file order.
 * If the lookup is temporal, Splunk software uses the first <integer> entries
@@ -542,14 +499,12 @@ default_match = <string>
 * Default: empty string.
 
 case_sensitive_match = <boolean>
+* NOTE: This attribute is not valid for KV Store-based lookups.
 * If set to true, Splunk software performs case sensitive matching for all
   fields in a lookup table.
 * If set to false, Splunk software performs case insensitive matching for all
   fields in a lookup table.
-* NOTE: For KV Store lookups, a setting of 'case_sensitive_match=false' is
-  honored only when the data in the KV Store lookup table is entirely in lower
-  case. The input data can be in any case.
-* For case sensitive field matching in reverse lookups see
+* For field matching in reverse lookups see
   reverse_lookup_honor_case_sensitive_match.
 * Default: true
 
@@ -578,7 +533,7 @@ external_cmd = <string>
   external script rather than a lookup table.
 * This string is parsed like a shell command.
 * The first argument is expected to be a python script (or executable file)
-  located in $SPLUNK_HOME/etc/apps/<app_name>/bin.
+  located in $SPLUNK_HOME/etc/apps/<app_name>/bin (or ../etc/searchscripts).
 * Presence of this field indicates that the lookup is external and command
   based.
 * Default: empty string
@@ -612,7 +567,7 @@ python.version = {default|python|python2|python3}
 * Default: Not set; uses the system-wide Python version.
 
 time_field = <string>
-* Used for temporal (time-bound) lookups. Specifies the name of the field
+* Used for temporal (time bounded) lookups. Specifies the name of the field
   in the lookup table that represents the timestamp.
 * Default: empty string
   * This means that lookups are not temporal by default.
@@ -695,7 +650,7 @@ replicate = <boolean>
 * When true, the CSV lookup is replicated to both indexers and search heads.
 * Only for CSV lookup files.
 * Note that replicate=true works only if it is included in the replication
-  allow list. See the 'replicationAllowlist' setting in distSearch.conf.
+  allow list. See the 'replicationWhitelist' setting in distSearch.conf.
 * Default: true
 
 #*******
@@ -951,36 +906,3 @@ _SYSLOG_ROUTING     : Comma separated list of syslog-stanza  names (from
 * The entire stanza defaults to not being present, causing all keys not
   documented just above to be flagged.
 * Default: not set
-
-############################################################################
-# Per transform rule metrics
-#
-# When enabled, the indexer collects and reports data on metrics events
-# processed by each transform rule qualified by the 'prefix_filter'
-# setting: the event count, the raw size, and where the events are routed.
-# The data goes to the metric.log file.
-############################################################################
-[_ruleset:global_settings]
-metrics.disabled = <boolean>
-* Determines whether data for transform rule metrics is collected.
-* Default: true
-
-metrics.report_interval = <interval>
-* Specifies how often to generate the per transform rule metrics logs.
-* The interval can be specified as a string for seconds, minutes, hours, days.
-  For example; 30s, 1m etc.
-* It will be rounded to integer times of the interval value defined under
-  the [metrics] stanza in limits.conf.
-* Default: 30s
-
-metrics.rule_filter = <string>
-* Per transform rule metrics will be collected only for rule names that match
-  this filter. In cases where a large number of transform rules are defined,
-  this setting prevents metrics.log from being flooded with per transform rule
-  metrics log entries.
-* Wildcards (*) are supported. Multiple rules shall be seperated by commas,
-  for example: abc*,*def,g*h*i.
-* If set to the default, metrics data will be collected for all transform
-  rules.
-* Default: empty string
-

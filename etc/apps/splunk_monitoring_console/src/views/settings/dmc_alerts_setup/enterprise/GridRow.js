@@ -11,8 +11,14 @@ define([
     'underscore',
     'backbone',
     'module',
-    '@splunk/swc-mc',
+    'views/Base',
+    'util/format_numbers_utils',
+    'util/time',
+    'util/general_utils',
+    'splunk.util',
     'contrib/text!./GridRow.html',
+    'uri/route',    
+    'splunk.config',
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/shared/EnableAlertDialog',
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/shared/DisableAlertDialog',
     'splunk_monitoring_console/views/settings/dmc_alerts_setup/shared/EditAlertDialog'
@@ -21,13 +27,19 @@ define([
     _,
     Backbone,
     module,
-    SwcMC,
+    BaseView,
+    formatNumbersUtils,
+    timeUtils,
+    util,
+    splunkUtils,
     template,
+    route,
+    config,
     EnableAlertDialog,
     DisableAlertDialog,
     EditAlertDialog
 ) {
-	return SwcMC.BaseView.extend({
+	return BaseView.extend({
 		moduleId: module.id,
 		tagName: 'tr',
 		className: 'list-item',
@@ -83,15 +95,15 @@ define([
         },
 
         advancedEditUrlForAlert: function () {
-            var root = (SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.indexOf('/') === 0 ? SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH.substring(1) : SwcMC.SplunkConfig.MRSPARKLE_ROOT_PATH),
+            var root = (config.MRSPARKLE_ROOT_PATH.indexOf('/') === 0 ? config.MRSPARKLE_ROOT_PATH.substring(1) : config.MRSPARKLE_ROOT_PATH),
                 name = this.model.alert.entry.get('name');
-            return SwcMC.URIRoute.page(root, SwcMC.SplunkConfig.LOCALE, 'splunk_monitoring_console', 'alert', {'data': {'s': '/servicesNS/nobody/splunk_monitoring_console/saved/searches/' + encodeURI(name)}});
+            return route.page(root, config.LOCALE, 'splunk_monitoring_console', 'alert', {'data': {'s': '/servicesNS/nobody/splunk_monitoring_console/saved/searches/' + encodeURI(name)}});
         },
 
         render: function () {
             var advancedEditUrl = this.advancedEditUrlForAlert(),
         	    status = this.model.alert.entry.content.get('disabled') ? _('Disabled').t() : _('Enabled').t(),
-        	    canEdit = this.model.alertConfig && SwcMC.GeneralUtils.normalizeBoolean(this.model.alertConfig.entry.content.get('is_editable'));
+        	    canEdit = this.model.alertConfig && util.normalizeBoolean(this.model.alertConfig.entry.content.get('is_editable'));
                 
         	var html = this.compiledTemplate({
         		model: this.model.alert,

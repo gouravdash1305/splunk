@@ -695,6 +695,7 @@ The package might be referenced either via a url or a local path.]]>
         </cmd>
 
         <cmd name="set">
+            <offline_ok />
             <help>
                 <title><![CDATA[Change the logging level of a Splunk component]]></title>
                 <examples>
@@ -1196,7 +1197,7 @@ The package might be referenced either via a url or a local path.]]>
        </cmd>
    </item>
 
-    <!-- add|remove|edit|list|enable|disable workload-rule -->
+    <!-- add|remove|edit|list workload-rule -->
     <item obj="workload-rule">
         <common>
             <help>
@@ -1292,46 +1293,6 @@ The package might be referenced either via a url or a local path.]]>
             <default>
                 <arg name="count" value="-1" />
             </default>
-        </cmd>
-
-        <cmd name="enable">
-            <implied_arg_name><![CDATA[rule_name]]></implied_arg_name>
-            <uri><![CDATA[/workloads/rules/{rule_name}/enable/]]></uri>
-            <help>
-                <title><![CDATA[enables a workload-rule]]></title>
-                <required>
-                    <arg name="rule_name"><![CDATA[name of workload-rule to enable]]></arg>
-                </required>
-                <optional>
-                    <arg name="workload_rule_type"><![CDATA[type of the workload-rule to enable]]></arg>
-                </optional>
-                <examples>
-                    <ex><![CDATA[./splunk enable workload-rule <rule_name>]]></ex>
-                    <ex><![CDATA[./splunk enable workload-rule <rule_name> -workload_rule_type search_filter]]></ex>
-                </examples>
-            </help>
-            <type>edit</type>
-            <eai_id>{rule_name}</eai_id>
-        </cmd>
-
-        <cmd name="disable">
-            <implied_arg_name><![CDATA[rule_name]]></implied_arg_name>
-            <uri><![CDATA[/workloads/rules/{rule_name}/disable/]]></uri>
-            <help>
-                <title><![CDATA[disables a workload-rule]]></title>
-                <required>
-                    <arg name="rule_name"><![CDATA[name of workload-rule to disable]]></arg>
-                </required>
-                <optional>
-                    <arg name="workload_rule_type"><![CDATA[type of the workload-rule to enable]]></arg>
-                </optional>
-                <examples>
-                    <ex><![CDATA[./splunk disable workload-rule <rule_name>]]></ex>
-                    <ex><![CDATA[./splunk disable workload-rule <rule_name> -workload_rule_type search_filter]]></ex>
-                </examples>
-            </help>
-            <type>edit</type>
-            <eai_id>{rule_name}</eai_id>
         </cmd>
     </item>
 
@@ -1593,9 +1554,9 @@ The package might be referenced either via a url or a local path.]]>
             <uri><![CDATA[/cluster/config/config]]></uri>
             <help>
                 <title><![CDATA[edit current clustering configuration]]></title>
-                <syntax><![CDATA[edit cluster-config -mode manager|peer|searchhead -<parameter_name> <parameter_value>]]></syntax>
+                <syntax><![CDATA[edit cluster-config -mode master|slave|searchhead -<parameter_name> <parameter_value>]]></syntax>
                 <required>
-                    <arg name="mode"><![CDATA[manager|peer|searchhead]]></arg>
+                    <arg name="mode"><![CDATA[master|slave|searchhead]]></arg>
                 </required>
                 <optional>
                     <arg name="cxn_timeout"><![CDATA[connection timeout]]></arg>
@@ -1609,64 +1570,62 @@ The package might be referenced either via a url or a local path.]]>
                     <arg name="replication_factor"><![CDATA[sets the replication factor]]></arg>
                     <arg name="search_factor"><![CDATA[sets the search factor]]></arg>
                     <arg name="heartbeat_timeout"><![CDATA[sets the hearbeat timeout]]></arg>
-                    <arg name="restart_timeout"><![CDATA[sets the time the cluster manager waits for peer to readd after restart]]></arg>
-                    <arg name="manager_uri"><![CDATA[sets the value of the cluster manager uri]]></arg>
+                    <arg name="restart_timeout"><![CDATA[sets the time the master waits for peer to readd after restart]]></arg>
+                    <arg name="master_uri"><![CDATA[sets the value of the master uri]]></arg>
                     <arg name="replication_port"><![CDATA[specify the replication port]]></arg>
                     <arg name="max_peer_build_load"><![CDATA[specify the max number of concurrent jobs to make bucket searchable]]></arg>
                     <arg name="max_peer_rep_load"><![CDATA[specify the max number of concurrent replications that peer can take part in as target]]></arg>
                     <arg name="max_nonhot_rep_kBps"><![CDATA[specify the max warm/cold/summary replication throughput(kb(bytes)/s) ]]></arg>
-                    <arg name="secret"><![CDATA[sets the value of the secret key between the cluster manager and peers <br /> Caution: Passing login credentials on the CLI is a security risk.]]></arg>
+                    <arg name="secret"><![CDATA[sets the value of the secret key between master and slaves <br /> Caution: Passing login credentials on the CLI is a security risk.]]></arg>
                     <arg name="multisite"><![CDATA[used to turn on the multisite feature for this cluster]]></arg>
                     <arg name="site_replication_factor"><![CDATA[sets the replication factor for a multisite configuration. See examples for usage]]></arg>
                     <arg name="site_search_factor"><![CDATA[sets the search factor for a multisite configuration. See examples for usage]]></arg>
-                    <arg name="site"><![CDATA[sets the site-id for peer/searchhead indexer.Valid values include site1 to site64]]></arg>
-                    <arg name="available_sites"><![CDATA[sets the various sites that are recognised for this the cluster manager. Valid values include site1 to site64]]></arg>
-                    <arg name="forwarder_site_failover"><![CDATA[sets the mapping from primary site to failover site. Valid site values include site1 to site64]]></arg>
-                    <arg name="use_batch_mask_changes"><![CDATA[specifies whether the cluster manager should process mask changes for buckets in batch or individual mode]]></arg>
+                    <arg name="site"><![CDATA[sets the site-id for slave/searchhead indexer.Valid values include site1 to site64]]></arg>
+                    <arg name="available_sites"><![CDATA[sets the various sites that are recognised for this master.Valid values include site1 to site64]]></arg>
+                    <arg name="forwarder_site_failover"><![CDATA[sets the mapping from primary site to failover site.Valid site values include site1 to site64]]></arg>
+                    <arg name="use_batch_mask_changes"><![CDATA[specifies whether master should process mask changes for buckets in batch or individual mode]]></arg>
                     <arg name="cluster_label"><![CDATA[sets a label that is associated with the cluster]]></arg>
                     <arg name="summary_replication"><![CDATA[Turn on summary replication in the cluster.]]></arg>
-                    <arg name="allowed_hbmiss_count"><![CDATA[Number of consecutive heartbeat misses this peer can tolerate before it performs a re-add to the cluster manager]]></arg>
+                    <arg name="allowed_hbmiss_count"><![CDATA[Number of consecutive heartbeat misses this peer can tolerate before it performs a re-add to cluster master]]></arg>
                     <arg name="manual_detention"><![CDATA[Sets the peers in manual detention]]></arg>
-                    <arg name="re_add_on_bucket_request_error"><![CDATA[specify whether the cluster peer should re-add itself to the cluster manager if the manager returns an error for a bucket request.]]></arg>
-                    <arg name="max_peers_to_download_bundle"><![CDATA[specifies maximum number of peers that can download newly available cluster manager bundle.]]></arg>
-                    <arg name="auto_rebalance_primaries"><![CDATA[specifies if the cluster manager should automatically rebalance bucket primaries on certain triggers.]]></arg>
-                    <arg name="use_batch_remote_rep_changes"><![CDATA[specifies whether the cluster manager should process bucket copy changes for buckets in batch or individual mode]]></arg>
+                    <arg name="re_add_on_bucket_request_error"><![CDATA[specify whether slave should re-add itself to master if master returns an error for a bucket request.]]></arg>
+                    <arg name="max_peers_to_download_bundle"><![CDATA[specifies maximum number of peers that can download newly available cluster master bundle.]]></arg>
+                    <arg name="auto_rebalance_primaries"><![CDATA[specifies if the master should automatically rebalance bucket primaries on certain triggers.]]></arg>
+                    <arg name="use_batch_remote_rep_changes"><![CDATA[specifies whether master should process bucket copy changes for buckets in batch or individual mode]]></arg>
                     <arg name="max_replication_errors"><![CDATA[specifies maximum replication errors from source to a specific target indexer]]></arg>
-                    <arg name="target_wait_time"><![CDATA[specifies the time the cluster manager waits for target before it makes bucket serviceable]]></arg>
+                    <arg name="target_wait_time"><![CDATA[specifies the time the master waits for target before it makes bucket serviceable]]></arg>
                     <arg name="remote_storage_upload_timeout"><![CDATA[specifies the time the target peer waits before it starts uploading the bucket in a remote storage enabled index]]></arg>
-                    <arg name="remote_storage_retention_period"><![CDATA[specifies the period after which the cluster manager freezes the buckets on indexers]]></arg>
+                    <arg name="remote_storage_retention_period"><![CDATA[specifies the period after which the master freezes the buckets on indexers]]></arg>
                     <arg name="executor_workers"><![CDATA[specifies the number of threads that can be used by the clustering thread pool]]></arg>
-                    <arg name="generation_poll_interval"><![CDATA[specifies how often, in seconds, the search head polls the cluster manager for generation information]]></arg>
-                    <arg name="service_jobs_msec"><![CDATA[specifies the max time, in milliseconds, the cluster manager spends servicing finished jobs for each service call]]></arg>
+                    <arg name="generation_poll_interval"><![CDATA[specifies how often, in seconds, the search head polls the master for generation information]]></arg>
+                    <arg name="service_jobs_msec"><![CDATA[specifies the max time, in milliseconds, the cluster master spends servicing finished jobs for each service call]]></arg>
                     <arg name="report_remote_storage_bucket_upload_to_targets"><![CDATA[specifies, for a remote storage enabled index, whether the source peer reports a successful bucket upload to target peers]]></arg>
                     <arg name="searchable_rebalance"><![CDATA[specifies whether searches can continue uninterrupted during data rebalancing]]></arg>
                     <arg name="rebalance_pipeline_batch_size"><![CDATA[specifies the maximum number of buckets for a batch entering the excess bucket removal phase of the rebalance pipeline]]></arg>
-                    <arg name="rebalance_search_completion_timeout"><![CDATA[specifies the amount of time, in seconds, that the cluster manager waits for older generation searches on indexers to complete before removing any excess buckets]]></arg>
+                    <arg name="rebalance_search_completion_timeout"><![CDATA[specifies the amount of time, in seconds, that the master waits for older generation searches on indexers to complete before removing any excess buckets]]></arg>
                 </optional>
                 <examples>
-                    <ex><![CDATA[./splunk edit cluster-config -mode peer -replication_port 4535]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode peer -allowed_hbmiss_count 5]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode peer -manual_detention on|off|on_ports_enabled]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode manager -peers <peer_guid1>,<peer_guid2> -manual_detention on|off|on_ports_enabled]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode manager -secret foo]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode manager -multisite true -auth admin:changeme]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode manager -multisite true -site_replication_factor origin:2,site1:2,total:5 -site_search_factor origin:2,total:3 -site site1 -available_sites site1,site2 -auth admin:changeme -use_batch_mask_changes true]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode peer -manager_uri https://server_name:port -secret foo]]></ex>
-                    <ex><![CDATA[./splunk edit cluster-config -mode peer -site site2 ]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode slave -replication_port 4535]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode slave -allowed_hbmiss_count 5]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode slave -manual_detention on|off|on_ports_enabled]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode master -peers <peer_guid1>,<peer_guid2> -manual_detention on|off|on_ports_enabled]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode master -secret foo]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode master -multisite true -auth admin:changeme]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode master -multisite true -site_replication_factor origin:2,site1:2,total:5 -site_search_factor origin:2,total:3 -site site1 -available_sites site1,site2 -auth admin:changeme -use_batch_mask_changes true]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode slave -master_uri https://server_name:port -secret foo]]></ex>
+                    <ex><![CDATA[./splunk edit cluster-config -mode slave -site site2 ]]></ex>
                 </examples>
             </help>
         </cmd>
 
     </item>
 
-    <!--add|edit|remove|list manager-->
-    <item obj="master" synonym="cluster-manager" />
-    <item obj="cluster-master" synonym="cluster-manager" />
-    <item obj="manager" synonym="cluster-manager" />
-    <item obj="cluster-manager">
+    <!--add|edit|remove|list master-->
+    <item obj="master" synonym="cluster-master" />
+    <item obj="cluster-master">
         <common>
             <help>
-                <header><![CDATA[Changes the cluster managers that a particular searchhead can search across. This command is only applicable to splunk instances configured as a clustering searchhead]]>
+                <header><![CDATA[Changes the masters that a particular searchhead can search across. This command is only applicable to splunk instances configured as a clustering searchhead]]>
                 </header>
             </help>
             <uri><![CDATA[/cluster/searchhead/searchheadconfig]]></uri>
@@ -1675,65 +1634,63 @@ The package might be referenced either via a url or a local path.]]>
         <cmd name="add">
             <implied_arg_name><![CDATA[name]]></implied_arg_name>
             <help>
-                <title><![CDATA[Adds another cluster manager to the list of instances a searchhead searches across]]></title>
+                <title><![CDATA[Adds another master to the list of instances a searchhead searches across]]></title>
                 <required>
-                    <arg name="manager_uri"><![CDATA[the value of the manager uri]]></arg>
+                    <arg name="master_uri"><![CDATA[the value of the master uri]]></arg>
                 </required>
                 <optional>
-                    <arg name="secret"><![CDATA[the secret/pass4SymmKey used for the cluster manager]]></arg>
-                    <arg name="site"><![CDATA[the site-id for the searchhead for this cluster manager]]></arg>
-                    <arg name="multisite"><![CDATA[used to turn on|off multisite for this cluster manager. Takes in values[true|false]]]></arg>
+                    <arg name="secret"><![CDATA[the secret/pass4SymmKey used for the master]]></arg>
+                    <arg name="site"><![CDATA[the site-id for the searchhead for this master]]></arg>
+                    <arg name="multisite"><![CDATA[used to turn on|off multisite for this master. Takes in values[true|false]]]></arg>
                 </optional>
                 <examples>
-                    <ex><![CDATA['./splunk add cluster-manager https://127.0.0.1:8089 -secret testsecret -multisite false']]></ex>
-                    <ex><![CDATA['./splunk add cluster-manager https://127.0.0.1:8089 -secret testsecret -multisite true -site site2']]></ex>
+                    <ex><![CDATA['./splunk add cluster-master https://127.0.0.1:8089 -secret testsecret -multisite false']]></ex>
+                    <ex><![CDATA['./splunk add cluster-master https://127.0.0.1:8089 -secret testsecret -multisite true -site site2']]></ex>
                 </examples>
             </help>
             <type>create</type>
         </cmd>
 
         <cmd name="edit">
-            <implied_arg_name><![CDATA[old_manager_uri]]></implied_arg_name>
-            <hook_functions>
-                <hook arg="old_master_uri"><![CDATA[alias_old_manager_uri]]></hook>
-            </hook_functions>
+            <implied_arg_name><![CDATA[old_master_uri]]></implied_arg_name>
             <help>
-                <title><![CDATA[Edit a cluster manager currently in the list of instances a searchhead searches across]]></title>
+                <title><![CDATA[Edit a master currently in the list of instances a searchhead searches across]]></title>
                 <required>
-                    <arg name="manager_uri"><![CDATA[the value of the manager uri]]></arg>
+                    <arg name="master_uri"><![CDATA[the value of the master uri]]></arg>
                 </required>
                 <optional>
-                    <arg name="secret"><![CDATA[the secret/pass4SymmKey used for the cluster manager]]></arg>
-                    <arg name="site"><![CDATA[the site-id for the searchhead for this cluster manager]]></arg>
-                    <arg name="multisite"><![CDATA[used to turn on|off the multisite feature for this cluster manager. Acceptable values are [true|false]]></arg>
+                    <arg name="secret"><![CDATA[the secret/pass4SymmKey used for the master]]></arg>
+                    <arg name="site"><![CDATA[the site-id for the searchhead for this master]]></arg>
+                    <arg name="multisite"><![CDATA[used to turn on|off the multisite feature for this master. Acceptable values are [true|false]]></arg>
                 </optional>
                 <examples>
-                    <ex><![CDATA['./splunk edit cluster-manager https://127.0.0.1:8089 -secret newtestsecret']]></ex>
-                    <ex><![CDATA['./splunk edit cluster-manager https://old_server_name:8089 -manager_uri https://new_server_name:8089]]></ex>
-                    <ex><![CDATA['./splunk edit cluster-manager https://old_server_name:8089 -manager_uri https://new_server_name:8089 -secret newsecret]]></ex>
+                    <ex><![CDATA['./splunk edit cluster-master https://127.0.0.1:8089 -secret newtestsecret']]></ex>
+                    <ex><![CDATA['./splunk edit cluster-master https://old_server_name:8089 -master_uri https://new_server_name:8089]]></ex>
+                    <ex><![CDATA['./splunk edit cluster-master https://old_server_name:8089 -master_uri https://new_server_name:8089 -secret newsecret]]></ex>
                 </examples>
             </help>
-            <eai_id>{old_manager_uri}</eai_id>
+            <eai_id>{old_master_uri}</eai_id>
             <type>edit</type>
         </cmd>
 
         <cmd name="remove">
-            <implied_arg_name><![CDATA[manager_uri]]></implied_arg_name>
-            <hook_functions>
-                 <hook arg="master_uri"><![CDATA[alias_manager_uri]]></hook>
-            </hook_functions>
+            <implied_arg_name><![CDATA[master_uri]]></implied_arg_name>
             <help>
-                <title><![CDATA[Remove a cluster manager from the list of instances a searchhead searches across]]></title>
+                <title><![CDATA[Remove a master from the list of instances a searchhead searches across]]></title>
 
                 <required>
-                    <arg name="manager_uri"><![CDATA[the value of the manager uri]]></arg>
+                    <arg name="master_uri"><![CDATA[the value of the master uri]]></arg>
                 </required>
+                <optional>
+                    <arg name="secret"><![CDATA[the secret/pass4SymmKey used for the master]]></arg>
+                    <arg name="site"><![CDATA[the site-id for the searchhead for this master]]></arg>
+                </optional>
                 <examples>
-                    <ex><![CDATA['./splunk remove cluster-manager https://127.0.0.1:8089']]></ex>
-                    <ex><![CDATA['./splunk remove cluster-manager -manager_uri https://127.0.0.1:8089']]></ex>
+                    <ex><![CDATA['./splunk remove cluster-master https://127.0.0.1:8089 -secret testsecret']]></ex>
+                    <ex><![CDATA['./splunk remove cluster-master -master_uri https://127.0.0.1:8089 -secret testsecret']]></ex>
                 </examples>
             </help>
-            <eai_id>{manager_uri}</eai_id>
+            <eai_id>{master_uri}</eai_id>
             <type>remove</type>
         </cmd>
 
@@ -1741,7 +1698,7 @@ The package might be referenced either via a url or a local path.]]>
             <help>
                 <title><![CDATA[Display a list of instances this searchhead can search across]]></title>
                 <examples>
-                    <ex><![CDATA['./splunk list manager']]></ex>
+                    <ex><![CDATA['./splunk list master']]></ex>
                 </examples>
             </help>
             <type>list</type>
@@ -1753,7 +1710,7 @@ The package might be referenced either via a url or a local path.]]>
     <item obj="cluster-bundle">
         <common>
            <help>
-                <header><![CDATA[Applies the new bundle to the cluster peers and restarts them. After this is done, the status of bundles at the various peers,
+                <header><![CDATA[Applies the new bundle at the slave and restarts them. After this is done, the status of bundles at the various peers,
         Use 'splunk show cluster-bundle-status' to make it active. You can use the '--answer-yes' option to supress the restart warning.]]>
                 </header>
                 <syntax><![CDATA[apply cluster-bundle [--skip-validation] [--dry-run]]]></syntax>
@@ -1762,9 +1719,9 @@ The package might be referenced either via a url or a local path.]]>
         <cmd name="apply">
             <uri><![CDATA[/cluster/master/control/default/apply]]></uri>
             <help>
-                <title><![CDATA[Make validated bundle active on peers. In order to check the status of the bundle at the peers, use 'show cluster-bundle-status' on the cluster manager.]]></title>
+                <title><![CDATA[Make validated bundle active on peers. In order to check the status of the bundle at the peers, use 'show cluster-bundle-status' at the master.]]></title>
                 <optional>
-                        <arg name="--skip-validation"><![CDATA[Pass this optional argument to skip bundle validation on the cluster manager and peers]]></arg>
+                        <arg name="--skip-validation"><![CDATA[Pass this optional argument to skip bundle validation on the master and peers]]></arg>
                 </optional>
                 <examples>
                         <ex><![CDATA['./splunk apply cluster-bundle']]></ex>
@@ -1779,7 +1736,7 @@ The package might be referenced either via a url or a local path.]]>
         <cmd name="validate">
             <uri><![CDATA[/cluster/master/control/default/validate_bundle]]></uri>
             <help>
-                <title><![CDATA[Validates the cluster bundle, and optionally checks whether applying the bundle will initiate a peer restart. To check the status of the bundle validation, run 'show cluster-bundle-status' on the cluster manager.]]></title>
+                <title><![CDATA[Validates the cluster bundle, and optionally checks whether applying the bundle will initiate a peer restart. To check the status of the bundle validation, run 'show cluster-bundle-status' on the master.]]></title>
                 <optional>
                     <arg name="--check-restart"><![CDATA[Pass this optional argument to check whether applying the bundle will initiate a peer restart.]]></arg>
                 </optional>
@@ -1795,7 +1752,7 @@ The package might be referenced either via a url or a local path.]]>
         <cmd name="rollback">
             <uri><![CDATA[/cluster/master/control/default/rollback]]></uri>
             <help>
-                <title><![CDATA[Rolls back cluster bundle to previously active bundle. To check the status of the bundle at the peers, use 'show cluster-bundle-status at the cluster manager.]]></title>
+                <title><![CDATA[Rolls back cluster bundle to previously active bundle. To check the status of the bundle at the peers, use 'show cluster-bundle-status at the master.]]></title>
                 <examples>
                     <ex><![CDATA['./splunk rollback cluster-bundle']]></ex>
                     <ex><![CDATA['./splunk rollback cluster-bundle -auth admin:changeme']]></ex>
@@ -1816,7 +1773,7 @@ The package might be referenced either via a url or a local path.]]>
         <cmd name="rebalance">
             <uri><![CDATA[/cluster/master/control/control/rebalance_buckets]]></uri>
             <help>
-                <title><![CDATA[Perform data rebalance operations on an indexer cluster. Run this command from the cluster manager node.]]></title>
+                <title><![CDATA[Perform data rebalance operations on an indexer cluster. Run this command from the master node.]]></title>
                 <required>
                        <arg name="action"><![CDATA[Specify the rebalance action to perform. Accepted values are: start|stop|status.]]></arg>
                 </required>
@@ -1894,7 +1851,7 @@ The package might be referenced either via a url or a local path.]]>
                 <arg name="mode" value="true" />
             </default>
             <help>
-                <title><![CDATA[Sets the maintenance mode on peers in clustering. Must be invoked on the cluster manager. ]]></title>
+                <title><![CDATA[Sets the maintenance mode on peers in clustering. Must be invoked at the master. ]]></title>
                 <examples>
                     <ex><![CDATA['./splunk enable maintenance-mode']]></ex>
                 </examples>
@@ -1909,7 +1866,7 @@ The package might be referenced either via a url or a local path.]]>
                 <arg name="mode" value="false" />
             </default>
             <help>
-                <title><![CDATA[Disables the maintenance mode on peers in clustering. Must be invoked on the cluster manager. ]]></title>
+                <title><![CDATA[Disables the maintaince mode on peers in clustering. Must be invoked at the master. ]]></title>
                 <examples>
                     <ex><![CDATA['./splunk disable maintenance-mode']]></ex>
                 </examples>
@@ -1921,7 +1878,7 @@ The package might be referenced either via a url or a local path.]]>
         <cmd name="show">
             <uri><![CDATA[/cluster/master/info]]></uri>
             <help>
-                <title><![CDATA[Displays if the maintenance mode is set on the cluster manager in clustering. Must be invoked on the cluster manager. ]]></title>
+                <title><![CDATA[Displays if the maintaince mode is set on the master in clustering. Must be invoked at the master. ]]></title>
                 <examples>
                     <ex><![CDATA['./splunk show maintenance-mode']]></ex>
                 </examples>
@@ -2005,9 +1962,9 @@ More information in the online documentation for the corresponding REST endpoint
                 <syntax><![CDATA[rolling-restart cluster-peers]]></syntax>
                 <required/>
                 <optional>
-                    <arg name="restart_inactivity_timeout"><![CDATA[The amount of time, in seconds, that the cluster manager waits for a peer to restart and rejoin the cluster before it considers the restart a failure and proceeds to restart other peers. Valid when searchable=true (default=600).]]></arg>
-                    <arg name="backup_and_restore_primaries"><![CDATA[ Determines whether the cluster manager performs a backup/restore of bucket primary masks. If set to true, restoration of primaries occurs automatically when the peers rejoin the cluster after a scheduled restart or upgrade (true|false, default=false).]]></arg>
-                    <arg name="decommission_force_timeout"><![CDATA[The amount of time, in seconds, the cluster manager will wait for a peer in primary decommission status to finish primary reassignment and restart. Valid when searchable=true (default=180).]]></arg>
+                    <arg name="restart_inactivity_timeout"><![CDATA[The amount of time, in seconds, that the master waits for a peer to restart and rejoin the cluster before it considers the restart a failure and proceeds to restart other peers. Valid when searchable=true (default=600).]]></arg>
+                    <arg name="backup_and_restore_primaries"><![CDATA[ Determines whether the master performs a backup/restore of bucket primary masks. If set to true, restoration of primaries occurs automatically when the peers rejoin the cluster after a scheduled restart or upgrade (true|false, default=false).]]></arg>
+                    <arg name="decommission_force_timeout"><![CDATA[The amount of time, in seconds, the cluster master will wait for a peer in primary decommission status to finish primary reassignment and restart. Valid when searchable=true (default=180).]]></arg>
                     <arg name="force"><![CDATA[Perform a searchable rolling restart, but override the health check and enforce 'decommission_force_timeout' and 'restart_inactivity_timeout'. Valid when searchable=true (true|false, default=false).]]></arg>
                     <arg name="searchable"><![CDATA[Restart peers with minimal search disruption (true|false, default=false).]]></arg>
                     <arg name="site-by-site"><![CDATA[If true, restart peers on a per-site basis, waiting for all peers in the current site to restart before moving to the next one. If false, restart randomly selected peers (capped via percent_peers_to_restart) from all peers across all sites (true|false, default: true for multisite cluster, false otherwise).]]></arg>
@@ -2042,7 +1999,7 @@ More information in the online documentation for the corresponding REST endpoint
         <cmd name="remove">
             <uri><![CDATA[/cluster/master/control/default/remove_peers]]></uri>
             <help>
-                <title><![CDATA[Remove downed peers from the cluster manager.]]></title>
+                <title><![CDATA[Remove downed peers from the cluster master.]]></title>
                 <syntax><![CDATA[remove cluster-peers peers [-parameter <value>] ...]]></syntax>
                 <examples>
                     <ex><![CDATA['./splunk remove cluster-peers -peers GUID']]></ex>
@@ -2068,7 +2025,7 @@ More information in the online documentation for the corresponding REST endpoint
             <implied_arg_name><![CDATA[guids]]></implied_arg_name>
             <uri><![CDATA[/cluster/master/control/default/remove_search_heads]]></uri>
             <help>
-                <title><![CDATA[Remove downed search heads from the cluster manager.]]></title>
+                <title><![CDATA[Remove downed search heads from the cluster master.]]></title>
                 <syntax><![CDATA[remove-search-heads cluster-peers -guids <guid>[,...] [-parameter <value>] ...]]></syntax>
                 <examples>
                     <ex><![CDATA['./splunk remove-search-heads cluster-peers -guids GUID']]></ex>
@@ -2101,18 +2058,17 @@ More information in the online documentation for the corresponding REST endpoint
         </cmd>
     </item>
 
-    <!-- list manager-info -->
-    <item obj="master-info" synonym="manager-info" />
-    <item obj="manager-info">
+    <!-- list master-info -->
+    <item obj="master-info">
         <cmd name="list">
             <uri><![CDATA[/cluster/master/info]]></uri>
             <help>
-                <title><![CDATA[List Cluster Manager Information]]></title>
-                <syntax><![CDATA[list manager-info]]></syntax>
+                <title><![CDATA[List Cluster Master information]]></title>
+                <syntax><![CDATA[list master-info]]></syntax>
                 <required/>
                 <optional/>
                 <examples>
-                    <ex><![CDATA[./splunk list manager-info]]></ex>
+                    <ex><![CDATA[./splunk list master-info]]></ex>
                 </examples>
             </help>
             <type>list</type>
@@ -2125,7 +2081,7 @@ More information in the online documentation for the corresponding REST endpoint
         <cmd name="list">
             <uri><![CDATA[/cluster/master/generation]]></uri>
             <help>
-                <title><![CDATA[List the Cluster Manager Generation]]></title>
+                <title><![CDATA[List the Cluster Master generation]]></title>
                 <syntax><![CDATA[list cluster-generation]]></syntax>
                 <required/>
                 <optional/>
@@ -2163,7 +2119,7 @@ More information in the online documentation for the corresponding REST endpoint
         <cmd name="list">
             <uri><![CDATA[/cluster/slave/info]]></uri>
             <help>
-                <title><![CDATA[List Cluster Peer information]]></title>
+                <title><![CDATA[List Cluster Slave or Peer information]]></title>
                 <syntax><![CDATA[list peer-info]]></syntax>
                 <required/>
                 <optional/>
@@ -2184,7 +2140,7 @@ More information in the online documentation for the corresponding REST endpoint
                 <arg name="count" value="-1" />
             </default>
             <help>
-                <title><![CDATA[List Cluster Peer Bucket Information]]></title>
+                <title><![CDATA[List Cluster Slave bucket information]]></title>
                 <syntax><![CDATA[list peer-buckets]]></syntax>
                 <required/>
                 <optional/>
@@ -2769,12 +2725,8 @@ More information in the online documentation for the corresponding REST endpoint
                 <title><![CDATA[View status of the KV Store cluster.]]></title>
                 <syntax><![CDATA[show kvstore-status]]></syntax>
                 <required/>
-                <optional>
-                    <arg name="--verbose"><![CDATA[get advanced information on the status of the KV Store.]]></arg>
-                </optional>
                 <examples>
                     <ex><![CDATA['./splunk show kvstore-status']]></ex>
-                    <ex><![CDATA['./splunk show kvstore-status --verbose']]></ex>
                 </examples>
             </help>
             <type>list</type>
@@ -2804,10 +2756,6 @@ More information in the online documentation for the corresponding REST endpoint
                     <arg name="-archiveName"><![CDATA[Specifies filename for backup archive file]]></arg>
                     <arg name="-appName"><![CDATA[Specifies which app to backup to the archive file]]></arg>
                     <arg name="-collectionName"><![CDATA[Specifies which collection backup to the archive file]]></arg>
-                    <arg name="-pointInTime"><![CDATA[Specifies point in time backup]]></arg>
-                    <arg name="-parallelCollections"><![CDATA[Specifies parallel dumps jobs]]></arg>
-                    <arg name="-cancel"><![CDATA[Specifies cancel backup in progress]]></arg>
-                    <arg name="-force"><![CDATA[Forces backup to start]]></arg>
                 </optional>
                 <examples>
                     <ex><![CDATA['./splunk backup kvstore']]></ex>
@@ -2823,52 +2771,14 @@ More information in the online documentation for the corresponding REST endpoint
                     <arg name="-archiveName"><![CDATA[Specifies backup archive file to restore from (to be located in $SPLUNK_DB/kvstorebackup)]]></arg>
                 </required>
                 <optional>
-                    <arg name="-kvstore_type"><![CDATA[Specifies if we should restore data to KV Store (-kvstore_type local) or KV Service (-kvstore_type external)]]></arg>
                     <arg name="-appName"><![CDATA[Specifies which app to restore from the archive file]]></arg>
                     <arg name="-collectionName"><![CDATA[Specifies which collection restore from the archive file]]></arg>
-                    <arg name="-pointInTime"><![CDATA[Specifies point in time restore]]></arg>
-                    <arg name="-parallelCollections"><![CDATA[Specifies parallel restore jobs]]></arg>
-                    <arg name="-insertionsWorkersPerCollection"><![CDATA[Specifies parallel restore insertion jobs]]></arg>
-                    <arg name="-cancel"><![CDATA[Specifies cancel restore in progress]]></arg>
                 </optional>
                 <examples>
                     <ex><![CDATA['./splunk restore kvstore -archiveName kvdump.tar.gz']]></ex>
-                    <ex><![CDATA['./splunk restore kvstore -archiveName kvdump.tar.gz -kvstore_type external']]></ex>
                 </examples>
             </help>
             <type>edit</type>
-        </cmd>
-        <cmd name="show">
-            <uri><![CDATA[/kvstore/backup/info]]></uri>
-            <help>
-                <title><![CDATA[Show KVStore data from an archive file.]]></title>
-                <required>
-                    <arg name="-archiveName"><![CDATA[Specifies backup archive file to show from (to be located in $SPLUNK_HOME/var/lib/splunk/kvstore/backup)]]></arg>
-                </required>
-                <examples>
-                    <ex><![CDATA['./splunk show kvstore -archiveName kvdump.tar.gz']]></ex>
-                </examples>
-            </help>
-            <type>list</type>
-        </cmd>
-        <cmd name="start-shcluster-upgrade">
-            <uri><![CDATA[/shcluster/captain/kvstore-upgrade/start]]></uri>
-            <help>
-                <title><![CDATA[Start KV store upgrade]]></title>
-                <required>
-                    <arg name="-version"><![CDATA[version to upgrade to ('4.0' or '4.2')]]></arg>
-                </required>
-                <optional>
-                    <arg name="-maxRetries"><![CDATA[number of retries for upgrade per search head cluster member upon failure]]></arg>
-                    <arg name="-isDryRun"><![CDATA[do preflight checks and exit without upgrading]]></arg>
-                </optional>
-                <examples>
-                    <ex><![CDATA['./splunk start-shcluster-upgrade kvstore -version 4.2']]></ex>
-                    <ex><![CDATA['./splunk start-shcluster-upgrade kvstore -version 4.2 -maxRetries 2 -isDryRun true']]></ex>
-                </examples>
-            </help>
-            <type>edit</type>
-            <post_only/>
         </cmd>
         <cmd name="start-shcluster-migration">
             <uri><![CDATA[/shcluster/captain/kvmigrate/start]]></uri>
@@ -2887,7 +2797,7 @@ More information in the online documentation for the corresponding REST endpoint
                     <ex><![CDATA['./splunk start-shcluster-migration kvstore -storageEngine wiredTiger']]></ex>
                     <ex><![CDATA['./splunk start-shcluster-migration kvstore -storageEngine mmapv1 -maxRetries 2 -clusterPerc 50']]></ex>
                     <ex><![CDATA['./splunk start-shcluster-migration kvstore -storageEngine wiredTiger -maxRetries 2 -peersList 'uri1, uri2, uri3'']]></ex>
-                    <ex><![CDATA['./splunk start-shcluster-migration kvstore -storageEngine mmapv1 -maxRetries 2 -isDryRun true']]></ex>
+                    <ex><![CDATA['./splunk start-shcluster-migration kvstore -storageEngine mmapv1 -maxRetries 2 -dryRun true']]></ex>
                 </examples>
             </help>
             <type>edit</type>
@@ -2904,43 +2814,9 @@ More information in the online documentation for the corresponding REST endpoint
             <type>edit</type>
             <post_only/>
         </cmd>
-
     </item>
 
-    <!-- enable|disable kvstore-maintenance-mode -->
-    <item obj="kvstore-maintenance-mode">
-        <cmd name="enable">
-            <uri><![CDATA[/kvstore/control/maintenance]]></uri>
-            <default>
-                <arg name="mode" value="true" />
-            </default>
-            <help>
-                <title><![CDATA[Sets the maintenance mode on kvstore.]]></title>
-                <examples>
-                    <ex><![CDATA['./splunk enable kvstore-maintenance-mode']]></ex>
-                </examples>
-            </help>
-            <type>edit</type>
-            <post_only/>
-        </cmd>
-
-        <cmd name="disable">
-            <uri><![CDATA[/kvstore/control/maintenance]]></uri>
-            <default>
-                <arg name="mode" value="false" />
-            </default>
-            <help>
-                <title><![CDATA[Disables the maintenance mode on kvstore.]]></title>
-                <examples>
-                    <ex><![CDATA['./splunk disable kvstore-maintenance-mode']]></ex>
-                </examples>
-            </help>
-            <type>edit</type>
-            <post_only/>
-        </cmd>
-    </item>
-
-    <!-- show shcluster-kvmigration-status -->
+    <!-- show kvstore-migration-status -->
     <item obj="shcluster-kvmigration-status">
         <cmd name="show">
             <uri><![CDATA[/shcluster/captain/kvmigrate/status]]></uri>
@@ -2948,22 +2824,7 @@ More information in the online documentation for the corresponding REST endpoint
                 <title><![CDATA[View status of KV store migration]]></title>
                 <required/>
                 <examples>
-                    <ex><![CDATA['./splunk show shcluster-kvmigration-status']]></ex>
-                </examples>
-            </help>
-            <type>list</type>
-        </cmd>
-    </item>
-
-    <!-- show shcluster-kvupgrade-status -->
-    <item obj="shcluster-kvupgrade-status">
-        <cmd name="show">
-            <uri><![CDATA[/shcluster/captain/kvstore-upgrade/status]]></uri>
-            <help>
-                <title><![CDATA[View status of KV store upgrade]]></title>
-                <required/>
-                <examples>
-                    <ex><![CDATA['./splunk show kvstore-upgrade-status']]></ex>
+                    <ex><![CDATA['./splunk show kvstore-migration-status']]></ex>
                 </examples>
             </help>
             <type>list</type>
@@ -3141,7 +3002,7 @@ Use "add monitor" to index files and directories containing both live and closed
                     <arg name="name"><![CDATA[the name of the app]]></arg>
                 </required>
                 <examples>
-                    <ex><![CDATA[./splunk disable app unix]]></ex>
+                    <ex><![CDATA[./splunk enable app unix]]></ex>
                 </examples>
             </help>
             <uri><![CDATA[/apps/local/{name}/disable]]></uri>
@@ -4714,17 +4575,17 @@ list forward-server]]></syntax>
     licenser-groups           this object represents the different licenser groups
                               you can switch to.
 
-    licenser-localpeer        this object represents a local licensing peer node's configuration.
+    licenser-localslave       this object represents a local licensing slave node's configuration.
 
     licenser-messages         this object represents the alerts or warnings about the
                               state of your licenses.
 
     licenser-pools            this object represents a pool, or virtual license. A stack
-                              can be divided into various pools, with multiple peers
+                              can be divided into various pools, with multiple slaves
                               sharing the quota of each pool.
 
-    licenser-peers            this object represents all the peers that have contacted
-                              the manager.
+    licenser-slaves           this object represents all the slaves that have contacted
+                              the master.
 
     licenser-stacks           this object represents a stack of licenses. A stack contains
                               licenses of the same type and are cumulative.
@@ -4747,11 +4608,11 @@ list forward-server]]></syntax>
 
         <cmd name="edit">
             <help>
-                <syntax><![CDATA[edit [licenser-localpeer|licenser-pools|licenser-groups]]]></syntax>
+                <syntax><![CDATA[edit [licenser-localslave|licenser-pools|licenser-groups]]]></syntax>
                 <!-- Commenting out these examples because they are duplicates.
                 <examples>
-                    <ex><![CDATA[./splunk edit licenser-localpeer -manager_uri https://myhost:8089]]></ex>
-                    <ex><![CDATA[./splunk edit licenser-pools foo -description test -quota 10mb -peers guid1,guid2 -append_peers true]]></ex>
+                    <ex><![CDATA[./splunk edit licenser-localslave -master_uri https://myhost:8089]]></ex>
+                    <ex><![CDATA[./splunk edit licenser-pools foo -description test -quota 10mb -slaves guid1,guid2 -append_slaves true]]></ex>
                     <ex><![CDATA[./splunk edit licenser-groups Foo -is_active 1]]></ex>
                 </examples>
                 -->
@@ -4760,7 +4621,7 @@ list forward-server]]></syntax>
 
         <cmd name="list">
             <help>
-                <syntax><![CDATA[list [licenser-groups|licenser-localpeer|licenser-messages|licenser-pools|licenser-peers|licenser-stacks|licenses]]]></syntax>
+                <syntax><![CDATA[list [licenser-groups|licenser-localslave|licenser-messages|licenser-pools|licenser-slaves|licenser-stacks|licenses]]]></syntax>
                 <examples>
                     <ex><![CDATA[./splunk list licenser-stacks]]></ex>
                 </examples>
@@ -4884,7 +4745,7 @@ list forward-server]]></syntax>
    <item obj="licenser-pools">
        <common>
            <help>
-                <header><![CDATA[This represents a pool i.e. a virtual license. A stack can be carved up into various pools. There can be multiple peers per pool, sharing the quota of the pool.]]>
+                <header><![CDATA[This represents a pool i.e. a virtual license. A stack can be carved up into various pools. There can be multiple slaves per pool, sharing the quota of the pool.]]>
                 </header>
            </help>
            <uri><![CDATA[/licenser/pools/]]></uri>
@@ -4911,7 +4772,7 @@ list forward-server]]></syntax>
            <implied_arg_name><![CDATA[name]]></implied_arg_name>
            <help>
                 <title><![CDATA[adds a pool to a stack]]></title>
-                <syntax><![CDATA[add -name <pool name> -description <description> -quota <size[kb|mb|tb]> -peers <comma separated peer GUID list> -stack_id <stack to which this pool belongs>]]></syntax>
+                <syntax><![CDATA[add -name <pool name> -description <description> -quota <size[kb|mb|tb]> -slaves <comma separated slave GUID list> -stack_id <stack to which this pool belongs>]]></syntax>
                 <required>
                     <arg name="name"><![CDATA[name of the new pool to add]]></arg>
                     <arg name="stack_id"><![CDATA[stack that this pool belongs to]]></arg>
@@ -4919,12 +4780,10 @@ list forward-server]]></syntax>
                 </required>
                 <optional>
                     <arg name="description"><![CDATA[human readable description]]></arg>
-                    <arg name="peers"><![CDATA[list of peer GUIDs that are part of this pool]]></arg>
-                    <!-- deprecated "slaves" argument -->
                     <arg name="slaves"><![CDATA[list of slave GUIDs that are part of this pool]]></arg>
                 </optional>
                 <examples>
-                    <ex><![CDATA[./splunk add licenser-pools foo -description test -quota 10mb -peers guid1,guid2 -stack_id enterprise]]></ex>
+                    <ex><![CDATA[./splunk add licenser-pools foo -description test -quota 10mb -slaves guid1,guid2 -stack_id enterprise]]></ex>
                 </examples>
             </help>
        </cmd>
@@ -4933,22 +4792,19 @@ list forward-server]]></syntax>
            <offline_ok />
            <help>
                 <title><![CDATA[edits a pool within a stack]]></title>
-                <syntax><![CDATA[edit -name <pool name> -description <description> -quota <size[kb|mb|tb]> -peers <comma separated peer GUID list>]]></syntax>
+                <syntax><![CDATA[edit -name <pool name> -description <description> -quota <size[kb|mb|tb]> -slaves <comma separated slave GUID list>]]></syntax>
                 <required>
                     <arg name="name"><![CDATA[name of the pool to edit]]></arg>
                 </required>
                 <optional>
                     <arg name="description"><![CDATA[human readable description]]></arg>
                     <arg name="quota"><![CDATA[new allocation size of the pool]]></arg>
-                    <arg name="peers"><![CDATA[list of peer GUIDs that are part of this pool]]></arg>
-                    <arg name="append_peers"><![CDATA[a flag to append the peer GUIDs to the existing list rather than overwriting it]]></arg>
-                    <!-- deprecated "append_slaves" and "slaves" arguments -->
                     <arg name="slaves"><![CDATA[list of slave GUIDs that are part of this pool]]></arg>
                     <arg name="append_slaves"><![CDATA[a flag to append the slave GUIDs to the existing list rather than overwriting it]]></arg>
                 </optional>
                 <examples>
-                    <ex><![CDATA[./splunk edit licenser-pools foo -description test -quota 10mb -peers guid1,guid2]]></ex>
-                    <ex><![CDATA[./splunk edit licenser-pools foo -description test -quota 10mb -peers guid1,guid2 -append_peers true]]></ex>
+                    <ex><![CDATA[./splunk edit licenser-pools foo -description test -quota 10mb -slaves guid1,guid2]]></ex>
+                    <ex><![CDATA[./splunk edit licenser-pools foo -description test -quota 10mb -slaves guid1,guid2 -append_slaves true]]></ex>
                 </examples>
             </help>
            <implied_arg_name><![CDATA[name]]></implied_arg_name>
@@ -4977,25 +4833,24 @@ list forward-server]]></syntax>
    </item>
 
 
-   <!-- list licenser-peers -->
-   <item obj="licenser-slaves" synonym="licenser-peers" />
-   <item obj="licenser-peers">
+   <!-- list licenser-slaves -->
+   <item obj="licenser-slaves">
        <common>
            <help>
-                <header><![CDATA[This represents a listing of all the peers that have contacted the manager.]]>
+                <header><![CDATA[This represents a listing of all the slaves that have contacted the master.]]>
                 </header>
            </help>
-           <uri><![CDATA[/licenser/peers/]]></uri>
+           <uri><![CDATA[/licenser/slaves/]]></uri>
        </common>
 
        <cmd name="list">
            <help>
-                <title><![CDATA[lists attributes of license peer]]></title>
-                <syntax><![CDATA[list licenser-peers]]></syntax>
+                <title><![CDATA[lists attributes of license slave]]></title>
+                <syntax><![CDATA[list licenser-slaves]]></syntax>
                 <required/>
                 <optional/>
                 <examples>
-                    <ex><![CDATA[./splunk list licenser-peers]]></ex>
+                    <ex><![CDATA[./splunk list licenser-slaves]]></ex>
                 </examples>
             </help>
            <default>
@@ -5005,26 +4860,25 @@ list forward-server]]></syntax>
    </item>
 
 
-   <!-- list|edit licenser-localpeer -->
-   <item obj="licenser-localslave" synonym="licenser-localpeer" />
-   <item obj="licenser-localpeer">
+   <!-- list|edit licenser-localslave -->
+   <item obj="licenser-localslave">
        <common>
            <help>
-                <header><![CDATA[This represents a local licensing peer node's configuration.]]>
+                <header><![CDATA[This represents a local licensing slave node's configuration.]]>
                 </header>
            </help>
-           <uri><![CDATA[/licenser/localpeer/]]></uri>
+           <uri><![CDATA[/licenser/localslave/]]></uri>
        </common>
 
        <cmd name="list">
            <offline_ok />
            <help>
-                <title><![CDATA[lists attributes of local license peer]]></title>
-                <syntax><![CDATA[list licenser-localpeer]]></syntax>
+                <title><![CDATA[lists attributes of local license slave]]></title>
+                <syntax><![CDATA[list licenser-localslave]]></syntax>
                 <required/>
                 <optional/>
                 <examples>
-                    <ex><![CDATA[./splunk list licenser-localpeer]]></ex>
+                    <ex><![CDATA[./splunk list licenser-localslave]]></ex>
                 </examples>
             </help>
            <default>
@@ -5035,19 +4889,17 @@ list forward-server]]></syntax>
        <cmd name="edit">
            <offline_ok />
            <help>
-                <title><![CDATA[edits attributes of local license peer node]]></title>
-                <syntax><![CDATA[edit -manager_uri <scheme>://<hostname>:<port>]]></syntax>
+                <title><![CDATA[edits attributes of local license slave node]]></title>
+                <syntax><![CDATA[edit -master_uri <scheme>://<hostname>:<port>]]></syntax>
                 <required>
-                    <arg name="manager_uri"><![CDATA[uri of the splunkd license manager instance OR 'self']]></arg>
-                    <!-- deprecated "master_uri" argument -->
                     <arg name="master_uri"><![CDATA[uri of the splunkd license master instance OR 'self']]></arg>
                 </required>
                 <examples>
-                    <ex><![CDATA[./splunk edit licenser-localpeer -manager_uri https://myhost:8089]]></ex>
-                    <ex><![CDATA[./splunk edit licenser-localpeer -manager_uri self]]></ex>
+                    <ex><![CDATA[./splunk edit licenser-localslave -master_uri https://myhost:8089]]></ex>
+                    <ex><![CDATA[./splunk edit licenser-localslave -master_uri self]]></ex>
                 </examples>
             </help>
-           <uri><![CDATA[/licenser/localpeer/licensepeer]]></uri>
+           <uri><![CDATA[/licenser/localslave/licenseslave]]></uri>
        </cmd>
 
    </item>
@@ -5223,17 +5075,6 @@ list forward-server]]></syntax>
        <cmd name="install" depr="true">
        </cmd>
        <cmd name="package" depr="true">
-            <help>
-                <title><![CDATA[Create tar package of an app. The package can be distributed via SplunkBase or deployed locally.]]></title>
-                <syntax><![CDATA[package app appname [-merge-local-meta <t/f>] [-exclude-local-meta <t/f>]]]></syntax>
-                <required/>
-                <optional/>
-                <examples>
-                    <ex><![CDATA[splunk package app appname]]></ex>
-                    <ex><![CDATA[splunk package app appname -merge-local-meta t]]></ex>
-                    <ex><![CDATA[splunk package app appname -exclude-local-meta f]]></ex>
-                </examples>
-            </help>
        </cmd>
        <cmd name="upgrade" depr="true">
        </cmd>
@@ -5324,7 +5165,7 @@ Supported commands and objects:
 
         [command]           [objects]
 
-        add                 [exec|forward-server|index|licenser-pools|licenses|manager|monitor|oneshot|
+        add                 [exec|forward-server|index|licenser-pools|licenses|master|monitor|oneshot|
                             saved-search|search-server|tcp|udp|user]
 
         anonymize           source
@@ -5342,16 +5183,16 @@ Supported commands and objects:
         diag                NONE
 
         disable             [app|boot-start|deploy-client|deploy-server|
-                            dist-search|index|kvstore-maintenance-mode|listen|local-index|maintenance-mode|shcluster-maintenance-mode|webserver|web-ssl]
+                            dist-search|index|listen|local-index|maintenance-mode|shcluster-maintenance-mode|webserver|web-ssl]
 
         display             [app|boot-start|deploy-client|deploy-server|
                             dist-search|index|jobs|listen|local-index]
 
-        edit                [app|cluster-config|shcluster-config|exec|index|licenser-localpeer|licenses|
-                            licenser-groups|manager|monitor|saved-search|search-server|tcp|udp|user]
+        edit                [app|cluster-config|shcluster-config|exec|index|licenser-localslave|licenses|
+                            licenser-groups|master|monitor|saved-search|search-server|tcp|udp|user]
 
         enable              [app|boot-start|deploy-client|deploy-server|dist-search|
-                            index|kvstore-maintenance-mode|listen|local-index|maintenance-mode|shcluster-maintenance-mode|webserver|web-ssl]
+                            index|listen|local-index|maintenance-mode|shcluster-maintenance-mode|webserver|web-ssl]
 
         export              [eventdata|userdata]
 
@@ -5367,8 +5208,8 @@ Supported commands and objects:
 
         list                [cluster-buckets|cluster-config|cluster-generation|cluster-peers|deploy-clients|excess-buckets|
                             shcluster-artifacts|shcluster-config|shcluster-members|
-                            exec|forward-server|index|jobs|licenser-groups|licenser-localpeer|licenser-messages|
-                            licenser-pools|licenser-peers|licenser-stacks|licenses|manager|manager-info|monitor|peer-buckets|peer-info|
+                            exec|forward-server|index|jobs|licenser-groups|licenser-localslave|licenser-messages|
+                            licenser-pools|licenser-slaves|licenser-stacks|licenses|master|master-info|monitor|peer-buckets|peer-info|
                             saved-search|search-server|tcp|udp|user]
 
         login,logout        NONE
@@ -5385,7 +5226,7 @@ Supported commands and objects:
 
         reload              [ad|auth|deploy-server|index|listen|monitor|registry|script|tcp|udp|perfmon|wmi]
 
-        remove              [app|cluster-peers|excess-buckets|exec|forward-server|index|jobs|licenser-pools|licenses|manager|monitor|
+        remove              [app|cluster-peers|excess-buckets|exec|forward-server|index|jobs|licenser-pools|licenses|master|monitor|
                             saved-search|search-server|tcp|udp|user]
 
         rollback            cluster-bundle
@@ -5424,10 +5265,6 @@ Supported commands and objects:
         backup              [kvstore]
 
         restore             [kvstore]
-
-        merge-buckets       [--index-name]
-
-        cluster-manager-redundancy [-show-status|-switch-mode|-help]
                     ]]>
                 </syntax>
             </help>
@@ -6276,49 +6113,5 @@ and don't reconfigure any of your Splunk settings.
                 <title><![CDATA[display distributed search status]]></title>
             </help>
         </cmd>
-    </item>
-
-    <!-- merge-buckets -->
-    <item obj="merge-buckets">
-        <common>
-            <help>
-                <header><![CDATA[Merge buckets command usage: ./splunk merge-buckets]]></header>
-                <required>
-                    <arg name="index"><![CDATA[The name of the index]]></arg>
-                </required>
-
-                <syntax><![CDATA[$SPLUNK_HOME/bin/splunk merge-buckets --index-name=<index_name> ]]></syntax>
-                <examples>
-                    <ex><![CDATA['./splunk merge-buckets --index-name=small-buckets']]></ex>
-                    <ex><![CDATA['./splunk merge-buckets --help']]></ex>
-                    <ex><![CDATA['./splunk merge-buckets --listbuckets --help']]></ex>
-                </examples>
-            </help>
-        </common>
-            <help>
-                <required>
-                    <arg name="--index-name"><![CDATA[The index that contains the buckets you want to merge.]]></arg>
-                </required>
-                <optional>
-                    <arg name="--buckets"><![CDATA[The list of buckets you want to merge, separated by a comma.]]></arg>
-                    <arg name="--filter"><![CDATA[When specified, this option will filter out the list of buckets provided using --buckets.]]></arg>
-                    <arg name="--json-out"><![CDATA[Format stdout as JSON.\n]]></arg>
-                    <arg name="--debug"><![CDATA[Enable debug mode.]]></arg>
-                    <arg name="--min-size"><![CDATA[Minimum size of buckets to be created. Default value is 750, use bucketMerge.minMergeSizeMB in indexes.conf to change default value.]]></arg>
-                    <arg name="--max-size"><![CDATA[Maximum size of buckets to be created. Default value is 1000, use bucketMerge.maxMergeSizeMB in indexes.conf to change default value.]]></arg>
-                    <arg name="--max-timespan"><![CDATA[The maximum timespan allowed for buckets to be merged in a single bucket. Default value is 7776000 (90 days), use bucketMerge.maxMergeTimeSpanSecs to change default value.]]></arg>
-                    <arg name="--max-count"><![CDATA[The maximum number of buckets to merge. Default: 24.]]></arg>
-                    <arg name="--dryrun"><![CDATA[Use 'dryrun' to preview the behavior of your merge-bucket settings and bucket selections without performing any actions. The results are sent to stdout.]]></arg>
-                    <arg name="--startdate"><![CDATA[Use 'startdate' to merge buckets created between now and the time chosen.]]></arg>
-                    <arg name="--enddate"><![CDATA[Use 'enddate' to merge buckets created prior to the time chosen.]]></arg>
-                    <arg name="--listbuckets"><![CDATA[Lists the most recently merged <number> of buckets in the index homePath.Use '0' to display all merged buckets found.]]></arg>
-                </optional>
-
-                <examples>
-                    <ex><![CDATA['./splunk merge-buckets --index-name=small-buckets']]></ex>
-                    <ex><![CDATA['./splunk merge-buckets --help']]></ex>
-                    <ex><![CDATA['./splunk merge-buckets --listbuckets --help']]></ex>
-                </examples>
-            </help>
     </item>
 </root>

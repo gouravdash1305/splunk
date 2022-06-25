@@ -1,5 +1,4 @@
-<form hideEdit="True" version="1.1" theme="dark">
-  <tags>mobile,tv</tags>
+<form hideEdit="True">
   <label>Secure Gateway Status Dashboard</label>
   <fieldset submitButton="false">
     <input type="time" token="field1">
@@ -16,7 +15,7 @@
         <title>Secure Gateway Status</title>
         <search>
           <query>
-              index="_internal" source="*secure_gateway*" aiohttp_wss_protocol "Received Pong"
+              index="_internal" source="*secure_gateway*" aio_client_protocol "Received Pong"
               | head 1 | stats count as pong_count
               | eval spacebridge_up = if(pong_count &gt; 0, "Connected", "Not Connected")
               | eval range=if(pong_count &gt; 0, "low", "severe")
@@ -308,7 +307,7 @@
         <title>Websocket Disconnections Count</title>
         <search>
           <query>
-              index="_internal" source="*secure_gateway*" protocol "Websocket connection was closed"
+              index="_internal" source="*secure_gateway*" onClose
               | bin span=1h _time
               | timechart span=1h count
           </query>

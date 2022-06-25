@@ -247,7 +247,7 @@
         </element>
         <element name="pdf.html_image_rendering" type="checkbox" label="Do you want to render the image in the HTML to your PDF?">
           <view name="edit"/>
-          <key name="submitValueEdit">0 if value in ('0', 'False', 'false') else 1</key>
+          <key name="submitValueEdit">value=value?"True":"False"</key>
           <key name="exampleText">Check this box if you do not want to miss the image in your PDF</key>
         </element>
       </elements>

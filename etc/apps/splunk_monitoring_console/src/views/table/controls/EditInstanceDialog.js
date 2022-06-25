@@ -4,26 +4,34 @@ define(
 		'underscore',
 		'backbone',
 		'module',
-		'@splunk/swc-mc',
+		'collections/shared/FlashMessages',
+		'views/shared/Modal',
+		'views/shared/controls/ControlGroup',
 		'splunk_monitoring_console/views/table/controls/ConfirmationDialog',
 		'splunk_monitoring_console/views/table/controls/FailureDialog',
-		'splunk_monitoring_console/views/table/controls/MultiInputControl'
+		'splunk_monitoring_console/views/table/controls/MultiInputControl',
+		'views/shared/FlashMessagesLegacy',
+		'uri/route'
 	],
 	function(
 		$,
 		_,
 		Backbone,
 		module,
-		SwcMC,
+		FlashMessagesCollection,
+		Modal,
+		ControlGroup,
 		ConfirmationDialog,
 		FailureDialog,
-		MultiInputControl
+		MultiInputControl,
+		FlashMessagesView,
+		route
 	) {
 
-		return SwcMC.ModalView.extend({
+		return Modal.extend({
 			moduleId: module.id,
 			initialize: function() {
-				SwcMC.ModalView.prototype.initialize.apply(this, arguments);
+				Modal.prototype.initialize.apply(this, arguments);
 
 				this.model.working = new Backbone.Model({
 					host: this.model.peer.entry.content.get('host') || '',
@@ -32,9 +40,9 @@ define(
 					searchHeadClusters: (this.model.peer.entry.content.get('searchHeadClusters').slice() || []).join(',')
 				});
 				this.collection = this.collection || {};
-				this.collection.flashMessages = new SwcMC.FlashMessagesCollection();
+				this.collection.flashMessages = new FlashMessagesCollection();
 
-				this.children.hostField = new SwcMC.ControlGroupView({
+				this.children.hostField = new ControlGroup({
 					label: _("Instance (host)").t(),
 					controlType: 'Text',
 					controlOptions: {
@@ -44,7 +52,7 @@ define(
 					tooltip: _('The "host" metadata field that an instance uses to tag the events it reads from data inputs. Set in inputs.conf / [default] / host.').t()
 				});
 
-				this.children.hostFqdnField = new SwcMC.ControlGroupView({
+				this.children.hostFqdnField = new ControlGroup({
 					label: _("Machine name").t(),
 					controlType: 'Text',
 					controlOptions: {
@@ -62,10 +70,10 @@ define(
 					collectionMethod: 'getAllIndexerClusters',
 					placeholder: _('Choose indexer clusters').t()
 				});
-				this.children.indexerClustersField = new SwcMC.ControlGroupView({
+				this.children.indexerClustersField = new ControlGroup({
 					label: _('Indexer clusters').t(),
 					controlClass: 'controls-block',
-					controls: [this.indexerClustersControl.options.component]
+					controls: [this.indexerClustersControl]
 				});
 
 				this.searchHeadClustersControl = new MultiInputControl({
@@ -76,24 +84,24 @@ define(
 					collectionMethod: 'getAllSearchHeadClusters',
 					placeholder: _('Choose search head clusters').t()
 				});
-				this.children.searchHeadClustersField = new SwcMC.ControlGroupView({
+				this.children.searchHeadClustersField = new ControlGroup({
 					label: _('Search head clusters').t(),
 					controlClass: 'controls-block',
-					controls: [this.searchHeadClustersControl.options.component]
+					controls: [this.searchHeadClustersControl]
 				});
 
-				this.children.flashMessage = new SwcMC.FlashMessagesLegacyView({
+				this.children.flashMessage = new FlashMessagesView({
 					collection: this.collection.flashMessages
 				});
 
-				this.children.helpLink = SwcMC.URIRoute.docHelp(
+				this.children.helpLink = route.docHelp(
 					this.model.application.get('root'),
 					this.model.application.get('locale'),
 					'learnmore.dmc.instancename'
 				);
 			},
 
-			events: $.extend({}, SwcMC.ModalView.prototype.events, {
+			events: $.extend({}, Modal.prototype.events, {
 				'click .btn-primary': function(e) {
 					e.preventDefault();
 					var that = this,
@@ -154,7 +162,7 @@ define(
 
 						that.model.peer.entry.content.set(toSet);
 						$(e.target).prop('disabled', true);
-						that.model.peer.save().then(function() {
+						that.model.peer.save().done(function() {
 							that.model.state.set('changesMade', true);
 							if (that.model.peer.canEditHosts()) {
 								that.model.peer.hasHostOverrides(true);
@@ -172,11 +180,12 @@ define(
 		            		}).render();
 		            		$('body').append(confirmationDialog.el);
 		            		confirmationDialog.show();
-						}.bind(that)).catch(function() {
+						}.bind(that)).fail(function() {
 							this.model.peer.entry.content.set('host', oldHost);
 							this.model.peer.entry.content.set('host_fqdn', oldHostFqdn);
 							this.model.peer.entry.content.set('indexerClusters', oldIndexerClusters);
 							this.model.peer.entry.content.set('searchHeadClusters', oldSearchHeadClusters);
+							
 							that.hide();
 	                    	var dialog = new FailureDialog().render();
 	                    	$('body').append(dialog.el);
@@ -191,23 +200,23 @@ define(
 				var instanceName = '<h4 class="instance-name">' + _.escape(this.model.peer.entry.content.get('peerName')) + '</h4>';
 				var helpLink = '<a href="' + this.children.helpLink + '" class="external help-link" target="_blank">' + _('Learn More').t() + '</a>';
 
-				this.$el.html(SwcMC.ModalView.TEMPLATE);
-	            this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html(_("Edit Instance").t());
-	            this.$(SwcMC.ModalView.BODY_SELECTOR).prepend(this.children.flashMessage.render().el);
-				this.$(SwcMC.ModalView.BODY_SELECTOR).append(instanceName + helpLink);
-	            this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
+				this.$el.html(Modal.TEMPLATE);
+	            this.$(Modal.HEADER_TITLE_SELECTOR).html(_("Edit Instance").t());
+	            this.$(Modal.BODY_SELECTOR).prepend(this.children.flashMessage.render().el);
+				this.$(Modal.BODY_SELECTOR).append(instanceName + helpLink);
+	            this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
 	            if (this.model.peer.canEditHosts()) {
-	            	this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).append(this.children.hostField.render().el);
-	            	this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).append(this.children.hostFqdnField.render().el);
+	            	this.$(Modal.BODY_FORM_SELECTOR).append(this.children.hostField.render().el);
+	            	this.$(Modal.BODY_FORM_SELECTOR).append(this.children.hostFqdnField.render().el);
 	            }
 	            if (this.model.peer.canEditIndexerClusters()) {
-	            	this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).append(this.children.indexerClustersField.render().el);
+	            	this.$(Modal.BODY_FORM_SELECTOR).append(this.children.indexerClustersField.render().el);
 	            }
 	            if (this.model.peer.canEditSearchHeadClusters()) {
-	            	this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).append(this.children.searchHeadClustersField.render().el);	
+	            	this.$(Modal.BODY_FORM_SELECTOR).append(this.children.searchHeadClustersField.render().el);	
 	            }
-	            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
-	            this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_SAVE);
+	            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
+	            this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_SAVE);
 	            return this;
 			}
 		});

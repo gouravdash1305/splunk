@@ -10,25 +10,31 @@ define([
 	'underscore',
 	'backbone',
 	'module',
-	'@splunk/swc-mc'
+	'models/shared/LinkAction',
+	'views/shared/FlashMessages',
+	'views/shared/Modal',
+    'util/splunkd_utils'
 ], function (
 	$,
 	_,
 	Backbone,
 	module,
-	SwcMC
+	LinkAction,
+	FlashMessages,
+	Modal,
+	splunkDUtils
 ) {
-	return SwcMC.ModalView.extend({
+	return Modal.extend({
 		moduleId: module.id,
-		className: SwcMC.ModalView.CLASS_NAME,
+		className: Modal.CLASS_NAME,
 
 		initialize: function (options) {
-			SwcMC.ModalView.prototype.initialize.apply(this, arguments);
-			this.children.flashMessagesView = new SwcMC.FlashMessagesView({ model: { alert: this.model.alert } });
+			Modal.prototype.initialize.apply(this, arguments);
+			this.children.flashMessagesView = new FlashMessages({ model: { alert: this.model.alert } });
 			this.alertName = this.model.alert.entry.get('name');
 		},
 
-		events: $.extend({}, SwcMC.ModalView.prototype.events, {
+		events: $.extend({}, Modal.prototype.events, {
 			'click .modal-btn-disable': function(e) {
 				e.preventDefault();
 				this.model.alert.entry.content.set('disabled', true);
@@ -46,7 +52,7 @@ define([
 	            var errMessage = _('Failed to disable alert.').t();
 	            this.children.flashMessagesView.flashMsgHelper.addGeneralMessage('disable_failed',
 	                {
-	                    type: SwcMC.SplunkdUtils.ERROR,
+	                    type: splunkDUtils.ERROR,
 	                    html: errMessage
 	                });
 	        } else {
@@ -56,14 +62,14 @@ define([
 
 		render: function () {
 			var BUTTON_DISABLE = '<a href="#" class="btn btn-primary modal-btn-disable modal-btn-primary">' + _('Disable').t() + '</a>';
-			this.$el.html(SwcMC.ModalView.TEMPLATE);
-			this.$(SwcMC.ModalView.HEADER_TITLE_SELECTOR).html( _('Disable Alert').t());
-			this.$(SwcMC.ModalView.BODY_SELECTOR).show();
-			this.$(SwcMC.ModalView.BODY_SELECTOR).append(SwcMC.ModalView.FORM_HORIZONTAL);
-			this.$(SwcMC.ModalView.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({alertName: this.alertName}));
+			this.$el.html(Modal.TEMPLATE);
+			this.$(Modal.HEADER_TITLE_SELECTOR).html( _('Disable Alert').t());
+			this.$(Modal.BODY_SELECTOR).show();
+			this.$(Modal.BODY_SELECTOR).append(Modal.FORM_HORIZONTAL);
+			this.$(Modal.BODY_FORM_SELECTOR).html(_(this.dialogFormBodyTemplate).template({alertName: this.alertName}));
 			this.children.flashMessagesView.render().appendTo(this.$('.flash-messages-view-placeholder'));
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(SwcMC.ModalView.BUTTON_CANCEL);
-			this.$(SwcMC.ModalView.FOOTER_SELECTOR).append(BUTTON_DISABLE);
+			this.$(Modal.FOOTER_SELECTOR).append(Modal.BUTTON_CANCEL);
+			this.$(Modal.FOOTER_SELECTOR).append(BUTTON_DISABLE);
 			return this;
 		},
 

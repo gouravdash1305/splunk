@@ -1,4 +1,4 @@
-#   Version 5.0
+#   Version 4.0
 import splunk.Intersplunk as si
 import time
 
@@ -14,14 +14,15 @@ def unitval(unit, val):
     if val >= 2: plural = "s"
     return "%s %s%s ago" % (int(val), unit, plural)
 
-def getReltime(results, timeFields, prefix):
-    now = time.time()
-    outResults = []
+if __name__ == '__main__':
+    try:
+        keywords,options = si.getKeywordsAndOptions()
+        results,dumb1, dumb2 = si.getOrganizedResults()
 
-    # for each result
-    for result in results:
-        for fieldName in timeFields:
-            utc = result.get(fieldName)
+        now = time.time()
+        # for each result
+        for result in results:
+            utc = result.get('_time', None)
             if isinstance(utc, list):
                 reltime = "unknown"
             elif utc == None:
@@ -46,34 +47,7 @@ def getReltime(results, timeFields, prefix):
                     reltime = unitval("month", diff / MONTH)
                 else:
                     reltime = unitval("year", diff / YEAR)
-            if prefix:
-                result[prefix+fieldName] = reltime
-            else:
-                result['reltime'] = reltime
-
-        outResults.append(result)
-    return outResults
-
-if __name__ == '__main__':
-    try:
-        keywords,options = si.getKeywordsAndOptions()
-        results,dummyresults,settings = si.getOrganizedResults()
-
-        # _time is used as a default field if nothing is provided
-        timefields = options.get('timefield', '_time')
-         
-        # prefix is required for multiple fields to ensure output fields are distinct
-        prefix = options.get('prefix')
-
-        timefields = timefields.strip('"')
-        fields = [field.strip() for field in timefields.split(',')]
-        
-        # add default prefix for multiple timefields if not provided
-        if (',' in timefields) and (not prefix):
-            prefix = 'reltime_'
-        
-        results = getReltime(results, fields, prefix)
-
+            result['reltime'] = reltime
         si.outputResults(results)
 
     except Exception as e:

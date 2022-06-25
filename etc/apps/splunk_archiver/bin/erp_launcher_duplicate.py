@@ -3,7 +3,6 @@
 #
 
 import os
-import re
 import sys
 import time
 import splunk.entity as en
@@ -18,15 +17,12 @@ from threading import Thread
 import splunkio_duplicate as splunkio
 import datetime
 from builtins import map
-
 if sys.version_info >= (3, 0):
     from io import StringIO
     import queue
-    from shlex import quote
 else:
     import Queue as queue
     from StringIO import StringIO
-    from pipes import quote
 
 messageQueue = queue.Queue()
 END_MSG = 'THE END'
@@ -116,20 +112,6 @@ def _entityToDict(entity):
     m.pop('eai:acl', None)
     return m
 
-ENV_VAR_PATTERN = re.compile(r'\$\w+')
-# Similar logic to that used by PropertiesMap::expandEnvironmentVariables(),
-# except this function also allows us to respect any environment variables
-# that have been configured using vix.env in conf.
-def _expandAllEnvVars(vixEnv, s):
-    def expand(match):
-        # Trim $.
-        varName = match.group()[1:]
-        if varName in vixEnv:
-            return vixEnv[varName]
-        elif varName in os.environ:
-            return os.environ[varName]
-        return match.group()
-    return ENV_VAR_PATTERN.sub(expand, s)
 
 # Executes one java process per index. Can be run in parallel.
 def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes, indexes, serverId, serverName, sessionKey):
@@ -145,12 +127,8 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
             sys.stderr.write("Invalid command specified: '" + command[0] + "''\n")
             os._exit(1)
 
-        # SPL-193642 prevent execution of an injected command
-        args = command[1:]
-        vixEnv = _getProviderEnv(providerMap)
-        commandstr = command[0] + ' ' + ' '.join(
-            map(lambda arg: quote(_expandAllEnvVars(vixEnv, arg)), args))
-            
+        commandstr = ' '.join(map(_escape, command))
+
         # Create json that'll be sent to SplunkMR's stdin
         javaArgs = {}
         javaArgs['action'] = action
@@ -169,6 +147,7 @@ def _executeJavaProcesses(action, logFileName, indexFilterFunc, providers, vixes
         json.dump(javaArgs, jsonArgs)
 
         # create environment vars by combining current env with vix configuration
+        vixEnv = _getProviderEnv(providerMap)
         vixEnv['SPLUNK_LOG_INCLUDE_TIMESTAMP'] = '1' # any splunk truthy value will do
         vixEnv['SPLUNK_LOG_DEBUG'] = providerMap.get('splunk.search.debug', '0')
         myEnv = os.environ.copy()

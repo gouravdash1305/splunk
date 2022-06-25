@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Message Processing module for taking serialized protobuf
 messages received over websocket, process them and take the
@@ -14,6 +14,7 @@ import contextvars
 from spacebridgeapp.util import py23
 from spacebridgeapp.messages.request_context import RequestContext
 from spacebridgeapp.request.spacebridge_request_processor import unregister_device, mdm_authentication_request
+from cloudgateway.private.messages.send import send_response
 from spacebridgeapp.rest.clients.async_client_factory import AsyncClientFactory
 from spacebridgeapp.versioning import app_version, minimum_build, is_version_ok
 from spacebridgeapp.versioning.client_minimum import format_version
@@ -32,6 +33,8 @@ from spacebridgeapp.metrics.websocket_metrics import send_websocket_metrics_to_t
 from spacebridgeapp.logging import setup_logging
 from splapp_protocol import envelope_pb2
 from splapp_protocol import common_pb2
+from spacebridge_protocol import websocket_pb2
+from spacebridge_protocol import sb_common_pb2
 
 from splunk.clilib.bundle_paths import make_splunkhome_path
 
@@ -63,9 +66,6 @@ async def post_process_message(request_context,
             if server_subscription_response.HasField(SERVER_SUBSCRIBE_RESPONSE):
                 # Only process if server_subscription_response doesn't set subscription_type
                 if not server_subscription_response.serverSubscribeResponse.WhichOneof("subscription_type"):
-                    LOGGER.info(f"Start Post Process Single Subscription Update. subscription_id={subscription_id}, "
-                                f"update_id={server_subscription_update.updateId}, "
-                                f"request_id={server_subscription_update.requestId}")
                     map_post_search = server_subscription_response.serverSubscribeResponse.postSearch or None
                     await subscription_processor.process_subscription(request_context,
                                                                       subscription_id,
@@ -93,11 +93,8 @@ async def post_process_message(request_context,
 async def process_message(message_sender, client_application_message, server_application_message, async_client_factory,
                           encryption_context, server_response_id, system_auth_header, shard_id):
     device_id = py23.b64encode_to_str(message_sender)
-    device_key = py23.urlsafe_b64encode_to_str(message_sender)
 
     encryption_context = encryption_context
-    async_request_client = async_client_factory.request_client()
-    async_request_client.on_request(device_key)
 
     if client_application_message.HasField(CLIENT_SINGLE_REQUEST):
         request_object = client_application_message.clientSingleRequest
@@ -159,6 +156,7 @@ async def process_message(message_sender, client_application_message, server_app
         if not should_send_response:
             server_application_message.Clear()
 
+
     except OperationHaltedError:
         server_application_message.ClearField('app_message')
     except SpacebridgeCompanionAppError as e:
@@ -188,6 +186,25 @@ def validate_client_version(request_object, response_object):
                                client_minimum_version=format_version(request_object.clientVersion, app_min_build))
 
 
+def parse_spacebridge_message(serialized_spacebridge_message):
+    """
+    Deserialize spacebridge message and if it is an error message, log it.
+    :param serialized_spacebridge_message: serialized SpacebridgeMessage proto
+    :return: None
+    """
+    spacebridge_message = websocket_pb2.SpacebridgeMessage()
+    try:
+        spacebridge_message.ParseFromString(serialized_spacebridge_message)
+
+        if spacebridge_message.HasField("error"):
+            LOGGER.info(f"Received Spacebridge Error with message={spacebridge_message.error.message}")
+
+    except Exception:
+        LOGGER.exception("Exception parsing spacebridge message")
+
+    return spacebridge_message
+
+
 async def handle_spacebridge_message(auth_header, spacebridge_message, async_client_factory, encryption_context):
     """
     :param auth_header:
@@ -213,6 +230,68 @@ async def handle_spacebridge_message(auth_header, spacebridge_message, async_cli
                                          request_id)
     else:
         LOGGER.info("Unknown spacebridge message received")
+
+
+def parse_signed_envelope(serialized_signed_envelope):
+    """Deserialize a serialized Signed Envelope Proto object
+
+    Arguments:
+        serialized_signed_envelope {[type]} -- [description]
+
+    Returns:
+        [type] -- [description]
+    """
+
+    signed_envelope = sb_common_pb2.SignedEnvelope()
+    try:
+        signed_envelope.ParseFromString(serialized_signed_envelope)
+    except:
+        LOGGER.exception("Exception deserializing Signed Envelope")
+
+    return signed_envelope
+
+
+def parse_application_message(serialized_message):
+    """Deserialize a serialized Application Message object
+
+    Arguments:
+        serialized_message {bytes}
+
+    Returns:
+        ApplicationMessage Proto
+    """
+
+    application_message = websocket_pb2.ApplicationMessage()
+
+    try:
+        application_message.ParseFromString(serialized_message)
+    except:
+        LOGGER.exception("Exception deserializing protobuf")
+
+    return application_message
+
+
+def parse_client_application_message(application_message, decrypt):
+    """Take an Application Message proto, extract the payload,
+    decrypt it and then deserialize it as a Client Application
+    Request Proto.
+
+    Arguments:
+        application_message {Application Message Proto}
+
+    Returns:
+        ClientApplicationMessage Proto
+    """
+
+    client_application_message = envelope_pb2.ClientApplicationMessage()
+    try:
+        encrypted_payload = application_message.payload
+        decrypted_payload = decrypt(encrypted_payload)
+        client_application_message.ParseFromString(decrypted_payload)
+    except Exception as e:
+        LOGGER.exception("Exception deserializing payload from envelope")
+
+    return client_application_message
 
 
 async def process_request(request_context,

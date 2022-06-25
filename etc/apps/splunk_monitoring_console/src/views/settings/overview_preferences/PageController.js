@@ -4,28 +4,36 @@
 */
 
 define([
+	'jquery',
 	'underscore',
 	'backbone',
 	'module',
+	'controllers/Base',
+	'collections/shared/FlashMessages',
 	'splunk_monitoring_console/views/settings/overview_preferences/Master',
 	'splunk_monitoring_console/collections/ThresholdConfigs',
-    '@splunk/swc-mc',
+	'models/Base',
+    'views/shared/vizcontrols/format/Master.pcss',
     './PageController.pcss'
 ], function(
+	$,
 	_,
 	Backbone,
 	module,
+	BaseController,
+	FlashMessagesCollection,
 	MasterView,
 	ThresholdConfigsCollection,
-    SwcMC,
+	BaseModel,
+    sharedVizControlsCss,
     css
 	) {
 
-	return SwcMC.BaseController.extend({
+	return BaseController.extend({
 		moduleId: module.id,
 
 		initialize: function(options) {
-			SwcMC.BaseController.prototype.initialize.apply(this, arguments);
+			BaseController.prototype.initialize.apply(this, arguments);
 
 			this.collection = this.collection || {};
 			this.model = this.model || {};
@@ -33,8 +41,8 @@ define([
 
 			this.collection.thresholdConfigs = new ThresholdConfigsCollection();
 			this.collection.thresholdConfigs.fetchData.set({count: 25});
-
-			this.collection.thresholdConfigs.fetch().done(_(function() {
+			
+			$.when(this.collection.thresholdConfigs.fetch()).done(_(function() {
 				this.children.masterView = new MasterView({
 					collection: { thresholdConfigs: this.collection.thresholdConfigs }
 				});

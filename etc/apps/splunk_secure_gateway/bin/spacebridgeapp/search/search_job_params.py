@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module use to setup params to pass to search jobs
 """
@@ -103,7 +103,6 @@ def get_dispatch_job_request_params(earliest_time, latest_time, input_tokens=Non
 
     :param earliest_time:
     :param latest_time:
-    :param input_tokens:
     :return:
     """
     params = {'output_mode': 'json',
@@ -114,7 +113,7 @@ def get_dispatch_job_request_params(earliest_time, latest_time, input_tokens=Non
 
     # expecting args should be args.argname
     # https://docs.splunk.com/Documentation/Splunk/7.2.6/RESTREF/RESTsearch#saved.2Fsearches.2F.7Bname.7D.2Fdispatch
-    if isinstance(input_tokens, dict):
+    if input_tokens is not None:
         for token_name, value in input_tokens.items():
             if not token_name.startswith(SAVED_SEARCH_ARGS_PREFIX):
                 token_name = SAVED_SEARCH_ARGS_PREFIX+token_name

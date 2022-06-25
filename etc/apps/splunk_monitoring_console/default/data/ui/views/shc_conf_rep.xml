@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" script="common_control.js" stylesheet="health-check.css">
+<form hideEdit="True" script="common_control.js" stylesheet="health-check.css">
   <label>Search Head Clustering: Configuration Replication</label>
   <fieldset autoRun="true" submitButton="false">
     <input type="dropdown" searchWhenChanged="true" token="group">

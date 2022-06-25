@@ -11,7 +11,8 @@
                 "pid": 0, 
                 "process_type": "splunkd server", 
                 "name": "splunkd"
-            }
+            },
+            "action_needed": "Please ensure that the correct target process has been specified (default is the main Splunk process)"
         }, 
         {
             "__class__": "rapid_diag.collector.diag.Diag"
@@ -19,7 +20,7 @@
   ],
   "name": "System call activity",
   "collector_tool_names": "splunkdiag, strace",
-  "description": "For investigating unexpected interactions or performance issues between a process and the operating system. The collector monitors a process and logs the system call activity on the host it is running on. By default, the main splunkd process is selected.",
+  "description": "For investigating unexpected interactions or performance issues between a process and the operating system. The collector monitors a process and logs the system call activity on the host it is running on. The template requires a target process type or process ID.",
   "host": "",
   "task_id": "strace-main",
   "symptoms" : [ "storage-issues" ]

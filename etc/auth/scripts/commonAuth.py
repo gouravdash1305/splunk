@@ -18,7 +18,6 @@ SEC_INPUTS_SUB_DELIM = ":"
 USERTYPE    = "role"
 SUCCESS     = "--status=success"
 FAILED      = "--status=fail"
-ERROR_MSG   = "--errorMsg="
 
 
 def getLogger(path, idp):
@@ -53,4 +52,4 @@ def urlsafe_b64encode_to_str(string):
     if sys.version_info < (3, 0):
         return base64.urlsafe_b64encode(string)
 
-    return base64.urlsafe_b64encode(string.encode('utf-8')).decode('utf-8')
+    return base64.urlsafe_b64encode(string.encode('ascii')).decode('ascii')

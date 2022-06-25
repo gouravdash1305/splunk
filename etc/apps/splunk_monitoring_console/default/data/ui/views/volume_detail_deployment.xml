@@ -1,4 +1,4 @@
-<form version="1.1" hideEdit="True" script="common_control.js, cell_fill_gauge.js, volume_detail_deployment_extension.js">
+<form hideEdit="True" script="common_control.js, cell_fill_gauge.js, volume_detail_deployment_extension.js">
   <search id="volumes_base_search">
     <query>
       | rest splunk_server_group=dmc_group_indexer splunk_server_group="$group$" /services/data/index-volumes/$volume$

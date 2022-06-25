@@ -3,7 +3,7 @@ define(
         'underscore',
         'jquery',
         'backbone',
-        '@splunk/swc-mc',
+        'routers/Base',
         'splunk_monitoring_console/views/settings/dmc_alerts_setup/enterprise/PageController',
         'splunk_monitoring_console/views/settings/dmc_alerts_setup/lite/PageController'
     ],
@@ -11,17 +11,17 @@ define(
         _,
         $,
         Backbone,
-        SwcMC,
+        BaseRouter,
         PageControllerEnt,
         PageControllerLight
     ) {
-        return SwcMC.BaseRouter.extend({
+        return BaseRouter.extend({
             initialize: function() {
-                SwcMC.BaseRouter.prototype.initialize.apply(this, arguments);
+                BaseRouter.prototype.initialize.apply(this, arguments);
             },
 
             page: function(locale, app, page) {
-                SwcMC.BaseRouter.prototype.page.apply(this, arguments);
+                BaseRouter.prototype.page.apply(this, arguments);
 
                 if (this.model.serverInfo.isLite()) {
                     this.setPageTitle(_('Platform Alerts Setup').t());
@@ -29,22 +29,22 @@ define(
                 else {
                     this.setPageTitle(_('Alerts Setup').t());
                 }
+                
+                $.when(this.deferreds.pageViewRendered).done(_(function() {
+                   $('.preload').replaceWith(this.pageView.el);
 
-                this.deferreds.pageViewRendered.then(_(function() {
-                    $('.preload').replaceWith(this.pageView.el);
+                    if (this.pageController) {
+                        this.pageController.detach();
+                    }
 
-                     if (this.pageController) {
-                         this.pageController.detach();
-                     }
-
-                     var pageController = (this.model.serverInfo.isLite()) ? PageControllerLight : PageControllerEnt;
-                     this.pageController = new pageController({
-                         model: this.model,
-                         collection: this.collection
-                     });
-                     this.pageView.$('.main-section-body').append(this.pageController.render().el);
-
-                 }).bind(this));
+                    var pageController = (this.model.serverInfo.isLite()) ? PageControllerLight : PageControllerEnt;
+                    this.pageController = new pageController({
+                        model: this.model,
+                        collection: this.collection
+                    });
+                    this.pageView.$('.main-section-body').append(this.pageController.render().el);
+                    
+                }).bind(this));
             }
         });
     }

@@ -5,7 +5,7 @@ define(
         'backbone',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/instancelist/elements/Base',
         'splunk_monitoring_console/views/overview/distributed_mode/topology/controls/PerPageMenu',
-        '@splunk/swc-mc'
+        'util/svg'
     ],
     function(
         $,
@@ -13,7 +13,7 @@ define(
         Backbone,
         BaseElementView,
         PerPageMenu,
-        SwcMC
+        svgUtil
     ) {
         var PAGES_FONT_SIZE = 12,
             PAGES_MARGIN_BOTTOM = 12,
@@ -75,7 +75,7 @@ define(
                             _('Last').t(),
                         textWidth = this._guessTextWidth(text),
                         textHeight = PAGES_FONT_SIZE, // a guess
-                        $textContainer = SwcMC.UtilSVG.createElement('text')
+                        $textContainer = svgUtil.createElement('text')
                             .text(text)
                             .attr({
                                 'class': 'link',
@@ -83,7 +83,7 @@ define(
                                 y: currentPoint.y,
                                 'font-size': PAGES_FONT_SIZE
                             }),
-                        $container = SwcMC.UtilSVG.createElement('g');
+                        $container = svgUtil.createElement('g');
 
                     if (this._isActive()) {
                         $container
@@ -103,7 +103,7 @@ define(
                             _('Next').t(),
                         textWidth = this._guessTextWidth(text),
                         textHeight = PAGES_FONT_SIZE, // a guess, again
-                        $textContainer = SwcMC.UtilSVG.createElement('text')
+                        $textContainer = svgUtil.createElement('text')
                             .text(text)
                             .attr({
                                 'class': 'link',
@@ -111,7 +111,7 @@ define(
                                 y: currentPoint.y,
                                 'font-size': PAGES_FONT_SIZE
                             }),
-                        $container = SwcMC.UtilSVG.createElement('g');
+                        $container = svgUtil.createElement('g');
 
                     currentPoint.x = currentPoint.x + textWidth + STEP_MARGIN;
 
@@ -129,7 +129,7 @@ define(
 
                 _renderCurrentPage: function(currentPoint) {
                     var pages = this._getPages(this.collection.instances.paging),
-                        $currentPage = SwcMC.UtilSVG.createElement('text')
+                        $currentPage = svgUtil.createElement('text')
                             .text(
                                 _('page').t() + 
                                 ' ' + 
@@ -149,7 +149,7 @@ define(
                 },
 
                 _renderPerPage: function(currentPoint) {
-                    var $perPage = SwcMC.UtilSVG.createElement('text')
+                    var $perPage = svgUtil.createElement('text')
                         .text(
                             this.model.fetchState.get('count') + ' ' +
                             _('per page').t()
@@ -176,7 +176,7 @@ define(
                             this.children.menu.show($perPage);
                         }.bind(this));
                         
-                    SwcMC.UtilSVG.createElement('tspan')
+                    svgUtil.createElement('tspan')
                         .text(' \u02C5')
                         .attr({
                             'class': 'icon'
@@ -187,7 +187,7 @@ define(
                 },
 
                 _renderHorizontalRule: function(currentPoint) {
-                    var $line = SwcMC.UtilSVG.createElement('line')
+                    var $line = svgUtil.createElement('line')
                         .attr({
                             'class': 'hr',
                             x1: currentPoint.x,

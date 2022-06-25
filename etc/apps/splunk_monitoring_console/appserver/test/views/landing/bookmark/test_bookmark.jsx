@@ -37,6 +37,17 @@ suite('MC Bookmark Component', function () {
         this.fakeMetrics = {};
         assert.ok(true, 'Teardown was successful');
     });
+    test('Test rendering the bookmarks component', function () {
+        assert.equal(
+            this.wrapper.find('.bookmarks').length,
+            1, 'Bookmarks rendered');
+        assert.equal(
+            this.wrapper.find('Link[data-test-name="deployment-link"]').length,
+            2, '2 deployments rendered');
+        assert.equal(
+            this.wrapper.find('.bookmarksBtn').length,
+            1, 'Add deployment button rendered')
+    });
     test('Test handleModalClose', function() {
         this.inst.updateBookmarks = sinon.spy();
         this.inst.handleModalClose();

@@ -1,5 +1,5 @@
 """
-Copyright (C) 2009-2021 Splunk Inc. All Rights Reserved.
+Copyright (C) 2009-2020 Splunk Inc. All Rights Reserved.
 
 Module for subscription_requests used by ssg_subscription_modular_input
 """
@@ -210,13 +210,12 @@ async def delete_search(auth_header, search_key=None, async_kvstore_client=None)
 
 
 async def validate_dashboard_search(request_context,
-                                    dashboard_id=None,
-                                    type_id=None,
-                                    search_type=SearchType.VISUALIZATION,
-                                    input_tokens=None,
-                                    async_kvstore_client=None,
-                                    async_splunk_client=None,
-                                    async_itsi_client=None):
+                              dashboard_id=None,
+                              type_id=None,
+                              search_type=SearchType.VISUALIZATION,
+                              input_tokens=None,
+                              async_kvstore_client=None,
+                              async_splunk_client=None):
     """
     Validation method to validate a dashboard_id and visualization_id.  Will except a SpacebridgeApiRequestError if
     issues are detected and return a dashboard_description if valid
@@ -228,13 +227,12 @@ async def validate_dashboard_search(request_context,
     :param input_tokens:
     :param async_kvstore_client:
     :param async_splunk_client:
-    :param async_itsi_client:
     :return:
     """
     # Validate params
     if not dashboard_id or not type_id:
-        error_message = f"Invalid Request Params dashboard_id={dashboard_id}, search_type_id={type_id}, " \
-                        f"search_type={search_type}"
+        error_message = "Invalid Request Params dashboard_id={}, search_type_id={}, search_type={}" \
+            .format(dashboard_id, type_id, search_type)
         raise SpacebridgeApiRequestError(error_message, status_code=HTTPStatus.BAD_REQUEST)
 
     # fetch dashboard body
@@ -242,34 +240,33 @@ async def validate_dashboard_search(request_context,
         request_context=request_context,
         dashboard_id=dashboard_id,
         async_splunk_client=async_splunk_client,
-        async_kvstore_client=async_kvstore_client,
-        async_itsi_client=async_itsi_client)
+        async_kvstore_client=async_kvstore_client)
 
     search = None
     if search_type == SearchType.VISUALIZATION:
         visualization = dashboard_description.get_visualization(type_id)
         if not visualization:
-            error_message = f"Dashboard visualization not found. " \
-                            f"dashboard_id={dashboard_id}, visualization_id={type_id}"
+            error_message = "Dashboard visualization not found. dashboard_id={}, visualization_id={}" \
+                .format(dashboard_id, type_id)
             raise SpacebridgeApiRequestError(error_message, status_code=HTTPStatus.NOT_FOUND)
         search = visualization.search
     elif search_type == SearchType.INPUT:
         input_token = dashboard_description.get_input_token_by_query_id(type_id)
         if not input_token:
-            error_message = f"Input Search not found. dashboard_id={dashboard_id}, query_id={type_id}"
+            error_message = "Input Search not found. dashboard_id={}, query_id={}".format(dashboard_id, type_id)
             raise SpacebridgeApiRequestError(error_message, status_code=HTTPStatus.NOT_FOUND)
         search = input_token.input_type.dynamic_options.search
     elif search_type == SearchType.DATA_SOURCE:
         datasources = [d for d in dashboard_description.definition.udf_data_sources if d.name == type_id]
         if len(datasources) != 1:
             raise SpacebridgeApiRequestError(
-                f"Unexpected number of matching datasources in dashboard. Expected 1 but found {len(datasources)}",
-                status_code=HTTPStatus.CONFLICT)
+                "Unexpected number of matching datasources in dashboard. Expected 1 but found {}"
+                .format(len(datasources)), status_code=HTTPStatus.CONFLICT)
 
     # validate depends
     if search and not search.are_render_tokens_defined(input_tokens):
-        error_message = f"Search is waiting for input. depends={search.depends}, rejects={search.rejects}, " \
-                        f"dashboard_id={dashboard_id}, type_id={type_id}, search_type={search_type}"
+        error_message = "Search is waiting for input. depends={}, rejects={}, dashboard_id={}, type_id={}, search_type={}" \
+            .format(search.depends, search.rejects, dashboard_id, type_id, search_type)
         raise SpacebridgeApiRequestError(error_message, status_code=HTTPStatus.NOT_FOUND)
 
     return dashboard_description

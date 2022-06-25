@@ -1,7 +1,6 @@
 <nav color="#3C444D">
   <view name="monitoringconsole_overview" default="true" />
   <view name="monitoringconsole_landing" />
-  <view name="assist" />
   <view name="monitoringconsole_check" />
   <collection label="Indexing">
     <collection label="Performance">

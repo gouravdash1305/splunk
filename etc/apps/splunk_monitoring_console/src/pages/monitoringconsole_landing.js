@@ -1,4 +1,4 @@
-define(['splunk_monitoring_console/routers/MonitoringConsoleLanding', '@splunk/swc-mc'], function(MonitoringConsoleLandingRouter, SwcMC) {
+define(['splunk_monitoring_console/routers/MonitoringConsoleLanding', 'util/router_utils'], function(MonitoringConsoleLandingRouter, router_utils) {
     var monitoringConsoleLandingRouter = new MonitoringConsoleLandingRouter();
-    SwcMC.RouterUtils.start_backbone_history();
+    router_utils.start_backbone_history();
 });
